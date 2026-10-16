@@ -1,0 +1,66 @@
+import { useState } from 'react';
+import { GameCanvas } from './game/GameCanvas';
+import { scenes, type SceneId } from './content/scenes';
+import { portraits } from './content/assets';
+import type { ScenePoint } from './game/types';
+
+function BookPlaceholder() {
+  return <aside className="book-panel" aria-labelledby="book-title">
+    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>TRANG SÁCH BÊN BẠN</span></div>
+    <div className="book-sheet">
+      <div className="page-corner" aria-hidden="true" />
+      <span className="book-kicker">MỘT CÂU CHUYỆN DƯỚI TRĂNG</span>
+      <h2 id="book-title">Sách<br />đồng hành</h2>
+      <div className="book-illustration" aria-hidden="true"><div className="paper-moon" /><div className="paper-hill hill-one" /><div className="paper-hill hill-two" /><span>✧</span></div>
+      <div className="paper-divider" aria-hidden="true">✦</div>
+      <p>Nội dung sách sẽ được bổ sung sau</p>
+      <div className="placeholder-lines" aria-hidden="true"><i /><i /><i /></div>
+      <div className="page-bottom"><span aria-hidden="true">—</span> <span>TRANG ĐẦU TIÊN</span> <span aria-hidden="true">—</span></div>
+    </div>
+    <p className="book-note">Trang sách đang chờ câu chuyện của bạn.</p>
+  </aside>;
+}
+
+export function App() {
+  const [scene, setScene] = useState<SceneId>('earth');
+  const [debug, setDebug] = useState(false);
+  const [point, setPoint] = useState<ScenePoint | null>(null);
+  const current = scenes[scene];
+
+  return <main className="app-shell">
+    <header className="site-header">
+      <a className="brand" href="#main-scene" aria-label="Đến khung cảnh"><span className="brand-moon" aria-hidden="true" /><span>CUỘI<span className="brand-caption">CHUYỆN KỂ DƯỚI TRĂNG</span></span></a>
+      <div className="edition"><span aria-hidden="true" />BẢN DỰNG MỞ ĐẦU <span className="edition-number">01</span></div>
+    </header>
+    <div className="workspace">
+      <BookPlaceholder />
+      <section className="game-panel" id="main-scene" aria-labelledby="game-title">
+        <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> KHỞI ĐẦU MỘT HÀNH TRÌNH <span className="label-line" /></div>
+        <h1 id="game-title">Chú Cuội, chị Hằng<br /><span>và những người bạn bị lãng quên</span></h1>
+        <div className="scene-toolbar">
+          <div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử">
+            {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{scenes[id].tab}</button>)}
+          </div>
+          <span className="preview-label"><span aria-hidden="true" />Xem thử cảnh</span>
+        </div>
+        <div className="scene-frame">
+          <GameCanvas scene={scene} debug={debug} onPoint={setPoint} />
+          <div className="scene-caption"><div><span className="scene-number">{current.number}</span><h2>{current.title}</h2></div><span className="scene-subtitle">{current.subtitle}</span></div>
+        </div>
+        <div className="scene-details">
+          <div className="cast" aria-label="Nhân vật trong cảnh">{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{portraits[id].name}</span></div>)}</div>
+          <p>{current.description}</p>
+        </div>
+        <details className="preview-tools">
+          <summary>Kiểm tra bản dựng <span aria-hidden="true">＋</span></summary>
+          <div className="tools-content">
+            <label><input type="checkbox" checked={debug} onChange={(event) => setDebug(event.target.checked)} />Hiện vùng kiểm tra và tọa độ click</label>
+            <output aria-live="polite" data-testid="coordinates">{debug ? (point ? `${point.target} · x: ${point.x}, y: ${point.y}` : 'Click trong cảnh để kiểm tra tọa độ 960 × 540.') : 'Canvas 16:9 · Tư thế nghỉ tĩnh · Cảnh và đạo cụ tạm'}</output>
+            <p>Lượt 1: kiểm tra bố cục và tài nguyên. Hội thoại, di chuyển và lưu tiến trình chưa được triển khai.</p>
+          </div>
+        </details>
+      </section>
+    </div>
+    <footer className="site-footer"><span>MỖI CÂU CHUYỆN BẮT ĐẦU TỪ MỘT ÁNH TRĂNG</span><span>Khung cảnh mở đầu <span aria-hidden="true">✦</span></span></footer>
+  </main>;
+}
