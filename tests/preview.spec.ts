@@ -24,7 +24,10 @@ test('scene preview preserves layout, click mapping, and a single canvas after r
     const canvas = (await page.locator('canvas').boundingBox())!;
     expect(Math.abs(canvas.width / canvas.height - 16 / 9)).toBeLessThan(0.01);
     const book = (await page.getByRole('complementary').boundingBox())!;
-    expect(book.x + book.width).toBeLessThan(canvas.x);
+    expect(canvas.x + canvas.width).toBeLessThan(book.x);
+    const frame = (await page.locator('.scene-frame').boundingBox())!;
+    const sheet = (await page.locator('.book-sheet').boundingBox())!;
+    expect(Math.abs(sheet.y - frame.y)).toBeLessThan(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.mouse.click(canvas.x + canvas.width * 0.5, canvas.y + canvas.height * 0.5);
     await expect(page.getByTestId('coordinates')).toContainText('x: 480, y: 270');

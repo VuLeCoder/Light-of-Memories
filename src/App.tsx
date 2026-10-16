@@ -33,8 +33,7 @@ export function App() {
       <div className="edition"><span aria-hidden="true" />BẢN DỰNG MỞ ĐẦU <span className="edition-number">01</span></div>
     </header>
     <div className="workspace">
-      <BookPlaceholder />
-      <section className="game-panel" id="main-scene" aria-labelledby="game-title">
+      <div className="game-heading">
         <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> KHỞI ĐẦU MỘT HÀNH TRÌNH <span className="label-line" /></div>
         <h1 id="game-title">Chú Cuội, chị Hằng<br /><span>và những người bạn bị lãng quên</span></h1>
         <div className="scene-toolbar">
@@ -43,6 +42,8 @@ export function App() {
           </div>
           <span className="preview-label"><span aria-hidden="true" />Xem thử cảnh</span>
         </div>
+      </div>
+      <section className="game-panel" id="main-scene" aria-labelledby="game-title">
         <div className="scene-frame">
           <GameCanvas scene={scene} debug={debug} onPoint={setPoint} />
           <div className="scene-caption"><div><span className="scene-number">{current.number}</span><h2>{current.title}</h2></div><span className="scene-subtitle">{current.subtitle}</span></div>
@@ -60,6 +61,7 @@ export function App() {
           </div>
         </details>
       </section>
+      <BookPlaceholder />
     </div>
     <footer className="site-footer"><span>MỖI CÂU CHUYỆN BẮT ĐẦU TỪ MỘT ÁNH TRĂNG</span><span>Khung cảnh mở đầu <span aria-hidden="true">✦</span></span></footer>
   </main>;
