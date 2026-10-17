@@ -1,55 +1,100 @@
-# Chú Cuội, chị Hằng và những người bạn bị lãng quên
+# CUỘI — Chú Cuội, chị Hằng và những người bạn bị lãng quên
 
-Bản dựng mở đầu theo [kế hoạch](Ke-hoach-Codex-Mo-dau-game-Cuoi.md). React + TypeScript + Vite dựng giao diện; Phaser dựng cảnh pixel 960 × 540.
+## Giới thiệu
 
-## Chạy cục bộ
+**CUỘI** là web-game kết hợp sách tranh của nhóm **Light of Memories**, hướng tới trẻ em tiểu học. Người chơi đồng hành cùng Cuội đi tìm chị Hằng, gặp gỡ những thiết bị bị bỏ lại trên Mặt Trăng và khám phá câu chuyện của chúng. Dự án kết hợp văn hóa Trung Thu Việt Nam với chủ đề khám phá không gian, lấy chiếc đèn ông sao làm biểu tượng cho ký ức và tình bạn.
 
-Dùng Node.js 22.12+ hoặc 24 LTS và npm:
+Dự án được phát triển theo challenge **Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on the Moon and Mars**. Phong cách hình ảnh ấm áp, hoài niệm: cảnh game pixel art, giao diện xanh đêm, điểm nhấn vàng và trang sách màu giấy kem.
+
+### Thành viên nhóm
+
+- Lê Phạm Thế Vũ 
+- Nguyễn Đức Mạnh
+- Nguyễn Bảo An 
+- Nguyễn Thị Thanh An
+- Cao Quốc Khánh
+- Vũ Lê Đức Minh
+
+### Phiên bản hiện tại
+
+Đã dựng phần mở đầu: hội thoại An và bà, chuyển cảnh lên Mặt Trăng, Cuội thức dậy, di chuyển, quan sát ghế đá, trò chuyện với Cây Đa và nhận đèn trước khi lên đường. Website có menu, chọn tiếng Việt / tiếng Anh và lưu tiến trình theo mốc trên trình duyệt.
+
+Game nằm bên trái, sách đồng hành bên phải; phần giới thiệu nằm bên dưới. Trên màn hình nhỏ, sách chuyển xuống dưới game. Nội dung sách, chương tiếp theo và âm thanh vẫn đang chờ phát triển.
+
+## Cài đặt và chạy
+
+### Yêu cầu
+
+- Node.js 22.12+ (khuyến nghị dòng 22 LTS hoặc 24 LTS) và npm.
+- Trình duyệt hiện đại có hỗ trợ WebGL hoặc Canvas.
+
+Mở terminal tại thư mục gốc của dự án, nơi chứa `package.json`.
+
+### Chạy khi phát triển
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Mở địa chỉ Vite in ra (mặc định `http://localhost:5173`). Nếu đã có `node_modules` từ phiên triển khai, có thể chạy ngay `npm run dev`.
+Mở địa chỉ Vite hiển thị trong terminal, mặc định là `http://localhost:5173`. Dừng server bằng `Ctrl+C`.
+
+### Kiểm tra và tạo bản build
 
 ```bash
+# Kiểm tra kiểu TypeScript
 npm run typecheck
+
+# Kiểm tra TypeScript và tạo bản build
 npm run build
+
+# Xem bản build trên máy, sau khi build thành công
 npm run preview
 ```
 
-`dist/` là bản build tĩnh. Không cần backend hoặc biến môi trường. Font dùng bộ có sẵn trên máy với serif/sans-serif dự phòng, không tải Google Fonts.
+Bản build nằm trong `dist/`, có thể triển khai lên dịch vụ hosting website tĩnh. Dự án hiện không cần backend, cơ sở dữ liệu hay file `.env`.
 
-## Phần đã dựng
+## Các mục nổi bật
 
-- Game bên trái, sách placeholder bên phải, tỉ lệ cột 70/30 (trừ khoảng cách). Section giới thiệu nằm bên dưới.
-- Chọn **Tiếng Việt / English** trên thanh đầu trang. Giao diện, menu, hội thoại, lời dẫn  đổi ngay mà không khởi động lại hành trình; lựa chọn được lưu trong trình duyệt.
-- Menu mở khi vào web: Bắt đầu hành trình, Tiếp tục từ mốc đã lưu, Hướng dẫn và lựa chọn âm thanh. Bắt đầu mở cảnh hiên nhà; nút Menu cho phép quay lại và bắt đầu lại có xác nhận. Lựa chọn âm thanh được lưu nếu localStorage khả dụng; chưa có tài nguyên nhạc.
-- An và bà dùng frame nghỉ; Cuội có các frame ngủ, thức dậy, đứng nghỉ và đi bộ được cắt thủ công từ sprite sheet. Chân dung dùng ảnh minh họa gốc.
-- Nền hiên nhà, Mặt Trăng, cây đa và ghế đá được vẽ tạm bằng các lớp Phaser độc lập.
-- Canvas giữ tỉ lệ 16:9; ResizeObserver cập nhật Scale Manager khi container đổi kích thước.
-- Một component sở hữu vòng đời Phaser; hủy instance, observer và listener khi đổi cảnh hoặc unmount. Hỗ trợ React StrictMode bằng hủy khởi tạo bất đồng bộ đã lỗi thời.
+### Công nghệ và cấu trúc
 
-Đã có sáu lượt kể chuyện An–bà, chữ hiện dần, chân dung người nói, tiếp tục bằng chuột hoặc Space/Enter. Mở menu tạm dừng câu hiện tại; Tiếp tục khôi phục trong phiên. Câu cuối chờ xác nhận trước hiệu ứng chuyển cảnh; Bỏ qua mở đầu cũng đưa tới Cuội ngủ. Xem [bàn giao hội thoại](docs/dialogue-an-ba.md).
+Giao diện dùng **React 19 + TypeScript + CSS**, game dùng **Phaser 3**, công cụ phát triển và build là **Vite 6**.
 
-Ở Mặt Trăng, Cuội thức dậy rồi người chơi xác nhận hai câu dẫn trước khi điều khiển bằng A/D, ←/→ hoặc click mặt đất. Menu tạm dừng di chuyển. Đến gần ghế nhấn E hoặc click ghế để tự đi tới quan sát. Bàn phím hủy thao tác click đang chờ. Sau lời gọi chị Hằng, Cây Đa lên tiếng; xác nhận hết lời trao đèn mới nhận đèn 0/5. Đọc tiếp lời Cuội rồi đi theo dấu chân tới mép phải để kết thúc mở đầu, chọn ở lại khám phá hoặc về menu. Hội thoại luôn chờ thao tác; menu khóa di chuyển. Nội dung mới có cả tiếng Việt và tiếng Anh. Tiến trình tự lưu theo mốc qua tải lại; chưa triển khai nội dung sách.
-
-
-## File chính
-
-| File | Vai trò |
+| Đường dẫn | Nội dung |
 | --- | --- |
-| `src/App.tsx`, `src/styles.css` | Bố cục sách–game và giao diện trò chơi |
-| `src/game/GameCanvas.tsx` | Vòng đời Phaser, scale, thông báo lỗi tải |
-| `src/game/PreviewScene.ts` | Nạp frame, hoạt ảnh Cuội, di chuyển và tương tác |
-| `src/game/scenery.ts` | Nền và đạo cụ pixel tạm, có thể thay riêng từng lớp |
-| `src/content/assets.ts` | Đường dẫn 9 ảnh, kích thước/frame/điểm đặt chân |
-| `src/content/scenes.ts`, `src/content/i18n.ts` | Mã cảnh, bản dịch giao diện và hội thoại |
-| `docs/assets-inventory.md` | Kiểm kê, tọa độ frame và hạn chế |
+| `src/App.tsx` | Bố cục website, menu và điều phối tiến trình câu chuyện |
+| `src/components/` | Menu và hộp hội thoại |
+| `src/game/` | Vòng đời Phaser, cảnh game, hoạt ảnh, di chuyển và tương tác |
+| `src/content/` | Hội thoại, bản dịch Việt/Anh, khai báo ảnh và tọa độ cắt sprite |
+| `src/state/progress.ts` | Đọc và lưu tiến trình |
+| `src/styles.css` | Giao diện và bố cục theo kích thước màn hình |
+| `public/images/` | Toàn bộ ảnh, chia thành `branding/`, `portraits/`, `sprites/` |
+| `docs/` | Tài liệu kỹ thuật, hình ảnh và review mã nguồn |
 
-## Lưu hành trình
+Ảnh mới đặt trong `public/images/` và khai báo qua `src/content/assets.ts`. Khi thay sprite sheet, cần cập nhật tọa độ cắt frame và điểm đặt chân để hoạt ảnh không lệch vị trí. Khi thêm nội dung, bổ sung cả bản tiếng Việt và tiếng Anh.
 
-`cuoi.progress` trong localStorage dùng schema phiên bản 1. Các mốc gồm đoạn An–bà, Cuội thức dậy, quan sát ghế, hội thoại Cây Đa, nhận đèn/lời lên đường, theo dấu chân và hoàn thành mở đầu. Tải lại luôn mở menu; Tiếp tục khôi phục mốc tương ứng. Hội thoại đang dở bắt đầu lại từ đầu đoạn; sau khi nhận đèn, lời lên đường vẫn được giữ để người chơi đọc hết. Mốc hoàn thành được giữ cả khi chọn ở lại khám phá.
+### Điều khiển và lưu hành trình
 
-Bắt đầu lại chỉ thay tiến trình sau khi xác nhận, giữ nguyên ngôn ngữ và cài đặt âm thanh. Dữ liệu hỏng hoặc khác phiên bản trở về menu mới. Khi trình duyệt không cho lưu, game vẫn hoạt động trong phiên và hiện thông báo. Chưa có tài nguyên âm thanh, nên tùy chọn âm thanh chỉ lưu lựa chọn cho lần bổ sung sau.
+- Bấm vào màn hình game trước khi dùng bàn phím.
+- **A / D** hoặc **← / →** để di chuyển; có thể bấm mặt đất để đi tới.
+- **Space / Enter** để hiện hết hoặc tiếp tục hội thoại.
+- **E** khi đứng gần ghế đá để tương tác; có thể bấm trực tiếp vào ghế.
+- Mở menu sẽ tạm dừng tương tác trong game.
+
+Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu; hội thoại đang dở bắt đầu lại từ đầu đoạn. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
+
+### Những phần đang phát triển
+
+- Sách đồng hành hiện là khung giao diện, chưa có nội dung theo tiến trình.
+- Chương Mắt Tròn và cơ chế thu thập đủ năm cánh sao chưa được triển khai.
+- Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
+- Font sử dụng bộ có sẵn trên máy và font dự phòng, nên có thể khác nhau giữa thiết bị.
+- Bản build còn cảnh báo kích thước gói Phaser; các hạn chế khác được ghi trong tài liệu review bên dưới.
+
+### Tài liệu tham khảo
+
+- [Tổng quan công nghệ, tính năng và bố cục](docs/project-overview.md)
+- [Phong cách hình ảnh và hướng dẫn sinh ảnh cho AI](docs/visual-style.md)
+- [Quy ước thư mục ảnh](docs/image-assets.md)
+- [Kiểm kê ảnh và thông tin sprite](docs/assets-inventory.md)
+- [Kết quả review mã nguồn và các điểm cần cải thiện](docs/code-review.md)
