@@ -2,11 +2,12 @@ import Phaser from 'phaser';
 import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '../content/assets';
 import { earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
+import { copy, type Language } from '../content/i18n';
 
 export class PreviewScene extends Phaser.Scene {
   private options: PreviewOptions;
   private marker?: Phaser.GameObjects.Graphics;
-  private regions: { name: string; rect: Phaser.Geom.Rectangle }[] = [];
+  private regions: { name: 'ba' | 'an' | 'cuoi' | 'bench' | 'tree'; rect: Phaser.Geom.Rectangle }[] = [];
   private failedAssets: string[] = [];
   private cuoi?: Phaser.GameObjects.Sprite;
   private moonMode: PreviewOptions['moonMode'];
@@ -19,6 +20,8 @@ export class PreviewScene extends Phaser.Scene {
     this.options = options;
     this.moonMode = options.moonMode;
   }
+
+  setLanguage(language: Language) { this.options.language = language; }
 
   setMoonMode(mode: PreviewOptions['moonMode']) {
     if (this.moonMode === mode) return;
@@ -58,16 +61,16 @@ export class PreviewScene extends Phaser.Scene {
       // Align An's seated hips with the porch edge (y=425), feet on the lower step.
       this.addCharacter('an', 313, 465, 0.37);
       this.regions = [
-        { name: 'Bà', rect: new Phaser.Geom.Rectangle(145, 232, 133, 180) },
-        { name: 'An', rect: new Phaser.Geom.Rectangle(265, 320, 100, 148) },
+        { name: 'ba', rect: new Phaser.Geom.Rectangle(145, 232, 133, 180) },
+        { name: 'an', rect: new Phaser.Geom.Rectangle(265, 320, 100, 148) },
       ];
     } else {
       moonScenery(this);
       this.addMoonCuoi();
       this.regions = [
-        { name: 'Cuội', rect: new Phaser.Geom.Rectangle(231, 293, 152, 143) },
-        { name: 'Ghế đá', rect: new Phaser.Geom.Rectangle(444, 350, 153, 88) },
-        { name: 'Cây Đa', rect: new Phaser.Geom.Rectangle(35, 83, 370, 352) },
+        { name: 'cuoi', rect: new Phaser.Geom.Rectangle(231, 293, 152, 143) },
+        { name: 'bench', rect: new Phaser.Geom.Rectangle(444, 350, 153, 88) },
+        { name: 'tree', rect: new Phaser.Geom.Rectangle(35, 83, 370, 352) },
       ];
     }
     if (this.options.debug) {
@@ -83,14 +86,16 @@ export class PreviewScene extends Phaser.Scene {
       if (this.options.debug) {
         this.marker!.clear().lineStyle(1, 0xffdf98).strokeCircle(x, y, 9);
         this.marker!.lineBetween(x - 14, y, x + 14, y).lineBetween(x, y - 14, x, y + 14);
-        const target = this.regions.find(({ rect }) => rect.contains(x, y))?.name ?? 'Nền cảnh';
+        const region = this.regions.find(({ rect }) => rect.contains(x, y))?.name;
+        const t = copy[this.options.language];
+        const target = region === 'ba' ? (this.options.language === 'vi' ? 'Bà' : 'Grandma') : region === 'an' ? 'An' : region === 'cuoi' ? 'Cuội' : region === 'bench' ? t.bench : region === 'tree' ? t.tree : t.ground;
         this.options.onPoint({ x: Math.round(x), y: Math.round(y), target });
       }
       if (this.options.scene === 'moon' && this.moonMode === 'free' && y >= 400) this.walkTarget = Phaser.Math.Clamp(x, 52, 908);
     };
     this.input.on('pointerdown', onPointerDown);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.off('pointerdown', onPointerDown));
-    if (this.failedAssets.length) this.options.onError(`Không tải được ảnh: ${this.failedAssets.join(', ')}. Hãy tải lại trang.`);
+    if (this.failedAssets.length) this.options.onError(this.failedAssets);
     else this.options.onReady();
   }
 

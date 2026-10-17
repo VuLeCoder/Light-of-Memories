@@ -41,6 +41,10 @@
 }
 
 /* The chapter heading and controls share the row above the game and book. */
+.header-actions { display: flex; align-items: center; gap: 22px; }
+.language-picker { display: flex; align-items: center; gap: 9px; color: #bdcecb; font-size: 15px; line-height: 1.4; white-space: nowrap; }
+.language-picker select { min-height: 42px; padding: 8px 30px 8px 12px; border: 1px solid #cfb77e70; border-radius: 6px; background: #21343b; color: #f3e9d6; font-size: 16px; cursor: pointer; }
+.language-picker select:hover { border-color: #e1c58b; background: #30464b; }
 .scene-toolbar { min-height: 56px; flex-wrap: wrap; }
 .scene-heading { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .scene-heading-copy { min-width: 0; }
@@ -54,6 +58,10 @@
   .scene-heading .scene-subtitle { display: none; }
 }
 @media (max-width: 900px) {
+  .header-actions { gap: 10px; }
+  .language-picker { font-size: 14px; }
+  .language-picker select { padding-left: 8px; }
+  .edition { display: none; }
   .scene-toolbar { align-items: center; }
   .book-topline { align-self: start; padding-top: 4px; }
   .preview-scenes { flex-wrap: wrap; }

@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import type { SceneId } from '../content/scenes';
 import type { ScenePoint } from './types';
 import { VIEW } from './types';
+import { copy, type Language } from '../content/i18n';
 
-export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
+export function GameCanvas({ scene, debug, moonMode, language, onPoint, onAwake }: {
   scene: SceneId; debug: boolean; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
+  language: Language;
   onPoint: (point: ScenePoint | null) => void; onAwake: () => void;
 }) {
   const host = useRef<HTMLDivElement>(null);
@@ -14,8 +16,10 @@ export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
   onAwakeRef.current = onAwake;
   const moonModeRef = useRef(moonMode);
   moonModeRef.current = moonMode;
+  const languageRef = useRef(language);
+  languageRef.current = language;
   const phaserScene = useRef<import('./PreviewScene').PreviewScene | null>(null);
-  const [status, setStatus] = useState('Đang chuẩn bị cảnh…');
+  const [status, setStatus] = useState<{ kind: 'loading' | 'error'; assets?: string[] }>({ kind: 'loading' });
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -24,18 +28,18 @@ export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
     let game: import('phaser').Game | undefined;
     let observer: ResizeObserver | undefined;
     setReady(false);
-    setStatus('Đang chuẩn bị cảnh…');
+    setStatus({ kind: 'loading' });
     onPointRef.current(null);
 
     // Import after mount; cancellation prevents duplicate instances in StrictMode.
     void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
-        scene, debug, moonMode: moonModeRef.current,
+        scene, debug, moonMode: moonModeRef.current, language: languageRef.current,
         onPoint: (point) => { if (!cancelled) onPointRef.current(point); },
         onAwake: () => { if (!cancelled) onAwakeRef.current(); },
-        onReady: () => { if (!cancelled) { setReady(true); setStatus(''); } },
-        onError: (message) => { if (!cancelled) { setReady(false); setStatus(message); } },
+        onReady: () => { if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); } },
+        onError: (assets) => { if (!cancelled) { setReady(false); setStatus({ kind: 'error', assets }); } },
       });
       phaserScene.current = previewScene;
       game = new Phaser.Game({
@@ -45,7 +49,7 @@ export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: VIEW.width, height: VIEW.height },
         scene: previewScene,
         callbacks: { postBoot: (instance) => {
-          instance.canvas.setAttribute('aria-label', scene === 'earth' ? 'Cảnh pixel An và bà trên hiên nhà' : 'Cảnh pixel Cuội dưới gốc đa trên Mặt Trăng');
+          instance.canvas.setAttribute('aria-label', scene === 'earth' ? copy[languageRef.current].canvasEarth : copy[languageRef.current].canvasMoon);
           instance.canvas.setAttribute('role', 'img');
         } },
       });
@@ -53,7 +57,7 @@ export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
       observer = new ResizeObserver(() => { if (!cancelled) game?.scale.refresh(); });
       observer.observe(element);
     }).catch(() => {
-      if (!cancelled) setStatus('Không khởi tạo được cảnh. Hãy tải lại trang hoặc dùng trình duyệt hỗ trợ canvas.');
+      if (!cancelled) setStatus({ kind: 'error' });
     });
 
     return () => {
@@ -70,9 +74,14 @@ export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
   }, [scene, debug]);
 
   useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);
+  useEffect(() => {
+    phaserScene.current?.setLanguage(language);
+    const canvas = host.current?.querySelector('canvas');
+    canvas?.setAttribute('aria-label', scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon);
+  }, [language, scene]);
 
   return <div className={`canvas-wrap ${debug ? 'is-debug' : ''}`}>
     <div ref={host} className="game-host" data-ready={ready} data-scene={scene} />
-    {status && <div className="canvas-status" role="status">{status}</div>}
+    {!ready && <div className="canvas-status" role="status">{status.kind === 'error' ? (status.assets ? `${copy[language].imageError}: ${status.assets.join(', ')}. ${copy[language].reload}` : copy[language].canvasError) : copy[language].loading}</div>}
   </div>;
 }

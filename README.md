@@ -24,6 +24,7 @@ npm run preview
 ## Phần đã dựng
 
 - Game bên trái, sách placeholder bên phải, tỉ lệ cột 70/30 (trừ khoảng cách). Section giới thiệu nằm bên dưới.
+- Chọn **Tiếng Việt / English** trên thanh đầu trang. Giao diện, menu, hội thoại, lời dẫn và nhãn kiểm tra cảnh đổi ngay mà không khởi động lại hành trình; lựa chọn được lưu trong trình duyệt.
 - Menu mở khi vào web: Bắt đầu hành trình, Tiếp tục trong phiên, Hướng dẫn và lựa chọn âm thanh. Bắt đầu mở cảnh hiên nhà; nút Menu cho phép quay lại và bắt đầu lại có xác nhận. Lựa chọn âm thanh được lưu nếu localStorage khả dụng; chưa có tài nguyên nhạc.
 - Hai nút **Hiên nhà / Mặt Trăng** để xem cảnh thử, không phải menu hoặc chuyển cảnh cốt truyện.
 - An và bà dùng frame nghỉ; Cuội có các frame ngủ, thức dậy, đứng nghỉ và đi bộ được cắt thủ công từ sprite sheet. Chân dung dùng ảnh minh họa gốc.
@@ -45,7 +46,7 @@ npm run preview
 | `src/game/PreviewScene.ts` | Nạp frame, hoạt ảnh Cuội, di chuyển và kiểm tra click |
 | `src/game/scenery.ts` | Nền và đạo cụ pixel tạm, có thể thay riêng từng lớp |
 | `src/content/assets.ts` | Đường dẫn 9 ảnh, kích thước/frame/điểm đặt chân |
-| `src/content/scenes.ts` | Mã và mô tả cảnh thử |
+| `src/content/scenes.ts`, `src/content/i18n.ts` | Mã cảnh, bản dịch giao diện và hội thoại |
 | `docs/assets-inventory.md` | Kiểm kê, tọa độ frame và hạn chế |
 | `docs/milestone-1.md` | Kết quả kiểm tra và checklist nghiệm thu |
 
