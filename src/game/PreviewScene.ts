@@ -37,10 +37,11 @@ export class PreviewScene extends Phaser.Scene {
     if (this.options.scene === 'earth') {
       earthScenery(this);
       this.addCharacter('ba', 188, 410, 0.49);
-      this.addCharacter('an', 313, 417, 0.37);
+      // Align An's seated hips with the porch edge (y=425), feet on the lower step.
+      this.addCharacter('an', 313, 465, 0.37);
       this.regions = [
         { name: 'Bà', rect: new Phaser.Geom.Rectangle(145, 232, 133, 180) },
-        { name: 'An', rect: new Phaser.Geom.Rectangle(265, 272, 100, 148) },
+        { name: 'An', rect: new Phaser.Geom.Rectangle(265, 320, 100, 148) },
       ];
     } else {
       moonScenery(this);
