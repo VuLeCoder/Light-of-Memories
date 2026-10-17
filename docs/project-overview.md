@@ -10,8 +10,8 @@ Tài liệu mô tả mã nguồn hiện tại, cập nhật ngày 17/10/2026. Đ
 | Game | Phaser 3.90; canvas 960 × 540, tỉ lệ 16:9, tự co theo container |
 | Công cụ | Vite 6; TypeScript kiểm tra kiểu trước khi build |
 | Nội dung | Dữ liệu hội thoại và bản dịch Việt/Anh trong các module TypeScript |
-| Lưu trữ | localStorage trên từng trình duyệt; không có tài khoản, backend hoặc đồng bộ máy chủ |
-| Triển khai | Website tĩnh từ `dist/`; ảnh trong `public/` được sao chép giữ nguyên tên |
+| Lưu trữ | Tiến trình lưu localStorage; bộ đếm người truy cập lưu chung trên Upstash Redis qua `api/visitors.js` |
+| Triển khai | Giao diện từ `dist/`, ảnh từ `public/`; API bộ đếm chạy trên Vercel Functions |
 
 Phiên bản trên là dòng phiên bản khai báo trong `package.json`; `package-lock.json` khóa bộ cài. Chạy `npm ci`, `npm run dev`; xác minh bằng `npm run typecheck`, `npm run build`. Phaser được tách thành chunk riêng và khởi tạo sau khi component mount.
 

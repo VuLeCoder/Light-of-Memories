@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
+import { VisitorCounter } from './components/VisitorCounter';
 import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
 import { brandLogo, portraits } from './content/assets';
@@ -137,7 +138,7 @@ export function App() {
   return <main className="app-shell">
     <header className="site-header">
       <a className="brand" href="#main-scene" aria-label={t.goToScene}><img className="brand-logo" src={brandLogo} alt="" width="52" height="52" decoding="async" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
-      <div className="header-actions"><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><div className="edition"><span aria-hidden="true" />{t.edition} <span className="edition-number">01</span></div></div>
+      <div className="header-actions"><VisitorCounter language={language} /><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label></div>
     </header>
     <div className="workspace">
       <div className="scene-toolbar" aria-label={t.sceneControls}>

@@ -52,7 +52,7 @@ npm run build
 npm run preview
 ```
 
-Bản build nằm trong `dist/`, có thể triển khai lên dịch vụ hosting website tĩnh. Dự án hiện không cần backend, cơ sở dữ liệu hay file `.env`.
+Bản build giao diện nằm trong `dist/`. Game có thể chạy trên hosting tĩnh; riêng bộ đếm người truy cập cần Vercel Function trong `api/` và database Upstash Redis.
 
 ## Các mục nổi bật
 
@@ -64,6 +64,7 @@ Giao diện dùng **React 19 + TypeScript + CSS**, game dùng **Phaser 3**, côn
 | --- | --- |
 | `src/App.tsx` | Bố cục website, menu và điều phối tiến trình câu chuyện |
 | `src/components/` | Menu và hộp hội thoại |
+| `api/visitors.js` | API đếm trình duyệt truy cập, lưu chung trên Redis |
 | `src/game/` | Vòng đời Phaser, cảnh game, hoạt ảnh, di chuyển và tương tác |
 | `src/content/` | Hội thoại, bản dịch Việt/Anh, khai báo ảnh và tọa độ cắt sprite |
 | `src/state/progress.ts` | Đọc và lưu tiến trình |
@@ -93,6 +94,7 @@ Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `loca
 
 ### Tài liệu tham khảo
 
+- [Cấu hình bộ đếm người truy cập trên Vercel](docs/visitor-counter.md)
 - [Tổng quan công nghệ, tính năng và bố cục](docs/project-overview.md)
 - [Phong cách hình ảnh và hướng dẫn sinh ảnh cho AI](docs/visual-style.md)
 - [Quy ước thư mục ảnh](docs/image-assets.md)
