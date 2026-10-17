@@ -1,8 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { SceneId } from '../content/scenes';
 import type { ScenePoint, MoonQuest } from './types';
 import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
+
+function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
+  if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'NumpadEnter'].includes(event.code)) return;
+  // Bubble phase: Phaser receives the native event before we suppress page behavior.
+  event.preventDefault();
+  event.stopPropagation();
+}
 
 export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaking, onInteract, onExit, onPoint, onAwake }: {
   scene: SceneId; debug: boolean; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
@@ -51,6 +58,8 @@ export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaki
         type: Phaser.AUTO, parent: element, width: VIEW.width, height: VIEW.height,
         backgroundColor: '#101d2b', pixelArt: true, antialias: false,
         audio: { noAudio: true },
+        autoFocus: false,
+        input: { keyboard: { target: element, capture: [13, 32, 37, 38, 39, 40] } },
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: VIEW.width, height: VIEW.height },
         scene: previewScene,
         callbacks: { postBoot: (instance) => {
@@ -87,7 +96,17 @@ export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaki
   }, [language, scene]);
 
   return <div className={`canvas-wrap ${debug ? 'is-debug' : ''}`}>
-    <div ref={host} className="game-host" data-ready={ready} data-scene={scene} />
+    <div ref={host} className="game-host" data-ready={ready} data-scene={scene}
+      tabIndex={0} aria-label={scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon}
+      onKeyDown={containGameKey}
+      onKeyUp={containGameKey}
+      onPointerDown={(event) => event.currentTarget.focus({ preventScroll: true })}
+      onMouseDown={(event) => {
+        // Reassert focus after Phaser handles the native canvas mousedown.
+        event.preventDefault();
+        event.currentTarget.focus({ preventScroll: true });
+      }}
+      onBlur={() => phaserScene.current?.releaseControls()} />
     {!ready && <div className="canvas-status" role="status">{status.kind === 'error' ? (status.assets ? `${copy[language].imageError}: ${status.assets.join(', ')}. ${copy[language].reload}` : copy[language].canvasError) : copy[language].loading}</div>}
   </div>;
 }

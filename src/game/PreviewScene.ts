@@ -42,6 +42,13 @@ export class PreviewScene extends Phaser.Scene {
     this.moonMode = options.moonMode;
   }
 
+  releaseControls() {
+    this.walkTarget = undefined;
+    this.pendingBench = false;
+    this.input?.keyboard?.resetKeys();
+    if (this.awake) this.setCuoiFrame('rest');
+  }
+
   setLanguage(language: Language) { this.options.language = language; }
 
   setMoonMode(mode: PreviewOptions['moonMode']) {
@@ -176,14 +183,14 @@ export class PreviewScene extends Phaser.Scene {
     this.awake = this.moonMode !== 'sleep' && this.moonMode !== 'wake';
     this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
     this.anims.create({ key: 'cuoi-walk', frames: cuoiWalkFrames.map((_, index) => ({ key: 'cuoi', frame: `walk-${index}` })), frameRate: 8, repeat: -1 });
-    this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D' }, true) as typeof this.keys;
+    this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D' }, false) as typeof this.keys;
     const onInteractKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (!event.repeat && !target?.closest('input, select, textarea')) this.interactBench();
     };
     this.input.keyboard?.on('keydown-E', onInteractKey);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.keyboard?.off('keydown-E', onInteractKey));
-    const onBlur = () => { this.walkTarget = undefined; this.pendingBench = false; this.input.keyboard?.resetKeys(); };
+    const onBlur = () => this.releaseControls();
     window.addEventListener('blur', onBlur);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => window.removeEventListener('blur', onBlur));
     if (this.moonMode === 'wake') this.beginWake();

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
 import { GameCanvas } from './game/GameCanvas';
@@ -28,6 +28,24 @@ function BookPlaceholder({ language }: { language: Language }) {
 }
 
 export function App() {
+  const gameStage = useRef<HTMLDivElement>(null);
+  const gameOwnsFocus = useRef(false);
+  // Clicking non-focusable page content must also release the game's focus.
+  useEffect(() => {
+    const releaseFocus = (event?: PointerEvent) => {
+      if (event?.target instanceof Element && event.target.closest('.game-stage')) return;
+      gameOwnsFocus.current = false;
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && active.closest('.game-stage')) active.blur();
+    };
+    const onWindowBlur = () => releaseFocus();
+    document.addEventListener('pointerdown', releaseFocus, true);
+    window.addEventListener('blur', onWindowBlur);
+    return () => {
+      document.removeEventListener('pointerdown', releaseFocus, true);
+      window.removeEventListener('blur', onWindowBlur);
+    };
+  }, []);
   const [language, setLanguage] = useState<Language>(readLanguage);
   const t = copy[language];
   useEffect(() => {
@@ -54,7 +72,7 @@ export function App() {
   const questDialogue = quest === 'tree' || quest === 'lantern';
   const questLocked = questDialogue || quest === 'complete';
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
-  const finishEarth = useCallback(() => setChapter('departing'), []);
+  const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
   const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
   const onBench = useCallback(() => { setTreeTurn(0); setQuest((value) => value === 'bench' ? 'tree' : value); }, []);
@@ -62,6 +80,14 @@ export function App() {
   const receiveLantern = useCallback(() => setQuest((value) => value === 'tree' ? 'lantern' : value), []);
   const followTracks = useCallback(() => setQuest('trail'), []);
   useEffect(() => { if (quest === 'complete' && !menuOpen) endButton.current?.focus({ preventScroll: true }); }, [quest, menuOpen]);
+  // Keep focus on a persistent element while the canvas is inert or dialogue unmounts.
+  useLayoutEffect(() => {
+    if (menuOpen || !gameOwnsFocus.current) return;
+    const stage = gameStage.current;
+    const target = transitioning || moonWaking ? stage
+      : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .opening-complete button, .story-canvas:not([inert]) .game-host');
+    (target ?? stage)?.focus({ preventScroll: true });
+  }, [chapter, quest, menuOpen, transitioning, moonWaking]);
   const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
@@ -74,7 +100,7 @@ export function App() {
   const menuButton = useRef<HTMLButtonElement>(null);
   function closeMenu() {
     setMenuOpen(false);
-    if (!tellingStory && !moonStory && !questLocked) requestAnimationFrame(() => menuButton.current?.focus({ preventScroll: true }));
+    gameOwnsFocus.current = true;
   }
   function startJourney() {
     setScene('earth');
@@ -112,7 +138,30 @@ export function App() {
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
-          <div className={`game-stage ${menuOpen ? 'has-menu' : ''}`}>
+          <div ref={gameStage} tabIndex={-1} className={`game-stage ${menuOpen ? 'has-menu' : ''}`}
+            onFocusCapture={() => { gameOwnsFocus.current = true; }}
+            onBlurCapture={(event) => {
+              if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) gameOwnsFocus.current = false;
+            }}
+            onKeyDown={(event) => {
+              if (event.target === event.currentTarget && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+            }}
+            onKeyUp={(event) => {
+              if (event.target === event.currentTarget && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+            }}
+            onClick={(event) => {
+              if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
+              if (menuOpen || !(tellingStory || moonStory || questDialogue)) return;
+              if ((event.target as Element).closest('button, select, input, a')) return;
+              // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
+              event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
+            }}>
             <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
               <GameCanvas quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} debug={debug} moonMode={moonMode} language={language} onPoint={setPoint} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}

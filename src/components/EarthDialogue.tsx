@@ -44,11 +44,19 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
 
   return <section className="dialogue" hidden={paused} aria-label={title} data-line={line.id} data-complete={full}
     onKeyDown={(event) => {
-      if (event.code !== 'Space' && event.code !== 'Enter') return;
+      if (event.code.startsWith('Arrow')) { event.preventDefault(); event.stopPropagation(); return; }
+      if (event.code !== 'Space' && event.code !== 'Enter' && event.code !== 'NumpadEnter') return;
       // Own keyboard continuation here. Suppress the button's native key click,
       // and ignore held keys so one physical press performs one action.
       event.preventDefault();
+      event.stopPropagation();
       if (!event.repeat && !paused) dispatch('advance');
+    }}
+    onKeyUp={(event) => {
+      if (event.code.startsWith('Arrow') || ['Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
     }}>
     <div className="dialogue-body">
       {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name}`} /></div>}
