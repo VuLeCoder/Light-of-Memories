@@ -23,7 +23,8 @@ npm run preview
 
 ## Phần đã dựng
 
-- Khung sách placeholder bên trái, game bên phải, tỉ lệ cột 30/70 (trừ khoảng cách).
+- Game bên trái, sách placeholder bên phải, tỉ lệ cột 70/30 (trừ khoảng cách). Section giới thiệu nằm bên dưới.
+- Menu mở khi vào web: Bắt đầu hành trình, Tiếp tục trong phiên, Hướng dẫn và lựa chọn âm thanh. Bắt đầu mở cảnh hiên nhà; nút Menu cho phép quay lại và bắt đầu lại có xác nhận. Lựa chọn âm thanh được lưu nếu localStorage khả dụng; chưa có tài nguyên nhạc.
 - Hai nút **Hiên nhà / Mặt Trăng** để xem cảnh thử, không phải menu hoặc chuyển cảnh cốt truyện.
 - An, bà, Cuội dùng frame nghỉ được chọn thủ công từ sprite sheet; chân dung dùng ảnh minh họa gốc.
 - Nền hiên nhà, Mặt Trăng, cây đa và ghế đá được vẽ tạm bằng các lớp Phaser độc lập.
@@ -31,7 +32,7 @@ npm run preview
 - Mục **Kiểm tra bản dựng** bật vùng kiểm tra và tọa độ click trong không gian 960 × 540. Tắt mục này thì click không kích hoạt hành vi game.
 - Một component sở hữu vòng đời Phaser; hủy instance, observer và listener khi đổi cảnh hoặc unmount. Hỗ trợ React StrictMode bằng hủy khởi tạo bất đồng bộ đã lỗi thời.
 
-Chưa triển khai menu bắt đầu/tiếp tục, hội thoại, di chuyển, hoạt ảnh, lưu tiến trình hoặc nội dung sách. Đây là phạm vi các lượt tiếp theo.
+Chưa triển khai hội thoại, di chuyển, hoạt ảnh, lưu tiến trình qua tải lại hoặc nội dung sách. Menu là phần đầu của Lượt 2; Tiếp tục hiện chỉ quay lại cảnh đang xem trong phiên.
 
 ## File chính
 

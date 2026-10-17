@@ -8,6 +8,7 @@ test('scene preview preserves layout, click mapping, and a single canvas after r
   });
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto('/');
+  await page.getByRole('button', { name: 'Bắt đầu hành trình' }).click();
   const host = page.locator('.game-host');
   await expect(host).toHaveAttribute('data-ready', 'true');
   await page.getByText('Kiểm tra bản dựng', { exact: false }).click();
@@ -50,5 +51,6 @@ test('scene preview preserves layout, click mapping, and a single canvas after r
 test('missing sprites give a visible failure instead of an endless loading screen', async ({ page }) => {
   await page.route('**/an-spritesheet.png', (route) => route.abort());
   await page.goto('/');
+  await page.getByRole('button', { name: 'Bắt đầu hành trình' }).click();
   await expect(page.getByRole('status')).toContainText('Không tải được ảnh: an');
 });

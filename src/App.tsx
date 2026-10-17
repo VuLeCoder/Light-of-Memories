@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { GameMenu } from './components/GameMenu';
 import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
 import { portraits } from './content/assets';
@@ -25,6 +26,18 @@ export function App() {
   const [scene, setScene] = useState<SceneId>('earth');
   const [debug, setDebug] = useState(false);
   const [point, setPoint] = useState<ScenePoint | null>(null);
+  const [menuOpen, setMenuOpen] = useState(true);
+  const [started, setStarted] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  function closeMenu() {
+    setMenuOpen(false);
+    requestAnimationFrame(() => menuButton.current?.focus());
+  }
+  function startJourney() {
+    setScene('earth');
+    setStarted(true);
+    closeMenu();
+  }
   const current = scenes[scene];
 
   return <main className="app-shell">
@@ -34,21 +47,24 @@ export function App() {
     </header>
     <div className="workspace">
       <div className="scene-toolbar">
-          <div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử">
+          <div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử" inert={menuOpen}>
             {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{scenes[id].tab}</button>)}
           </div>
-          <span className="preview-label"><span aria-hidden="true" />Xem thử cảnh</span>
+          {menuOpen ? <span className="preview-label"><span aria-hidden="true" />Chào bạn đến với Cuội</span> : <button className="open-menu" ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button>}
       </div>
       <section className="game-panel" id="main-scene" aria-label="Khung cảnh game">
         <div className="scene-frame">
-          <GameCanvas scene={scene} debug={debug} onPoint={setPoint} />
+          <div className={`game-stage ${menuOpen ? 'has-menu' : ''}`}>
+            <div inert={menuOpen}><GameCanvas scene={scene} debug={debug} onPoint={setPoint} /></div>
+            {menuOpen && <GameMenu canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
+          </div>
           <div className="scene-caption"><div><span className="scene-number">{current.number}</span><h2>{current.title}</h2></div><span className="scene-subtitle">{current.subtitle}</span></div>
         </div>
         <div className="scene-details">
           <div className="cast" aria-label="Nhân vật trong cảnh">{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{portraits[id].name}</span></div>)}</div>
           <p>{current.description}</p>
         </div>
-        <details className="preview-tools">
+        <details className="preview-tools" inert={menuOpen}>
           <summary>Kiểm tra bản dựng <span aria-hidden="true">＋</span></summary>
           <div className="tools-content">
             <label><input type="checkbox" checked={debug} onChange={(event) => setDebug(event.target.checked)} />Hiện vùng kiểm tra và tọa độ click</label>
