@@ -1,13 +1,17 @@
-// Vite bundles these original files; no duplicate copy in public/ is needed.
-import anPortrait from '../../images/portraits/an.png';
-import baPortrait from '../../images/portraits/ba.png';
-import cuoiPortrait from '../../images/portraits/cuoi.png';
-import cayDaPortrait from '../../images/portraits/cay-da.png';
-import matTronPortrait from '../../images/portraits/mat-tron.png';
-import chiHangPortrait from '../../images/portraits/chi-hang.png';
-import anSheet from '../../images/sprites/an-spritesheet.png';
-import baSheet from '../../images/sprites/ba-spritesheet.png';
-import cuoiSheet from '../../images/sprites/cuoi-spritesheet.png';
+// Public assets keep their filenames and respect the deployment base path.
+const imageUrl = (path: string) => `${import.meta.env.BASE_URL}images/${path}`;
+
+export const brandLogo = imageUrl('branding/light-of-memories-primary.png');
+
+const anPortrait = imageUrl('portraits/an.png');
+const baPortrait = imageUrl('portraits/ba.png');
+const cuoiPortrait = imageUrl('portraits/cuoi.png');
+const cayDaPortrait = imageUrl('portraits/cay-da.png');
+const matTronPortrait = imageUrl('portraits/mat-tron.png');
+const chiHangPortrait = imageUrl('portraits/chi-hang.png');
+const anSheet = imageUrl('sprites/an-spritesheet.png');
+const baSheet = imageUrl('sprites/ba-spritesheet.png');
+const cuoiSheet = imageUrl('sprites/cuoi-spritesheet.png');
 
 export const portraits = {
   an: { name: 'An', url: anPortrait }, ba: { name: 'Bà', url: baPortrait },

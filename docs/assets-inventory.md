@@ -1,10 +1,10 @@
 # Kiểm kê tài nguyên — Lượt 1
 
-Ảnh gốc vẫn ở `images/`. Vite nhập file bằng URL và phát hành tên có hash trong `dist/assets/`. Không chỉnh sửa, thu nhỏ hay xóa nền các PNG gốc.
+Ảnh gốc nằm trong `public/images/`, cùng với logo trong `branding/`. Vite sao chép nguyên tên file sang `dist/images/`; URL được quản lý tại `src/content/assets.ts` và theo base path của website. Không chỉnh sửa, thu nhỏ hay xóa nền các PNG gốc.
 
 ## Ảnh đã có
 
-| Đường dẫn trong `images/` | Kích thước | Kênh | Vai trò |
+| Đường dẫn trong `public/images/` | Kích thước | Kênh | Vai trò |
 | --- | --- | --- | --- |
 | `portraits/an.png` | 1312 × 1199 | RGBA | Chân dung An |
 | `portraits/ba.png` | 1145 × 1374 | RGBA | Chân dung bà |

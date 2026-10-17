@@ -3,7 +3,7 @@ import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
 import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
-import { portraits } from './content/assets';
+import { brandLogo, portraits } from './content/assets';
 import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
 import { readProgress, saveProgress, readSound, type Chapter } from './state/progress';
 import type { MoonQuest } from './game/types';
@@ -137,7 +137,7 @@ export function App() {
 
   return <main className="app-shell">
     <header className="site-header">
-      <a className="brand" href="#main-scene" aria-label={t.goToScene}><img className="brand-logo" src="/images/branding/light-of-memories-primary.png" alt="" width="52" height="52" decoding="async" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
+      <a className="brand" href="#main-scene" aria-label={t.goToScene}><img className="brand-logo" src={brandLogo} alt="" width="52" height="52" decoding="async" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
       <div className="header-actions"><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><div className="edition"><span aria-hidden="true" />{t.edition} <span className="edition-number">01</span></div></div>
     </header>
     <div className="workspace">
@@ -216,7 +216,7 @@ export function App() {
         </div>
         <div className="team-identity">
           <span>{t.teamLabel}</span>
-          <img src="/images/branding/light-of-memories-primary.png" alt="Light of Memories" width="200" height="200" loading="lazy" decoding="async" />
+          <img src={brandLogo} alt="Light of Memories" width="200" height="200" loading="lazy" decoding="async" />
         </div>
       </section>
     <footer className="site-footer"><span>{t.footerOne}</span><span>{t.footerTwo} <span aria-hidden="true">✦</span></span></footer>
