@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { SceneId } from '../content/scenes';
-import type { ScenePoint, MoonQuest } from './types';
+import type { MoonQuest } from './types';
 import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 
@@ -11,16 +11,14 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaking, onInteract, onExit, onPoint, onAwake }: {
-  scene: SceneId; debug: boolean; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
+export function GameCanvas({ scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  scene: SceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
-  onPoint: (point: ScenePoint | null) => void; onAwake: () => void;
+  onAwake: () => void;
 }) {
   const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit });
   progressRef.current = { quest, treeSpeaking, onInteract, onExit };
   const host = useRef<HTMLDivElement>(null);
-  const onPointRef = useRef(onPoint);
-  onPointRef.current = onPoint;
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
   const moonModeRef = useRef(moonMode);
@@ -38,7 +36,6 @@ export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaki
     let observer: ResizeObserver | undefined;
     setReady(false);
     setStatus({ kind: 'loading' });
-    onPointRef.current(null);
 
     // Import after mount; cancellation prevents duplicate instances in StrictMode.
     void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
@@ -47,8 +44,7 @@ export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaki
         quest: progressRef.current.quest, treeSpeaking: progressRef.current.treeSpeaking,
         onInteract: () => { if (!cancelled) progressRef.current.onInteract(); },
         onExit: () => { if (!cancelled) progressRef.current.onExit(); },
-        scene, debug, moonMode: moonModeRef.current, language: languageRef.current,
-        onPoint: (point) => { if (!cancelled) onPointRef.current(point); },
+        scene, moonMode: moonModeRef.current, language: languageRef.current,
         onAwake: () => { if (!cancelled) onAwakeRef.current(); },
         onReady: () => { if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); } },
         onError: (assets) => { if (!cancelled) { setReady(false); setStatus({ kind: 'error', assets }); } },
@@ -85,7 +81,7 @@ export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaki
         game.destroy(true);
       }
     };
-  }, [scene, debug]);
+  }, [scene]);
 
   useEffect(() => { phaserScene.current?.setQuest(quest, treeSpeaking); }, [quest, treeSpeaking]);
   useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);
@@ -95,7 +91,7 @@ export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaki
     canvas?.setAttribute('aria-label', scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon);
   }, [language, scene]);
 
-  return <div className={`canvas-wrap ${debug ? 'is-debug' : ''}`}>
+  return <div className="canvas-wrap">
     <div ref={host} className="game-host" data-ready={ready} data-scene={scene}
       tabIndex={0} aria-label={scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon}
       onKeyDown={containGameKey}

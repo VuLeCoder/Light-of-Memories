@@ -5,7 +5,7 @@ import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
 import { portraits } from './content/assets';
 import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
-import type { ScenePoint, MoonQuest } from './game/types';
+import type { MoonQuest } from './game/types';
 
 function BookPlaceholder({ language }: { language: Language }) {
   const t = copy[language];
@@ -55,11 +55,9 @@ export function App() {
     try { localStorage.setItem('cuoi.language', language); } catch { /* The choice still works for this visit. */ }
   }, [language, t]);
   const [scene, setScene] = useState<SceneId>('earth');
-  const [debug, setDebug] = useState(false);
-  const [point, setPoint] = useState<ScenePoint | null>(null);
   const [menuOpen, setMenuOpen] = useState(true);
   const [started, setStarted] = useState(false);
-  const [chapter, setChapter] = useState<'preview' | 'earth' | 'departing' | 'arriving' | 'moon-waking' | 'moon-story' | 'moon-free'>('preview');
+  const [chapter, setChapter] = useState<'idle' | 'earth' | 'departing' | 'arriving' | 'moon-waking' | 'moon-story' | 'moon-free'>('idle');
   const [quest, setQuest] = useState<MoonQuest>('bench');
   const [treeTurn, setTreeTurn] = useState(0);
   const endButton = useRef<HTMLButtonElement>(null);
@@ -110,7 +108,6 @@ export function App() {
     setChapter('earth');
     setJourney((value) => value + 1);
     setTurn(0);
-    setDebug(false);
     setMenuOpen(false);
   }
   const current = scenes[scene];
@@ -120,7 +117,7 @@ export function App() {
   return <main className="app-shell">
     <header className="site-header">
       <a className="brand" href="#main-scene" aria-label={t.goToScene}><img className="brand-logo" src="/images/branding/light-of-memories-primary.png" alt="" width="52" height="52" decoding="async" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
-      <div className="header-actions"><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setPoint(null); setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><div className="edition"><span aria-hidden="true" />{t.edition} <span className="edition-number">01</span></div></div>
+      <div className="header-actions"><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><div className="edition"><span aria-hidden="true" />{t.edition} <span className="edition-number">01</span></div></div>
     </header>
     <div className="workspace">
       <div className="scene-toolbar" aria-label={t.sceneControls}>
@@ -163,7 +160,7 @@ export function App() {
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} debug={debug} moonMode={moonMode} language={language} onPoint={setPoint} onAwake={onCuoiAwake} />
+              <GameCanvas quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
@@ -183,21 +180,10 @@ export function App() {
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
           {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : quest === 'complete' ? t.openingEnd : t.treeTitle}</p>}
         </div>
-        {chapter === 'preview' && !menuOpen && <div className="preview-scenes"><span>{t.preview}</span><div className="scene-tabs" role="group" aria-label={t.choosePreview}>
-          {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{t[id].tab}</button>)}
-        </div></div>}
         <div className="scene-details">
           <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
           <p>{currentText.description}</p>
         </div>
-        <details className="preview-tools" inert={menuOpen || chapter !== 'preview'}>
-          <summary>{t.debugTitle} <span aria-hidden="true">＋</span></summary>
-          <div className="tools-content">
-            <label><input type="checkbox" checked={debug} onChange={(event) => setDebug(event.target.checked)} />{t.debugToggle}</label>
-            <output aria-live="polite" data-testid="coordinates">{debug ? (point ? `${point.target} · x: ${point.x}, y: ${point.y}` : t.debugClick) : t.debugCanvas}</output>
-            <p>{t.debugNote}</p>
-          </div>
-        </details>
       </section>
       <BookPlaceholder language={language} />
     </div>

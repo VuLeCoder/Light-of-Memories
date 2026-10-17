@@ -6,8 +6,7 @@ import { copy, type Language } from '../content/i18n';
 
 export class PreviewScene extends Phaser.Scene {
   private options: PreviewOptions;
-  private marker?: Phaser.GameObjects.Graphics;
-  private regions: { name: 'ba' | 'an' | 'cuoi' | 'bench' | 'tree'; rect: Phaser.Geom.Rectangle }[] = [];
+  private benchRegion = new Phaser.Geom.Rectangle(444, 350, 153, 88);
   private failedAssets: string[] = [];
   private cuoi?: Phaser.GameObjects.Sprite;
   private moonMode: PreviewOptions['moonMode'];
@@ -90,10 +89,6 @@ export class PreviewScene extends Phaser.Scene {
       this.addCharacter('ba', 188, 410, 0.49);
       // Align An's seated hips with the porch edge (y=425), feet on the lower step.
       this.addCharacter('an', 313, 465, 0.37);
-      this.regions = [
-        { name: 'ba', rect: new Phaser.Geom.Rectangle(145, 232, 133, 180) },
-        { name: 'an', rect: new Phaser.Geom.Rectangle(265, 320, 100, 148) },
-      ];
     } else {
       moonScenery(this);
       this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
@@ -106,33 +101,13 @@ export class PreviewScene extends Phaser.Scene {
       });
       this.lantern.fillStyle(0x514d43).fillPoints(points, true).lineStyle(2, 0xcdb77b).strokePoints(points, true).lineBetween(0, 21, 0, 33);
       this.setQuest(this.options.quest, this.options.treeSpeaking);
-      this.regions = [
-        { name: 'cuoi', rect: new Phaser.Geom.Rectangle(231, 293, 152, 143) },
-        { name: 'bench', rect: new Phaser.Geom.Rectangle(444, 350, 153, 88) },
-        { name: 'tree', rect: new Phaser.Geom.Rectangle(35, 83, 370, 352) },
-      ];
     }
-    if (this.options.debug) {
-      const guides = this.add.graphics().lineStyle(1, 0xf1cf83, 0.65);
-      for (const { rect } of this.regions) guides.strokeRectShape(rect);
-      guides.lineStyle(1, 0x8fc4c2, 0.5).lineBetween(0, 432, VIEW.width, 432);
-    }
-    this.marker = this.add.graphics().setDepth(100);
     const onPointerDown = (pointer: Phaser.Input.Pointer) => {
       // Phaser Scale Manager converts CSS pixels to 960×540 scene coordinates.
       const x = Phaser.Math.Clamp(pointer.x, 0, VIEW.width);
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
-      if (this.options.debug) {
-        this.marker!.clear().lineStyle(1, 0xffdf98).strokeCircle(x, y, 9);
-        this.marker!.lineBetween(x - 14, y, x + 14, y).lineBetween(x, y - 14, x, y + 14);
-        const region = this.regions.find(({ rect }) => rect.contains(x, y))?.name;
-        const t = copy[this.options.language];
-        const target = region === 'ba' ? (this.options.language === 'vi' ? 'Bà' : 'Grandma') : region === 'an' ? 'An' : region === 'cuoi' ? 'Cuội' : region === 'bench' ? t.bench : region === 'tree' ? t.tree : t.ground;
-        this.options.onPoint({ x: Math.round(x), y: Math.round(y), target });
-      }
       if (this.options.scene !== 'moon' || this.moonMode !== 'free') return;
-      const bench = this.regions.find((region) => region.name === 'bench')!;
-      this.pendingBench = this.options.quest === 'bench' && bench.rect.contains(x, y);
+      this.pendingBench = this.options.quest === 'bench' && this.benchRegion.contains(x, y);
       if (this.pendingBench) {
         this.walkTarget = 520;
         if (this.cuoi && Math.abs(this.cuoi.x - 520) <= 90) this.interactBench();
