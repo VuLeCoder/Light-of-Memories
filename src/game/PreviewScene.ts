@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { spriteSources } from '../content/assets';
+import { cuoiSleepFrame, spriteSources } from '../content/assets';
 import { earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
 
@@ -29,6 +29,10 @@ export class PreviewScene extends Phaser.Scene {
       if (!this.textures.exists(source.key)) continue;
       const f = source.frame;
       this.textures.get(source.key).add('rest', 0, f.x, f.y, f.width, f.height);
+      if (source.key === 'cuoi') {
+        const sleep = cuoiSleepFrame;
+        this.textures.get(source.key).add('sleep', 0, sleep.x, sleep.y, sleep.width, sleep.height);
+      }
     }
     if (this.options.scene === 'earth') {
       earthScenery(this);
@@ -42,7 +46,7 @@ export class PreviewScene extends Phaser.Scene {
       moonScenery(this);
       this.addCharacter('cuoi', 307, 431, 0.62);
       this.regions = [
-        { name: 'Cuội', rect: new Phaser.Geom.Rectangle(258, 293, 93, 143) },
+        { name: 'Cuội', rect: this.options.sleeping ? new Phaser.Geom.Rectangle(231, 367, 152, 67) : new Phaser.Geom.Rectangle(258, 293, 93, 143) },
         { name: 'Ghế đá', rect: new Phaser.Geom.Rectangle(444, 350, 153, 88) },
         { name: 'Cây Đa', rect: new Phaser.Geom.Rectangle(35, 83, 370, 352) },
       ];
@@ -73,8 +77,11 @@ export class PreviewScene extends Phaser.Scene {
     if (!this.textures.exists(key)) return;
     const source = spriteSources.find((item) => item.key === key)!;
     this.add.ellipse(x, y + 2, 65, 10, 0x111c22, 0.24);
-    this.add.image(x, y, key, 'rest')
-      .setOrigin(source.foot.x / source.frame.width, source.foot.y / source.frame.height)
+    const sleep = key === 'cuoi' && this.options.sleeping;
+    const frame = sleep ? cuoiSleepFrame : source.frame;
+    const foot = sleep ? cuoiSleepFrame.foot : source.foot;
+    this.add.image(x, y, key, sleep ? 'sleep' : 'rest')
+      .setOrigin(foot.x / frame.width, foot.y / frame.height)
       .setScale(scale);
   }
 }

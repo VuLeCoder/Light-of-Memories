@@ -27,3 +27,6 @@ export const spriteSources = [
 ] as const;
 
 export const missingAssets = ['Hiên nhà Trung Thu', 'Nền Mặt Trăng', 'Cây đa pixel', 'Ghế đá', 'Đèn năm cánh tách riêng'];
+
+// First sleeping pose, inspected separately: the source is not a uniform grid.
+export const cuoiSleepFrame = { x: 12, y: 484, width: 244, height: 108, foot: { x: 122, y: 102 } };

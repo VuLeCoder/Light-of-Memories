@@ -32,7 +32,9 @@ npm run preview
 - Mục **Kiểm tra bản dựng** bật vùng kiểm tra và tọa độ click trong không gian 960 × 540. Tắt mục này thì click không kích hoạt hành vi game.
 - Một component sở hữu vòng đời Phaser; hủy instance, observer và listener khi đổi cảnh hoặc unmount. Hỗ trợ React StrictMode bằng hủy khởi tạo bất đồng bộ đã lỗi thời.
 
-Chưa triển khai hội thoại, di chuyển, hoạt ảnh, lưu tiến trình qua tải lại hoặc nội dung sách. Menu là phần đầu của Lượt 2; Tiếp tục hiện chỉ quay lại cảnh đang xem trong phiên.
+Đã có sáu lượt kể chuyện An–bà, chữ hiện dần, chân dung người nói, tiếp tục bằng chuột hoặc Space/Enter. Mở menu tạm dừng câu hiện tại; Tiếp tục khôi phục trong phiên. Câu cuối chờ xác nhận trước hiệu ứng chuyển cảnh; Bỏ qua mở đầu cũng đưa tới Cuội ngủ. Xem [bàn giao hội thoại](docs/dialogue-an-ba.md).
+
+Chưa triển khai di chuyển, hoạt ảnh nhân vật nhiều frame, lưu tiến trình qua tải lại hoặc nội dung sách.
 
 ## File chính
 

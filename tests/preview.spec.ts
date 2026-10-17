@@ -9,6 +9,8 @@ test('scene preview preserves layout, click mapping, and a single canvas after r
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto('/');
   await page.getByRole('button', { name: 'Bắt đầu hành trình' }).click();
+  await page.getByRole('button', { name: 'Bỏ qua mở đầu' }).click();
+  await page.getByRole('button', { name: '01 Hiên nhà' }).click();
   const host = page.locator('.game-host');
   await expect(host).toHaveAttribute('data-ready', 'true');
   await page.getByText('Kiểm tra bản dựng', { exact: false }).click();

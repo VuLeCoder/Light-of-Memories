@@ -3,8 +3,8 @@ import type { SceneId } from '../content/scenes';
 import type { ScenePoint } from './types';
 import { VIEW } from './types';
 
-export function GameCanvas({ scene, debug, onPoint }: {
-  scene: SceneId; debug: boolean; onPoint: (point: ScenePoint | null) => void;
+export function GameCanvas({ scene, debug, sleeping = false, onPoint }: {
+  scene: SceneId; debug: boolean; sleeping?: boolean; onPoint: (point: ScenePoint | null) => void;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const onPointRef = useRef(onPoint);
@@ -30,7 +30,7 @@ export function GameCanvas({ scene, debug, onPoint }: {
         audio: { noAudio: true },
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: VIEW.width, height: VIEW.height },
         scene: new PreviewScene({
-          scene, debug,
+          scene, debug, sleeping,
           onPoint: (point) => { if (!cancelled) onPointRef.current(point); },
           onReady: () => { if (!cancelled) { setReady(true); setStatus(''); } },
           onError: (message) => { if (!cancelled) { setReady(false); setStatus(message); } },
@@ -56,7 +56,7 @@ export function GameCanvas({ scene, debug, onPoint }: {
         game.destroy(true);
       }
     };
-  }, [scene, debug]);
+  }, [scene, debug, sleeping]);
 
   return <div className={`canvas-wrap ${debug ? 'is-debug' : ''}`}>
     <div ref={host} className="game-host" data-ready={ready} data-scene={scene} />

@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
 import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
@@ -28,15 +29,33 @@ export function App() {
   const [point, setPoint] = useState<ScenePoint | null>(null);
   const [menuOpen, setMenuOpen] = useState(true);
   const [started, setStarted] = useState(false);
+  const [chapter, setChapter] = useState<'preview' | 'earth' | 'departing' | 'arriving' | 'moon'>('preview');
+  const [journey, setJourney] = useState(0);
+  const [turn, setTurn] = useState(0);
+  const transitioning = chapter === 'departing' || chapter === 'arriving';
+  const tellingStory = chapter === 'earth';
+  const finishEarth = useCallback(() => setChapter('departing'), []);
+  useEffect(() => {
+    if (!transitioning) return;
+    const timer = window.setTimeout(() => {
+      if (chapter === 'departing') { setScene('moon'); setChapter('arriving'); }
+      else { setChapter('moon'); requestAnimationFrame(() => menuButton.current?.focus({ preventScroll: true })); }
+    }, 700);
+    return () => window.clearTimeout(timer);
+  }, [chapter, transitioning]);
   const menuButton = useRef<HTMLButtonElement>(null);
   function closeMenu() {
     setMenuOpen(false);
-    requestAnimationFrame(() => menuButton.current?.focus());
+    if (!tellingStory) requestAnimationFrame(() => menuButton.current?.focus({ preventScroll: true }));
   }
   function startJourney() {
     setScene('earth');
     setStarted(true);
-    closeMenu();
+    setChapter('earth');
+    setJourney((value) => value + 1);
+    setTurn(0);
+    setDebug(false);
+    setMenuOpen(false);
   }
   const current = scenes[scene];
 
@@ -47,29 +66,34 @@ export function App() {
     </header>
     <div className="workspace">
       <div className="scene-toolbar">
-          <div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử" inert={menuOpen}>
+          {tellingStory || transitioning ? <span className="preview-label">{transitioning ? 'Theo ánh trăng lên Mặt Trăng…' : 'Đêm Rằm · Câu chuyện An và bà'}</span> : <div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử" inert={menuOpen}>
             {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{scenes[id].tab}</button>)}
-          </div>
-          {menuOpen ? <span className="preview-label"><span aria-hidden="true" />Chào bạn đến với Cuội</span> : <button className="open-menu" ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button>}
+          </div>}
+          {menuOpen ? <span className="preview-label"><span aria-hidden="true" />Chào bạn đến với Cuội</span> : <div className="story-controls">{tellingStory && <button className="skip-story" onClick={finishEarth}>Bỏ qua mở đầu</button>}<button className="open-menu" disabled={transitioning} ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button></div>}
       </div>
       <section className="game-panel" id="main-scene" aria-label="Khung cảnh game">
         <div className="scene-frame">
           <div className={`game-stage ${menuOpen ? 'has-menu' : ''}`}>
-            <div inert={menuOpen}><GameCanvas scene={scene} debug={debug} onPoint={setPoint} /></div>
+            <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || transitioning}>
+              <GameCanvas scene={scene} debug={debug} sleeping={scene === 'moon' && chapter !== 'preview'} onPoint={setPoint} />
+              {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
+            </div>
+            {tellingStory && <EarthDialogue key={journey} paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
             {menuOpen && <GameMenu canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
+          {chapter === 'moon' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">Cuội đang ngủ dưới gốc đa. Câu chuyện sẽ tiếp tục ở phần sau.</p>}
           <div className="scene-caption"><div><span className="scene-number">{current.number}</span><h2>{current.title}</h2></div><span className="scene-subtitle">{current.subtitle}</span></div>
         </div>
         <div className="scene-details">
           <div className="cast" aria-label="Nhân vật trong cảnh">{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{portraits[id].name}</span></div>)}</div>
           <p>{current.description}</p>
         </div>
-        <details className="preview-tools" inert={menuOpen}>
+        <details className="preview-tools" inert={menuOpen || tellingStory || transitioning}>
           <summary>Kiểm tra bản dựng <span aria-hidden="true">＋</span></summary>
           <div className="tools-content">
             <label><input type="checkbox" checked={debug} onChange={(event) => setDebug(event.target.checked)} />Hiện vùng kiểm tra và tọa độ click</label>
             <output aria-live="polite" data-testid="coordinates">{debug ? (point ? `${point.target} · x: ${point.x}, y: ${point.y}` : 'Click trong cảnh để kiểm tra tọa độ 960 × 540.') : 'Canvas 16:9 · Tư thế nghỉ tĩnh · Cảnh và đạo cụ tạm'}</output>
-            <p>Lượt 1: kiểm tra bố cục và tài nguyên. Hội thoại, di chuyển và lưu tiến trình chưa được triển khai.</p>
+            <p>Đã có câu chuyện An–bà. Di chuyển và lưu tiến trình qua tải lại chưa được triển khai.</p>
           </div>
         </details>
       </section>

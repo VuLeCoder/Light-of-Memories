@@ -39,11 +39,11 @@ export function GameMenu({ canContinue, onStart, onContinue }: {
         {notice && <p className="menu-hint" role="status">{notice}</p>}
       </> : screen === 'help' ? <>
         <ul className="menu-help">
-          <li><strong>Bắt đầu hành trình:</strong> mở cảnh An và bà ở hiên nhà.</li>
-          <li>Chọn <strong>Hiên nhà</strong> hoặc <strong>Mặt Trăng</strong> để xem hai cảnh.</li>
-          <li>Nhấn <strong>Menu</strong> rồi <strong>Tiếp tục</strong> để quay lại cảnh đang xem.</li>
+          <li><strong>Bắt đầu hành trình:</strong> đọc câu chuyện An và bà ở hiên nhà.</li>
+          <li>Bấm <strong>Hiện hết câu</strong> hoặc nhấn <strong>Space / Enter</strong> để hiện đủ chữ. Bấm thêm lần nữa để sang câu tiếp theo.</li>
+          <li>Nhấn <strong>Menu</strong> để tạm dừng, <strong>Tiếp tục</strong> để đọc tiếp. <strong>Bỏ qua mở đầu</strong> đưa bạn tới Cuội đang ngủ.</li>
         </ul>
-        <p className="menu-hint">Bản hiện tại cho phép xem cảnh. Hội thoại, di chuyển và lưu hành trình sẽ được bổ sung sau.</p>
+        <p className="menu-hint">Hãy đọc theo nhịp của bạn. Di chuyển và lưu hành trình qua tải lại sẽ được bổ sung sau.</p>
         <button className="menu-primary" onClick={() => setScreen('main')}>Về menu</button>
       </> : <>
         <button className="menu-primary" onClick={onStart}>Bắt đầu lại</button>

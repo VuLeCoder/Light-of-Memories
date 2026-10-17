@@ -11,6 +11,7 @@ test('menu starts, resumes, confirms restart and explains available controls', a
   await page.reload();
   await expect(page.getByRole('button', { name: 'Âm thanh: Tắt' })).toBeVisible();
   await page.getByRole('button', { name: 'Bắt đầu hành trình' }).click();
+  await page.getByRole('button', { name: 'Bỏ qua mở đầu' }).click();
   await page.getByRole('button', { name: '02 Mặt Trăng' }).click();
   await page.getByRole('button', { name: '☰ Menu' }).click();
   await page.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
@@ -22,5 +23,5 @@ test('menu starts, resumes, confirms restart and explains available controls', a
   await page.getByRole('button', { name: 'Bắt đầu hành trình' }).click();
   await page.getByRole('button', { name: 'Bắt đầu lại', exact: true }).click();
   await expect(page.locator('.game-host')).toHaveAttribute('data-scene', 'earth');
-  await expect(page.getByRole('button', { name: '☰ Menu' })).toBeFocused();
+  await expect(page.locator('.dialogue-next')).toBeFocused();
 });
