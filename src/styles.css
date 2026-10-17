@@ -58,3 +58,37 @@
   .book-topline { align-self: start; padding-top: 4px; }
   .preview-scenes { flex-wrap: wrap; }
 }
+
+/* The book page follows the 16:9 game frame across the 7:3 workspace columns. */
+.book-sheet {
+  aspect-ratio: 16 / 21;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  padding: clamp(16px, 2vw, 30px) 20px;
+}
+.book-sheet h2 { margin: 12px 0; }
+.book-illustration { flex: 0 0 auto; width: min(100%, 215px); height: clamp(58px, 7vw, 110px); margin: 8px auto 12px; }
+.paper-hill { top: 70%; }
+.hill-two { top: 76%; }
+.book-sheet p { margin: 10px auto 14px; line-height: 1.5; }
+.page-bottom { margin-top: 20px; }
+
+@media (max-width: 1200px) {
+  .book-sheet { padding: 15px 14px; }
+  .book-sheet h2 { margin: 8px 0; }
+  .book-illustration { margin: 5px auto 8px; }
+  .book-sheet p { margin: 7px auto 10px; }
+  .page-bottom { margin-top: 12px; }
+}
+
+@media (max-width: 900px) {
+  .book-sheet h2 { font-size: 26px; }
+  .book-illustration { height: 50px; }
+  .paper-moon { width: 38px; height: 38px; left: calc(50% - 19px); top: 4px; }
+  .placeholder-lines { display: none; }
+  .page-bottom { margin-top: 8px; }
+}
