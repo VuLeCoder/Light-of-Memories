@@ -24,11 +24,11 @@ Tọa độ tính theo pixel ảnh gốc, gốc trên trái. Frame được thê
 | --- | --- | --- | --- | --- | --- | --- |
 | An | 8 | 112 | 270 | 394 | 128, 380 | 0.37 |
 | Bà | 65 | 0 | 270 | 362 | 140, 352 | 0.49 |
-| Cuội | 88 | 0 | 150 | 230 | 78, 222 | 0.62 |
+| Cuội | 92 | 8 | 135 | 220 | 67, 216 | 0.62 |
 
 Đã đọc kích thước/kênh bằng Pillow và xem trực tiếp bản ghép ba frame trên nền màu. Cả ba giữ đủ đầu, tay, chân, ghế/nón và đèn liên quan; không lẫn nhân vật ở frame bên cạnh. Alpha min/max: An và Cuội 0–254, bà 0–255. Vùng nền trong các frame chọn là trong suốt; không cần xử lý ảnh cho bản dựng tĩnh.
 
-Đây chỉ là một tư thế nghỉ mỗi nhân vật. Chưa định nghĩa atlas toàn bộ sheet, chưa kiểm thử chu kỳ đi bộ, ngủ, thức dậy hoặc tương tác. Các scale/điểm đặt chân là cấu hình khởi đầu; cần kiểm tra trên trình duyệt và đối chiếu các frame khác trước khi làm hoạt ảnh. Hàng đi bộ Cuội vẫn có hạn chế tư thế chân như kế hoạch đã nêu.
+Tư thế nghỉ, nằm ngủ, thức dậy và sáu frame đi bộ của Cuội được cắt riêng trong `src/content/assets.ts` theo sprite sheet hiện tại. Các scale/điểm đặt chân là cấu hình khởi đầu; cần kiểm tra trực quan trên trình duyệt khi thay sprite sheet lần nữa.
 
 ## Tài nguyên còn thiếu
 
