@@ -20,7 +20,7 @@ export const portraits = {
 } as const;
 
 // Hand-inspected rectangles in ORIGINAL image pixels, not an assumed uniform grid.
-// Only one complete resting pose is selected per sheet for milestone 1.
+// Resting poses; Cuội animation frames are defined separately below.
 export const spriteSources = [
   { key: 'an', url: anSheet, width: 1536, height: 1024,
     frame: { x: 8, y: 112, width: 270, height: 394 }, foot: { x: 128, y: 380 } },
@@ -30,7 +30,6 @@ export const spriteSources = [
     frame: { x: 92, y: 8, width: 135, height: 220 }, foot: { x: 67, y: 216 } },
 ] as const;
 
-export const missingAssets = ['Hiên nhà Trung Thu', 'Nền Mặt Trăng', 'Cây đa pixel', 'Ghế đá', 'Đèn năm cánh tách riêng'];
 
 // First sleeping pose, inspected separately: the source is not a uniform grid.
 export const cuoiSleepFrame = { x: 20, y: 486, width: 238, height: 108, foot: { x: 119, y: 104 } };

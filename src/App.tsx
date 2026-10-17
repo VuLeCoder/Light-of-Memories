@@ -114,7 +114,6 @@ export function App() {
     }, 700);
     return () => window.clearTimeout(timer);
   }, [chapter, transitioning]);
-  const menuButton = useRef<HTMLButtonElement>(null);
   function closeMenu() {
     setMenuOpen(false);
     gameOwnsFocus.current = true;
@@ -151,7 +150,7 @@ export function App() {
         </div>
         <div className="story-controls">
           {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>{t.skip}</button>}
-          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || quest === 'complete'} ref={menuButton} onClick={() => setMenuOpen(true)}>{t.menu}</button>
+          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || quest === 'complete'} onClick={() => setMenuOpen(true)}>{t.menu}</button>
         </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
