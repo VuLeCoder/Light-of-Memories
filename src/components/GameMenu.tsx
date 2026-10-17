@@ -42,8 +42,9 @@ export function GameMenu({ canContinue, onStart, onContinue }: {
           <li><strong>Bắt đầu hành trình:</strong> đọc câu chuyện An và bà ở hiên nhà.</li>
           <li>Bấm <strong>Hiện hết câu</strong> hoặc nhấn <strong>Space / Enter</strong> để hiện đủ chữ. Bấm thêm lần nữa để sang câu tiếp theo.</li>
           <li>Nhấn <strong>Menu</strong> để tạm dừng, <strong>Tiếp tục</strong> để đọc tiếp. <strong>Bỏ qua mở đầu</strong> đưa bạn tới Cuội đang ngủ.</li>
+          <li>Sau khi Cuội thức dậy và bạn đọc hết lời dẫn, dùng <strong>A/D</strong>, <strong>←/→</strong> hoặc <strong>bấm vào mặt đất</strong> để di chuyển.</li>
         </ul>
-        <p className="menu-hint">Hãy đọc theo nhịp của bạn. Di chuyển và lưu hành trình qua tải lại sẽ được bổ sung sau.</p>
+        <p className="menu-hint">Hãy đọc theo nhịp của bạn. Tương tác đồ vật và lưu hành trình qua tải lại sẽ được bổ sung sau.</p>
         <button className="menu-primary" onClick={() => setScreen('main')}>Về menu</button>
       </> : <>
         <button className="menu-primary" onClick={onStart}>Bắt đầu lại</button>

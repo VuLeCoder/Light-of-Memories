@@ -38,3 +38,19 @@ test('revealing without animation keeps the current speaker until confirmation',
   assert.equal(state.index, 4);
   assert.equal(lines[state.index].speaker, 'ba');
 });
+
+test('the Moon narration also waits for confirmation after its last line', () => {
+  const moon = [
+    { id: 'moon-01', speaker: 'narrator', text: 'Cuội tỉnh giấc.' },
+    { id: 'moon-02', speaker: 'narrator', text: 'Chiếc ghế trống.' },
+  ];
+  let state = { index: 0, visible: 0, finished: false };
+  state = reduce(state, 'advance', moon);
+  assert.deepEqual(state, { index: 0, visible: moon[0].text.length, finished: false });
+  state = reduce(state, 'advance', moon);
+  assert.deepEqual(state, { index: 1, visible: 0, finished: false });
+  state = reduce(state, 'advance', moon);
+  assert.equal(state.finished, false);
+  state = reduce(state, 'advance', moon);
+  assert.equal(state.finished, true);
+});

@@ -10,6 +10,12 @@ test('scene preview preserves layout, click mapping, and a single canvas after r
   await page.goto('/');
   await page.getByRole('button', { name: 'Bắt đầu hành trình' }).click();
   await page.getByRole('button', { name: 'Bỏ qua mở đầu' }).click();
+  await expect(page.locator('.dialogue')).toHaveAttribute('data-line', 'moon-01');
+  for (const id of ['moon-01', 'moon-02']) {
+    await expect(page.locator('.dialogue')).toHaveAttribute('data-line', id);
+    await expect(page.locator('.dialogue')).toHaveAttribute('data-complete', 'true');
+    await page.locator('.dialogue-next').click();
+  }
   await page.getByRole('button', { name: '01 Hiên nhà' }).click();
   const host = page.locator('.game-host');
   await expect(host).toHaveAttribute('data-ready', 'true');

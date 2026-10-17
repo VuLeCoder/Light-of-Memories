@@ -30,3 +30,23 @@ export const missingAssets = ['Hiên nhà Trung Thu', 'Nền Mặt Trăng', 'Câ
 
 // First sleeping pose, inspected separately: the source is not a uniform grid.
 export const cuoiSleepFrame = { x: 12, y: 484, width: 244, height: 108, foot: { x: 122, y: 102 } };
+
+// Hand-trimmed poses from the original sheet. The wake row has uneven spacing,
+// so each frame keeps its own rectangle and is aligned by its feet in Phaser.
+export const cuoiWakeFrames = [
+  { x: 12, y: 694, width: 244, height: 108 },
+  { x: 294, y: 682, width: 218, height: 120 },
+  { x: 512, y: 645, width: 244, height: 157 },
+  { x: 812, y: 614, width: 190, height: 188 },
+  { x: 1073, y: 614, width: 172, height: 189 },
+  { x: 1328, y: 605, width: 142, height: 199 },
+] as const;
+
+export const cuoiWalkFrames = [
+  { x: 78, y: 237, width: 154, height: 222 },
+  { x: 331, y: 237, width: 160, height: 222 },
+  { x: 568, y: 237, width: 164, height: 222 },
+  { x: 810, y: 239, width: 160, height: 220 },
+  { x: 1064, y: 237, width: 157, height: 222 },
+  { x: 1318, y: 237, width: 151, height: 222 },
+] as const;

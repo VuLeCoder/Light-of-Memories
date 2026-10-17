@@ -27,7 +27,13 @@ test('story waits for confirmation, ignores held keys and pauses in the menu', a
     await page.getByRole('button', { name: i === 6 ? 'Theo ánh trăng' : 'Tiếp theo', exact: false }).click();
   }
   await expect(page.locator('.game-host')).toHaveAttribute('data-scene', 'moon');
-  await expect(page.getByText('Cuội đang ngủ dưới gốc đa.', { exact: false })).toBeVisible();
+  await expect(dialogue).toHaveAttribute('data-line', 'moon-01');
+  for (const id of ['moon-01', 'moon-02']) {
+    await expect(dialogue).toHaveAttribute('data-line', id);
+    await expect(dialogue).toHaveAttribute('data-complete', 'true');
+    await dialogue.locator('.dialogue-next').click();
+  }
+  await expect(page.getByText('Di chuyển bằng A/D', { exact: false })).toBeVisible();
 });
 
 test('restart resets the story and skip goes to the moon', async ({ page }) => {
@@ -42,5 +48,5 @@ test('restart resets the story and skip goes to the moon', async ({ page }) => {
   await expect(page.locator('.dialogue')).toHaveAttribute('data-line', 'earth-01');
   await page.getByRole('button', { name: 'Bỏ qua mở đầu' }).click();
   await expect(page.locator('.game-host')).toHaveAttribute('data-scene', 'moon');
-  await expect(page.locator('.dialogue')).toHaveCount(0);
+  await expect(page.locator('.dialogue')).toHaveAttribute('data-line', 'moon-01');
 });

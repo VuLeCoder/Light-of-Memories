@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { cuoiSleepFrame, spriteSources } from '../content/assets';
+import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '../content/assets';
 import { earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
 
@@ -8,10 +8,26 @@ export class PreviewScene extends Phaser.Scene {
   private marker?: Phaser.GameObjects.Graphics;
   private regions: { name: string; rect: Phaser.Geom.Rectangle }[] = [];
   private failedAssets: string[] = [];
+  private cuoi?: Phaser.GameObjects.Sprite;
+  private moonMode: PreviewOptions['moonMode'];
+  private keys?: Record<'left' | 'right' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
+  private walkTarget?: number;
+  private awake = false;
 
   constructor(options: PreviewOptions) {
     super('preview');
     this.options = options;
+    this.moonMode = options.moonMode;
+  }
+
+  setMoonMode(mode: PreviewOptions['moonMode']) {
+    if (this.moonMode === mode) return;
+    this.moonMode = mode;
+    this.walkTarget = undefined;
+    this.input?.keyboard?.resetKeys();
+    if (!this.cuoi) return;
+    if (mode === 'wake' && !this.awake) this.beginWake();
+    else if (mode !== 'wake' && this.awake) this.setCuoiFrame('rest');
   }
 
   preload() {
@@ -32,6 +48,8 @@ export class PreviewScene extends Phaser.Scene {
       if (source.key === 'cuoi') {
         const sleep = cuoiSleepFrame;
         this.textures.get(source.key).add('sleep', 0, sleep.x, sleep.y, sleep.width, sleep.height);
+        cuoiWakeFrames.forEach((frame, index) => this.textures.get(source.key).add(`wake-${index}`, 0, frame.x, frame.y, frame.width, frame.height));
+        cuoiWalkFrames.forEach((frame, index) => this.textures.get(source.key).add(`walk-${index}`, 0, frame.x, frame.y, frame.width, frame.height));
       }
     }
     if (this.options.scene === 'earth') {
@@ -45,9 +63,9 @@ export class PreviewScene extends Phaser.Scene {
       ];
     } else {
       moonScenery(this);
-      this.addCharacter('cuoi', 307, 431, 0.62);
+      this.addMoonCuoi();
       this.regions = [
-        { name: 'Cuội', rect: this.options.sleeping ? new Phaser.Geom.Rectangle(231, 367, 152, 67) : new Phaser.Geom.Rectangle(258, 293, 93, 143) },
+        { name: 'Cuội', rect: new Phaser.Geom.Rectangle(231, 293, 152, 143) },
         { name: 'Ghế đá', rect: new Phaser.Geom.Rectangle(444, 350, 153, 88) },
         { name: 'Cây Đa', rect: new Phaser.Geom.Rectangle(35, 83, 370, 352) },
       ];
@@ -59,14 +77,16 @@ export class PreviewScene extends Phaser.Scene {
     }
     this.marker = this.add.graphics().setDepth(100);
     const onPointerDown = (pointer: Phaser.Input.Pointer) => {
-      if (!this.options.debug) return;
       // Phaser Scale Manager converts CSS pixels to 960×540 scene coordinates.
       const x = Phaser.Math.Clamp(pointer.x, 0, VIEW.width);
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
-      this.marker!.clear().lineStyle(1, 0xffdf98).strokeCircle(x, y, 9);
-      this.marker!.lineBetween(x - 14, y, x + 14, y).lineBetween(x, y - 14, x, y + 14);
-      const target = this.regions.find(({ rect }) => rect.contains(x, y))?.name ?? 'Nền cảnh';
-      this.options.onPoint({ x: Math.round(x), y: Math.round(y), target });
+      if (this.options.debug) {
+        this.marker!.clear().lineStyle(1, 0xffdf98).strokeCircle(x, y, 9);
+        this.marker!.lineBetween(x - 14, y, x + 14, y).lineBetween(x, y - 14, x, y + 14);
+        const target = this.regions.find(({ rect }) => rect.contains(x, y))?.name ?? 'Nền cảnh';
+        this.options.onPoint({ x: Math.round(x), y: Math.round(y), target });
+      }
+      if (this.options.scene === 'moon' && this.moonMode === 'free' && y >= 400) this.walkTarget = Phaser.Math.Clamp(x, 52, 908);
     };
     this.input.on('pointerdown', onPointerDown);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.off('pointerdown', onPointerDown));
@@ -74,15 +94,61 @@ export class PreviewScene extends Phaser.Scene {
     else this.options.onReady();
   }
 
+  update(_time: number, delta: number) {
+    if (!this.cuoi || !this.keys || this.moonMode !== 'free' || !this.awake) return;
+    const left = this.keys!.left.isDown || this.keys!.a.isDown;
+    const right = this.keys!.right.isDown || this.keys!.d.isDown;
+    if (left || right) this.walkTarget = undefined;
+    const direction = left === right ? 0 : left ? -1 : 1;
+    const targetDirection = this.walkTarget === undefined ? 0 : Math.sign(this.walkTarget - this.cuoi.x);
+    const heading = direction || targetDirection;
+    if (!heading) { this.setCuoiFrame('rest'); return; }
+    this.cuoi.setFlipX(heading < 0);
+    const distance = 165 * Math.min(delta, 50) / 1000;
+    const remaining = this.walkTarget === undefined ? Infinity : Math.abs(this.walkTarget - this.cuoi.x);
+    this.cuoi.x = Phaser.Math.Clamp(this.cuoi.x + heading * Math.min(distance, remaining), 52, 908);
+    if (this.walkTarget !== undefined && Math.abs(this.walkTarget - this.cuoi.x) < 1) this.walkTarget = undefined;
+    if (this.cuoi.x === 52 || this.cuoi.x === 908) this.walkTarget = undefined;
+    if (this.walkTarget === undefined && !direction) this.setCuoiFrame('rest');
+    else if (!this.cuoi.anims.isPlaying || this.cuoi.anims.currentAnim?.key !== 'cuoi-walk') this.cuoi.play('cuoi-walk');
+  }
+
+  private addMoonCuoi() {
+    if (!this.textures.exists('cuoi')) return;
+    this.cuoi = this.add.sprite(307, 431, 'cuoi', this.moonMode === 'sleep' ? 'sleep' : 'rest')
+      .setOrigin(0.5, 1).setScale(0.62);
+    this.awake = this.moonMode === 'free';
+    this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
+    this.anims.create({ key: 'cuoi-walk', frames: cuoiWalkFrames.map((_, index) => ({ key: 'cuoi', frame: `walk-${index}` })), frameRate: 8, repeat: -1 });
+    this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D' }, true) as typeof this.keys;
+    const onBlur = () => { this.walkTarget = undefined; this.input.keyboard?.resetKeys(); };
+    window.addEventListener('blur', onBlur);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => window.removeEventListener('blur', onBlur));
+    if (this.moonMode === 'wake') this.beginWake();
+  }
+
+  private beginWake() {
+    if (!this.cuoi || this.awake) return;
+    this.cuoi.play('cuoi-wake');
+    this.cuoi.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'cuoi-wake', () => {
+      this.awake = true;
+      this.setCuoiFrame('rest');
+      this.options.onAwake();
+    });
+  }
+
+  private setCuoiFrame(frame: string) {
+    if (!this.cuoi) return;
+    if (this.cuoi.anims.isPlaying) this.cuoi.anims.stop();
+    if (this.cuoi.frame.name !== frame) this.cuoi.setFrame(frame);
+  }
+
   private addCharacter(key: typeof spriteSources[number]['key'], x: number, y: number, scale: number) {
     if (!this.textures.exists(key)) return;
     const source = spriteSources.find((item) => item.key === key)!;
     this.add.ellipse(x, y + 2, 65, 10, 0x111c22, 0.24);
-    const sleep = key === 'cuoi' && this.options.sleeping;
-    const frame = sleep ? cuoiSleepFrame : source.frame;
-    const foot = sleep ? cuoiSleepFrame.foot : source.foot;
-    this.add.image(x, y, key, sleep ? 'sleep' : 'rest')
-      .setOrigin(foot.x / frame.width, foot.y / frame.height)
+    this.add.image(x, y, key, 'rest')
+      .setOrigin(source.foot.x / source.frame.width, source.foot.y / source.frame.height)
       .setScale(scale);
   }
 }

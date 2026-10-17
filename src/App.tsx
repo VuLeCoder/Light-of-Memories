@@ -4,6 +4,7 @@ import { GameMenu } from './components/GameMenu';
 import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
 import { portraits } from './content/assets';
+import { moonAwakeningDialogue } from './content/moon-dialogue';
 import type { ScenePoint } from './game/types';
 
 function BookPlaceholder() {
@@ -31,17 +32,23 @@ export function App() {
   const [point, setPoint] = useState<ScenePoint | null>(null);
   const [menuOpen, setMenuOpen] = useState(true);
   const [started, setStarted] = useState(false);
-  const [chapter, setChapter] = useState<'preview' | 'earth' | 'departing' | 'arriving' | 'moon'>('preview');
+  const [chapter, setChapter] = useState<'preview' | 'earth' | 'departing' | 'arriving' | 'moon-waking' | 'moon-story' | 'moon-free'>('preview');
   const [journey, setJourney] = useState(0);
   const [turn, setTurn] = useState(0);
   const transitioning = chapter === 'departing' || chapter === 'arriving';
   const tellingStory = chapter === 'earth';
+  const moonStory = chapter === 'moon-story';
+  const moonWaking = chapter === 'moon-waking';
+  const moonMode = menuOpen ? 'paused' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => setChapter('departing'), []);
+  const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
+  const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
+  const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
     const timer = window.setTimeout(() => {
       if (chapter === 'departing') { setScene('moon'); setChapter('arriving'); }
-      else { setChapter('moon'); requestAnimationFrame(() => menuButton.current?.focus({ preventScroll: true })); }
+      else { setChapter('moon-waking'); }
     }, 700);
     return () => window.clearTimeout(timer);
   }, [chapter, transitioning]);
@@ -77,34 +84,36 @@ export function App() {
         </div>
         <div className="story-controls">
           {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>Bỏ qua mở đầu</button>}
-          <button className="open-menu" disabled={menuOpen || transitioning} ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button>
+          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking} ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button>
         </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label="Khung cảnh game">
         <div className="scene-frame">
           <div className={`game-stage ${menuOpen ? 'has-menu' : ''}`}>
-            <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || transitioning}>
-              <GameCanvas scene={scene} debug={debug} sleeping={scene === 'moon' && chapter !== 'preview'} onPoint={setPoint} />
+            <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking}>
+              <GameCanvas scene={scene} debug={debug} moonMode={moonMode} onPoint={setPoint} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
+            {moonStory && <EarthDialogue key={`moon-${journey}`} lines={moonAwakeningDialogue} title="Cuội tỉnh giấc" paused={menuOpen} onComplete={finishMoonStory} onTurn={noopTurn} />}
             {menuOpen && <GameMenu canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
-          {chapter === 'moon' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">Cuội đang ngủ dưới gốc đa. Câu chuyện sẽ tiếp tục ở phần sau.</p>}
+          {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">Cuội đang thức dậy dưới gốc đa…</p>}
+          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">Tiến lại gần chiếc ghế đá. Di chuyển bằng A/D, ←/→ hoặc bấm vào mặt đất.</p>}
         </div>
-        {!tellingStory && !transitioning && !menuOpen && <div className="preview-scenes"><span>Xem thử cảnh</span><div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử">
+        {(chapter === 'preview' || chapter === 'moon-free') && !menuOpen && <div className="preview-scenes"><span>Xem thử cảnh</span><div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử">
           {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{scenes[id].tab}</button>)}
         </div></div>}
         <div className="scene-details">
           <div className="cast" aria-label="Nhân vật trong cảnh">{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{portraits[id].name}</span></div>)}</div>
           <p>{current.description}</p>
         </div>
-        <details className="preview-tools" inert={menuOpen || tellingStory || transitioning}>
+        <details className="preview-tools" inert={menuOpen || tellingStory || moonStory || moonWaking || transitioning}>
           <summary>Kiểm tra bản dựng <span aria-hidden="true">＋</span></summary>
           <div className="tools-content">
             <label><input type="checkbox" checked={debug} onChange={(event) => setDebug(event.target.checked)} />Hiện vùng kiểm tra và tọa độ click</label>
-            <output aria-live="polite" data-testid="coordinates">{debug ? (point ? `${point.target} · x: ${point.x}, y: ${point.y}` : 'Click trong cảnh để kiểm tra tọa độ 960 × 540.') : 'Canvas 16:9 · Tư thế nghỉ tĩnh · Cảnh và đạo cụ tạm'}</output>
-            <p>Đã có câu chuyện An–bà. Di chuyển và lưu tiến trình qua tải lại chưa được triển khai.</p>
+            <output aria-live="polite" data-testid="coordinates">{debug ? (point ? `${point.target} · x: ${point.x}, y: ${point.y}` : 'Click trong cảnh để kiểm tra tọa độ 960 × 540.') : 'Canvas 16:9 · Cảnh và đạo cụ tạm'}</output>
+            <p>Đã có câu chuyện An–bà và cảnh Cuội thức dậy, di chuyển. Tương tác ghế đá và lưu tiến trình qua tải lại sẽ được bổ sung sau.</p>
           </div>
         </details>
       </section>

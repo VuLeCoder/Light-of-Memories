@@ -9,12 +9,13 @@ export const earthDialogue = [
 ] as const;
 
 export type DialogueState = { index: number; visible: number; finished: boolean };
-export function dialogueReducer(state: DialogueState, action: 'tick' | 'advance' | 'reveal'): DialogueState {
+export type StoryLine = { id: string; speaker: 'narrator' | 'an' | 'ba' | 'cuoi' | 'cayDa'; text: string };
+export function dialogueReducer(state: DialogueState, action: 'tick' | 'advance' | 'reveal', lines: readonly StoryLine[] = earthDialogue): DialogueState {
   if (state.finished) return state;
-  const length = earthDialogue[state.index].text.length;
+  const length = lines[state.index].text.length;
   if (action === 'tick') return { ...state, visible: Math.min(length, state.visible + 1) };
   if (action === 'reveal' || state.visible < length) return { ...state, visible: length };
-  return state.index === earthDialogue.length - 1
+  return state.index === lines.length - 1
     ? { ...state, finished: true }
     : { index: state.index + 1, visible: 0, finished: false };
 }

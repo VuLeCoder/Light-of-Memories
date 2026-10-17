@@ -3,12 +3,18 @@ import type { SceneId } from '../content/scenes';
 import type { ScenePoint } from './types';
 import { VIEW } from './types';
 
-export function GameCanvas({ scene, debug, sleeping = false, onPoint }: {
-  scene: SceneId; debug: boolean; sleeping?: boolean; onPoint: (point: ScenePoint | null) => void;
+export function GameCanvas({ scene, debug, moonMode, onPoint, onAwake }: {
+  scene: SceneId; debug: boolean; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
+  onPoint: (point: ScenePoint | null) => void; onAwake: () => void;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const onPointRef = useRef(onPoint);
   onPointRef.current = onPoint;
+  const onAwakeRef = useRef(onAwake);
+  onAwakeRef.current = onAwake;
+  const moonModeRef = useRef(moonMode);
+  moonModeRef.current = moonMode;
+  const phaserScene = useRef<import('./PreviewScene').PreviewScene | null>(null);
   const [status, setStatus] = useState('Đang chuẩn bị cảnh…');
   const [ready, setReady] = useState(false);
 
@@ -24,22 +30,26 @@ export function GameCanvas({ scene, debug, sleeping = false, onPoint }: {
     // Import after mount; cancellation prevents duplicate instances in StrictMode.
     void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
+      const previewScene = new PreviewScene({
+        scene, debug, moonMode: moonModeRef.current,
+        onPoint: (point) => { if (!cancelled) onPointRef.current(point); },
+        onAwake: () => { if (!cancelled) onAwakeRef.current(); },
+        onReady: () => { if (!cancelled) { setReady(true); setStatus(''); } },
+        onError: (message) => { if (!cancelled) { setReady(false); setStatus(message); } },
+      });
+      phaserScene.current = previewScene;
       game = new Phaser.Game({
         type: Phaser.AUTO, parent: element, width: VIEW.width, height: VIEW.height,
         backgroundColor: '#101d2b', pixelArt: true, antialias: false,
         audio: { noAudio: true },
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: VIEW.width, height: VIEW.height },
-        scene: new PreviewScene({
-          scene, debug, sleeping,
-          onPoint: (point) => { if (!cancelled) onPointRef.current(point); },
-          onReady: () => { if (!cancelled) { setReady(true); setStatus(''); } },
-          onError: (message) => { if (!cancelled) { setReady(false); setStatus(message); } },
-        }),
+        scene: previewScene,
         callbacks: { postBoot: (instance) => {
           instance.canvas.setAttribute('aria-label', scene === 'earth' ? 'Cảnh pixel An và bà trên hiên nhà' : 'Cảnh pixel Cuội dưới gốc đa trên Mặt Trăng');
           instance.canvas.setAttribute('role', 'img');
         } },
       });
+      previewScene.setMoonMode(moonModeRef.current);
       observer = new ResizeObserver(() => { if (!cancelled) game?.scale.refresh(); });
       observer.observe(element);
     }).catch(() => {
@@ -48,6 +58,7 @@ export function GameCanvas({ scene, debug, sleeping = false, onPoint }: {
 
     return () => {
       cancelled = true;
+      phaserScene.current = null;
       observer?.disconnect();
       if (game) {
         // Phaser destroys on its next frame. Detach the old canvas immediately
@@ -56,7 +67,9 @@ export function GameCanvas({ scene, debug, sleeping = false, onPoint }: {
         game.destroy(true);
       }
     };
-  }, [scene, debug, sleeping]);
+  }, [scene, debug]);
+
+  useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);
 
   return <div className={`canvas-wrap ${debug ? 'is-debug' : ''}`}>
     <div ref={host} className="game-host" data-ready={ready} data-scene={scene} />
