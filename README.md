@@ -25,7 +25,7 @@ npm run preview
 
 - Game bên trái, sách placeholder bên phải, tỉ lệ cột 70/30 (trừ khoảng cách). Section giới thiệu nằm bên dưới.
 - Chọn **Tiếng Việt / English** trên thanh đầu trang. Giao diện, menu, hội thoại, lời dẫn  đổi ngay mà không khởi động lại hành trình; lựa chọn được lưu trong trình duyệt.
-- Menu mở khi vào web: Bắt đầu hành trình, Tiếp tục trong phiên, Hướng dẫn và lựa chọn âm thanh. Bắt đầu mở cảnh hiên nhà; nút Menu cho phép quay lại và bắt đầu lại có xác nhận. Lựa chọn âm thanh được lưu nếu localStorage khả dụng; chưa có tài nguyên nhạc.
+- Menu mở khi vào web: Bắt đầu hành trình, Tiếp tục từ mốc đã lưu, Hướng dẫn và lựa chọn âm thanh. Bắt đầu mở cảnh hiên nhà; nút Menu cho phép quay lại và bắt đầu lại có xác nhận. Lựa chọn âm thanh được lưu nếu localStorage khả dụng; chưa có tài nguyên nhạc.
 - An và bà dùng frame nghỉ; Cuội có các frame ngủ, thức dậy, đứng nghỉ và đi bộ được cắt thủ công từ sprite sheet. Chân dung dùng ảnh minh họa gốc.
 - Nền hiên nhà, Mặt Trăng, cây đa và ghế đá được vẽ tạm bằng các lớp Phaser độc lập.
 - Canvas giữ tỉ lệ 16:9; ResizeObserver cập nhật Scale Manager khi container đổi kích thước.
@@ -33,7 +33,7 @@ npm run preview
 
 Đã có sáu lượt kể chuyện An–bà, chữ hiện dần, chân dung người nói, tiếp tục bằng chuột hoặc Space/Enter. Mở menu tạm dừng câu hiện tại; Tiếp tục khôi phục trong phiên. Câu cuối chờ xác nhận trước hiệu ứng chuyển cảnh; Bỏ qua mở đầu cũng đưa tới Cuội ngủ. Xem [bàn giao hội thoại](docs/dialogue-an-ba.md).
 
-Ở Mặt Trăng, Cuội thức dậy rồi người chơi xác nhận hai câu dẫn trước khi điều khiển bằng A/D, ←/→ hoặc click mặt đất. Menu tạm dừng di chuyển. Đến gần ghế nhấn E hoặc click ghế để tự đi tới quan sát. Bàn phím hủy thao tác click đang chờ. Sau lời gọi chị Hằng, Cây Đa lên tiếng; xác nhận hết lời trao đèn mới nhận đèn 0/5. Đọc tiếp lời Cuội rồi đi theo dấu chân tới mép phải để kết thúc mở đầu, chọn ở lại khám phá hoặc về menu. Hội thoại luôn chờ thao tác; menu khóa di chuyển. Nội dung mới có cả tiếng Việt và tiếng Anh. Chưa lưu tiến trình qua tải lại và chưa triển khai nội dung sách.
+Ở Mặt Trăng, Cuội thức dậy rồi người chơi xác nhận hai câu dẫn trước khi điều khiển bằng A/D, ←/→ hoặc click mặt đất. Menu tạm dừng di chuyển. Đến gần ghế nhấn E hoặc click ghế để tự đi tới quan sát. Bàn phím hủy thao tác click đang chờ. Sau lời gọi chị Hằng, Cây Đa lên tiếng; xác nhận hết lời trao đèn mới nhận đèn 0/5. Đọc tiếp lời Cuội rồi đi theo dấu chân tới mép phải để kết thúc mở đầu, chọn ở lại khám phá hoặc về menu. Hội thoại luôn chờ thao tác; menu khóa di chuyển. Nội dung mới có cả tiếng Việt và tiếng Anh. Tiến trình tự lưu theo mốc qua tải lại; chưa triển khai nội dung sách.
 
 
 ## File chính
@@ -47,3 +47,9 @@ npm run preview
 | `src/content/assets.ts` | Đường dẫn 9 ảnh, kích thước/frame/điểm đặt chân |
 | `src/content/scenes.ts`, `src/content/i18n.ts` | Mã cảnh, bản dịch giao diện và hội thoại |
 | `docs/assets-inventory.md` | Kiểm kê, tọa độ frame và hạn chế |
+
+## Lưu hành trình
+
+`cuoi.progress` trong localStorage dùng schema phiên bản 1. Các mốc gồm đoạn An–bà, Cuội thức dậy, quan sát ghế, hội thoại Cây Đa, nhận đèn/lời lên đường, theo dấu chân và hoàn thành mở đầu. Tải lại luôn mở menu; Tiếp tục khôi phục mốc tương ứng. Hội thoại đang dở bắt đầu lại từ đầu đoạn; sau khi nhận đèn, lời lên đường vẫn được giữ để người chơi đọc hết. Mốc hoàn thành được giữ cả khi chọn ở lại khám phá.
+
+Bắt đầu lại chỉ thay tiến trình sau khi xác nhận, giữ nguyên ngôn ngữ và cài đặt âm thanh. Dữ liệu hỏng hoặc khác phiên bản trở về menu mới. Khi trình duyệt không cho lưu, game vẫn hoạt động trong phiên và hiện thông báo. Chưa có tài nguyên âm thanh, nên tùy chọn âm thanh chỉ lưu lựa chọn cho lần bổ sung sau.

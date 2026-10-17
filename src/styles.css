@@ -141,3 +141,30 @@
 .completion-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .completion-actions button { padding: 12px 18px; border: 1px solid #cdb77b; border-radius: 6px; background: #d9c28e; color: #172730; font-size: 18px; }
 .completion-actions button + button { color: #e8d9b6; background: #21343b; }
+
+.save-notice { margin: 14px 0; padding: 12px 16px; border: 1px solid #cdb77b66; border-radius: 6px; color: #eed8ac; font-size: 16px; line-height: 1.6; }
+select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
+.game-menu { align-items: safe center; }
+.opening-complete { place-items: safe center; }
+@media (min-width: 901px) and (max-width: 1100px) {
+  .game-menu { grid-template-columns: 1fr; align-content: start; }
+  .game-stage.has-menu { min-height: 580px; }
+}
+@media (max-width: 759px) {
+  body { min-width: 360px; }
+  .app-shell { padding: 0 14px; }
+  .site-header { height: auto; min-height: 80px; gap: 12px; flex-wrap: wrap; padding: 14px 0; }
+  .brand { font-size: 24px; }
+  .brand-caption { font-size: 10px; letter-spacing: 1px; }
+  .workspace { grid-template-columns: minmax(0, 1fr); padding-top: 20px; }
+  .book-topline { grid-column: 1; grid-row: 3; margin-top: 16px; }
+  .book-panel { grid-column: 1; grid-row: 4; }
+  .book-sheet { aspect-ratio: auto; min-height: 300px; }
+  .introduction { grid-template-columns: 1fr; }
+  .team-identity img { max-width: 150px; }
+  .dialogue-footer > span { display: none; }
+  .dialogue-footer { justify-content: flex-end; }
+  .dialogue-portrait { width: 40px; height: 50px; }
+  .game-stage > .dialogue { inset: auto 6px 6px; max-height: calc(100% - 12px); }
+  .quest-hud { top: 6px; left: 6px; right: 6px; }
+}

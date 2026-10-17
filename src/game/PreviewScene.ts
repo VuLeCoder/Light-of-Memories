@@ -153,9 +153,9 @@ export class PreviewScene extends Phaser.Scene {
 
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;
-    this.cuoi = this.add.sprite(307, 431, 'cuoi', this.moonMode === 'sleep' ? 'sleep' : 'rest')
+    this.cuoi = this.add.sprite(this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470, 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
       .setOrigin(0.5, 1).setScale(0.62);
-    this.awake = this.moonMode !== 'sleep' && this.moonMode !== 'wake';
+    this.awake = this.options.initiallyAwake;
     this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
     this.anims.create({ key: 'cuoi-walk', frames: cuoiWalkFrames.map((_, index) => ({ key: 'cuoi', frame: `walk-${index}` })), frameRate: 8, repeat: -1 });
     this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D' }, false) as typeof this.keys;

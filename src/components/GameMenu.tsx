@@ -1,26 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { copy, type Language } from '../content/i18n';
 
-export function GameMenu({ language, canContinue, onStart, onContinue }: {
+export function GameMenu({ language, canContinue, onStart, onContinue, sound, onToggleSound, soundUnavailable }: {
+  sound: boolean; onToggleSound: () => void; soundUnavailable: boolean;
   language: Language; canContinue: boolean; onStart: () => void; onContinue: () => void;
 }) {
   const t = copy[language];
   const [screen, setScreen] = useState<'main' | 'help' | 'restart'>('main');
-  const [sound, setSound] = useState(() => {
-    try { return localStorage.getItem('cuoi.sound') !== 'off'; } catch { return true; }
-  });
-  const [notice, setNotice] = useState('');
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [screen]);
-
-  function toggleSound() {
-    const next = !sound;
-    setSound(next);
-    try {
-      localStorage.setItem('cuoi.sound', next ? 'on' : 'off');
-      setNotice('');
-    } catch { setNotice(t.soundNotice); }
-  }
 
   return <section className="game-menu" aria-labelledby="menu-title">
     <div className="menu-story">
@@ -35,10 +23,10 @@ export function GameMenu({ language, canContinue, onStart, onContinue }: {
         <p className="menu-hint" id="continue-note">{canContinue ? t.continueHint : t.startHint}</p>
         <div className="menu-secondary">
           <button onClick={() => setScreen('help')}>{t.help}</button>
-          <button aria-pressed={sound} onClick={toggleSound}>{t.sound}: {sound ? t.on : t.off}</button>
+          <button aria-pressed={sound} onClick={onToggleSound}>{t.sound}: {sound ? t.on : t.off}</button>
         </div>
         <p className="menu-hint">{t.noMusic}</p>
-        {notice && <p className="menu-hint" role="status">{notice}</p>}
+        {soundUnavailable && <p className="menu-hint" role="status">{t.soundNotice}</p>}
       </> : screen === 'help' ? <>
         <ul className="menu-help">{t.helpSteps.map((step) => <li key={step}>{step}</li>)}</ul>
         <p className="menu-hint">{t.helpNote}</p>

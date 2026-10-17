@@ -11,11 +11,13 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
-  scene: SceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
+export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  initiallyAwake: boolean; scene: SceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
   onAwake: () => void;
 }) {
+  const awakeRef = useRef(initiallyAwake);
+  awakeRef.current = initiallyAwake;
   const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit });
   progressRef.current = { quest, treeSpeaking, onInteract, onExit };
   const host = useRef<HTMLDivElement>(null);
@@ -41,6 +43,7 @@ export function GameCanvas({ scene, moonMode, language, quest, treeSpeaking, onI
     void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
+        initiallyAwake: awakeRef.current,
         quest: progressRef.current.quest, treeSpeaking: progressRef.current.treeSpeaking,
         onInteract: () => { if (!cancelled) progressRef.current.onInteract(); },
         onExit: () => { if (!cancelled) progressRef.current.onExit(); },

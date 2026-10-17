@@ -5,6 +5,7 @@ import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
 import { portraits } from './content/assets';
 import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
+import { readProgress, saveProgress, readSound, type Chapter } from './state/progress';
 import type { MoonQuest } from './game/types';
 
 function BookPlaceholder({ language }: { language: Language }) {
@@ -54,11 +55,25 @@ export function App() {
     document.querySelector('meta[name="description"]')?.setAttribute('content', t.pageDescription);
     try { localStorage.setItem('cuoi.language', language); } catch { /* The choice still works for this visit. */ }
   }, [language, t]);
-  const [scene, setScene] = useState<SceneId>('earth');
+  const [saved] = useState(readProgress);
+  const [saveUnavailable, setSaveUnavailable] = useState(saved.unavailable);
+  const [completed, setCompleted] = useState(saved.progress.completed);
+  const [sound, setSound] = useState(readSound);
+  const [soundUnavailable, setSoundUnavailable] = useState(false);
+  function toggleSound() {
+    const next = !sound;
+    setSound(next);
+    try { localStorage.setItem('cuoi.sound', next ? 'on' : 'off'); setSoundUnavailable(false); }
+    catch { setSoundUnavailable(true); }
+  }
+  const [scene, setScene] = useState<SceneId>(saved.progress.scene);
   const [menuOpen, setMenuOpen] = useState(true);
-  const [started, setStarted] = useState(false);
-  const [chapter, setChapter] = useState<'idle' | 'earth' | 'departing' | 'arriving' | 'moon-waking' | 'moon-story' | 'moon-free'>('idle');
-  const [quest, setQuest] = useState<MoonQuest>('bench');
+  const [started, setStarted] = useState(saved.progress.started);
+  const [chapter, setChapter] = useState<Chapter>(saved.progress.chapter);
+  const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
+  useEffect(() => {
+    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed));
+  }, [chapter, quest, completed]);
   const [treeTurn, setTreeTurn] = useState(0);
   const endButton = useRef<HTMLButtonElement>(null);
   const [journey, setJourney] = useState(0);
@@ -74,7 +89,11 @@ export function App() {
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
   const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
   const onBench = useCallback(() => { setTreeTurn(0); setQuest((value) => value === 'bench' ? 'tree' : value); }, []);
-  const onExit = useCallback(() => setQuest((value) => value === 'trail' ? 'complete' : value), []);
+  const onExit = useCallback(() => {
+    if (quest !== 'trail') return;
+    setCompleted(true);
+    setQuest('complete');
+  }, [quest]);
   const receiveLantern = useCallback(() => setQuest((value) => value === 'tree' ? 'lantern' : value), []);
   const followTracks = useCallback(() => setQuest('trail'), []);
   useEffect(() => { if (quest === 'complete' && !menuOpen) endButton.current?.focus({ preventScroll: true }); }, [quest, menuOpen]);
@@ -101,6 +120,8 @@ export function App() {
     gameOwnsFocus.current = true;
   }
   function startJourney() {
+    gameOwnsFocus.current = true;
+    setCompleted(false);
     setScene('earth');
     setQuest('bench');
     setTreeTurn(0);
@@ -160,7 +181,7 @@ export function App() {
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              <GameCanvas key={journey} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
@@ -175,11 +196,12 @@ export function App() {
                 <div className="completion-actions"><button ref={endButton} onClick={followTracks}>{t.stayExplore}</button><button onClick={() => setMenuOpen(true)}>{t.backMenu}</button></div>
               </div>
             </section>}
-            {menuOpen && <GameMenu language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
+            {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
           {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : quest === 'complete' ? t.openingEnd : t.treeTitle}</p>}
         </div>
+        {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
         <div className="scene-details">
           <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
           <p>{currentText.description}</p>
