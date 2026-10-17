@@ -7,20 +7,22 @@ import { portraits } from './content/assets';
 import type { ScenePoint } from './game/types';
 
 function BookPlaceholder() {
-  return <aside className="book-panel" aria-labelledby="book-title">
+  return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>TRANG SÁCH BÊN BẠN</span></div>
-    <div className="book-sheet">
-      <div className="page-corner" aria-hidden="true" />
-      <span className="book-kicker">MỘT CÂU CHUYỆN DƯỚI TRĂNG</span>
-      <h2 id="book-title">Sách<br />đồng hành</h2>
-      <div className="book-illustration" aria-hidden="true"><div className="paper-moon" /><div className="paper-hill hill-one" /><div className="paper-hill hill-two" /><span>✧</span></div>
-      <div className="paper-divider" aria-hidden="true">✦</div>
-      <p>Nội dung sách sẽ được bổ sung sau</p>
-      <div className="placeholder-lines" aria-hidden="true"><i /><i /><i /></div>
-      <div className="page-bottom"><span aria-hidden="true">—</span> <span>TRANG ĐẦU TIÊN</span> <span aria-hidden="true">—</span></div>
-    </div>
-    <p className="book-note">Trang sách đang chờ câu chuyện của bạn.</p>
-  </aside>;
+    <aside className="book-panel" aria-labelledby="book-title">
+      <div className="book-sheet">
+        <div className="page-corner" aria-hidden="true" />
+        <span className="book-kicker">MỘT CÂU CHUYỆN DƯỚI TRĂNG</span>
+        <h2 id="book-title">Sách<br />đồng hành</h2>
+        <div className="book-illustration" aria-hidden="true"><div className="paper-moon" /><div className="paper-hill hill-one" /><div className="paper-hill hill-two" /><span>✧</span></div>
+        <div className="paper-divider" aria-hidden="true">✦</div>
+        <p>Nội dung sách sẽ được bổ sung sau</p>
+        <div className="placeholder-lines" aria-hidden="true"><i /><i /><i /></div>
+        <div className="page-bottom"><span aria-hidden="true">—</span> <span>TRANG ĐẦU TIÊN</span> <span aria-hidden="true">—</span></div>
+      </div>
+      <p className="book-note">Trang sách đang chờ câu chuyện của bạn.</p>
+    </aside>
+  </>;
 }
 
 export function App() {
@@ -65,11 +67,18 @@ export function App() {
       <div className="edition"><span aria-hidden="true" />BẢN DỰNG MỞ ĐẦU <span className="edition-number">01</span></div>
     </header>
     <div className="workspace">
-      <div className="scene-toolbar">
-          {tellingStory || transitioning ? <span className="preview-label">{transitioning ? 'Theo ánh trăng lên Mặt Trăng…' : 'Đêm Rằm · Câu chuyện An và bà'}</span> : <div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử" inert={menuOpen}>
-            {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{scenes[id].tab}</button>)}
-          </div>}
-          {menuOpen ? <span className="preview-label"><span aria-hidden="true" />Chào bạn đến với Cuội</span> : <div className="story-controls">{tellingStory && <button className="skip-story" onClick={finishEarth}>Bỏ qua mở đầu</button>}<button className="open-menu" disabled={transitioning} ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button></div>}
+      <div className="scene-toolbar" aria-label="Thông tin và điều khiển cảnh">
+        <div className="scene-heading">
+          <span className="scene-number">{current.number}</span>
+          <div className="scene-heading-copy">
+            <h2>{current.title}</h2>
+            <span className="scene-subtitle">{current.subtitle}</span>
+          </div>
+        </div>
+        <div className="story-controls">
+          {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>Bỏ qua mở đầu</button>}
+          <button className="open-menu" disabled={menuOpen || transitioning} ref={menuButton} onClick={() => setMenuOpen(true)}>☰ Menu</button>
+        </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label="Khung cảnh game">
         <div className="scene-frame">
@@ -82,8 +91,10 @@ export function App() {
             {menuOpen && <GameMenu canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {chapter === 'moon' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">Cuội đang ngủ dưới gốc đa. Câu chuyện sẽ tiếp tục ở phần sau.</p>}
-          <div className="scene-caption"><div><span className="scene-number">{current.number}</span><h2>{current.title}</h2></div><span className="scene-subtitle">{current.subtitle}</span></div>
         </div>
+        {!tellingStory && !transitioning && !menuOpen && <div className="preview-scenes"><span>Xem thử cảnh</span><div className="scene-tabs" role="group" aria-label="Chọn cảnh xem thử">
+          {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{scenes[id].tab}</button>)}
+        </div></div>}
         <div className="scene-details">
           <div className="cast" aria-label="Nhân vật trong cảnh">{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{portraits[id].name}</span></div>)}</div>
           <p>{current.description}</p>

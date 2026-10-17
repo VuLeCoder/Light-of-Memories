@@ -1,7 +1,7 @@
 export type SceneId = 'earth' | 'moon';
 export const scenes = {
   earth: {
-    number: '01', tab: 'Hiên nhà', title: 'Đêm Rằm trên Trái Đất',
+    number: '01', tab: 'Hiên nhà', title: 'Đêm Rằm · Câu chuyện An và bà',
     subtitle: 'Một hiên nhà nhỏ. Một đêm trăng tròn.',
     description: 'An và bà dưới mái hiên đêm Trung Thu. Cảnh thử dùng tư thế nghỉ từ sprite sheet gốc.',
     characters: ['an', 'ba'],

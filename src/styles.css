@@ -39,3 +39,22 @@
   .dialogue-footer > span { font-size: 16px; }
   .dialogue-next { font-size: 16px; }
 }
+
+/* The chapter heading and controls share the row above the game and book. */
+.scene-toolbar { min-height: 56px; flex-wrap: wrap; }
+.scene-heading { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.scene-heading-copy { min-width: 0; }
+.scene-heading h2 { margin: 0; color: #d7e0d9; font-size: clamp(18px, 1.6vw, 22px); font-weight: 500; line-height: 1.4; }
+.scene-heading .scene-subtitle { display: block; margin-top: 2px; font-size: 14px; line-height: 1.4; }
+.scene-toolbar .scene-number { font-size: 20px; }
+.book-topline { grid-column: 2; grid-row: 1; position: static; align-self: center; min-width: 0; }
+.preview-scenes { display: flex; align-items: center; gap: 14px; margin-top: 14px; color: #bdcecb; font-size: 16px; }
+.preview-scenes > span { white-space: nowrap; }
+@media (max-width: 1200px) {
+  .scene-heading .scene-subtitle { display: none; }
+}
+@media (max-width: 900px) {
+  .scene-toolbar { align-items: center; }
+  .book-topline { align-self: start; padding-top: 4px; }
+  .preview-scenes { flex-wrap: wrap; }
+}
