@@ -81,7 +81,7 @@ export function App() {
 
   return <main className="app-shell">
     <header className="site-header">
-      <a className="brand" href="#main-scene" aria-label={t.goToScene}><span className="brand-moon" aria-hidden="true" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
+      <a className="brand" href="#main-scene" aria-label={t.goToScene}><img className="brand-logo" src="/images/branding/light-of-memories-primary.png" alt="" width="52" height="52" decoding="async" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
       <div className="header-actions"><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setPoint(null); setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><div className="edition"><span aria-hidden="true" />{t.edition} <span className="edition-number">01</span></div></div>
     </header>
     <div className="workspace">
@@ -131,8 +131,14 @@ export function App() {
       <BookPlaceholder language={language} />
     </div>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
-        <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> {t.introLabel} <span className="label-line" /></div>
-        <h1 id="introduction-title">{t.heroOne}<br /><span>{t.heroTwo}</span></h1>
+        <div className="introduction-copy">
+          <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> {t.introLabel} <span className="label-line" /></div>
+          <h1 id="introduction-title">{t.heroOne}<br /><span>{t.heroTwo}</span></h1>
+        </div>
+        <div className="team-identity">
+          <span>{t.teamLabel}</span>
+          <img src="/images/branding/light-of-memories-primary.png" alt="Light of Memories" width="200" height="200" loading="lazy" decoding="async" />
+        </div>
       </section>
     <footer className="site-footer"><span>{t.footerOne}</span><span>{t.footerTwo} <span aria-hidden="true">✦</span></span></footer>
   </main>;
