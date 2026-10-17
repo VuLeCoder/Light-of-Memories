@@ -132,3 +132,15 @@
 @media (max-width: 900px) {
   .introduction { grid-template-columns: minmax(0, 1fr) 170px; gap: 20px; }
 }
+
+.quest-hud { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; pointer-events: none; color: #f0e8d3; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.5; }
+.quest-hud > span, .quest-hud > strong { padding: 8px 12px; background: #15232beb; border: 1px solid #cdb77b66; border-radius: 7px; }
+.quest-hud > strong { white-space: nowrap; color: #e4ce96; }
+.opening-complete { position: absolute; inset: 0; z-index: 25; display: grid; place-items: center; padding: 20px; background: #101e28df; overflow-y: auto; text-align: center; }
+.opening-complete > div { max-width: 580px; }
+.completion-star { color: #cdb77b; font-size: 38px; }
+.opening-complete h2 { color: #efe6cd; font: 500 clamp(20px, 2vw, 30px)/1.4 'Lora', Georgia, serif; margin: 10px 0; }
+.opening-complete p { color: #bdcecb; font-size: 18px; line-height: 1.6; }
+.completion-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.completion-actions button { padding: 12px 18px; border: 1px solid #cdb77b; border-radius: 6px; background: #d9c28e; color: #172730; font-size: 18px; }
+.completion-actions button + button { color: #e8d9b6; background: #21343b; }

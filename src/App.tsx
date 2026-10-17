@@ -5,7 +5,7 @@ import { GameCanvas } from './game/GameCanvas';
 import { scenes, type SceneId } from './content/scenes';
 import { portraits } from './content/assets';
 import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
-import type { ScenePoint } from './game/types';
+import type { ScenePoint, MoonQuest } from './game/types';
 
 function BookPlaceholder({ language }: { language: Language }) {
   const t = copy[language];
@@ -42,16 +42,26 @@ export function App() {
   const [menuOpen, setMenuOpen] = useState(true);
   const [started, setStarted] = useState(false);
   const [chapter, setChapter] = useState<'preview' | 'earth' | 'departing' | 'arriving' | 'moon-waking' | 'moon-story' | 'moon-free'>('preview');
+  const [quest, setQuest] = useState<MoonQuest>('bench');
+  const [treeTurn, setTreeTurn] = useState(0);
+  const endButton = useRef<HTMLButtonElement>(null);
   const [journey, setJourney] = useState(0);
   const [turn, setTurn] = useState(0);
   const transitioning = chapter === 'departing' || chapter === 'arriving';
   const tellingStory = chapter === 'earth';
   const moonStory = chapter === 'moon-story';
   const moonWaking = chapter === 'moon-waking';
-  const moonMode = menuOpen ? 'paused' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
+  const questDialogue = quest === 'tree' || quest === 'lantern';
+  const questLocked = questDialogue || quest === 'complete';
+  const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => setChapter('departing'), []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
   const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
+  const onBench = useCallback(() => { setTreeTurn(0); setQuest((value) => value === 'bench' ? 'tree' : value); }, []);
+  const onExit = useCallback(() => setQuest((value) => value === 'trail' ? 'complete' : value), []);
+  const receiveLantern = useCallback(() => setQuest((value) => value === 'tree' ? 'lantern' : value), []);
+  const followTracks = useCallback(() => setQuest('trail'), []);
+  useEffect(() => { if (quest === 'complete' && !menuOpen) endButton.current?.focus({ preventScroll: true }); }, [quest, menuOpen]);
   const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
@@ -64,10 +74,12 @@ export function App() {
   const menuButton = useRef<HTMLButtonElement>(null);
   function closeMenu() {
     setMenuOpen(false);
-    if (!tellingStory) requestAnimationFrame(() => menuButton.current?.focus({ preventScroll: true }));
+    if (!tellingStory && !moonStory && !questLocked) requestAnimationFrame(() => menuButton.current?.focus({ preventScroll: true }));
   }
   function startJourney() {
     setScene('earth');
+    setQuest('bench');
+    setTreeTurn(0);
     setStarted(true);
     setChapter('earth');
     setJourney((value) => value + 1);
@@ -95,31 +107,41 @@ export function App() {
         </div>
         <div className="story-controls">
           {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>{t.skip}</button>}
-          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking} ref={menuButton} onClick={() => setMenuOpen(true)}>{t.menu}</button>
+          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || quest === 'complete'} ref={menuButton} onClick={() => setMenuOpen(true)}>{t.menu}</button>
         </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
           <div className={`game-stage ${menuOpen ? 'has-menu' : ''}`}>
-            <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking}>
-              <GameCanvas scene={scene} debug={debug} moonMode={moonMode} language={language} onPoint={setPoint} onAwake={onCuoiAwake} />
+            <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
+              <GameCanvas quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} debug={debug} moonMode={moonMode} language={language} onPoint={setPoint} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
             {moonStory && <EarthDialogue key={`moon-${journey}`} language={language} lines={storyLines[language].moon} title={t.moonDialogueTitle} finalAction="moon" paused={menuOpen} onComplete={finishMoonStory} onTurn={noopTurn} />}
+            {scene === 'moon' && chapter === 'moon-free' && !menuOpen && <div className="quest-hud" aria-live="polite">
+              <span>{quest === 'bench' ? t.benchGoal : quest === 'tree' ? t.treeTitle : t.trailGoal}</span>
+              {['lantern', 'trail', 'complete'].includes(quest) && <strong aria-label={`${t.lantern}: 0/5`}><span aria-hidden="true">☆</span> 0/5</strong>}
+            </div>}
+            {questDialogue && <EarthDialogue key={`${quest}-${journey}`} language={language} lines={quest === 'tree' ? storyLines[language].tree : storyLines[language].departure} title={t.treeTitle} finalAction={quest === 'tree' ? 'lantern' : 'moon'} paused={menuOpen} onComplete={quest === 'tree' ? receiveLantern : followTracks} onTurn={quest === 'tree' ? setTreeTurn : noopTurn} />}
+            {quest === 'complete' && !menuOpen && <section className="opening-complete" role="dialog" aria-labelledby="opening-end-title">
+              <div><span className="completion-star" aria-hidden="true">☆</span><h2 id="opening-end-title">{t.openingEnd}</h2><p>{t.openingEndNote}</p>
+                <div className="completion-actions"><button ref={endButton} onClick={followTracks}>{t.stayExplore}</button><button onClick={() => setMenuOpen(true)}>{t.backMenu}</button></div>
+              </div>
+            </section>}
             {menuOpen && <GameMenu language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
-          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{t.moonMove}</p>}
+          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : quest === 'complete' ? t.openingEnd : t.treeTitle}</p>}
         </div>
-        {(chapter === 'preview' || chapter === 'moon-free') && !menuOpen && <div className="preview-scenes"><span>{t.preview}</span><div className="scene-tabs" role="group" aria-label={t.choosePreview}>
+        {chapter === 'preview' && !menuOpen && <div className="preview-scenes"><span>{t.preview}</span><div className="scene-tabs" role="group" aria-label={t.choosePreview}>
           {(Object.keys(scenes) as SceneId[]).map((id) => <button key={id} aria-pressed={scene === id} onClick={() => setScene(id)}><span>{scenes[id].number}</span>{t[id].tab}</button>)}
         </div></div>}
         <div className="scene-details">
           <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
           <p>{currentText.description}</p>
         </div>
-        <details className="preview-tools" inert={menuOpen || tellingStory || moonStory || moonWaking || transitioning}>
+        <details className="preview-tools" inert={menuOpen || chapter !== 'preview'}>
           <summary>{t.debugTitle} <span aria-hidden="true">＋</span></summary>
           <div className="tools-content">
             <label><input type="checkbox" checked={debug} onChange={(event) => setDebug(event.target.checked)} />{t.debugToggle}</label>

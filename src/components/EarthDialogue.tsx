@@ -4,7 +4,7 @@ import { portraits } from '../content/assets';
 import { copy, type Language } from '../content/i18n';
 
 export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction }: {
-  language: Language; finalAction: 'earth' | 'moon';
+  language: Language; finalAction: 'earth' | 'moon' | 'lantern';
   paused: boolean; onComplete: () => void; onTurn: (index: number) => void;
   lines: readonly StoryLine[]; title: string;
 }) {
@@ -51,17 +51,17 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
       if (!event.repeat && !paused) dispatch('advance');
     }}>
     <div className="dialogue-body">
-      {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${line.speaker === 'ba' && language === 'en' ? 'Grandma' : portrait.name}`} /></div>}
+      {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name}`} /></div>}
       <div className="dialogue-copy">
-        <div className="dialogue-meta"><strong>{portrait ? (line.speaker === 'ba' && language === 'en' ? 'Grandma' : portrait.name) : t.narrator}</strong><span>{state.index + 1} / {lines.length}</span></div>
+        <div className="dialogue-meta"><strong>{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name) : t.narrator}</strong><span>{state.index + 1} / {lines.length}</span></div>
         <p className="dialogue-text" aria-hidden="true">{line.text.slice(0, state.visible)}<span className="typing-mark">{full ? '' : '▎'}</span></p>
-        <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (line.speaker === 'ba' && language === 'en' ? 'Grandma' : portrait.name) : t.narrator}: {line.text}</p>
+        <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name) : t.narrator}: {line.text}</p>
       </div>
     </div>
     <div className="dialogue-footer">
       <span>{t.dialogueHint}</span>
       <button ref={nextButton} className={full ? 'dialogue-next is-ready' : 'dialogue-next'} onClick={() => dispatch('advance')}>
-        {full ? (state.index === lines.length - 1 ? (finalAction === 'earth' ? t.followMoon : t.explore) : t.next) : t.reveal} <span aria-hidden="true">→</span>
+        {full ? (state.index === lines.length - 1 ? (finalAction === 'earth' ? t.followMoon : finalAction === 'lantern' ? t.receiveLantern : t.explore) : t.next) : t.reveal} <span aria-hidden="true">→</span>
       </button>
     </div>
   </section>;

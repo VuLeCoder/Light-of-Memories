@@ -26,16 +26,18 @@ npm run preview
 - Game bên trái, sách placeholder bên phải, tỉ lệ cột 70/30 (trừ khoảng cách). Section giới thiệu nằm bên dưới.
 - Chọn **Tiếng Việt / English** trên thanh đầu trang. Giao diện, menu, hội thoại, lời dẫn và nhãn kiểm tra cảnh đổi ngay mà không khởi động lại hành trình; lựa chọn được lưu trong trình duyệt.
 - Menu mở khi vào web: Bắt đầu hành trình, Tiếp tục trong phiên, Hướng dẫn và lựa chọn âm thanh. Bắt đầu mở cảnh hiên nhà; nút Menu cho phép quay lại và bắt đầu lại có xác nhận. Lựa chọn âm thanh được lưu nếu localStorage khả dụng; chưa có tài nguyên nhạc.
-- Hai nút **Hiên nhà / Mặt Trăng** để xem cảnh thử, không phải menu hoặc chuyển cảnh cốt truyện.
+- Các nút xem cảnh thử chỉ dành cho trạng thái preview; trong hành trình, cảnh đổi theo cốt truyện.
 - An và bà dùng frame nghỉ; Cuội có các frame ngủ, thức dậy, đứng nghỉ và đi bộ được cắt thủ công từ sprite sheet. Chân dung dùng ảnh minh họa gốc.
 - Nền hiên nhà, Mặt Trăng, cây đa và ghế đá được vẽ tạm bằng các lớp Phaser độc lập.
 - Canvas giữ tỉ lệ 16:9; ResizeObserver cập nhật Scale Manager khi container đổi kích thước.
-- Mục **Kiểm tra bản dựng** bật vùng kiểm tra và tọa độ click trong không gian 960 × 540. Khi Cuội đã thức dậy, click mặt đất còn đặt đích di chuyển.
+- Mục **Kiểm tra bản dựng** bật vùng kiểm tra và tọa độ click trong không gian 960 × 540. Công cụ kiểm tra chỉ dùng trong trạng thái preview để không khởi tạo lại cảnh trong hành trình.
 - Một component sở hữu vòng đời Phaser; hủy instance, observer và listener khi đổi cảnh hoặc unmount. Hỗ trợ React StrictMode bằng hủy khởi tạo bất đồng bộ đã lỗi thời.
 
 Đã có sáu lượt kể chuyện An–bà, chữ hiện dần, chân dung người nói, tiếp tục bằng chuột hoặc Space/Enter. Mở menu tạm dừng câu hiện tại; Tiếp tục khôi phục trong phiên. Câu cuối chờ xác nhận trước hiệu ứng chuyển cảnh; Bỏ qua mở đầu cũng đưa tới Cuội ngủ. Xem [bàn giao hội thoại](docs/dialogue-an-ba.md).
 
-Ở Mặt Trăng, Cuội thức dậy rồi người chơi xác nhận hai câu dẫn trước khi điều khiển bằng A/D, ←/→ hoặc click mặt đất. Menu tạm dừng di chuyển. Chưa triển khai tương tác ghế đá/Cây Đa, lưu tiến trình qua tải lại hoặc nội dung sách.
+Ở Mặt Trăng, Cuội thức dậy rồi người chơi xác nhận hai câu dẫn trước khi điều khiển bằng A/D, ←/→ hoặc click mặt đất. Menu tạm dừng di chuyển. Đến gần ghế nhấn E hoặc click ghế để tự đi tới quan sát. Bàn phím hủy thao tác click đang chờ. Sau lời gọi chị Hằng, Cây Đa lên tiếng; xác nhận hết lời trao đèn mới nhận đèn 0/5. Đọc tiếp lời Cuội rồi đi theo dấu chân tới mép phải để kết thúc mở đầu, chọn ở lại khám phá hoặc về menu. Hội thoại luôn chờ thao tác; menu khóa di chuyển. Nội dung mới có cả tiếng Việt và tiếng Anh. Chưa lưu tiến trình qua tải lại và chưa triển khai nội dung sách.
+
+Kiểm tra đoạn mới bằng `npx playwright test tests/moon-quest.spec.ts`: quan sát ghế bằng chuột/E, hủy tương tác, chặn kết thúc trước khi nhận đèn, chuyển ngôn ngữ, tạm dừng và ở lại khám phá. Đèn và hiệu ứng Cây Đa hiện dùng hình vẽ Phaser tạm.
 
 ## File chính
 

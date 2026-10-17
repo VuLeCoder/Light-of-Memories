@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import type { SceneId } from '../content/scenes';
-import type { ScenePoint } from './types';
+import type { ScenePoint, MoonQuest } from './types';
 import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 
-export function GameCanvas({ scene, debug, moonMode, language, onPoint, onAwake }: {
+export function GameCanvas({ scene, debug, moonMode, language, quest, treeSpeaking, onInteract, onExit, onPoint, onAwake }: {
   scene: SceneId; debug: boolean; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
-  language: Language;
+  language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
   onPoint: (point: ScenePoint | null) => void; onAwake: () => void;
 }) {
+  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit });
+  progressRef.current = { quest, treeSpeaking, onInteract, onExit };
   const host = useRef<HTMLDivElement>(null);
   const onPointRef = useRef(onPoint);
   onPointRef.current = onPoint;
@@ -35,6 +37,9 @@ export function GameCanvas({ scene, debug, moonMode, language, onPoint, onAwake 
     void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
+        quest: progressRef.current.quest, treeSpeaking: progressRef.current.treeSpeaking,
+        onInteract: () => { if (!cancelled) progressRef.current.onInteract(); },
+        onExit: () => { if (!cancelled) progressRef.current.onExit(); },
         scene, debug, moonMode: moonModeRef.current, language: languageRef.current,
         onPoint: (point) => { if (!cancelled) onPointRef.current(point); },
         onAwake: () => { if (!cancelled) onAwakeRef.current(); },
@@ -73,6 +78,7 @@ export function GameCanvas({ scene, debug, moonMode, language, onPoint, onAwake 
     };
   }, [scene, debug]);
 
+  useEffect(() => { phaserScene.current?.setQuest(quest, treeSpeaking); }, [quest, treeSpeaking]);
   useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);
   useEffect(() => {
     phaserScene.current?.setLanguage(language);

@@ -54,3 +54,18 @@ test('the Moon narration also waits for confirmation after its last line', () =>
   state = reduce(state, 'advance', moon);
   assert.equal(state.finished, true);
 });
+
+test('the lantern handoff and departure each require explicit final confirmation', async () => {
+  const source = readFileSync(new URL('../src/content/moon-dialogue.ts', import.meta.url), 'utf8');
+  const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ES2022 } });
+  const { moonTreeDialogue, moonDepartureDialogue } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`);
+  for (const segment of [moonTreeDialogue, moonDepartureDialogue]) {
+    let state = { index: segment.length - 1, visible: 0, finished: false };
+    for (let i = 0; i < 1000; i++) state = reduce(state, 'tick', segment);
+    assert.equal(state.finished, false);
+    assert.equal(state.index, segment.length - 1);
+    state = reduce(state, 'advance', segment);
+    assert.equal(state.finished, true);
+    assert.equal(reduce(state, 'advance', segment), state);
+  }
+});
