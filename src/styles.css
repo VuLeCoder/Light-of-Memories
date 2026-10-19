@@ -421,3 +421,116 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .phase-timeline { gap: 12px; padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .journey-view .journal-card { transition: none; } }
+
+/* The four illustrated chapters share the book's warm paper and lunar palette. */
+.game-stage:has(.friend-level, .journey-finale) > .story-canvas { position: absolute; inset: 0; }
+.friend-level, .journey-finale { position: relative; inset: auto; min-height: 720px; overflow: visible; background: radial-gradient(ellipse at 50% 25%, #354e57, #132630 80%); }
+.friend-level { display: flex; flex-direction: column; gap: 18px; padding: 24px; container-type: inline-size; }
+.friend-level .friend-header { justify-content: space-between; align-items: center; text-align: left; }
+.friend-eyebrow { display: block; color: #d7ba80; font-size: 12px; letter-spacing: 1.6px; line-height: 1.5; margin-bottom: 8px; }
+.friend-header h2 { font-size: clamp(20px, 2vw, 28px); }
+.friend-header h2:focus, .journey-finale h2:focus { outline: none; }
+.friend-memory-count { font-size: 20px; white-space: nowrap; }
+.friend-intro, .friend-ending { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+.friend-portrait-scene { margin: 0; width: min(100%, 520px); border: 1px solid #d6ba7955; border-radius: 12px; overflow: hidden; background: #152b36; box-shadow: 0 12px 26px #0003; }
+.friend-portrait-scene img { display: block; width: 100%; max-height: 255px; object-fit: cover; }
+.friend-portrait-scene figcaption { padding: 9px; color: #d5bf94; font-size: 11px; letter-spacing: 2px; }
+.friend-level blockquote, .journey-finale blockquote { margin: 0; max-width: 600px; font: 400 19px/1.7 'Lora', Georgia, serif; color: #f3e6c9; }
+.friend-level blockquote b, .friend-intro p b, .friend-ending p b { color: #f0cd87; }
+.friend-intro > p, .friend-ending > p { font-size: 17px; line-height: 1.6; margin: 0; max-width: 580px; }
+.friend-level button, .journey-finale button { min-height: 44px; font-size: 16px; line-height: 1.4; }
+.friend-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding-top: 12px; border-top: 1px solid #dfc28a25; }
+.friend-footer small { color: #b1c3bd; font-size: 12px; text-align: right; }
+.friend-hint { position: absolute; z-index: 2; bottom: 84px; left: 24px; right: 24px; display: flex; align-items: center; gap: 12px; padding: 18px; border: 1px solid #e0c08b; border-radius: 10px; background: #eee2c7; color: #30413f; box-shadow: 0 12px 40px #0008; font-size: 17px; line-height: 1.5; }
+.friend-hint span { flex: 1; }.friend-hint button { flex-shrink: 0; }
+.friend-task-instruction { margin: 0; font-size: 17px; line-height: 1.6; text-align: center; color: #d7e1d9; }
+.friend-task-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+.friend-task-body > div:first-child { min-width: 0; }
+.task-result { text-align: center; display: flex; align-items: center; flex-direction: column; gap: 12px; }
+.task-result p { margin: 0; font-size: 15px; line-height: 1.5; color: #c5d2c9; }
+.task-result.is-solved p { color: #f6d48c; }
+.friend-task-body > [inert] { opacity: .75; }
+.friend-level button:disabled { opacity: .45; cursor: default; }
+.friend-level button[aria-pressed=true], .journey-finale button[aria-pressed=true] { background: #e9cf98; color: #243a43; border-color: #ffe3a4; box-shadow: 0 0 0 2px #ebcd8730; }
+.trace-drawing { width: 100%; display: block; }
+.friend-trace-options { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+.friend-trace-options > button:not(.challenge-confirm) { padding: 12px; background: #2b454e; }
+.friend-trace-options .challenge-confirm { grid-column: 1/-1; justify-self: center; margin-top: 8px; }
+.rover-puzzle { width: min(100%, 440px); margin: auto; }
+.rover-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; padding: 12px; border: 1px solid #b5aa7f66; border-radius: 12px; background: #1a3039; }
+.journey-view .rover-grid button { aspect-ratio: 1.35; min-height: 44px; padding: 0; border: 1px solid #9cae9d35; color: #93a99c; background: #3a5359; font-size: 23px; }
+.journey-view .rover-grid .is-rock { opacity: 1; background: #263b44; color: #83968e; }
+.journey-view .rover-grid .is-path { background: #7b8065; color: #e3d4a4; }
+.journey-view .rover-grid .is-here { background: #ddbf80; color: #253d47; box-shadow: inset 0 0 0 2px #fff1bc; }
+.puzzle-tools { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
+.match-work, .scan-puzzle, .aim-puzzle, .viewpoint-puzzle, .keepsake-choice, .foot-route, .sequence-puzzle { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.memory-prompt { width: min(100%,420px); padding: 18px; text-align: center; background: #eadfc4; color: #334742; border-radius: 10px; }
+.memory-prompt > span { display: block; font-size: 12px; letter-spacing: 2px; margin-bottom: 8px; }
+.memory-prompt strong { font: 500 22px/1.4 'Lora',Georgia,serif; }.memory-prompt svg { display: block; width: 100%; max-height: 100px; margin-top: 12px; }
+.answer-options { display: flex; gap: 10px; justify-content: center; width: 100%; }
+.answer-options button { flex: 1; max-width: 230px; padding: 12px; }
+.scan-field { width: 100%; display: grid; grid-template-columns: repeat(3,1fr); position: relative; overflow: hidden; padding: 20px 10px; background: #10232d; border: 1px solid #b6b18544; border-radius: 12px; }
+.scan-beam { position: absolute; left: var(--scan); top: -20px; bottom: -20px; width: 42%; transform: translateX(-50%); background: radial-gradient(ellipse,#ffe8ac30,transparent 70%); pointer-events: none; }
+.journey-view .scan-field button { border: 1px solid transparent; padding: 8px; background: transparent; opacity: .3; transition: opacity .2s; }
+.journey-view .scan-field button.in-light { opacity: 1; }.scan-field svg { width: 100%; height: 115px; }
+.range-label { display: flex; flex-direction: column; gap: 10px; font-size: 15px; width: min(100%,420px); text-align: center; color: #e8d3a5; }
+.range-label input { width: 100%; accent-color: #dfbf7f; min-height: 28px; cursor: pointer; }
+.aim-scene { width: min(100%,500px); border-radius: 12px; border: 1px solid #c3b47d44; background: #142c37; }
+.aim-controls { display: flex; gap: 20px; width: min(100%,500px); }
+.aim-puzzle small { font-size: 12px; color: #b7c8bf; text-align: center; }
+.sent-light { animation: light-message 1.8s linear infinite; stroke-width: 2; }
+@keyframes light-message { to { stroke-dashoffset: -52; } }
+.viewpoint-scene { position: relative; width: min(100%,480px); border: 1px solid #ceb98588; border-radius: 10px; overflow: hidden; }
+.viewpoint-scene img { width: 100%; display: block; }.viewpoint-scene svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.photo-puzzle { width: min(100%,440px); margin: auto; }
+.photo-slots { display: grid; grid-template-columns: repeat(3,1fr); border: 8px solid #e0d2b1; border-radius: 6px; background: #182e38; aspect-ratio: 640/360; }
+.journey-view .photo-slots button { padding: 0; border: 1px dashed #b3b09077; border-radius: 0; min-height: 44px; background-color: #1b3440; background-repeat: no-repeat; }
+.photo-slots button span { opacity: .5; font-size: 22px; }
+.piece-tray { display: grid; grid-template-columns: repeat(6,1fr); gap: 6px; margin: 12px 0; }
+.journey-view .piece-tray button { padding: 0; min-height: 44px; aspect-ratio: 1.18; border-radius: 4px; background-repeat: no-repeat; }
+.piece-tray button:disabled { opacity: .18; }.piece-tray button[aria-pressed=true] { outline: 3px solid #ffe09a; outline-offset: 1px; }
+.keepsake-choice .answer-options button { display: flex; flex-direction: column; align-items: center; gap: 14px; }.keepsake-choice .answer-options span { font-size: 36px; color: #e5c488; }
+.keepsake-choice blockquote { background: #e2cf9815; padding: 16px; border-left: 2px solid #d7b67e; border-radius: 0 8px 8px 0; }
+.foot-trail { position: relative; width: min(100%,350px); padding: 14px; border-radius: 50%; background: radial-gradient(ellipse,#8c9b8444,transparent 70%); }
+.direction-print { width: 210px; margin: auto; }.direction-print svg { height: 165px; }
+.foot-trail-count { position: absolute; top: 12px; left: 12px; font-size: 14px; color: #d7be8a; }
+.foot-dots { display: flex; justify-content: center; gap: 14px; }.foot-dots i { width: 9px; height: 9px; background: #84998e44; border-radius: 50%; }.foot-dots .is-found { background: #e5c488; }
+.sequence-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; width: 100%; }
+.sequence-cards button { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 10px; background: #e9dfc7; color: #354841; }
+.sequence-symbol { font-size: 38px; line-height: 1; }.sequence-cards strong { font-size: 17px; line-height: 1.4; font-weight: 500; }.sequence-cards small { font-size: 12px; opacity: .8; }
+.sequence-puzzle > p { text-align: center; margin: 0; font-size: 14px; line-height: 1.5; color: #d5c396; min-height: 42px; }
+.journey-lantern { width: 210px; height: 210px; flex-shrink: 0; }.lit-panel { transition: fill .8s; }
+.friend-reward { color: #f0ce85; padding: 10px 16px; background: #dabd7a12; border-radius: 8px; }
+.five-friends-map { min-height: 450px; }.game-stage:has(.five-friends-map) { min-height: 450px; }
+.five-friends-map .journey-stop { gap: 9px; }.five-friends-map .stop-orb { width: 76px; height: 76px; }.five-friends-map .stop-orb img { width: 100%; height: 100%; object-fit: cover; }
+.five-friends-map .is-complete .stop-orb { border-color: #e5c588; box-shadow: 0 0 22px #e4c58522; }.five-friends-map .is-locked { opacity: .5; }
+.five-friends-map .journey-stop > span:nth-child(2) { font-size: 15px; line-height: 1.4; }.five-friends-map .journey-stop small { font-size: 12px; }
+.journey-finale { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 26px; text-align: center; }
+.journey-finale > p { margin: 0; max-width: 600px; font-size: 18px; line-height: 1.6; }
+.reunion-scene { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 220px; background: radial-gradient(ellipse,#e9c97715,transparent 70%); }
+.reunion-scene > img { width: 25%; max-width: 140px; aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 1px solid #e3c89066; }.reunion-scene .journey-lantern { width: 34%; max-width: 210px; }
+.finale-friends { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }.finale-friends button { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100px; padding: 10px; }.finale-friends img { width: 62px; height: 62px; object-fit: cover; border-radius: 50%; }.finale-friends span { font-size: 14px; }
+.reunion-memory { min-height: 96px; padding: 16px; border-top: 1px solid #d8bd7d44; border-bottom: 1px solid #d8bd7d44; }
+.journey-view .finale-back { background: transparent; border-color: #a5b5a633; color: #bacbc0; }
+.friend-book-art { width: 100%; border-radius: 5px; border: 1px solid #9d865c66; }.friend-book-memories { list-style: none; padding: 0; text-align: left; font: 16px/1.6 'Lora',Georgia,serif; }.friend-book-memories li { margin: 12px 0; color: #615b45; }
+@container (max-width: 470px) {
+  .friend-header { gap: 10px; }.friend-header h2 { font-size: 20px; }.friend-memory-count { font-size: 16px; }
+  .friend-trace-options { gap: 7px; }.friend-trace-options > button:not(.challenge-confirm) { padding: 5px; font-size: 14px; }
+  .answer-options { gap: 7px; }.answer-options button { font-size: 14px; padding: 9px 6px; }
+  .sequence-cards { gap: 7px; }.sequence-cards button { padding: 14px 6px; }.sequence-cards strong { font-size: 15px; }
+  .piece-tray { grid-template-columns: repeat(3,1fr); max-width: 260px; margin: 12px auto; }.piece-tray button { max-height: 62px; }
+  .friend-intro blockquote, .friend-ending blockquote { font-size: 18px; }.friend-portrait-scene img { max-height: 205px; }
+}
+@media (max-width: 760px) {
+  .friend-level, .journey-finale { min-height: 740px; padding: 18px; }
+  .friend-level { gap: 16px; }.friend-task-instruction { font-size: 16px; }
+  .game-stage:has(.five-friends-map) { min-height: 520px; }.five-friends-map .journey-route { min-height: 200px; gap: 3px; }.five-friends-map .stop-orb { width: 48px; height: 48px; }.five-friends-map .journey-stop > span:nth-child(2) { font-size: 12px; }.five-friends-map .journey-stop small { font-size: 10px; }
+  .journey-finale > p { font-size: 16px; }.journey-finale blockquote { font-size: 18px; }.finale-friends { gap: 8px; }.finale-friends button { width: 86px; padding: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .sent-light { animation: none; }.lit-panel, .journey-view .scan-field button { transition: none; } }
+.portrait-friend img { transform: none; object-fit: cover; object-position: center; }
+.viewpoint-scene { background: #142833; }
+.viewpoint-scene > svg { display: block; position: relative; inset: auto; height: auto; }
+.story-glyph { display: block; width: 100%; max-width: 170px; height: 100px; }
+.keepsake-choice .answer-options button { background: #e8ddc3; color: #34473e; }
+@container (max-width: 470px) { .story-glyph { height: 70px; } }

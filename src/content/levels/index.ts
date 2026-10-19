@@ -1,12 +1,13 @@
+import { friendLevels, type FriendId } from './friends';
 import { surveyor } from './surveyor';
 import type { LevelDefinition } from './types';
 
 // Add implemented levels here. IDs are persisted: keep them stable.
-export const levels = [surveyor] as const satisfies readonly LevelDefinition[];
-export type LevelId = (typeof levels)[number]['id'];
+export const levels = [surveyor, ...friendLevels] as const satisfies readonly LevelDefinition[];
+export type LevelId = 'surveyor' | FriendId;
 
-// Empty slots remain mystery stops until their content is implemented.
-export const journeyStops: readonly (LevelId | null)[] = ['surveyor', null, null, null, null];
+// Stops unlock in story order; saved IDs stay stable.
+export const journeyStops: readonly (LevelId | null)[] = ['surveyor', 'rover', 'mirror', 'flag', 'footprint'];
 
 export function getLevel(id: unknown) {
   return levels.find(level => level.id === id);

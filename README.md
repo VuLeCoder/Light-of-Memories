@@ -84,10 +84,20 @@ Giao diện dùng **React 19 + TypeScript + CSS**, game dùng **Phaser 3**, côn
 
 Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu; hội thoại đang dở bắt đầu lại từ đầu đoạn. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
 
+### Hành trình năm người bạn
+
+- Mắt Tròn: khám phá dụng cụ, đào ba ảnh ký ức và ghép nhật ký.
+- Bánh Bụi: nhận diện dấu bánh xe, vạch đường qua bãi đá và ghép công việc.
+- Gương Nhỏ: quét ánh sáng, ngắm tia sáng và sắp xếp hành trình phản xạ.
+- Cờ Nhỏ: tìm góc nhìn, ghép sáu mảnh ảnh và chọn kỷ niệm riêng.
+- Bước Nhỏ: nhận diện dấu giày, đọc hướng bước chân và kể lại câu chuyện.
+
+Bốn chương mới là truyện minh họa tương tác với nhân vật hư cấu. Hoàn thành từng chương thắp một cánh đèn và mở người bạn kế tiếp. Đủ năm cánh sao sẽ mở cuộc gặp chị Hằng. Sổ tay giữ các ký ức và lựa chọn của người chơi; tiến trình cũ được nâng cấp khi đọc.
+
+Chạy `npm test` để kiểm tra tiến trình và quy tắc thử thách; chạy `npm run build` để kiểm tra TypeScript và build. [Kịch bản và ghi chú triển khai](docs/Kich-ban-bon-nguoi-ban-con-lai.md).
+
 ### Những phần đang phát triển
 
-- Sách đồng hành hiện là khung giao diện, chưa có nội dung theo tiến trình.
-- Chương Mắt Tròn và cơ chế thu thập đủ năm cánh sao chưa được triển khai.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
 - Font sử dụng bộ có sẵn trên máy và font dự phòng, nên có thể khác nhau giữa thiết bị.
 - Bản build còn cảnh báo kích thước gói Phaser; các hạn chế khác được ghi trong tài liệu review bên dưới.

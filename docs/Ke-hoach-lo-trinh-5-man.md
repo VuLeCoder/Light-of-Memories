@@ -4,7 +4,7 @@
 
 - Giữ nguyên cấu trúc giao diện trong mã nguồn hiện tại: game bên trái, sách bên phải.
 - Hành trình gồm **5 màn chơi, tương ứng với 5 đối tượng**.
-- **Surveyor 3 — Mắt Tròn** là đối tượng của màn đầu tiên. Bốn đối tượng còn lại sẽ được xác định sau.
+- **Surveyor 3 — Mắt Tròn** là đối tượng của màn đầu tiên. Bốn người bạn tiếp theo là Bánh Bụi, Gương Nhỏ, Cờ Nhỏ và Bước Nhỏ. Các chương mới dùng nhân vật hư cấu và tranh minh họa.
 - Lộ trình xuất hiện sau cảnh hiện tại, khi Cuội đi theo dấu chân, ngay trong vùng game.
 - Tài liệu này mô tả kế hoạch thiết kế; các chi tiết hoạt cảnh, lời thoại và tương tác dưới đây là đề xuất triển khai.
 
@@ -89,3 +89,8 @@ Sau màn thứ năm, đèn có đủ năm ngôi sao sáng. Nội dung kết thú
 - Tiếp theo: hoàn thiện phần thưởng “Mắt phóng to”, cảnh kết màn và cơ chế mở khóa tuần tự khi có nội dung màn 2. Bốn đối tượng còn lại chưa chốt.
 
 Bối cảnh hố Surveyor và nguồn NASA: [ghi chú dựng cảnh](./Surveyor-3-Boicanh-NASA.md).
+
+
+## Cập nhật triển khai bốn chương còn lại
+
+Bốn điểm dừng mới đã có câu chuyện, ba thử thách riêng, phần thưởng cánh sao và sổ tay. Lộ trình mở khóa tuần tự; sau đủ năm cánh sao, người chơi gặp chị Hằng và chọn người bạn muốn kể lại. Nội dung và ghi chú kỹ thuật: [Kịch bản bốn người bạn còn lại](./Kich-ban-bon-nguoi-ban-con-lai.md).

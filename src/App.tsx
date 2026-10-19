@@ -1,3 +1,5 @@
+import { friendArt, friendStories } from './content/levels/friends';
+import { freshFriends, isFriendUnlocked, orderedFriends } from './content/levels/friends-progress';
 import { SurveyorExcavation } from './components/SurveyorExcavation';
 import type { SurveyorEvent } from './content/levels/surveyor-progress';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -82,9 +84,13 @@ export function App() {
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
   const [activeLevel, setActiveLevel] = useState<LevelId | null>(saved.progress.activeLevel);
   const [surveyorProgress, setSurveyorProgress] = useState(saved.progress.surveyor);
+  const [friends, setFriends] = useState(saved.progress.friends);
+  const enterLevel = (id: LevelId) => {
+    if (id === 'surveyor' || isFriendUnlocked(id, surveyorProgress.phase === 'complete', friends)) setActiveLevel(id);
+  };
   useEffect(() => {
-    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress));
-  }, [chapter, quest, completed, activeLevel, surveyorProgress]);
+    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress, friends));
+  }, [chapter, quest, completed, activeLevel, surveyorProgress, friends]);
   const [treeTurn, setTreeTurn] = useState(0);
   const [revealing, setRevealing] = useState(false);
   const [journey, setJourney] = useState(0);
@@ -153,6 +159,7 @@ export function App() {
     gameOwnsFocus.current = true;
     setCompleted(false);
     setSurveyorProgress(freshSurveyor());
+    setFriends(freshFriends());
     setActiveLevel(null);
     setRevealing(false);
     setScene('earth');
@@ -166,8 +173,10 @@ export function App() {
     setTurn(0);
     setMenuOpen(false);
   }
-  const current = inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
-  const currentText = inSurveyor ? encounterText : t[scene];
+  const activeFriend = journeyOpen && activeLevel && activeLevel !== 'surveyor' ? activeLevel : null;
+  const activeFriendStory = activeFriend ? friendStories[language][activeFriend] : null;
+  const current = activeFriend ? { number: String(orderedFriends.indexOf(activeFriend) + 4).padStart(2, '0'), characters: ['cuoi'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
+  const currentText = activeFriendStory ? { title: activeFriendStory.title, subtitle: activeFriendStory.name, description: activeFriendStory.reply } : inSurveyor ? encounterText : t[scene];
   const characterName = (id: keyof typeof portraits) => language === 'en' ? ({ an: 'An', ba: 'Grandma', cuoi: 'Cuội', cayDa: 'Banyan tree', matTron: 'Round Eyes', chiHang: 'Hằng' } as const)[id] : portraits[id].name;
 
   return <main className="app-shell">
@@ -238,7 +247,7 @@ export function App() {
             {surveyorDigIntro && <EarthDialogue key={`surveyor-dig-intro-${journey}`} language={language} lines={challengeLines(language, false)} initialIndex={surveyorProgress.turn} title={challengeCopy[language].soilTitle} finalAction="moon" finalLabel={challengeCopy[language].begin} paused={menuOpen} onTurn={turn => { if (turn !== surveyorProgress.turn) setSurveyorProgress({ ...surveyorProgress, turn }); }} onComplete={() => setSurveyorProgress({ ...surveyorProgress, phase: 'soil', turn: 0 })} />}
             {revealing && !menuOpen && <div className="journey-light" role="status">✦<p>{journeyCopy[language].reveal}</p></div>}
             {excavating && !menuOpen && <SurveyorExcavation language={language} progress={surveyorProgress} near={digNear} onChange={setSurveyorProgress} onBack={() => setActiveLevel(null)} onBook={openFieldBook} />}
-            {journeyOpen && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
+            {journeyOpen && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap friends={friends} onFriendsChange={setFriends} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} activeLevel={activeLevel} onEnter={enterLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
@@ -246,11 +255,11 @@ export function App() {
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
         <div className="scene-details">
-          <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
+          <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}{activeFriend && activeFriendStory && <div className="cast-member"><span className="portrait portrait-friend"><img src={friendArt(activeFriend)} alt=""/></span><span>{activeFriendStory.name}</span></div>}</div>
           <p>{currentText.description}{inSurveyor && <> <a className="scenery-source" href="https://www.nasa.gov/humans-in-space/lunar-encore-leads-to-first-precision-extraterrestrial-landing/" target="_blank" rel="noreferrer">NASA ↗</a></>}</p>
         </div>
       </section>
-      {journeyOpen && !revealing ? <JourneyBook bookRequest={bookRequest} onSurveyorChange={setSurveyorProgress} language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
+      {journeyOpen && !revealing ? <JourneyBook friends={friends} bookRequest={bookRequest} onSurveyorChange={setSurveyorProgress} language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
     </div>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">

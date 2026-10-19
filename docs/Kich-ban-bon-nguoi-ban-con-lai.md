@@ -1,6 +1,6 @@
 # Kịch bản bốn người bạn còn lại — Lộ trình năm ánh sao
 
-**Trạng thái:** Bản ý tưởng được thống nhất để lưu làm kế hoạch; chưa triển khai code.
+**Trạng thái:** Đã triển khai bốn chương minh họa tương tác, mỗi chương có ba thử thách, cảnh thắp sao và đoạn gặp lại chị Hằng. Kịch bản dưới đây là định hướng; xem phần ghi chú triển khai cuối tài liệu.
 
 Bốn người bạn được đề xuất sau Surveyor 3 — Mắt Tròn là **xe tự hành, tấm gương phản xạ, lá cờ và dấu chân**. Mỗi bạn có một nỗi niềm và cách chơi riêng, để hành trình không lặp lại việc đào ảnh rồi ghép nhật ký.
 
@@ -124,4 +124,17 @@ Cuội mở sổ. Người chơi chọn một người bạn để kể trước
 - Lời thoại khoảng **1–2 câu mỗi lượt**.
 - Phần giải thích dài đặt trong sổ tay để nội dung game vừa khung, tránh thanh cuộn nội bộ.
 - Chưa thêm kỹ năng riêng cho các bạn trong bản này.
-- Tài liệu chỉ lưu kế hoạch câu chuyện và thử thách; không đồng nghĩa các màn đã được triển khai hoặc các chi tiết lịch sử đã được xác minh.
+- Các nhân vật mới là hư cấu, chưa gắn với một sứ mệnh lịch sử cụ thể; không dùng tranh minh họa làm tư liệu ảnh thật.
+
+
+## Ghi chú triển khai
+
+- Lộ trình mở lần lượt: Mắt Tròn → Bánh Bụi → Gương Nhỏ → Cờ Nhỏ → Bước Nhỏ. Năm cánh sao mở đoạn gặp chị Hằng.
+- Bốn màn mới dùng tranh SVG và bảng tương tác trong khung game. Đây là những chương ký ức minh họa; không có thao tác di chuyển tự do bằng Phaser như phần đào ảnh của Mắt Tròn.
+- Bánh Bụi: nhận diện vệt bánh xe, vạch đường qua lưới đá (có lùi bước và làm lại), ghép công việc với ba điểm dừng.
+- Gương Nhỏ: quét vệt sáng để tìm bảng gương, ngắm tia sáng bằng hai thanh điều chỉnh, ghép thứ tự gửi–phản xạ–nhận. Mô phỏng không theo tỉ lệ khoảng cách thật.
+- Cờ Nhỏ: chọn vị trí cho cảnh khớp nét ảnh cũ, ghép sáu mảnh tranh ký ức, chọn một chi tiết để ghi vào sổ. Lựa chọn cuối không có đáp án sai.
+- Bước Nhỏ: nhận diện dấu giày, đọc hướng mũi giày qua bốn lượt, ghép ba hình thành câu chuyện.
+- Các màn có gợi ý, phản hồi thử lại, hỗ trợ chuột/chạm/bàn phím và nội dung Việt/Anh. Sổ tay ghi nhận từng thử thách hoàn thành cùng kỷ niệm đã chọn.
+- Save phiên bản 4 giữ bước thử thách, đường đã đi, mảnh ảnh đã đặt, thứ tự đã chọn, kỷ niệm và lựa chọn trong đoạn kết. Các điều chỉnh ngắm/quét và gợi ý đang mở được khởi tạo lại khi vào màn. Save phiên bản 1–3 vẫn đọc được.
+- `npm test`: kiểm tra mở khóa, nâng cấp save, lưu tiến trình, phục hồi dữ liệu lỗi, đường đi và câu đố. `npm run build`: kiểm tra TypeScript và build sản phẩm.
