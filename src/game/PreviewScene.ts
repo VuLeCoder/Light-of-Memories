@@ -39,6 +39,14 @@ export class PreviewScene extends Phaser.Scene {
       else if (id === 'arrive') this.digMarks.strokeEllipse(x - 15, y, 22, 9).strokeEllipse(x + 13, y - 5, 22, 9);
       else if (id === 'work') for (let i = 0; i < 3; i++) this.digMarks.lineBetween(x - 22, y - 9 + i * 8, x + 22, y - 14 + i * 8);
       else for (let i = 0; i < 6; i++) this.digMarks.fillEllipse(x - 22 + i * 9, y + (i % 2) * 7 - 6, 6, 3);
+      if (this.options.excavation.clues.includes(id) && !this.options.excavation.found.includes(id)) {
+        // Mark only locations the player has remembered in the field notebook.
+        this.digMarks.lineStyle(7, 0x172730, .7).strokeEllipse(x, y, 64, 27);
+        this.digMarks.lineStyle(2, 0xffdf99, 1).strokeEllipse(x, y, 64, 27);
+        this.digMarks.lineStyle(2, 0x172730, .9).fillStyle(0xffdf99, 1);
+        this.digMarks.fillTriangle(x, y - 19, x - 6, y - 29, x + 6, y - 29);
+        this.digMarks.strokeTriangle(x, y - 19, x - 6, y - 29, x + 6, y - 29);
+      }
     }
   }
   private updateExcavation(time: number, delta: number) {

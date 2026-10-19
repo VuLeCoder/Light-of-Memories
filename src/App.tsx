@@ -99,7 +99,7 @@ export function App() {
   const [bookRequest, setBookRequest] = useState(0);
   const excavating = inSurveyor && ['soil', 'digging', 'soil-memory'].includes(surveyorProgress.phase);
   useEffect(() => { setDigNear(null); }, [excavating]);
-  const excavation = excavating ? { found: surveyorProgress.found, digging: surveyorProgress.phase === 'digging' } : undefined;
+  const excavation = excavating ? { found: surveyorProgress.found, clues: surveyorProgress.clues, digging: surveyorProgress.phase === 'digging' } : undefined;
   const openFieldBook = () => { setBookRequest(n => n + 1); };
   const surveyorMeeting = inSurveyor && (surveyorProgress.phase === 'arrival' || surveyorProgress.phase === 'dialogue');
   const surveyorChat = surveyorMeeting && surveyorProgress.phase === 'dialogue';
