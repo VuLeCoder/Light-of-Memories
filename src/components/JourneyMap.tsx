@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Language } from '../content/i18n';
 import { copy } from '../content/i18n';
 import { getLevel, journeyStops, type LevelId } from '../content/levels';
+import { BookNavigation } from './BookNavigation';
 
 export const journeyCopy = {
   vi: {
@@ -50,17 +51,24 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack }: { languag
 }
 
 export function JourneyBook({ language, activeLevel }: { language: Language; activeLevel: LevelId | null }) {
+  return <JourneyBookPages key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} />;
+}
+
+function JourneyBookPages({ language, activeLevel }: { language: Language; activeLevel: LevelId | null }) {
+  // Only configured stops have readable pages. Reading never changes the game level.
+  const pages = [null, ...journeyStops.filter((id): id is LevelId => id !== null)];
+  const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
   const t = journeyCopy[language];
-  const level = getLevel(activeLevel);
+  const level = getLevel(pages[page]);
   const detail = level?.text[language];
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" aria-labelledby="book-title"><div className="book-sheet journey-book">
-      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{level && detail ? `${String(journeyStops.indexOf(activeLevel) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
+      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{level && detail ? detail.friend : t.book}</h2>
       <p>{level && detail ? detail.invitation : t.guide}</p>
       {level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, () => '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">☆</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{index === 0 ? t.ready : t.waiting}</small></span></li>)}</ol>}
-      <div className="page-bottom">☆ 0/{journeyStops.length}</div>
+      <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
     </div><p className="book-note">{t.note}</p></aside>
   </>;
 }

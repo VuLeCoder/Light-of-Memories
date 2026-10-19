@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { JourneyMap, JourneyBook, journeyCopy } from './components/JourneyMap';
+import { BookNavigation } from './components/BookNavigation';
 import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
 import { VisitorCounter } from './components/VisitorCounter';
@@ -24,7 +25,7 @@ function BookPlaceholder({ language }: { language: Language }) {
         <div className="paper-divider" aria-hidden="true">✦</div>
         <p>{t.bookComing}</p>
         <div className="placeholder-lines" aria-hidden="true"><i /><i /><i /></div>
-        <div className="page-bottom"><span aria-hidden="true">—</span> <span>{t.bookFirst}</span> <span aria-hidden="true">—</span></div>
+        <BookNavigation language={language} page={0} count={1} onChange={() => {}} />
       </div>
       <p className="book-note">{t.bookNote}</p>
     </aside>
