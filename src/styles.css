@@ -239,3 +239,31 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .book-panel:lang(vi) { --book-body-size: 16px; --book-title-size: 25px; }
   .book-panel:lang(en) { --book-body-size: 16px; --book-title-size: 24px; }
 }
+
+/* Surveyor's encounter and first memory stay inside the existing game viewport. */
+.surveyor-level{display:flex;flex-direction:column;gap:10px;text-align:left}
+.surveyor-level header{flex-shrink:0}
+.surveyor-level h2:focus{outline:none}
+.surveyor-drawing{display:block;width:100%;height:100%}
+.surveyor-instruction{margin:0;line-height:1.5;font-size:clamp(12px,1.1vw,16px)}
+.surveyor-tools-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(120px,1fr);gap:16px;align-items:center;flex:1;min-height:160px}
+.surveyor-tool-picture{position:relative;width:100%;max-width:350px;aspect-ratio:400/270;justify-self:center}
+.surveyor-labels{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.surveyor-labels button{min-height:44px}.surveyor-labels button[aria-pressed=true]{background:#e2c58d;color:#25313b;box-shadow:0 0 0 2px #fff0bd}
+.surveyor-labels button:disabled{opacity:.65;cursor:default}.surveyor-labels>span{font-size:13px;color:#d8d5c4}
+.journey-view .tool-hotspot{position:absolute;border:2px dashed #ffe5a7;padding:0;background:#f7d98b18;min-width:44px;min-height:44px}
+.tool-camera{left:42%;top:6%;width:22%;height:26%}.tool-scoop{left:76%;top:68%;width:17%;height:22%}
+.tool-hotspot span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#142b35ed;color:#fff0ca;padding:3px 7px;border-radius:4px;white-space:nowrap;font-size:clamp(10px,1vw,14px)}
+.journey-view .tool-hotspot.is-matched{border-style:solid;border-color:#bce7b1;background:#bce7b130}
+.surveyor-feedback{font-size:clamp(12px,1.15vw,16px);line-height:1.5;min-height:3em;color:#ffe0a0;margin:0}
+.surveyor-memory{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;max-width:600px;margin:auto;line-height:1.6;font-size:clamp(13px,1.3vw,18px)}
+.memory-light{font-size:48px;color:#ffe0a0;text-shadow:0 0 22px #f9d481}.surveyor-memory p{margin:7px 0}.surveyor-pending{font-size:.85em;color:#c1d0cf}
+.surveyor-footer{display:flex;align-items:center;gap:15px;margin-top:auto;flex-shrink:0}.surveyor-footer button{flex-shrink:0;min-height:44px}.surveyor-footer small{font-size:11px;line-height:1.4;color:#c4d0d0}
+.book-new-entry{color:#806126;text-align:center;line-height:1.4}
+@media(max-width:760px){.surveyor-level{gap:8px}.surveyor-tools-layout{gap:10px;grid-template-columns:minmax(0,1.4fr) minmax(105px,1fr)}.surveyor-labels button{padding:8px;font-size:13px}.surveyor-footer{gap:10px}.surveyor-footer small{font-size:10px}.surveyor-footer button{font-size:12px}}
+
+.surveyor-scene-hud{position:absolute;inset:12px 14px auto;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none;color:#eee3c9;z-index:1;font-size:clamp(12px,1.15vw,16px)}
+.surveyor-scene-hud>span,.surveyor-scene-hud>button{background:#15232be8;border:1px solid #cdb77b66;border-radius:7px;padding:8px 12px;line-height:1.4}
+.surveyor-scene-hud>button{pointer-events:auto;color:inherit;min-height:44px;flex-shrink:0}
+.scenery-source{text-decoration:underline;text-underline-offset:3px;color:#dfc68f;white-space:nowrap}
+@media(max-width:760px){.surveyor-scene-hud{inset:6px 6px auto;gap:6px}.surveyor-scene-hud>span,.surveyor-scene-hud>button{padding:6px 8px;font-size:11px}}

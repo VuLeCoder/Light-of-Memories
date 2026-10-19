@@ -17,7 +17,7 @@ Lộ trình giúp người chơi hiểu mình sẽ đi qua năm điểm dừng, 
 ## 3. Chuyển từ cảnh dấu chân sang lộ trình
 
 1. Cuội đi đến cuối dấu chân, dừng trên một gò đất nhỏ. Phía trước hiện ra một ánh sáng yếu.
-2. Đèn ông sao khẽ sáng lên. Khung cảnh thu nhỏ dần thành bản đồ minh họa bề mặt Mặt Trăng trong vùng game.
+2. Đèn ông sao khẽ sáng lên; khung cảnh chỉ tăng sáng, không thu nhỏ. Sau đó lộ trình xuất hiện trong vùng game.
 3. Một đường dấu chân lần lượt nối năm điểm dừng. Cuội đứng ở điểm xuất phát.
 4. Điểm đầu tiên sáng rõ, hiện hình Surveyor 3 — Mắt Tròn. Bốn điểm còn lại hiện số thứ tự và bóng dáng các đối tượng; có thể dùng ký hiệu bí ẩn khi chưa chốt đối tượng.
 5. Sau lời dẫn ngắn, người chơi chọn “Đến gặp Mắt Tròn” để bắt đầu màn 1.
@@ -78,3 +78,13 @@ Sau màn thứ năm, đèn có đủ năm ngôi sao sáng. Nội dung kết thú
 - Lời thoại chính thức và nội dung trang sách “Hành trình của Cuội”.
 - Cách mở lại lộ trình trong lúc chơi, phù hợp với các điều khiển hiện có.
 - Cảnh kết thúc sau khi hoàn thành cả năm màn.
+
+## 8. Tiến độ triển khai
+
+- Đã có: nhận đèn, dấu chân, chuyển cảnh tăng sáng, lộ trình năm điểm và bố cục cân đối; sách độc lập có nút lật trang.
+- Đã có phần 1–2 của màn Surveyor: Cuội đi bằng sprite/điều khiển như cảnh cây đa, đến gần Mắt Tròn trong hố Surveyor và bấm E hoặc bấm nhân vật để mở khung chat, nhận nhiệm vụ và T01 ghép công dụng hai dụng cụ. Có gợi ý, thử lại không mất kết quả đúng, hỗ trợ bàn phím và tiếng Việt/Anh.
+- Hoàn thành T01 sáng một mảnh ký ức (1/3), thêm trang B01 để tự mở đọc; chưa cộng sao lộ trình (vẫn 0/5 vì màn 1 chưa hoàn thành).
+- Lưu phiên bản 3 giữ giai đoạn, lượt thoại và phần ghép đúng, tương thích bản lưu cũ. Bắt đầu lại xóa tiến độ màn.
+- Tiếp theo: T02, T03, sách B02–B03, kết màn và cơ chế mở khóa tuần tự. Bốn đối tượng còn lại chưa chốt.
+
+Bối cảnh hố Surveyor và nguồn NASA: [ghi chú dựng cảnh](./Surveyor-3-Boicanh-NASA.md).

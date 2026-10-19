@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import type { SceneId } from '../content/scenes';
-import type { MoonQuest } from './types';
+import type { GameSceneId, MoonQuest } from './types';
 import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
+import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
+
+const canvasLabel = (scene: GameSceneId, language: Language) => scene === 'surveyor'
+  ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
 
 function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'NumpadEnter'].includes(event.code)) return;
@@ -11,15 +14,15 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
-  initiallyAwake: boolean; scene: SceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
+export function GameCanvas({ initiallyAwake, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
   onAwake: () => void;
 }) {
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit });
-  progressRef.current = { quest, treeSpeaking, onInteract, onExit };
+  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted });
+  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -45,6 +48,7 @@ export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, t
       if (cancelled) return;
       const previewScene = new PreviewScene({
         initiallyAwake: awakeRef.current,
+        encounterStarted: progressRef.current.encounterStarted,
         quest: progressRef.current.quest, treeSpeaking: progressRef.current.treeSpeaking,
         onInteract: () => { if (!cancelled) progressRef.current.onInteract(); },
         onExit: () => { if (!cancelled) progressRef.current.onExit(); },
@@ -63,7 +67,7 @@ export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, t
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: VIEW.width, height: VIEW.height },
         scene: previewScene,
         callbacks: { postBoot: (instance) => {
-          instance.canvas.setAttribute('aria-label', scene === 'earth' ? copy[languageRef.current].canvasEarth : copy[languageRef.current].canvasMoon);
+          instance.canvas.setAttribute('aria-label', canvasLabel(scene, languageRef.current));
           instance.canvas.setAttribute('role', 'img');
         } },
       });
@@ -106,12 +110,12 @@ export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, t
   useEffect(() => {
     phaserScene.current?.setLanguage(language);
     const canvas = host.current?.querySelector('canvas');
-    canvas?.setAttribute('aria-label', scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon);
+    canvas?.setAttribute('aria-label', canvasLabel(scene, language));
   }, [language, scene]);
 
   return <div className="canvas-wrap">
     <div ref={host} className="game-host" data-ready={ready} data-scene={scene}
-      tabIndex={0} aria-label={scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon}
+      tabIndex={0} aria-label={canvasLabel(scene, language)}
       onKeyDown={containGameKey}
       onKeyUp={containGameKey}
       onPointerDown={(event) => event.currentTarget.focus({ preventScroll: true })}

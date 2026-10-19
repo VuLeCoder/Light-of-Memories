@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { Language } from '../content/i18n';
 import { copy } from '../content/i18n';
 import { getLevel, journeyStops, type LevelId } from '../content/levels';
+import { SurveyorLevel, surveyorPlayCopy } from './SurveyorLevel';
+import type { SurveyorProgress } from '../content/levels/surveyor-progress';
 import { BookNavigation } from './BookNavigation';
 
 export const journeyCopy = {
@@ -23,12 +25,13 @@ export const journeyCopy = {
   },
 };
 
-export function JourneyMap({ language, activeLevel, onEnter, onBack }: { language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ language, activeLevel, onEnter, onBack, surveyorProgress, onSurveyorChange }: { surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
   const level = getLevel(activeLevel);
   const detail = level?.text[language];
   const firstLevel = getLevel(journeyStops[0])!;
   const [locked, setLocked] = useState(false);
+  if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
     <header><span>☆ 0/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
     {level && detail ? <>
@@ -50,24 +53,27 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack }: { languag
   </section>;
 }
 
-export function JourneyBook({ language, activeLevel }: { language: Language; activeLevel: LevelId | null }) {
-  return <JourneyBookPages key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} />;
+export function JourneyBook({ language, activeLevel, surveyorProgress }: { language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ language, activeLevel }: { language: Language; activeLevel: LevelId | null }) {
+function JourneyBookPages({ language, activeLevel, surveyorProgress }: { language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
   // Only configured stops have readable pages. Reading never changes the game level.
-  const pages = [null, ...journeyStops.filter((id): id is LevelId => id !== null)];
+  const pages = [null, ...journeyStops.filter((id): id is LevelId => id !== null), ...(surveyorProgress.phase === 'memory' ? ['surveyor-b01' as const] : [])];
   const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
   const t = journeyCopy[language];
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
+  const b01 = pages[page] === 'surveyor-b01';
+  const st = surveyorPlayCopy[language];
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div className="book-sheet journey-book">
-      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
-      <h2 id="book-title">{level && detail ? detail.friend : t.book}</h2>
-      <p>{level && detail ? detail.invitation : t.guide}</p>
-      {level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, () => '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">☆</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{index === 0 ? t.ready : t.waiting}</small></span></li>)}</ol>}
+      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? 'B01 · Surveyor 3' : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
+      <h2 id="book-title">{b01 ? st.bookTitle : level && detail ? detail.friend : t.book}</h2>
+      <p>{b01 ? st.bookBody : level && detail ? detail.invitation : t.guide}</p>
+      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · 1/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, (_, index) => level.id === 'surveyor' && surveyorProgress.phase === 'memory' && index === 0 ? '★' : '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">☆</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{index === 0 ? t.ready : t.waiting}</small></span></li>)}</ol>}
+      {surveyorProgress.phase === 'memory' && !b01 && <small className="book-new-entry">✦ {st.bookTitle}</small>}
       <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
     </div><p className="book-note">{t.note}</p></aside>
   </>;

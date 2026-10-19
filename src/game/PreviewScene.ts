@@ -2,20 +2,22 @@ import Phaser from 'phaser';
 import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '../content/assets';
 import { cacheScenery, earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
+import { surveyorScenery, surveyorGroundY, surveyorEncounter } from './surveyor-scenery';
+import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
 import { copy, type Language } from '../content/i18n';
 
 export class PreviewScene extends Phaser.Scene {
   private options: PreviewOptions;
-  private benchRegion = new Phaser.Geom.Rectangle(444, 350, 153, 88);
+  private interactionRegion = new Phaser.Geom.Rectangle(444, 350, 153, 88);
   private failedAssets: string[] = [];
   private cuoi?: Phaser.GameObjects.Sprite;
   private moonMode: PreviewOptions['moonMode'];
   private keys?: Record<'left' | 'right' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
   private walkTarget?: number;
   private awake = false;
-  private pendingBench = false;
+  private pendingInteraction = false;
   private exitTriggered = false;
-  private benchHint?: Phaser.GameObjects.Text;
+  private interactionHint?: Phaser.GameObjects.Text;
   private treeGlow?: Phaser.GameObjects.Graphics;
   private lantern?: Phaser.GameObjects.Graphics;
   private trailHighlight?: Phaser.GameObjects.Graphics;
@@ -31,9 +33,13 @@ export class PreviewScene extends Phaser.Scene {
     this.trailHint?.setVisible(showTrail);
   }
 
-  private interactBench() {
-    if (this.moonMode !== 'free' || this.options.quest !== 'bench' || !this.cuoi || Math.abs(this.cuoi.x - 520) > 90) return;
-    this.pendingBench = false;
+  private get interactionX() { return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
+  private get canInteract() { return this.options.scene === 'surveyor' || this.options.quest === 'bench'; }
+  private interactionLabel() { return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
+
+  private interactNearby() {
+    if (this.moonMode !== 'free' || !this.canInteract || !this.cuoi || Math.abs(this.cuoi.x - this.interactionX) > 90) return;
+    this.pendingInteraction = false;
     this.walkTarget = undefined;
     this.setMoonMode('story');
     this.options.onInteract();
@@ -48,7 +54,7 @@ export class PreviewScene extends Phaser.Scene {
 
   releaseControls() {
     this.walkTarget = undefined;
-    this.pendingBench = false;
+    this.pendingInteraction = false;
     this.input?.keyboard?.resetKeys();
     if (this.awake) this.setCuoiFrame('rest');
   }
@@ -56,15 +62,15 @@ export class PreviewScene extends Phaser.Scene {
   setLanguage(language: Language) {
     this.options.language = language;
     this.trailHint?.setText(copy[language].trailMarker);
-    this.benchHint?.setText(copy[language].interactBench);
+    this.interactionHint?.setText(this.interactionLabel());
   }
 
   setMoonMode(mode: PreviewOptions['moonMode']) {
     if (this.moonMode === mode) return;
     this.moonMode = mode;
     this.walkTarget = undefined;
-    this.pendingBench = false;
-    this.benchHint?.setVisible(false);
+    this.pendingInteraction = false;
+    this.interactionHint?.setVisible(false);
     this.input?.keyboard?.resetKeys();
     if (!this.cuoi) return;
     if (mode === 'wake' && !this.awake) this.beginWake();
@@ -99,19 +105,25 @@ export class PreviewScene extends Phaser.Scene {
       // Align An's seated hips with the porch edge (y=425), feet on the lower step.
       this.addCharacter('an', 313, 465, 0.37);
     } else {
-      cacheScenery(this, moonScenery);
-      this.trailHighlight = this.add.graphics();
-      for (let i = 0; i < 9; i++) {
-        const x = 659 + i * 29, y = 435 - i * 3 + i % 2 * 10;
-        this.trailHighlight.fillStyle(0xffdf91, 0.18).fillEllipse(x + 5, y + 2, 26, 16);
-        this.trailHighlight.lineStyle(2, 0xffdf91, 0.95).strokeRect(x - 1, y - 1, 12, 7);
+      if (this.options.scene === 'surveyor') {
+        cacheScenery(this, surveyorScenery);
+        const { x, y, width, height } = surveyorEncounter.region;
+        this.interactionRegion = new Phaser.Geom.Rectangle(x, y, width, height);
+      } else {
+        cacheScenery(this, moonScenery);
+        this.trailHighlight = this.add.graphics();
+        for (let i = 0; i < 9; i++) {
+          const x = 659 + i * 29, y = 435 - i * 3 + i % 2 * 10;
+          this.trailHighlight.fillStyle(0xffdf91, 0.18).fillEllipse(x + 5, y + 2, 26, 16);
+          this.trailHighlight.lineStyle(2, 0xffdf91, 0.95).strokeRect(x - 1, y - 1, 12, 7);
+        }
+        this.trailHint = this.add.text(780, 353, copy[this.options.language].trailMarker, {
+          fontFamily: 'Arial', fontSize: '22px', color: '#ffe3a1',
+          backgroundColor: '#15232b', padding: { x: 12, y: 8 },
+        }).setOrigin(0.5).setDepth(20);
+        this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
       }
-      this.trailHint = this.add.text(780, 353, copy[this.options.language].trailMarker, {
-        fontFamily: 'Arial', fontSize: '22px', color: '#ffe3a1',
-        backgroundColor: '#15232b', padding: { x: 12, y: 8 },
-      }).setOrigin(0.5).setDepth(20);
-      this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
-      this.benchHint = this.add.text(520, 310, copy[this.options.language].interactBench, { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
+      this.interactionHint = this.add.text(this.options.scene === 'surveyor' ? 705 : 520, this.options.scene === 'surveyor' ? 146 : 310, this.interactionLabel(), { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
       this.addMoonCuoi();
       this.lantern = this.add.graphics().setDepth(10);
       const points = Array.from({ length: 10 }, (_, i) => {
@@ -125,12 +137,12 @@ export class PreviewScene extends Phaser.Scene {
       // Phaser Scale Manager converts CSS pixels to 960×540 scene coordinates.
       const x = Phaser.Math.Clamp(pointer.x, 0, VIEW.width);
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
-      if (this.options.scene !== 'moon' || this.moonMode !== 'free') return;
-      this.pendingBench = this.options.quest === 'bench' && this.benchRegion.contains(x, y);
-      if (this.pendingBench) {
-        this.walkTarget = 520;
-        if (this.cuoi && Math.abs(this.cuoi.x - 520) <= 90) this.interactBench();
-      } else if (y >= 400) this.walkTarget = Phaser.Math.Clamp(x, 52, this.options.quest === 'trail' ? 908 : 830);
+      if (this.options.scene === 'earth' || this.moonMode !== 'free') return;
+      this.pendingInteraction = this.canInteract && this.interactionRegion.contains(x, y);
+      if (this.pendingInteraction) {
+        this.walkTarget = this.interactionX;
+        if (this.cuoi && Math.abs(this.cuoi.x - this.interactionX) <= 90) this.interactNearby();
+      } else if (y >= (this.options.scene === 'surveyor' ? 300 : 400)) this.walkTarget = Phaser.Math.Clamp(x, 52, this.rightEdge);
     };
     this.input.on('pointerdown', onPointerDown);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.off('pointerdown', onPointerDown));
@@ -141,24 +153,25 @@ export class PreviewScene extends Phaser.Scene {
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
     this.lantern?.setPosition(this.cuoi.x + (this.cuoi.flipX ? -38 : 38), this.cuoi.y - 56);
-    this.benchHint?.setVisible(this.moonMode === 'free' && this.options.quest === 'bench' && Math.abs(this.cuoi.x - 520) <= 90);
+    this.interactionHint?.setVisible(this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
-    if (document.activeElement?.matches('input, select, textarea')) { this.walkTarget = undefined; this.pendingBench = false; this.setCuoiFrame('rest'); return; }
+    if (document.activeElement?.matches('input, select, textarea')) { this.walkTarget = undefined; this.pendingInteraction = false; this.setCuoiFrame('rest'); return; }
     const left = this.keys!.left.isDown || this.keys!.a.isDown;
     const right = this.keys!.right.isDown || this.keys!.d.isDown;
-    if (left || right) { this.walkTarget = undefined; this.pendingBench = false; }
+    if (left || right) { this.walkTarget = undefined; this.pendingInteraction = false; }
     const direction = left === right ? 0 : left ? -1 : 1;
     const targetDirection = this.walkTarget === undefined ? 0 : Math.sign(this.walkTarget - this.cuoi.x);
     const heading = direction || targetDirection;
-    if (this.pendingBench && Math.abs(this.cuoi.x - 520) <= 90) { this.interactBench(); return; }
+    if (this.pendingInteraction && Math.abs(this.cuoi.x - this.interactionX) <= 90) { this.interactNearby(); return; }
     if (!heading) { this.setCuoiFrame('rest'); return; }
     this.cuoi.setFlipX(heading < 0);
     const distance = 165 * Math.min(delta, 50) / 1000;
     const remaining = this.walkTarget === undefined ? Infinity : Math.abs(this.walkTarget - this.cuoi.x);
-    const rightEdge = this.options.quest === 'trail' ? 908 : 830;
+    const rightEdge = this.rightEdge;
     this.cuoi.x = Phaser.Math.Clamp(this.cuoi.x + heading * Math.min(distance, remaining), 52, rightEdge);
-    if (this.options.quest === 'trail' && this.cuoi.x >= 890 && !this.exitTriggered) {
+    if (this.options.scene === 'surveyor') this.cuoi.y = surveyorGroundY(this.cuoi.x);
+    if (this.options.scene === 'moon' && this.options.quest === 'trail' && this.cuoi.x >= 890 && !this.exitTriggered) {
       this.exitTriggered = true;
       this.setMoonMode('story');
       this.options.onExit();
@@ -170,9 +183,12 @@ export class PreviewScene extends Phaser.Scene {
     else if (!this.cuoi.anims.isPlaying || this.cuoi.anims.currentAnim?.key !== 'cuoi-walk') this.cuoi.play('cuoi-walk');
   }
 
+  private get rightEdge() { return this.options.scene === 'surveyor' ? 890 : this.options.quest === 'trail' ? 908 : 830; }
+
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;
-    this.cuoi = this.add.sprite(this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470, 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
+    const startX = this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
+    this.cuoi = this.add.sprite(startX, this.options.scene === 'surveyor' ? surveyorGroundY(startX) : 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
       .setOrigin(0.5, 1).setScale(0.62);
     this.awake = this.options.initiallyAwake;
     this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
@@ -180,7 +196,7 @@ export class PreviewScene extends Phaser.Scene {
     this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D' }, false) as typeof this.keys;
     const onInteractKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      if (!event.repeat && !target?.closest('input, select, textarea')) this.interactBench();
+      if (!event.repeat && !target?.closest('input, select, textarea')) this.interactNearby();
     };
     this.input.keyboard?.on('keydown-E', onInteractKey);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.keyboard?.off('keydown-E', onInteractKey));

@@ -9,6 +9,8 @@ import { scenes, type SceneId } from './content/scenes';
 import { brandLogo, portraits } from './content/assets';
 import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
 import { readProgress, saveProgress, readSound, type Chapter } from './state/progress';
+import { surveyorEncounterCopy, surveyorEncounterLines } from './content/levels/surveyor-encounter';
+import { freshSurveyor } from './content/levels/surveyor-progress';
 import type { LevelId } from './content/levels';
 import type { MoonQuest } from './game/types';
 
@@ -76,9 +78,10 @@ export function App() {
   const [chapter, setChapter] = useState<Chapter>(saved.progress.chapter);
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
   const [activeLevel, setActiveLevel] = useState<LevelId | null>(saved.progress.activeLevel);
+  const [surveyorProgress, setSurveyorProgress] = useState(saved.progress.surveyor);
   useEffect(() => {
-    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel));
-  }, [chapter, quest, completed, activeLevel]);
+    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress));
+  }, [chapter, quest, completed, activeLevel, surveyorProgress]);
   const [treeTurn, setTreeTurn] = useState(0);
   const [revealing, setRevealing] = useState(false);
   const [journey, setJourney] = useState(0);
@@ -89,12 +92,19 @@ export function App() {
   const moonWaking = chapter === 'moon-waking';
   const questDialogue = quest === 'tree' || quest === 'lantern';
   const journeyOpen = quest === 'complete';
-  const questLocked = questDialogue || journeyOpen;
+  const inSurveyor = journeyOpen && activeLevel === 'surveyor';
+  const surveyorMeeting = inSurveyor && (surveyorProgress.phase === 'arrival' || surveyorProgress.phase === 'dialogue');
+  const surveyorChat = surveyorMeeting && surveyorProgress.phase === 'dialogue';
+  const encounterText = surveyorEncounterCopy[language];
+  const questLocked = questDialogue || (journeyOpen && !surveyorMeeting) || surveyorChat;
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
   const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
   const onBench = useCallback(() => { setTreeTurn(0); setQuest((value) => value === 'bench' ? 'tree' : value); }, []);
+  const onSurveyorInteract = useCallback(() => setSurveyorProgress(value => value.phase === 'arrival' ? { ...value, phase: 'dialogue' } : value), []);
+  const onSurveyorTurn = useCallback((index: number) => setSurveyorProgress(value => value.turn === index ? value : { ...value, turn: index }), []);
+  const startSurveyorTools = useCallback(() => setSurveyorProgress(value => ({ ...value, phase: 'tools' })), []);
   const onExit = useCallback(() => {
     if (quest !== 'trail') return;
     setCompleted(true);
@@ -115,7 +125,7 @@ export function App() {
     const target = transitioning || moonWaking ? stage
       : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .journey-view button, .story-canvas:not([inert]) .game-host');
     (target ?? stage)?.focus({ preventScroll: true });
-  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel]);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase]);
   const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
@@ -132,6 +142,7 @@ export function App() {
   function startJourney() {
     gameOwnsFocus.current = true;
     setCompleted(false);
+    setSurveyorProgress(freshSurveyor());
     setActiveLevel(null);
     setRevealing(false);
     setScene('earth');
@@ -145,8 +156,8 @@ export function App() {
     setTurn(0);
     setMenuOpen(false);
   }
-  const current = scenes[scene];
-  const currentText = t[scene];
+  const current = inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
+  const currentText = inSurveyor ? encounterText : t[scene];
   const characterName = (id: keyof typeof portraits) => language === 'en' ? ({ an: 'An', ba: 'Grandma', cuoi: 'Cuội', cayDa: 'Banyan tree', matTron: 'Round Eyes', chiHang: 'Hằng' } as const)[id] : portraits[id].name;
 
   return <main className="app-shell">
@@ -189,13 +200,13 @@ export function App() {
             }}
             onClick={(event) => {
               if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
-              if (menuOpen || !(tellingStory || moonStory || questDialogue)) return;
+              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat)) return;
               if ((event.target as Element).closest('button, select, input, a')) return;
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas key={journey} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              <GameCanvas key={journey} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={surveyorMeeting ? onSurveyorInteract : onBench} onExit={onExit} scene={inSurveyor ? 'surveyor' : scene} encounterStarted={surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
@@ -205,20 +216,25 @@ export function App() {
               {['lantern', 'trail', 'complete'].includes(quest) && <strong aria-label={`${t.lantern}: 0/5`}><span aria-hidden="true">☆</span> 0/5</strong>}
             </div>}
             {questDialogue && <EarthDialogue key={`${quest}-${journey}`} language={language} lines={quest === 'tree' ? storyLines[language].tree : storyLines[language].departure} title={t.treeTitle} finalAction={quest === 'tree' ? 'lantern' : 'moon'} paused={menuOpen} onComplete={quest === 'tree' ? receiveLantern : followTracks} onTurn={quest === 'tree' ? setTreeTurn : noopTurn} />}
+            {surveyorMeeting && !menuOpen && <div className="surveyor-scene-hud">
+              <span>{encounterText.subtitle}</span>
+              <button onClick={() => setActiveLevel(null)}>{encounterText.back}</button>
+            </div>}
+            {surveyorChat && <EarthDialogue key={`surveyor-${journey}`} language={language} lines={surveyorEncounterLines[language]} initialIndex={surveyorProgress.turn} title={encounterText.title} finalAction="moon" finalLabel={encounterText.begin} paused={menuOpen} onComplete={startSurveyorTools} onTurn={onSurveyorTurn} />}
             {revealing && !menuOpen && <div className="journey-light" role="status">✦<p>{journeyCopy[language].reveal}</p></div>}
-            {journeyOpen && !revealing && !menuOpen && <JourneyMap language={language} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
+            {journeyOpen && !surveyorMeeting && !revealing && !menuOpen && <JourneyMap language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
-          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : journeyOpen ? journeyCopy[language].title : t.treeTitle}</p>}
+          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{surveyorMeeting ? `${encounterText.goal}. ${encounterText.controls}` : quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : journeyOpen ? journeyCopy[language].title : t.treeTitle}</p>}
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
         <div className="scene-details">
           <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
-          <p>{currentText.description}</p>
+          <p>{currentText.description}{inSurveyor && <> <a className="scenery-source" href="https://www.nasa.gov/humans-in-space/lunar-encore-leads-to-first-precision-extraterrestrial-landing/" target="_blank" rel="noreferrer">NASA ↗</a></>}</p>
         </div>
       </section>
-      {journeyOpen && !revealing ? <JourneyBook language={language} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
+      {journeyOpen && !revealing ? <JourneyBook language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
     </div>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">

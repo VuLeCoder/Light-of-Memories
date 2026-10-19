@@ -3,13 +3,14 @@ import { dialogueReducer, type StoryLine } from '../content/earth-dialogue';
 import { portraits } from '../content/assets';
 import { copy, type Language } from '../content/i18n';
 
-export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction }: {
+export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0 }: {
+  initialIndex?: number; finalLabel?: string;
   language: Language; finalAction: 'earth' | 'moon' | 'lantern';
   paused: boolean; onComplete: () => void; onTurn: (index: number) => void;
   lines: readonly StoryLine[]; title: string;
 }) {
   const t = copy[language];
-  const [state, dispatch] = useReducer((state: Parameters<typeof dialogueReducer>[0], action: Parameters<typeof dialogueReducer>[1]) => dialogueReducer(state, action, lines), { index: 0, visible: 0, finished: false });
+  const [state, dispatch] = useReducer((state: Parameters<typeof dialogueReducer>[0], action: Parameters<typeof dialogueReducer>[1]) => dialogueReducer(state, action, lines), { index: Math.max(0, Math.min(lines.length - 1, initialIndex)), visible: 0, finished: false });
   const nextButton = useRef<HTMLButtonElement>(null);
   const completed = useRef(false);
   const previousLanguage = useRef(language);
@@ -59,17 +60,17 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
       }
     }}>
     <div className="dialogue-body">
-      {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name}`} /></div>}
+      {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : portrait.name}`} /></div>}
       <div className="dialogue-copy">
-        <div className="dialogue-meta"><strong>{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name) : t.narrator}</strong><span>{state.index + 1} / {lines.length}</span></div>
+        <div className="dialogue-meta"><strong>{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : portrait.name) : t.narrator}</strong><span>{state.index + 1} / {lines.length}</span></div>
         <p className="dialogue-text" aria-hidden="true">{line.text.slice(0, state.visible)}<span className="typing-mark">{full ? '' : '▎'}</span></p>
-        <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : portrait.name) : t.narrator}: {line.text}</p>
+        <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : portrait.name) : t.narrator}: {line.text}</p>
       </div>
     </div>
     <div className="dialogue-footer">
       <span>{t.dialogueHint}</span>
       <button ref={nextButton} className={full ? 'dialogue-next is-ready' : 'dialogue-next'} onClick={() => dispatch('advance')}>
-        {full ? (state.index === lines.length - 1 ? (finalAction === 'earth' ? t.followMoon : finalAction === 'lantern' ? t.receiveLantern : t.explore) : t.next) : t.reveal} <span aria-hidden="true">→</span>
+        {full ? (state.index === lines.length - 1 ? (finalLabel ?? (finalAction === 'earth' ? t.followMoon : finalAction === 'lantern' ? t.receiveLantern : t.explore)) : t.next) : t.reveal} <span aria-hidden="true">→</span>
       </button>
     </div>
   </section>;
