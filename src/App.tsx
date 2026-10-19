@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { JourneyMap, JourneyBook, journeyCopy } from './components/JourneyMap';
 import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
 import { VisitorCounter } from './components/VisitorCounter';
@@ -76,7 +77,7 @@ export function App() {
     if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed));
   }, [chapter, quest, completed]);
   const [treeTurn, setTreeTurn] = useState(0);
-  const endButton = useRef<HTMLButtonElement>(null);
+  const [revealing, setRevealing] = useState(false);
   const [journey, setJourney] = useState(0);
   const [turn, setTurn] = useState(0);
   const transitioning = chapter === 'departing' || chapter === 'arriving';
@@ -84,7 +85,8 @@ export function App() {
   const moonStory = chapter === 'moon-story';
   const moonWaking = chapter === 'moon-waking';
   const questDialogue = quest === 'tree' || quest === 'lantern';
-  const questLocked = questDialogue || quest === 'complete';
+  const journeyOpen = quest === 'complete' || quest === 'surveyor';
+  const questLocked = questDialogue || journeyOpen;
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
@@ -93,19 +95,24 @@ export function App() {
   const onExit = useCallback(() => {
     if (quest !== 'trail') return;
     setCompleted(true);
+    setRevealing(true);
     setQuest('complete');
   }, [quest]);
   const receiveLantern = useCallback(() => setQuest((value) => value === 'tree' ? 'lantern' : value), []);
   const followTracks = useCallback(() => setQuest('trail'), []);
-  useEffect(() => { if (quest === 'complete' && !menuOpen) endButton.current?.focus({ preventScroll: true }); }, [quest, menuOpen]);
+  useEffect(() => {
+    if (!revealing || menuOpen) return;
+    const timer = window.setTimeout(() => setRevealing(false), 1800);
+    return () => window.clearTimeout(timer);
+  }, [revealing, menuOpen]);
   // Keep focus on a persistent element while the canvas is inert or dialogue unmounts.
   useLayoutEffect(() => {
     if (menuOpen || !gameOwnsFocus.current) return;
     const stage = gameStage.current;
     const target = transitioning || moonWaking ? stage
-      : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .opening-complete button, .story-canvas:not([inert]) .game-host');
+      : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .journey-view button, .story-canvas:not([inert]) .game-host');
     (target ?? stage)?.focus({ preventScroll: true });
-  }, [chapter, quest, menuOpen, transitioning, moonWaking]);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing]);
   const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
@@ -122,6 +129,7 @@ export function App() {
   function startJourney() {
     gameOwnsFocus.current = true;
     setCompleted(false);
+    setRevealing(false);
     setScene('earth');
     setQuest('bench');
     setTreeTurn(0);
@@ -151,7 +159,7 @@ export function App() {
         </div>
         <div className="story-controls">
           {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>{t.skip}</button>}
-          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || quest === 'complete'} onClick={() => setMenuOpen(true)}>{t.menu}</button>
+          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || revealing} onClick={() => setMenuOpen(true)}>{t.menu}</button>
         </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
@@ -180,26 +188,23 @@ export function App() {
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
-            <div className={`story-canvas ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
+            <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
               <GameCanvas key={journey} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={onBench} onExit={onExit} scene={scene} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
             {moonStory && <EarthDialogue key={`moon-${journey}`} language={language} lines={storyLines[language].moon} title={t.moonDialogueTitle} finalAction="moon" paused={menuOpen} onComplete={finishMoonStory} onTurn={noopTurn} />}
-            {scene === 'moon' && chapter === 'moon-free' && !menuOpen && <div className="quest-hud" aria-live="polite">
+            {scene === 'moon' && chapter === 'moon-free' && !journeyOpen && !menuOpen && <div className="quest-hud" aria-live="polite">
               <span>{quest === 'bench' ? t.benchGoal : quest === 'tree' ? t.treeTitle : t.trailGoal}</span>
               {['lantern', 'trail', 'complete'].includes(quest) && <strong aria-label={`${t.lantern}: 0/5`}><span aria-hidden="true">☆</span> 0/5</strong>}
             </div>}
             {questDialogue && <EarthDialogue key={`${quest}-${journey}`} language={language} lines={quest === 'tree' ? storyLines[language].tree : storyLines[language].departure} title={t.treeTitle} finalAction={quest === 'tree' ? 'lantern' : 'moon'} paused={menuOpen} onComplete={quest === 'tree' ? receiveLantern : followTracks} onTurn={quest === 'tree' ? setTreeTurn : noopTurn} />}
-            {quest === 'complete' && !menuOpen && <section className="opening-complete" role="dialog" aria-labelledby="opening-end-title">
-              <div><span className="completion-star" aria-hidden="true">☆</span><h2 id="opening-end-title">{t.openingEnd}</h2><p>{t.openingEndNote}</p>
-                <div className="completion-actions"><button ref={endButton} onClick={followTracks}>{t.stayExplore}</button><button onClick={() => setMenuOpen(true)}>{t.backMenu}</button></div>
-              </div>
-            </section>}
+            {revealing && !menuOpen && <div className="journey-light" role="status">✦<p>{journeyCopy[language].reveal}</p></div>}
+            {journeyOpen && !revealing && !menuOpen && <JourneyMap language={language} surveyor={quest === 'surveyor'} onEnter={() => setQuest('surveyor')} onBack={() => setQuest('complete')} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
-          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : quest === 'complete' ? t.openingEnd : t.treeTitle}</p>}
+          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : journeyOpen ? journeyCopy[language].title : t.treeTitle}</p>}
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
         <div className="scene-details">
@@ -207,7 +212,7 @@ export function App() {
           <p>{currentText.description}</p>
         </div>
       </section>
-      <BookPlaceholder language={language} />
+      {journeyOpen && !revealing ? <JourneyBook language={language} surveyor={quest === 'surveyor'} /> : <BookPlaceholder language={language} />}
     </div>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">

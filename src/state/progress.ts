@@ -2,9 +2,9 @@ import type { MoonQuest } from '../game/types';
 import type { SceneId } from '../content/scenes';
 
 export type Chapter = 'idle' | 'earth' | 'departing' | 'arriving' | 'moon-waking' | 'moon-story' | 'moon-free';
-type Milestone = 'earth' | 'moon' | 'moon-story' | 'awake' | 'tree' | 'lantern' | 'trail' | 'complete';
+type Milestone = 'earth' | 'moon' | 'moon-story' | 'awake' | 'tree' | 'lantern' | 'trail' | 'complete' | 'surveyor';
 const key = 'cuoi.progress';
-const milestones: readonly Milestone[] = ['earth', 'moon', 'moon-story', 'awake', 'tree', 'lantern', 'trail', 'complete'];
+const milestones: readonly Milestone[] = ['earth', 'moon', 'moon-story', 'awake', 'tree', 'lantern', 'trail', 'complete', 'surveyor'];
 export interface Progress { scene: SceneId; chapter: Chapter; quest: MoonQuest; started: boolean; completed: boolean }
 const fresh: Progress = { scene: 'earth', chapter: 'idle', quest: 'bench', started: false, completed: false };
 
@@ -20,15 +20,15 @@ export function readProgress(): { progress: Progress; unavailable: boolean } {
     return { unavailable: false, progress: {
       scene: milestone === 'earth' ? 'earth' : 'moon',
       chapter: milestone === 'earth' ? 'earth' : milestone === 'moon' ? 'moon-waking' : milestone === 'moon-story' ? 'moon-story' : 'moon-free',
-      quest: milestone === 'tree' || milestone === 'lantern' || milestone === 'trail' || milestone === 'complete' ? milestone : 'bench',
-      started: true, completed: milestone === 'complete',
+      quest: milestone === 'tree' || milestone === 'lantern' || milestone === 'trail' || milestone === 'complete' || milestone === 'surveyor' ? milestone : 'bench',
+      started: true, completed: milestone === 'complete' || milestone === 'surveyor',
     } };
   } catch { return { progress: fresh, unavailable: false }; }
 }
 
 export function saveProgress(chapter: Chapter, quest: MoonQuest, completed: boolean): boolean {
   if (chapter === 'idle') return true;
-  const milestone: Milestone = completed ? 'complete' : chapter === 'earth' ? 'earth'
+  const milestone: Milestone = quest === 'surveyor' ? 'surveyor' : completed ? 'complete' : chapter === 'earth' ? 'earth'
     : ['departing', 'arriving', 'moon-waking'].includes(chapter) ? 'moon'
     : chapter === 'moon-story' ? 'moon-story' : quest === 'bench' ? 'awake' : quest;
   try { localStorage.setItem(key, JSON.stringify({ version: 1, milestone })); return true; }
