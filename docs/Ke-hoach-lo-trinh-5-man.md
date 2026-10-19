@@ -1,0 +1,80 @@
+# Kế hoạch lộ trình 5 màn — Lộ trình năm ánh sao
+
+## 1. Phạm vi và nguyên tắc
+
+- Giữ nguyên cấu trúc giao diện trong mã nguồn hiện tại: game bên trái, sách bên phải.
+- Hành trình gồm **5 màn chơi, tương ứng với 5 đối tượng**.
+- **Surveyor 3 — Mắt Tròn** là đối tượng của màn đầu tiên. Bốn đối tượng còn lại sẽ được xác định sau.
+- Lộ trình xuất hiện sau cảnh hiện tại, khi Cuội đi theo dấu chân, ngay trong vùng game.
+- Tài liệu này mô tả kế hoạch thiết kế; các chi tiết hoạt cảnh, lời thoại và tương tác dưới đây là đề xuất triển khai.
+
+## 2. Ý tưởng chủ đạo
+
+“Lộ trình năm ánh sao” nối cảnh mở đầu với năm cuộc gặp trên Mặt Trăng. Chiếc đèn ông sao Cuội đã nhận trở thành dấu hiệu thể hiện tiến độ: mỗi màn hoàn thành thắp sáng thêm một ngôi sao.
+
+Lộ trình giúp người chơi hiểu mình sẽ đi qua năm điểm dừng, biết điểm đến tiếp theo và nhận ra những chặng đã hoàn thành. Động lực xuyên suốt là cùng Cuội tìm chị Hằng bằng cách gặp gỡ và khám phá câu chuyện của các đối tượng.
+
+## 3. Chuyển từ cảnh dấu chân sang lộ trình
+
+1. Cuội đi đến cuối dấu chân, dừng trên một gò đất nhỏ. Phía trước hiện ra một ánh sáng yếu.
+2. Đèn ông sao khẽ sáng lên. Khung cảnh thu nhỏ dần thành bản đồ minh họa bề mặt Mặt Trăng trong vùng game.
+3. Một đường dấu chân lần lượt nối năm điểm dừng. Cuội đứng ở điểm xuất phát.
+4. Điểm đầu tiên sáng rõ, hiện hình Surveyor 3 — Mắt Tròn. Bốn điểm còn lại hiện số thứ tự và bóng dáng các đối tượng; có thể dùng ký hiệu bí ẩn khi chưa chốt đối tượng.
+5. Sau lời dẫn ngắn, người chơi chọn “Đến gặp Mắt Tròn” để bắt đầu màn 1.
+
+Lần đầu xuất hiện, cả năm điểm nằm gọn trong khung game để người chơi thấy toàn bộ hành trình.
+
+### Lời thoại gợi ý
+
+> **Cuội:** “Năm điểm sáng… Có ai ở đó biết chị Hằng đang ở đâu không nhỉ?”
+>
+> **Lời dẫn:** “Hãy cùng Cuội gặp năm người bạn trên Mặt Trăng và khám phá những câu chuyện của họ.”
+
+Lời dẫn mang tính kể chuyện. Bản đồ là minh họa lộ trình chơi, không mặc định thể hiện vị trí địa lý hoặc khoảng cách thực tế giữa các đối tượng.
+
+## 4. Hiển thị và tương tác trên lộ trình
+
+| Trạng thái | Cách thể hiện | Tương tác |
+| --- | --- | --- |
+| Màn đang chơi hoặc sẵn sàng bắt đầu | Đối tượng có màu, viền sáng nhẹ, Cuội đứng cạnh | Chọn để vào màn |
+| Màn chưa mở | Số thứ tự và hình bóng mờ | Hiện “Hoàn thành điểm trước để khám phá” |
+| Màn đã hoàn thành | Một ngôi sao sáng và dấu hoàn thành | Có thể chọn chơi lại |
+
+Các màn mở lần lượt theo tiến độ. Chỉ điểm đang chọn hiển thị phần giới thiệu chi tiết để khung game dễ quan sát.
+
+### Nội dung điểm đầu tiên
+
+> **01 · Surveyor 3 — Mắt Tròn**
+>
+> Một người bạn đang chờ Cuội đánh thức ký ức.
+>
+> **[Đến gặp Mắt Tròn]**
+
+Nội dung màn 1 tham chiếu tài liệu [Surveyor 3 — Nội dung sách và game](./Surveyor-3-Noi-dung-sach-game.md). Vị trí game và sách tuân theo mã nguồn hiện tại như quy định ở mục 1 của kế hoạch này.
+
+## 5. Phối hợp với sách
+
+Khi giới thiệu lộ trình, vùng sách bên phải có thể mở trang “Hành trình của Cuội”, gồm một đoạn dẫn ngắn và năm ô lưu kỷ niệm.
+
+- Khi vào màn 1, sách chuyển sang nội dung Surveyor 3.
+- Khi hoàn thành một màn, ô tương ứng nhận hình hoặc dấu kỷ niệm.
+- Lộ trình và sách cùng phản ánh tiến độ của người chơi trong bố cục hiện tại.
+
+## 6. Kết nối giữa các màn
+
+Sau mỗi màn, quay lại lộ trình trong vài giây:
+
+1. Điểm vừa hoàn thành sáng lên và nhận dấu hoàn thành.
+2. Một ngôi sao được thắp trên đèn ông sao.
+3. Đường đến điểm tiếp theo hiện rõ; Cuội chuyển đến điểm đó.
+4. Người chơi chọn bắt đầu màn tiếp theo.
+
+Sau màn thứ năm, đèn có đủ năm ngôi sao sáng. Nội dung kết thúc và cách Cuội gặp chị Hằng sẽ được xác định riêng.
+
+## 7. Các nội dung cần chốt khi triển khai
+
+- Danh tính, thứ tự và hình ảnh của bốn đối tượng còn lại.
+- Hình minh họa bản đồ, vị trí năm điểm và thời lượng hoạt cảnh.
+- Lời thoại chính thức và nội dung trang sách “Hành trình của Cuội”.
+- Cách mở lại lộ trình trong lúc chơi, phù hợp với các điều khiển hiện có.
+- Cảnh kết thúc sau khi hoàn thành cả năm màn.
