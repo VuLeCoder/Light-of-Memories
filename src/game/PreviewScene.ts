@@ -60,14 +60,8 @@ export class PreviewScene extends Phaser.Scene {
     const scale = .34 + (c.y - 265) / 235 * .42;
     if (this.moonMode === 'free' && length > .5) {
       const step = Math.min(160 * (scale / .62) * Math.min(delta, 50) / 1000, this.digTarget ? length : Infinity);
-      const oldX = c.x, oldY = c.y;
       c.x = Phaser.Math.Clamp(c.x + dx / length * step, 65, 895);
       c.y = Phaser.Math.Clamp(c.y + dy / length * step, 265, 500);
-      // Keep the walkable ground clear of the fixed lander silhouette.
-      if (c.x > 625 && c.x < 800 && c.y < 450) {
-        if (oldX <= 625 || oldX >= 800) c.x = oldX;
-        else c.y = Math.max(450, oldY);
-      }
       if (dx) c.setFlipX(dx < 0);
       if (!c.anims.isPlaying) c.play('cuoi-walk');
     } else { this.setCuoiFrame('rest'); if (length <= 1) this.digTarget = undefined; }
