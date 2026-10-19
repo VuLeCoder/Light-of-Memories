@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import { SurveyorChallenges } from './SurveyorChallenges';
+import { challengeCopy } from '../content/levels/surveyor-challenges';
+import { memoryCount } from '../content/levels/surveyor-progress';
 import type { Language } from '../content/i18n';
 import type { SurveyorProgress, SurveyorTool } from '../content/levels/surveyor-progress';
 
 export const surveyorPlayCopy = {
   vi: {
     fiction: 'Câu chuyện tưởng tượng dựa trên thiết bị có thật. Hình minh họa ký ức lúc tàu còn hoạt động.',
-    task: 'Ký ức 1 · Tìm đúng dụng cụ',
+    task: 'T01 · Khám phá Mắt Tròn',
     instruction: 'Bấm một công dụng, rồi bấm dụng cụ tương ứng trên hình. Bạn có thể bấm từng dụng cụ để xem gợi ý.',
     camera: 'Máy ảnh', scoop: 'Chiếc xẻng khảo sát', photo: 'Chụp ảnh', soil: 'Khảo sát đất',
     cameraHint: 'Đây là máy ảnh. Dụng cụ này giúp Mắt Tròn quan sát cảnh vật.',
@@ -13,17 +16,16 @@ export const surveyorPlayCopy = {
     select: 'Đã chọn:', choose: 'Bây giờ hãy bấm dụng cụ phù hợp trên hình.',
     wrongCamera: 'Thử lại nhé! Dụng cụ nào giúp mình nhìn thấy cảnh vật từ xa?',
     wrongScoop: 'Thử lại nhé! Dụng cụ nào giúp mình tìm hiểu đất dưới chân?',
-    correct: 'Đúng rồi! Công dụng này đã được ghép.', done: 'Mảnh ký ức đầu tiên đã sáng!',
+    correct: 'Đúng rồi! Công dụng này đã được ghép.', done: 'Bạn đã hiểu các dụng cụ của Mắt Tròn!',
     result: 'Máy ảnh giúp mình quan sát. Chiếc xẻng giúp mình tìm hiểu đất!',
-    pending: 'Đã tìm lại 1/3 mảnh ký ức. Hai ký ức tiếp theo sẽ có trong phần cập nhật sau.',
-    bookNotice: 'Nhật ký có mục mới: Người bạn có đôi mắt và chiếc xẻng. Bạn có thể lật sách để đọc.',
+    bookNotice: 'Sổ tay đã mở ba trang gợi ý. Hãy nhận dụng cụ, đọc sách rồi tìm lại ba bức ảnh ký ức.',
     bookTitle: 'Đôi mắt và chiếc xẻng',
     bookBody: 'Surveyor 3 là tàu đổ bộ không người lái của NASA, đến Mặt Trăng năm 1967. Tàu có máy ảnh để quan sát và dụng cụ khảo sát đất. Công việc của người bạn robot giúp chuẩn bị cho những chuyến đi có con người.',
     matched: 'Đã ghép', memories: 'Ký ức', back: 'Về lộ trình',
   },
   en: {
     fiction: 'An imaginary story based on a real spacecraft. Illustration of its memory while it was operating.',
-    task: 'Memory 1 · Find the right tools',
+    task: 'T01 · Discover Round Eyes',
     instruction: 'Choose a purpose, then choose its tool in the picture. You can inspect each tool for a hint.',
     camera: 'Camera', scoop: 'Soil scoop', photo: 'Take pictures', soil: 'Study the soil',
     cameraHint: 'This is the camera. It helps Round Eyes observe the surroundings.',
@@ -31,10 +33,9 @@ export const surveyorPlayCopy = {
     select: 'Selected:', choose: 'Now choose the matching tool in the picture.',
     wrongCamera: 'Try again! Which tool helps me see distant scenery?',
     wrongScoop: 'Try again! Which tool helps me study the ground beneath me?',
-    correct: 'That’s right! This purpose is now matched.', done: 'The first memory is shining!',
+    correct: 'That’s right! This purpose is now matched.', done: 'You have discovered Round Eyes’ tools!',
     result: 'My camera helps me observe. My scoop helps me study the soil!',
-    pending: 'You found 1/3 memories. The next two memories will arrive in a future update.',
-    bookNotice: 'New journal entry: A friend with a camera and scoop. Turn the book page whenever you want to read it.',
+    bookNotice: 'Three clue pages are now in your notebook. Receive the scoop, read the clues and find the three memory photos.',
     bookTitle: 'A camera and a scoop',
     bookBody: 'Surveyor 3 is a NASA robotic lander that reached the Moon in 1967. It had a camera to observe its surroundings and a tool to study the soil. Its work helped prepare for later journeys with people.',
     matched: 'Matched', memories: 'Memories', back: 'Back to the route',
@@ -64,6 +65,8 @@ export function SurveyorLevel({ language, progress, onChange, onBack }: {
   language: Language; progress: SurveyorProgress; onChange: (value: SurveyorProgress) => void; onBack: () => void;
 }) {
   const t = surveyorPlayCopy[language];
+  const ct = challengeCopy[language];
+  const count = memoryCount(progress);
   const [selected, setSelected] = useState<SurveyorTool | null>(null);
   const [feedback, setFeedback] = useState<keyof Pick<typeof t, 'cameraHint' | 'scoopHint' | 'wrongCamera' | 'wrongScoop' | 'correct'> | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -79,7 +82,7 @@ export function SurveyorLevel({ language, progress, onChange, onBack }: {
     onChange({ ...progress, matched: next, phase: next.length === 2 ? 'memory' : 'tools' });
   }
   return <section className={`journey-view surveyor-level phase-${phase}`} aria-labelledby="surveyor-title" lang={language}>
-    <header><span aria-label={`${t.memories}: ${phase === 'memory' ? 1 : 0}/3`}>{phase === 'memory' ? '★ ☆ ☆' : '☆ ☆ ☆'}</span><h2 id="surveyor-title" ref={heading} tabIndex={-1}>{phase === 'tools' ? t.task : phase === 'memory' ? t.done : language === 'vi' ? '01 · Gặp Mắt Tròn' : '01 · Meet Round Eyes'}</h2></header>
+    <header><span aria-label={`${t.memories}: ${count}/3`}>{Array.from({ length: 3 }, (_, i) => i < count ? '★' : '☆').join(' ')}</span><h2 id="surveyor-title" ref={heading} tabIndex={-1}>{phase === 'tools' ? t.task : phase === 'memory' ? t.done : phase === 'complete' ? ct.complete : phase.startsWith('timeline') ? ct.timelineTitle : ct.soilTitle}</h2></header>
     {phase === 'tools' ? <>
       <p className="surveyor-instruction">{t.instruction}</p>
       <div className="surveyor-tools-layout">
@@ -92,8 +95,8 @@ export function SurveyorLevel({ language, progress, onChange, onBack }: {
         </div>
       </div>
       <p className="surveyor-feedback" role="status">{feedback ? t[feedback] : selected ? `${t.select} ${selected === 'camera' ? t.photo : t.soil}. ${t.choose}` : '\u00a0'}</p>
-    </> : <div className="surveyor-memory">
-      <span className="memory-light" aria-hidden="true">✦</span><p><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.result}</p><p>{t.bookNotice}</p><p className="surveyor-pending">{t.pending}</p>
+    </> : phase !== 'memory' ? <SurveyorChallenges language={language} progress={progress} onChange={onChange} /> : <div className="surveyor-memory">
+      <span className="memory-light" aria-hidden="true">✦</span><p><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.result}</p><p>{t.bookNotice}</p><button className="journey-primary" onClick={() => onChange({ ...progress, phase: 'soil-intro', turn: 0 })}>{ct.nextSoil} →</button>
     </div>}
     <footer className="surveyor-footer"><button onClick={onBack}>{t.back}</button><small>{t.fiction}</small></footer>
   </section>;

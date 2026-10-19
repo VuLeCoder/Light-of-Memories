@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
+import { eventOrder } from '../content/levels/surveyor-progress';
+import { challengeCopy } from '../content/levels/surveyor-challenges';
+import { memoryCount } from '../content/levels/surveyor-progress';
+import { useEffect, useState } from 'react';
 import type { Language } from '../content/i18n';
 import { copy } from '../content/i18n';
 import { getLevel, journeyStops, type LevelId } from '../content/levels';
@@ -33,7 +37,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, surveyorPro
   const [locked, setLocked] = useState(false);
   if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
-    <header><span>☆ 0/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
+    <header><span>{surveyorProgress.phase === 'complete' ? '★ 1' : '☆ 0'}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
     {level && detail ? <>
       <div className="surveyor-meeting"><img src={level.portrait} alt={detail.friend} /><div><p><b>Cuội:</b> {detail.intro}</p><p><b>{detail.friend}:</b> {detail.reply}</p><p>{detail.invitation}</p></div></div>
       <button onClick={onBack}>{t.back}</button>
@@ -53,27 +57,71 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, surveyorPro
   </section>;
 }
 
-export function JourneyBook({ language, activeLevel, surveyorProgress }: { language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  return <JourneyBookPages key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
+export function JourneyBook({ language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ language, activeLevel, surveyorProgress }: { language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
   // Only configured stops have readable pages. Reading never changes the game level.
-  const pages = [null, ...journeyStops.filter((id): id is LevelId => id !== null), ...(surveyorProgress.phase === 'memory' ? ['surveyor-b01' as const] : [])];
+  const fieldUnlocked = surveyorProgress.matched.length === 2;
+  const pages = [null, ...journeyStops.filter((id): id is LevelId => id !== null), ...(fieldUnlocked ? eventOrder.map(id => `clue-${id}`) : []), ...(fieldUnlocked ? ['surveyor-b01'] : []), ...surveyorProgress.found.map(id => `photo-${id}`), ...(surveyorProgress.phase === 'complete' ? ['journal'] : [])];
   const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
   const t = journeyCopy[language];
+  const dt = digCopy[language];
+  const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
+  const photo = eventOrder.find(id => pages[page] === `photo-${id}`);
+  useEffect(() => {
+    if (!bookRequest || !fieldUnlocked) return;
+    const next = eventOrder.find(id => !surveyorProgress.found.includes(id)) ?? 'arrive';
+    setPage(pages.indexOf(`clue-${next}`));
+    requestAnimationFrame(() => {
+      const heading = document.getElementById('field-book-title');
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }, [bookRequest]);
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
-  const b01 = pages[page] === 'surveyor-b01';
+  const entry = ['surveyor-b01', 'surveyor-b02', 'surveyor-b03'].indexOf(pages[page] ?? '');
+  const b01 = entry >= 0;
+  const ct = challengeCopy[language];
   const st = surveyorPlayCopy[language];
+  if (pages[page] === 'journal') return <>
+    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <aside className="book-panel" lang={language} aria-labelledby="journal-title"><div className="book-sheet journey-book">
+      <span className="book-kicker">Surveyor 3 · ★ 1/5</span>
+      <h2 id="journal-title">{language === 'vi' ? 'Nhật ký Mắt Tròn' : 'Round Eyes’ journal'}</h2>
+      <ol className="book-journal">{eventOrder.map(id => <li key={id}><img src={memoryPhotos[id]} alt=""/><span>{ct.events[id]}</span></li>)}</ol>
+      <p>{language === 'vi' ? 'Ba bức ảnh đã trở về đúng thứ tự trong ký ức.' : 'Three photos are back in the right order in my memory.'}</p>
+      <BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/>
+    </div><p className="book-note">{dt.fiction}</p></aside>
+  </>;
+  if (clue || photo) {
+    const id = (clue ?? photo)!;
+    return <>
+      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <aside className="book-panel" lang={language} aria-labelledby="field-book-title"><div className="book-sheet journey-book field-book">
+        <span className="book-kicker">{clue ? dt.book : dt.found} · {surveyorProgress.found.length}/3</span>
+        <h2 id="field-book-title" tabIndex={-1}>{dt.names[id]}</h2>
+        {clue ? <>
+          <svg className="clue-sketch" viewBox="0 0 180 65" aria-hidden="true">
+            {id === 'arrive' ? <g><ellipse cx="60" cy="38" rx="28" ry="12"/><ellipse cx="120" cy="25" rx="28" ry="12"/></g> : id === 'work' ? <path d="M30 25L150 15M30 40L150 30M30 55L150 45"/> : <g>{[0,1,2,3,4,5].map(i => <ellipse key={i} cx={30 + i * 24} cy={25 + i % 2 * 15} rx="8" ry="4"/>)}</g>}
+          </svg><p>{dt.clues[id]}</p>
+          <button disabled={surveyorProgress.clues.includes(id)} onClick={() => onSurveyorChange({ ...surveyorProgress, clues: [...surveyorProgress.clues, id] })}>{surveyorProgress.clues.includes(id) ? `✓ ${dt.ready}` : dt.read}</button>
+          {surveyorProgress.found.includes(id) && <p>✓ {dt.found}</p>}
+        </> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><small>NASA</small></>}
+        <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
+      </div><p className="book-note">{dt.fiction}</p></aside>
+    </>;
+  }
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div className="book-sheet journey-book">
-      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? 'B01 · Surveyor 3' : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
-      <h2 id="book-title">{b01 ? st.bookTitle : level && detail ? detail.friend : t.book}</h2>
-      <p>{b01 ? st.bookBody : level && detail ? detail.invitation : t.guide}</p>
-      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · 1/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, (_, index) => level.id === 'surveyor' && surveyorProgress.phase === 'memory' && index === 0 ? '★' : '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">☆</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{index === 0 ? t.ready : t.waiting}</small></span></li>)}</ol>}
-      {surveyorProgress.phase === 'memory' && !b01 && <small className="book-new-entry">✦ {st.bookTitle}</small>}
+      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
+      <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
+      <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? detail.invitation : t.guide}</p>
+      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, (_, index) => level.id === 'surveyor' && index < memoryCount(surveyorProgress) ? '★' : '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">☆</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{index === 0 ? t.ready : t.waiting}</small></span></li>)}</ol>}
+      {fieldUnlocked && !b01 && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : 'clue-arrive'))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
       <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
     </div><p className="book-note">{t.note}</p></aside>
   </>;

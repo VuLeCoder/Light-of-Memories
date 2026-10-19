@@ -83,8 +83,9 @@ Sau màn thứ năm, đèn có đủ năm ngôi sao sáng. Nội dung kết thú
 
 - Đã có: nhận đèn, dấu chân, chuyển cảnh tăng sáng, lộ trình năm điểm và bố cục cân đối; sách độc lập có nút lật trang.
 - Đã có phần 1–2 của màn Surveyor: Cuội đi bằng sprite/điều khiển như cảnh cây đa, đến gần Mắt Tròn trong hố Surveyor và bấm E hoặc bấm nhân vật để mở khung chat, nhận nhiệm vụ và T01 ghép công dụng hai dụng cụ. Có gợi ý, thử lại không mất kết quả đúng, hỗ trợ bàn phím và tiếng Việt/Anh.
-- Hoàn thành T01 sáng một mảnh ký ức (1/3), thêm trang B01 để tự mở đọc; chưa cộng sao lộ trình (vẫn 0/5 vì màn 1 chưa hoàn thành).
+- Hoàn thành T01 mở trang B01 và ba trang sổ tay gợi ý; nhận xẻng ký ức qua lời thoại. Số ký ức tính theo ba ảnh đã tìm được, chưa cộng sao lộ trình.
 - Lưu phiên bản 3 giữ giai đoạn, lượt thoại và phần ghép đúng, tương thích bản lưu cũ. Bắt đầu lại xóa tiến độ màn.
-- Tiếp theo: T02, T03, sách B02–B03, kết màn và cơ chế mở khóa tuần tự. Bốn đối tượng còn lại chưa chốt.
+- Đã thay T02 bằng khám phá giả 3D: Cuội đi trái/phải/gần/xa, đọc và ghi nhớ từng gợi ý trong sách trước khi đào ba ảnh. T03 dùng chính ba ảnh đó để ghép nhật ký theo thời gian, hoàn thành ghi nhận 1/5 người bạn. Xem [thiết kế cập nhật](./Surveyor-3-Dao-ky-uc.md).
+- Tiếp theo: hoàn thiện phần thưởng “Mắt phóng to”, cảnh kết màn và cơ chế mở khóa tuần tự khi có nội dung màn 2. Bốn đối tượng còn lại chưa chốt.
 
 Bối cảnh hố Surveyor và nguồn NASA: [ghi chú dựng cảnh](./Surveyor-3-Boicanh-NASA.md).

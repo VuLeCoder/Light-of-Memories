@@ -1,3 +1,5 @@
+import { digSites } from '../content/levels/surveyor-dig';
+import type { SurveyorEvent } from '../content/levels/surveyor-progress';
 import Phaser from 'phaser';
 import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '../content/assets';
 import { cacheScenery, earthScenery, moonScenery } from './scenery';
@@ -12,8 +14,63 @@ export class PreviewScene extends Phaser.Scene {
   private failedAssets: string[] = [];
   private cuoi?: Phaser.GameObjects.Sprite;
   private moonMode: PreviewOptions['moonMode'];
-  private keys?: Record<'left' | 'right' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
+  private keys?: Record<'left' | 'right' | 'up' | 'down' | 'w' | 's' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
   private walkTarget?: number;
+  private digTarget?: { x: number; y: number };
+  private digNear: SurveyorEvent | null = null;
+  private digMarks?: Phaser.GameObjects.Graphics;
+  private digShadow?: Phaser.GameObjects.Ellipse;
+  private shovel?: Phaser.GameObjects.Graphics;
+  setExcavation(value: PreviewOptions['excavation']) {
+    const entering = !this.options.excavation && value;
+    this.options.excavation = value;
+    if (entering && this.cuoi) { this.cuoi.setPosition(520, 455); this.releaseControls(); }
+    this.drawDigMarks();
+    if (!value) { this.digShadow?.setVisible(false); this.shovel?.setVisible(false); }
+  }
+  private drawDigMarks() {
+    if (!this.digMarks) return;
+    this.digMarks.clear();
+    if (!this.options.excavation) return;
+    for (const site of digSites) {
+      const { x, y, id } = site;
+      this.digMarks.lineStyle(3, 0x303d43, .9).fillStyle(0x303d43, .7);
+      if (this.options.excavation.found.includes(id)) this.digMarks.fillEllipse(x, y, 32, 13);
+      else if (id === 'arrive') this.digMarks.strokeEllipse(x - 15, y, 22, 9).strokeEllipse(x + 13, y - 5, 22, 9);
+      else if (id === 'work') for (let i = 0; i < 3; i++) this.digMarks.lineBetween(x - 22, y - 9 + i * 8, x + 22, y - 14 + i * 8);
+      else for (let i = 0; i < 6; i++) this.digMarks.fillEllipse(x - 22 + i * 9, y + (i % 2) * 7 - 6, 6, 3);
+    }
+  }
+  private updateExcavation(time: number, delta: number) {
+    if (!this.cuoi || !this.keys || !this.options.excavation) return;
+    const c = this.cuoi, k = this.keys;
+    let dx = Number(k.right.isDown || k.d.isDown) - Number(k.left.isDown || k.a.isDown);
+    let dy = Number(k.down.isDown || k.s.isDown) - Number(k.up.isDown || k.w.isDown);
+    if (dx || dy) this.digTarget = undefined;
+    if (this.digTarget) { dx = this.digTarget.x - c.x; dy = this.digTarget.y - c.y; }
+    const length = Math.hypot(dx, dy);
+    const scale = .34 + (c.y - 265) / 235 * .42;
+    if (this.moonMode === 'free' && length > .5) {
+      const step = Math.min(160 * (scale / .62) * Math.min(delta, 50) / 1000, this.digTarget ? length : Infinity);
+      const oldX = c.x, oldY = c.y;
+      c.x = Phaser.Math.Clamp(c.x + dx / length * step, 65, 895);
+      c.y = Phaser.Math.Clamp(c.y + dy / length * step, 265, 500);
+      // Keep the walkable ground clear of the fixed lander silhouette.
+      if (c.x > 625 && c.x < 800 && c.y < 450) {
+        if (oldX <= 625 || oldX >= 800) c.x = oldX;
+        else c.y = Math.max(450, oldY);
+      }
+      if (dx) c.setFlipX(dx < 0);
+      if (!c.anims.isPlaying) c.play('cuoi-walk');
+    } else { this.setCuoiFrame('rest'); if (length <= 1) this.digTarget = undefined; }
+    c.setScale(scale).setDepth(c.y);
+    this.digShadow?.setVisible(true).setPosition(c.x, c.y + 1).setScale(scale / .62).setDepth(c.y - 1);
+    this.lantern?.setScale(scale / .62).setPosition(c.x + (c.flipX ? -38 : 38) * scale / .62, c.y - 56 * scale / .62).setDepth(c.y + 1);
+    this.shovel?.setVisible(true).setPosition(c.x + (c.flipX ? -25 : 25), c.y - 15).setScale(scale / .62).setDepth(c.y + 2).setRotation(this.options.excavation.digging ? Math.sin(time / 130) * .6 : -.3);
+    const near = digSites.find(site => !this.options.excavation!.found.includes(site.id) && Math.hypot(c.x - site.x, c.y - site.y) < 43)?.id ?? null;
+    if (near !== this.digNear) { this.digNear = near; this.options.onDigNear?.(near); }
+    this.interactionHint?.setVisible(false);
+  }
   private awake = false;
   private pendingInteraction = false;
   private exitTriggered = false;
@@ -34,7 +91,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   private get interactionX() { return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { return this.options.scene === 'surveyor' || this.options.quest === 'bench'; }
+  private get canInteract() { return (this.options.scene === 'surveyor' && !this.options.excavation) || this.options.quest === 'bench'; }
   private interactionLabel() { return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
 
   private interactNearby() {
@@ -54,6 +111,7 @@ export class PreviewScene extends Phaser.Scene {
 
   releaseControls() {
     this.walkTarget = undefined;
+    this.digTarget = undefined;
     this.pendingInteraction = false;
     this.input?.keyboard?.resetKeys();
     if (this.awake) this.setCuoiFrame('rest');
@@ -70,6 +128,7 @@ export class PreviewScene extends Phaser.Scene {
     this.moonMode = mode;
     this.walkTarget = undefined;
     this.pendingInteraction = false;
+    this.digTarget = undefined;
     this.interactionHint?.setVisible(false);
     this.input?.keyboard?.resetKeys();
     if (!this.cuoi) return;
@@ -132,12 +191,19 @@ export class PreviewScene extends Phaser.Scene {
       });
       this.lantern.fillStyle(0x514d43).fillPoints(points, true).lineStyle(2, 0xcdb77b).strokePoints(points, true).lineBetween(0, 21, 0, 33);
       this.setQuest(this.options.quest, this.options.treeSpeaking);
+      if (this.options.scene === 'surveyor') {
+        this.digMarks = this.add.graphics().setDepth(1);
+        this.digShadow = this.add.ellipse(0, 0, 65, 12, 0x15232b, .45).setVisible(false);
+        this.shovel = this.add.graphics().lineStyle(4, 0xcdb77b).lineBetween(0, -25, 10, 5).fillStyle(0xd8d7c9).fillTriangle(3, 3, 20, 0, 15, 16).setVisible(false);
+        this.drawDigMarks();
+      }
     }
     const onPointerDown = (pointer: Phaser.Input.Pointer) => {
       // Phaser Scale Manager converts CSS pixels to 960×540 scene coordinates.
       const x = Phaser.Math.Clamp(pointer.x, 0, VIEW.width);
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
       if (this.options.scene === 'earth' || this.moonMode !== 'free') return;
+      if (this.options.excavation) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
       this.pendingInteraction = this.canInteract && this.interactionRegion.contains(x, y);
       if (this.pendingInteraction) {
         this.walkTarget = this.interactionX;
@@ -152,6 +218,7 @@ export class PreviewScene extends Phaser.Scene {
 
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
+    if (this.options.excavation) { this.updateExcavation(_time, delta); return; }
     this.lantern?.setPosition(this.cuoi.x + (this.cuoi.flipX ? -38 : 38), this.cuoi.y - 56);
     this.interactionHint?.setVisible(this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
@@ -193,7 +260,7 @@ export class PreviewScene extends Phaser.Scene {
     this.awake = this.options.initiallyAwake;
     this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
     this.anims.create({ key: 'cuoi-walk', frames: cuoiWalkFrames.map((_, index) => ({ key: 'cuoi', frame: `walk-${index}` })), frameRate: 8, repeat: -1 });
-    this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D' }, false) as typeof this.keys;
+    this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D', up: 'UP', down: 'DOWN', w: 'W', s: 'S' }, false) as typeof this.keys;
     const onInteractKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (!event.repeat && !target?.closest('input, select, textarea')) this.interactNearby();

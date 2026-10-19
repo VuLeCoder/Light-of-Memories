@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import type { GameSceneId, MoonQuest } from './types';
+import type { GameSceneId, MoonQuest, PreviewOptions } from './types';
 import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
@@ -14,15 +14,16 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ initiallyAwake, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  excavation?: PreviewOptions['excavation']; onDigNear?: PreviewOptions['onDigNear'];
   initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
   onAwake: () => void;
 }) {
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted });
-  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted };
+  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear });
+  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -48,6 +49,8 @@ export function GameCanvas({ initiallyAwake, encounterStarted = false, scene, mo
       if (cancelled) return;
       const previewScene = new PreviewScene({
         initiallyAwake: awakeRef.current,
+        excavation: progressRef.current.excavation,
+        onDigNear: id => progressRef.current.onDigNear?.(id),
         encounterStarted: progressRef.current.encounterStarted,
         quest: progressRef.current.quest, treeSpeaking: progressRef.current.treeSpeaking,
         onInteract: () => { if (!cancelled) progressRef.current.onInteract(); },
@@ -105,6 +108,7 @@ export function GameCanvas({ initiallyAwake, encounterStarted = false, scene, mo
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.setExcavation(excavation); }, [excavation]);
   useEffect(() => { phaserScene.current?.setQuest(quest, treeSpeaking); }, [quest, treeSpeaking]);
   useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);
   useEffect(() => {

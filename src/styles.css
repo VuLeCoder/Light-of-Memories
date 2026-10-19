@@ -267,3 +267,60 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .surveyor-scene-hud>button{pointer-events:auto;color:inherit;min-height:44px;flex-shrink:0}
 .scenery-source{text-decoration:underline;text-underline-offset:3px;color:#dfc68f;white-space:nowrap}
 @media(max-width:760px){.surveyor-scene-hud{inset:6px 6px auto;gap:6px}.surveyor-scene-hud>span,.surveyor-scene-hud>button{padding:6px 8px;font-size:11px}}
+
+/* Memories two and three reuse the existing game overlay and book layout. */
+.surveyor-choice-grid,.surveyor-timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.surveyor-choice-grid{flex:1;align-items:center}.surveyor-choice-grid button{min-height:110px;font-size:clamp(12px,1.1vw,16px);line-height:1.4}.surveyor-choice-grid button>span{display:block;font-size:30px;margin-bottom:8px}.surveyor-level button:disabled{opacity:.5;cursor:default}
+.surveyor-timeline li{border:1px dashed #b7ab8b;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;text-align:center}.surveyor-timeline button{font-size:clamp(11px,1vw,14px);padding:6px;min-height:44px}.surveyor-timeline small{color:#ffe0a0}.surveyor-finished-story{font-size:.8em;text-align:left;margin:0}
+.soil-animation{max-width:440px;width:100%;margin:auto;text-align:center}.soil-animation svg{width:100%;display:block}.digging-arm{transform-origin:80px 20px;animation:soil-dig 1.2s ease-in-out 2}.soil-mark{animation:soil-mark 2.4s ease-in forwards}@keyframes soil-dig{50%{transform:rotate(14deg)}}@keyframes soil-mark{from{opacity:0}to{opacity:1}}
+.surveyor-history{margin:0 auto;max-width:360px;width:65%;font-size:11px;text-align:center}.surveyor-history img{width:100%;max-height:150px;object-fit:contain}.surveyor-level .dialogue{z-index:2}.surveyor-level:has(.dialogue) .surveyor-footer{visibility:hidden}
+@media(max-width:760px){.surveyor-choice-grid,.surveyor-timeline{gap:6px}.surveyor-choice-grid button{padding:7px;min-height:100px}.surveyor-choice-grid button>span{font-size:24px}.surveyor-history img{max-height:110px}}
+@media(prefers-reduced-motion:reduce){.digging-arm,.soil-mark{animation:none}}
+@media(max-width:760px){.game-stage:has(.surveyor-level){min-height:620px}.surveyor-level .dialogue{padding:12px;flex-shrink:0}.surveyor-level .dialogue-text{font-size:16px;min-height:100px;line-height:1.6}.surveyor-level .dialogue-portrait{width:54px;height:70px}.surveyor-level .dialogue-footer{margin-top:10px}.surveyor-level .dialogue-footer>span{font-size:12px}.surveyor-level .dialogue-next{font-size:14px}.surveyor-level .dialogue-meta strong{font-size:16px}}
+
+/* T02 uses the original 960 × 540 canvas; only the controls overlay it. */
+.excavation-overlay { position: absolute; inset: 0; z-index: 25; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; gap: 8px; }
+.excavation-overlay button, .excavation-photo { pointer-events: auto; }
+.excavation-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.excavation-top span { background: #15232bea; color: #f3e4be; padding: 8px 12px; border-radius: 8px; }
+.excavation-overlay button { background: #e3cc96; color: #24323a; padding: 8px 12px; border: 1px solid #bfa76d; border-radius: 8px; font: inherit; cursor: pointer; }
+.excavation-overlay button:disabled { opacity: .6; cursor: default; }
+.excavation-bottom { background: #15232bea; color: #f3e4be; padding: 9px 12px; border-radius: 10px; align-self: center; max-width: 100%; text-align: center; }
+.excavation-bottom p { margin: 0 0 6px; font-size: 14px; }
+.excavation-bottom div { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.excavation-bottom small { display: block; margin-top: 5px; font-size: 11px; }
+.excavation-photo { position: absolute; inset: 7% 18%; background: #172833f5; color: #f3e4be; padding: 16px; border: 1px solid #cfb87f; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; overflow-y: auto; text-align: center; }
+.excavation-photo img { width: 100%; min-height: 0; max-height: 55%; object-fit: contain; }
+.excavation-photo p { margin: 0; font-size: 15px; line-height: 1.45; }
+.excavation-photo small { font-size: 10px; }
+.clue-sketch { width: 100%; height: 80px; fill: none; stroke: #67502b; stroke-width: 3; }
+.field-book button { padding: 8px 12px; }
+.book-memory-photo { width: 100%; max-height: 190px; object-fit: contain; }
+.surveyor-photo-card img { width: 100%; height: 100px; object-fit: contain; }
+.surveyor-photo-card small { font-size: 11px; line-height: 1.3; }
+.surveyor-timeline img { width: 100%; height: 65px; object-fit: contain; }
+.surveyor-finished-story img { width: 95px; height: 65px; object-fit: contain; float: left; margin-right: 10px; }
+.surveyor-finished-story li { min-height: 70px; }
+@media (max-width: 760px) {
+  .game-stage:has(.excavation-overlay) { min-height: 380px; }
+  .excavation-overlay { padding: 6px; }
+  .excavation-top { font-size: 11px; }
+  .excavation-overlay button { font-size: 12px; padding: 6px 8px; }
+  .excavation-bottom p { font-size: 12px; }
+  .excavation-bottom small { font-size: 10px; }
+  .excavation-photo { inset: 8% 3%; padding: 10px; }
+  .excavation-photo p { font-size: 13px; }
+  .surveyor-photo-card img { height: 65px; }
+}
+.game-stage:has(.excavation-overlay) { padding-bottom: 112px; }
+.excavation-bottom { width: 100%; }
+@media (max-width: 760px) {
+  .game-stage:has(.excavation-overlay) { min-height: 0; padding-bottom: 140px; }
+  .excavation-photo { inset: 4% 3%; }
+}
+.book-journal { padding-left: 18px; text-align: left; font-size: 13px; line-height: 1.5; }
+.book-journal li { margin: 12px 0; min-height: 64px; }
+.book-journal img { width: 68px; height: 60px; object-fit: contain; float: left; margin-right: 8px; }
+.phase-complete .memory-light { font-size: 32px; }
+.phase-complete .surveyor-memory { font-size: clamp(12px, 1.05vw, 16px); }
+.phase-complete .surveyor-finished-story { margin: 5px 0; }

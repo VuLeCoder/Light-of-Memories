@@ -27,3 +27,7 @@
 - Nền và tàu tĩnh được cache một lần tại đầy đủ độ phân giải, tái tạo khi WebGL khôi phục. Nhân vật và đèn cập nhật riêng.
 
 Mã chính: `src/game/surveyor-scenery.ts`, `src/content/levels/surveyor-encounter.ts`, `src/game/PreviewScene.ts` và `src/App.tsx`.
+
+## Ảnh cuộc ghé thăm trong T03
+
+`public/assets/surveyor-apollo12.jpg` là ảnh NASA AS12-48-7133, Pete Conrad bên Surveyor 3 trong chuyến Apollo 12 tháng 11/1969. Ảnh giữ nguyên, dùng trong lời kể ký ức; không phải ảnh hiện trạng. Nguồn: https://www.nasa.gov/wp-content/uploads/2019/11/apollo_12_eva2_conrad_at_surveyor_3_as12-48-7133hr.jpg
