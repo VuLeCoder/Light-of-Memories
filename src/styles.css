@@ -259,7 +259,9 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .surveyor-memory{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;max-width:600px;margin:auto;line-height:1.6;font-size:clamp(13px,1.3vw,18px)}
 .memory-light{font-size:48px;color:#ffe0a0;text-shadow:0 0 22px #f9d481}.surveyor-memory p{margin:7px 0}.surveyor-pending{font-size:.85em;color:#c1d0cf}
 .surveyor-footer{display:flex;align-items:center;gap:15px;margin-top:auto;flex-shrink:0}.surveyor-footer button{flex-shrink:0;min-height:44px}.surveyor-footer small{font-size:11px;line-height:1.4;color:#c4d0d0}
-.book-new-entry{color:#806126;text-align:center;line-height:1.4}
+.book-new-entry{color:#513d20;background:#e6d4aa;border:1px solid #ab8d55;border-radius:6px;padding:8px 12px;text-align:center;line-height:1.4}
+.book-new-entry:hover{color:#3d2c14;background:#dcc18b}
+.book-new-entry:focus-visible{outline-color:#72552a;outline-offset:3px}
 @media(max-width:760px){.surveyor-level{gap:8px}.surveyor-tools-layout{gap:10px;grid-template-columns:minmax(0,1.4fr) minmax(105px,1fr)}.surveyor-labels button{padding:8px;font-size:13px}.surveyor-footer{gap:10px}.surveyor-footer small{font-size:10px}.surveyor-footer button{font-size:12px}}
 
 .surveyor-scene-hud{position:absolute;inset:12px 14px auto;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none;color:#eee3c9;z-index:1;font-size:clamp(12px,1.15vw,16px)}
