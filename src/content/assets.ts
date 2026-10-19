@@ -1,17 +1,17 @@
-// Public assets keep their filenames and respect the deployment base path.
+// Lossless WebP copies preserve source pixels and respect the deployment base path.
 const imageUrl = (path: string) => `${import.meta.env.BASE_URL}images/${path}`;
 
-export const brandLogo = imageUrl('branding/light-of-memories-primary.png');
+export const brandLogo = imageUrl('branding/light-of-memories-primary.webp');
 
-const anPortrait = imageUrl('portraits/an.png');
-const baPortrait = imageUrl('portraits/ba.png');
-const cuoiPortrait = imageUrl('portraits/cuoi.png');
-const cayDaPortrait = imageUrl('portraits/cay-da.png');
-const matTronPortrait = imageUrl('portraits/mat-tron.png');
-const chiHangPortrait = imageUrl('portraits/chi-hang.png');
-const anSheet = imageUrl('sprites/an-spritesheet.png');
-const baSheet = imageUrl('sprites/ba-spritesheet.png');
-const cuoiSheet = imageUrl('sprites/cuoi-spritesheet.png');
+const anPortrait = imageUrl('portraits/an.webp');
+const baPortrait = imageUrl('portraits/ba.webp');
+const cuoiPortrait = imageUrl('portraits/cuoi.webp');
+const cayDaPortrait = imageUrl('portraits/cay-da.webp');
+const matTronPortrait = imageUrl('portraits/mat-tron.webp');
+const chiHangPortrait = imageUrl('portraits/chi-hang.webp');
+const anSheet = imageUrl('sprites/an-spritesheet.webp');
+const baSheet = imageUrl('sprites/ba-spritesheet.webp');
+const cuoiSheet = imageUrl('sprites/cuoi-spritesheet.webp');
 
 export const portraits = {
   an: { name: 'An', url: anPortrait }, ba: { name: 'Bà', url: baPortrait },

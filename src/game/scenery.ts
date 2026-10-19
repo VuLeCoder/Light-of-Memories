@@ -1,4 +1,27 @@
 import Phaser from 'phaser';
+import { VIEW } from './types';
+
+// Rasterize only static layers once, at the full game resolution. Interactive
+// objects, characters and effects remain separate and continue updating normally.
+export function cacheScenery(scene: Phaser.Scene, draw: (scene: Phaser.Scene) => unknown) {
+  const backdrop = scene.add.renderTexture(0, 0, VIEW.width, VIEW.height).setOrigin(0);
+  const redraw = () => {
+    const start = scene.children.length;
+    draw(scene);
+    const layers = scene.children.getChildren().slice(start);
+    backdrop.clear().draw(layers);
+    layers.forEach((layer) => layer.destroy());
+  };
+  redraw();
+
+  // GPU render targets lose their pixels after context loss. Rebuild the cache
+  // once restoration completes, and remove the listener when leaving the scene.
+  const renderer = scene.game.renderer;
+  renderer.on(Phaser.Renderer.Events.RESTORE_WEBGL, redraw);
+  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+    renderer.off(Phaser.Renderer.Events.RESTORE_WEBGL, redraw);
+  });
+}
 
 // Temporary scenery drawn in game coordinates; replace each layer independently.
 export function sky(scene: Phaser.Scene, lunar = false) {

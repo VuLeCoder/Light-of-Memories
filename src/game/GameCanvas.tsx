@@ -36,6 +36,7 @@ export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, t
     let cancelled = false;
     let game: import('phaser').Game | undefined;
     let observer: ResizeObserver | undefined;
+    let resizeFrame: number | undefined;
     setReady(false);
     setStatus({ kind: 'loading' });
 
@@ -67,7 +68,20 @@ export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, t
         } },
       });
       previewScene.setMoonMode(moonModeRef.current);
-      observer = new ResizeObserver(() => { if (!cancelled) game?.scale.refresh(); });
+      let previousWidth = -1;
+      let previousHeight = -1;
+      observer = new ResizeObserver(([entry]) => {
+        if (cancelled || !entry) return;
+        const { width, height } = entry.contentRect;
+        if (width === previousWidth && height === previousHeight) return;
+        previousWidth = width;
+        previousHeight = height;
+        if (resizeFrame !== undefined) cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => {
+          resizeFrame = undefined;
+          if (!cancelled) game?.scale.refresh();
+        });
+      });
       observer.observe(element);
     }).catch(() => {
       if (!cancelled) setStatus({ kind: 'error' });
@@ -77,6 +91,7 @@ export function GameCanvas({ initiallyAwake, scene, moonMode, language, quest, t
       cancelled = true;
       phaserScene.current = null;
       observer?.disconnect();
+      if (resizeFrame !== undefined) cancelAnimationFrame(resizeFrame);
       if (game) {
         // Phaser destroys on its next frame. Detach the old canvas immediately
         // so rapid scene changes never show two canvases in the same container.

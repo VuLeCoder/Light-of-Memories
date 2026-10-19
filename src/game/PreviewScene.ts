@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '../content/assets';
-import { earthScenery, moonScenery } from './scenery';
+import { cacheScenery, earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
 import { copy, type Language } from '../content/i18n';
 
@@ -56,6 +56,7 @@ export class PreviewScene extends Phaser.Scene {
   setLanguage(language: Language) {
     this.options.language = language;
     this.trailHint?.setText(copy[language].trailMarker);
+    this.benchHint?.setText(copy[language].interactBench);
   }
 
   setMoonMode(mode: PreviewOptions['moonMode']) {
@@ -93,12 +94,12 @@ export class PreviewScene extends Phaser.Scene {
       }
     }
     if (this.options.scene === 'earth') {
-      earthScenery(this);
+      cacheScenery(this, earthScenery);
       this.addCharacter('ba', 188, 410, 0.49);
       // Align An's seated hips with the porch edge (y=425), feet on the lower step.
       this.addCharacter('an', 313, 465, 0.37);
     } else {
-      moonScenery(this);
+      cacheScenery(this, moonScenery);
       this.trailHighlight = this.add.graphics();
       for (let i = 0; i < 9; i++) {
         const x = 659 + i * 29, y = 435 - i * 3 + i % 2 * 10;
@@ -110,7 +111,7 @@ export class PreviewScene extends Phaser.Scene {
         backgroundColor: '#15232b', padding: { x: 12, y: 8 },
       }).setOrigin(0.5).setDepth(20);
       this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
-      this.benchHint = this.add.text(520, 310, '', { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
+      this.benchHint = this.add.text(520, 310, copy[this.options.language].interactBench, { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
       this.addMoonCuoi();
       this.lantern = this.add.graphics().setDepth(10);
       const points = Array.from({ length: 10 }, (_, i) => {
@@ -140,7 +141,7 @@ export class PreviewScene extends Phaser.Scene {
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
     this.lantern?.setPosition(this.cuoi.x + (this.cuoi.flipX ? -38 : 38), this.cuoi.y - 56);
-    this.benchHint?.setText(copy[this.options.language].interactBench).setVisible(this.moonMode === 'free' && this.options.quest === 'bench' && Math.abs(this.cuoi.x - 520) <= 90);
+    this.benchHint?.setVisible(this.moonMode === 'free' && this.options.quest === 'bench' && Math.abs(this.cuoi.x - 520) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
     if (document.activeElement?.matches('input, select, textarea')) { this.walkTarget = undefined; this.pendingBench = false; this.setCuoiFrame('rest'); return; }

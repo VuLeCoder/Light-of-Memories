@@ -139,7 +139,9 @@ export function App() {
     setTreeTurn(0);
     setStarted(true);
     setChapter('earth');
-    setJourney((value) => value + 1);
+    // The initial menu already has the Earth scene ready. Recreate the game
+    // only when restarting an existing journey, avoiding a second asset load.
+    if (started) setJourney((value) => value + 1);
     setTurn(0);
     setMenuOpen(false);
   }
