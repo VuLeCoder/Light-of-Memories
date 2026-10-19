@@ -92,7 +92,6 @@ export class PreviewScene extends Phaser.Scene {
     } else { this.setCuoiFrame('rest'); if (length <= 1) this.digTarget = undefined; }
     c.setScale(scale).setDepth(c.y);
     this.digShadow?.setVisible(true).setPosition(c.x, c.y + 1).setScale(scale / .62).setDepth(c.y - 1);
-    this.lantern?.setScale(scale / .62).setPosition(c.x + (c.flipX ? -38 : 38) * scale / .62, c.y - 56 * scale / .62).setDepth(c.y + 1);
     this.shovel?.setVisible(true).setPosition(c.x + (c.flipX ? -22 : 22) * scale / .62, c.y - 18 * scale / .62).setScale((c.flipX ? -1 : 1) * scale / .62, scale / .62).setDepth(c.y + 2).setRotation(this.options.excavation.digging ? Math.sin(time / 130) * .6 : -.3);
     const near = digSites.find(site => !this.options.excavation!.found.includes(site.id) && Math.hypot(c.x - site.x, c.y - site.y) < 43)?.id ?? null;
     if (near !== this.digNear) { this.digNear = near; this.options.onDigNear?.(near); }
@@ -217,23 +216,28 @@ export class PreviewScene extends Phaser.Scene {
         const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 9 : 21;
         return { x: Math.cos(a) * r, y: Math.sin(a) * r };
       });
-      // Translucent paper panels, bamboo ribs and silk tassels.
-      this.lantern.fillStyle(0xffce68, .08).fillCircle(0, 0, 29);
-      const paper = [0xe99b45, 0xc96545, 0xe6b65b, 0xd77745, 0xf0c974];
+      // Unlit paper: no halo or luminous hub before a friend lights a point.
+      const paper = [0x69533f, 0x584437, 0x746044, 0x604938, 0x796348];
       for (let i = 0; i < 10; i++) {
         const a = points[i], b = points[(i + 1) % 10];
         this.lantern.fillStyle(paper[Math.floor(i / 2)], .95).fillTriangle(0, 0, a.x, a.y, b.x, b.y);
       }
       this.lantern.lineStyle(3, 0x624226).strokePoints(points, true);
-      this.lantern.lineStyle(1.2, 0xffdc8a).strokePoints(points, true);
+      this.lantern.lineStyle(1.2, 0xa58b60).strokePoints(points, true);
       for (let i = 0; i < 10; i += 2) this.lantern.lineBetween(0, 0, points[i].x, points[i].y);
-      this.lantern.fillStyle(0xffefb5).fillCircle(0, 0, 3);
+      this.lantern.fillStyle(0x8c714c).fillCircle(0, 0, 3);
       this.lantern.lineStyle(3, 0x805634).lineBetween(0, 9, 0, 35);
       for (const x of [-12, 12]) {
-        this.lantern.lineStyle(1, 0xf4d697).lineBetween(x, 15, x, 23);
-        this.lantern.fillStyle(0xb95339).fillRect(x - 2, 23, 4, 8);
-        this.lantern.lineStyle(1, 0xf1bb67).lineBetween(x, 23, x, 33);
+        this.lantern.lineStyle(1, 0x9d855c).lineBetween(x, 15, x, 23);
+        this.lantern.fillStyle(0x744333).fillRect(x - 2, 23, 4, 8);
+        this.lantern.lineStyle(1, 0xa77b4b).lineBetween(x, 23, x, 33);
       }
+      this.syncLanternGrip();
+      // Follow the final animated pose and position, including direction changes.
+      this.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncLanternGrip, this);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        this.events.off(Phaser.Scenes.Events.POST_UPDATE, this.syncLanternGrip, this);
+      });
       this.setQuest(this.options.quest, this.options.treeSpeaking);
       if (this.options.scene === 'surveyor') {
         this.digMarks = this.add.graphics().setDepth(1);
@@ -273,7 +277,6 @@ export class PreviewScene extends Phaser.Scene {
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
     if (this.options.excavation) { this.updateExcavation(_time, delta); return; }
-    this.lantern?.setPosition(this.cuoi.x + (this.cuoi.flipX ? -38 : 38), this.cuoi.y - 56);
     this.interactionHint?.setVisible(this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
@@ -304,13 +307,33 @@ export class PreviewScene extends Phaser.Scene {
     else if (!this.cuoi.anims.isPlaying || this.cuoi.anims.currentAnim?.key !== 'cuoi-walk') this.cuoi.play('cuoi-walk');
   }
 
+  private syncLanternGrip() {
+    const c = this.cuoi, lantern = this.lantern;
+    if (!c || !lantern) return;
+    // Fist centers in each trimmed sprite frame (original image pixels).
+    const walkingHands = [[139, 132], [114, 130], [132, 132], [139, 130], [119, 132], [132, 134]];
+    const frame = String(c.frame.name);
+    const hand = frame.startsWith('walk-') ? walkingHands[Number(frame.slice(5))] : [106, 154];
+    if (!hand) return;
+    const facing = c.flipX ? -1 : 1;
+    const scale = c.scaleX / .62;
+    const angle = facing * .3;
+    const handX = c.x + facing * (hand[0] - c.frame.realWidth / 2) * c.scaleX;
+    const handY = c.y + (hand[1] - c.frame.realHeight) * c.scaleY;
+    // The grip is 27px below the star: place that point in the fist,
+    // with the sprite drawn in front so its fingers cover the wooden shaft.
+    lantern.setScale(scale).setRotation(angle)
+      .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
+      .setDepth(c.depth - .1);
+  }
+
   private get rightEdge() { return this.options.scene === 'surveyor' ? 890 : this.options.quest === 'trail' ? 908 : 830; }
 
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;
     const startX = this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
     this.cuoi = this.add.sprite(startX, this.options.scene === 'surveyor' ? surveyorGroundY(startX) : 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
-      .setOrigin(0.5, 1).setScale(0.62);
+      .setOrigin(0.5, 1).setScale(0.62).setDepth(10);
     this.awake = this.options.initiallyAwake;
     this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
     this.anims.create({ key: 'cuoi-walk', frames: cuoiWalkFrames.map((_, index) => ({ key: 'cuoi', frame: `walk-${index}` })), frameRate: 8, repeat: -1 });
