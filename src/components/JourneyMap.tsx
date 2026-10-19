@@ -29,7 +29,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack }: { languag
   const detail = level?.text[language];
   const firstLevel = getLevel(journeyStops[0])!;
   const [locked, setLocked] = useState(false);
-  return <section className="journey-view" aria-labelledby="journey-title">
+  return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
     <header><span>☆ 0/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
     {level && detail ? <>
       <div className="surveyor-meeting"><img src={level.portrait} alt={detail.friend} /><div><p><b>Cuội:</b> {detail.intro}</p><p><b>{detail.friend}:</b> {detail.reply}</p><p>{detail.invitation}</p></div></div>
