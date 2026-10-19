@@ -8,6 +8,7 @@ import { scenes, type SceneId } from './content/scenes';
 import { brandLogo, portraits } from './content/assets';
 import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
 import { readProgress, saveProgress, readSound, type Chapter } from './state/progress';
+import type { LevelId } from './content/levels';
 import type { MoonQuest } from './game/types';
 
 function BookPlaceholder({ language }: { language: Language }) {
@@ -73,9 +74,10 @@ export function App() {
   const [started, setStarted] = useState(saved.progress.started);
   const [chapter, setChapter] = useState<Chapter>(saved.progress.chapter);
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
+  const [activeLevel, setActiveLevel] = useState<LevelId | null>(saved.progress.activeLevel);
   useEffect(() => {
-    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed));
-  }, [chapter, quest, completed]);
+    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel));
+  }, [chapter, quest, completed, activeLevel]);
   const [treeTurn, setTreeTurn] = useState(0);
   const [revealing, setRevealing] = useState(false);
   const [journey, setJourney] = useState(0);
@@ -85,7 +87,7 @@ export function App() {
   const moonStory = chapter === 'moon-story';
   const moonWaking = chapter === 'moon-waking';
   const questDialogue = quest === 'tree' || quest === 'lantern';
-  const journeyOpen = quest === 'complete' || quest === 'surveyor';
+  const journeyOpen = quest === 'complete';
   const questLocked = questDialogue || journeyOpen;
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
@@ -112,7 +114,7 @@ export function App() {
     const target = transitioning || moonWaking ? stage
       : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .journey-view button, .story-canvas:not([inert]) .game-host');
     (target ?? stage)?.focus({ preventScroll: true });
-  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing]);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel]);
   const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
@@ -129,6 +131,7 @@ export function App() {
   function startJourney() {
     gameOwnsFocus.current = true;
     setCompleted(false);
+    setActiveLevel(null);
     setRevealing(false);
     setScene('earth');
     setQuest('bench');
@@ -200,7 +203,7 @@ export function App() {
             </div>}
             {questDialogue && <EarthDialogue key={`${quest}-${journey}`} language={language} lines={quest === 'tree' ? storyLines[language].tree : storyLines[language].departure} title={t.treeTitle} finalAction={quest === 'tree' ? 'lantern' : 'moon'} paused={menuOpen} onComplete={quest === 'tree' ? receiveLantern : followTracks} onTurn={quest === 'tree' ? setTreeTurn : noopTurn} />}
             {revealing && !menuOpen && <div className="journey-light" role="status">✦<p>{journeyCopy[language].reveal}</p></div>}
-            {journeyOpen && !revealing && !menuOpen && <JourneyMap language={language} surveyor={quest === 'surveyor'} onEnter={() => setQuest('surveyor')} onBack={() => setQuest('complete')} />}
+            {journeyOpen && !revealing && !menuOpen && <JourneyMap language={language} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
@@ -212,7 +215,7 @@ export function App() {
           <p>{currentText.description}</p>
         </div>
       </section>
-      {journeyOpen && !revealing ? <JourneyBook language={language} surveyor={quest === 'surveyor'} /> : <BookPlaceholder language={language} />}
+      {journeyOpen && !revealing ? <JourneyBook language={language} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
     </div>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">
