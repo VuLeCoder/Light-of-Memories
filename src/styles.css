@@ -327,3 +327,51 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .phase-complete .memory-light { font-size: 32px; }
 .phase-complete .surveyor-memory { font-size: clamp(12px, 1.05vw, 16px); }
 .phase-complete .surveyor-finished-story { margin: 5px 0; }
+
+/* Centered memory plate, with a straight frame and generous type. */
+.game-stage:has(.excavation-photo) { min-height: 650px; }
+.excavation-photo { inset: 54px 16px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 22px; text-align: center; background: radial-gradient(ellipse at 50% 15%, #354b50, #172833 75%); box-shadow: 0 16px 50px #0006; }
+.memory-photo-frame { margin: 0 auto; width: min(100%, 360px); padding: 9px; background: #e3dac1; border: 1px solid #fff0ce; border-radius: 3px; box-shadow: 0 8px 20px #0005; }
+.excavation-photo .memory-photo-frame img { display: block; width: 100%; height: 190px; max-height: none; object-fit: contain; object-position: center; background: #111a1e; }
+.memory-photo-frame figcaption { margin-top: 6px; color: #5a5141; font-size: 12px; letter-spacing: 2px; }
+.memory-photo-copy { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 620px; }
+.memory-eyebrow { color: #dfc58e; font-size: 13px; letter-spacing: 1px; }
+.memory-photo-copy h2 { font: 500 26px/1.25 'Lora', Georgia, serif; margin: 0; }
+.excavation-photo p { font-size: 18px; line-height: 1.55; color: #f1ebda; }
+.excavation-photo small { font-size: 12px; line-height: 1.5; color: #b8c8c7; }
+.excavation-photo button { min-height: 44px; font-size: 16px; }
+/* The ending advances one short scene at a time, retaining its saved step. */
+.game-stage:has(.phase-complete) { min-height: 620px; }
+.phase-complete { gap: 12px; }
+.surveyor-ending { flex: 1; min-height: 0; width: 100%; max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
+.ending-steps { display: flex; gap: 6px; }
+.ending-steps span { width: 24px; height: 3px; border-radius: 2px; background: #80918d55; }
+.ending-steps .is-active { background: #e3c78f; }
+.surveyor-ending h3 { margin: 0; font: 500 24px/1.3 'Lora', Georgia, serif; color: #ffe5b1; }
+.surveyor-ending h3:focus { outline: none; }
+.ending-photo { margin: 0; }
+.ending-photo img { display: block; margin: auto; width: 100%; max-width: 340px; height: 165px; object-fit: contain; border-radius: 6px; background: #112530; }
+.ending-photo figcaption { margin-top: 6px; color: #c5d2cf; font-size: 12px; line-height: 1.5; }
+.ending-lantern { width: 205px; height: 205px; flex-shrink: 0; }
+.ending-lantern .lit-point { transition: fill 1.2s ease; }
+.ending-lantern.is-lit .lit-point { fill: #ffe29b; }
+.ending-lantern.is-lit .lantern-aura { animation: memory-kindled 1.4s ease-out forwards; }
+.ending-speech { margin: 0; font-size: 18px; line-height: 1.65; color: #f2ebdb; max-width: 620px; }
+.ending-speech b { color: #f3d18c; }
+.ending-note { margin: 0; color: #e8cc95; font-size: 15px; line-height: 1.5; }
+.ending-actions { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.ending-actions button { min-height: 44px; font-size: 16px; }
+@keyframes memory-kindled { from { opacity: 0; transform: scale(.7); transform-origin: center; } to { opacity: .13; transform: scale(1); transform-origin: center; } }
+@media (max-width: 1100px) {
+  .game-stage:has(.excavation-photo) { min-height: 720px; }
+  .game-stage:has(.phase-complete) { min-height: 690px; }
+  .excavation-photo { inset: 52px 10px 10px; padding: 16px; gap: 12px; }
+  .excavation-photo p { font-size: 17px; }
+  .surveyor-ending { gap: 12px; }
+  .ending-speech { font-size: 17px; line-height: 1.6; }
+  .surveyor-ending h3 { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ending-lantern .lit-point { transition: none; }
+  .ending-lantern.is-lit .lantern-aura { animation: none; opacity: .13; }
+}

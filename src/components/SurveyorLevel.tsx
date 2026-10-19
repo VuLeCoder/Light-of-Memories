@@ -1,3 +1,4 @@
+import { SurveyorEnding } from './SurveyorEnding';
 import { useEffect, useRef, useState } from 'react';
 import { SurveyorChallenges } from './SurveyorChallenges';
 import { challengeCopy } from '../content/levels/surveyor-challenges';
@@ -83,7 +84,7 @@ export function SurveyorLevel({ language, progress, onChange, onBack }: {
   }
   return <section className={`journey-view surveyor-level phase-${phase}`} aria-labelledby="surveyor-title" lang={language}>
     <header><span aria-label={`${t.memories}: ${count}/3`}>{Array.from({ length: 3 }, (_, i) => i < count ? '★' : '☆').join(' ')}</span><h2 id="surveyor-title" ref={heading} tabIndex={-1}>{phase === 'tools' ? t.task : phase === 'memory' ? t.done : phase === 'complete' ? ct.complete : phase.startsWith('timeline') ? ct.timelineTitle : ct.soilTitle}</h2></header>
-    {phase === 'tools' ? <>
+    {phase === 'complete' ? <SurveyorEnding language={language} progress={progress} onChange={onChange} onBack={onBack} /> : phase === 'tools' ? <>
       <p className="surveyor-instruction">{t.instruction}</p>
       <div className="surveyor-tools-layout">
         <div className="surveyor-tool-picture"><SurveyorDrawing />
@@ -98,6 +99,6 @@ export function SurveyorLevel({ language, progress, onChange, onBack }: {
     </> : phase !== 'memory' ? <SurveyorChallenges language={language} progress={progress} onChange={onChange} /> : <div className="surveyor-memory">
       <span className="memory-light" aria-hidden="true">✦</span><p><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.result}</p><p>{t.bookNotice}</p><button className="journey-primary" onClick={() => onChange({ ...progress, phase: 'soil-intro', turn: 0 })}>{ct.nextSoil} →</button>
     </div>}
-    <footer className="surveyor-footer"><button onClick={onBack}>{t.back}</button><small>{t.fiction}</small></footer>
+    {phase !== 'complete' && <footer className="surveyor-footer"><button onClick={onBack}>{t.back}</button><small>{t.fiction}</small></footer>}
   </section>;
 }

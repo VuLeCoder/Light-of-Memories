@@ -34,18 +34,43 @@ export class PreviewScene extends Phaser.Scene {
     if (!this.options.excavation) return;
     for (const site of digSites) {
       const { x, y, id } = site;
-      this.digMarks.lineStyle(3, 0x303d43, .9).fillStyle(0x303d43, .7);
-      if (this.options.excavation.found.includes(id)) this.digMarks.fillEllipse(x, y, 32, 13);
-      else if (id === 'arrive') this.digMarks.strokeEllipse(x - 15, y, 22, 9).strokeEllipse(x + 13, y - 5, 22, 9);
-      else if (id === 'work') for (let i = 0; i < 3; i++) this.digMarks.lineBetween(x - 22, y - 9 + i * 8, x + 22, y - 14 + i * 8);
-      else for (let i = 0; i < 6; i++) this.digMarks.fillEllipse(x - 22 + i * 9, y + (i % 2) * 7 - 6, 6, 3);
-      if (this.options.excavation.clues.includes(id) && !this.options.excavation.found.includes(id)) {
-        // Mark only locations the player has remembered in the field notebook.
-        this.digMarks.lineStyle(7, 0x172730, .7).strokeEllipse(x, y, 64, 27);
-        this.digMarks.lineStyle(2, 0xffdf99, 1).strokeEllipse(x, y, 64, 27);
-        this.digMarks.lineStyle(2, 0x172730, .9).fillStyle(0xffdf99, 1);
-        this.digMarks.fillTriangle(x, y - 19, x - 6, y - 29, x + 6, y - 29);
-        this.digMarks.strokeTriangle(x, y - 19, x - 6, y - 29, x + 6, y - 29);
+      const g = this.digMarks;
+      const found = this.options.excavation.found.includes(id);
+      // Soft depressions and raised rims follow the ground's perspective.
+      if (found) {
+        g.fillStyle(0x273940, .5).fillEllipse(x, y + 2, 40, 15);
+        g.fillStyle(0x172a32, .5).fillEllipse(x, y, 28, 9);
+        g.lineStyle(1, 0xb7b9a2, .6).beginPath().arc(x, y, 20, .15, 2.9).strokePath();
+      } else if (id === 'arrive') {
+        for (const offset of [-17, 14]) {
+          const py = y - (offset > 0 ? 5 : 0);
+          g.fillStyle(0x263a42, .45).fillEllipse(x + offset, py, 24, 10);
+          g.fillStyle(0x172b34, .35).fillEllipse(x + offset, py - 1, 17, 5);
+          g.lineStyle(1, 0xc2c2a7, .65).lineBetween(x + offset - 9, py + 4, x + offset + 8, py + 4);
+        }
+      } else if (id === 'work') {
+        for (let i = 0; i < 3; i++) {
+          const py = y - 8 + i * 8;
+          g.lineStyle(5, 0x263a42, .5).lineBetween(x - 20, py, x + 20, py - 5);
+          g.lineStyle(1, 0xc8c5a7, .6).lineBetween(x - 19, py + 3, x + 20, py - 2);
+          g.fillStyle(0x8f9b94, .8).fillEllipse(x + 24, py - 3, 5, 3);
+        }
+      } else {
+        for (let i = 0; i < 6; i++) {
+          const px = x - 28 + i * 11, py = y + (i % 2) * 8 - 6;
+          g.fillStyle(0x263a42, .65).fillEllipse(px, py, 9, 5).fillEllipse(px - 5, py + 1, 3, 4);
+          g.lineStyle(1, 0xb6b9a2, .55).lineBetween(px - 2, py + 3, px + 3, py + 2);
+        }
+      }
+      if (this.options.excavation.clues.includes(id) && !found) {
+        g.fillStyle(0xffd689, .07).fillEllipse(x, y, 76, 30);
+        // Four short glints frame the trace without obscuring it with a ring.
+        g.lineStyle(1.5, 0xf5d798, .85);
+        for (const side of [-1, 1]) {
+          g.lineBetween(x + side * 29, y - 13, x + side * 37, y - 9);
+          g.lineBetween(x + side * 29, y + 13, x + side * 37, y + 9);
+        }
+        g.fillStyle(0xffe5ad).fillPoints([{x,y:y-31},{x:x+3,y:y-25},{x:x+7,y:y-23},{x:x+3,y:y-21},{x,y:y-15},{x:x-3,y:y-21},{x:x-7,y:y-23},{x:x-3,y:y-25}], true);
       }
     }
   }
@@ -68,7 +93,7 @@ export class PreviewScene extends Phaser.Scene {
     c.setScale(scale).setDepth(c.y);
     this.digShadow?.setVisible(true).setPosition(c.x, c.y + 1).setScale(scale / .62).setDepth(c.y - 1);
     this.lantern?.setScale(scale / .62).setPosition(c.x + (c.flipX ? -38 : 38) * scale / .62, c.y - 56 * scale / .62).setDepth(c.y + 1);
-    this.shovel?.setVisible(true).setPosition(c.x + (c.flipX ? -25 : 25), c.y - 15).setScale(scale / .62).setDepth(c.y + 2).setRotation(this.options.excavation.digging ? Math.sin(time / 130) * .6 : -.3);
+    this.shovel?.setVisible(true).setPosition(c.x + (c.flipX ? -22 : 22) * scale / .62, c.y - 18 * scale / .62).setScale((c.flipX ? -1 : 1) * scale / .62, scale / .62).setDepth(c.y + 2).setRotation(this.options.excavation.digging ? Math.sin(time / 130) * .6 : -.3);
     const near = digSites.find(site => !this.options.excavation!.found.includes(site.id) && Math.hypot(c.x - site.x, c.y - site.y) < 43)?.id ?? null;
     if (near !== this.digNear) { this.digNear = near; this.options.onDigNear?.(near); }
     this.interactionHint?.setVisible(false);
@@ -86,7 +111,7 @@ export class PreviewScene extends Phaser.Scene {
     this.options.quest = quest;
     this.options.treeSpeaking = treeSpeaking;
     this.treeGlow?.setVisible(treeSpeaking);
-    this.lantern?.setVisible(['lantern', 'trail', 'complete'].includes(quest));
+    this.lantern?.setVisible(this.options.scene !== 'surveyor' && ['lantern', 'trail', 'complete'].includes(quest));
     const showTrail = quest === 'lantern' || quest === 'trail';
     this.trailHighlight?.setVisible(showTrail);
     this.trailHint?.setVisible(showTrail);
@@ -176,7 +201,8 @@ export class PreviewScene extends Phaser.Scene {
         for (let i = 0; i < 9; i++) {
           const x = 659 + i * 29, y = 435 - i * 3 + i % 2 * 10;
           this.trailHighlight.fillStyle(0xffdf91, 0.18).fillEllipse(x + 5, y + 2, 26, 16);
-          this.trailHighlight.lineStyle(2, 0xffdf91, 0.95).strokeRect(x - 1, y - 1, 12, 7);
+          this.trailHighlight.fillStyle(0xffdf91, .6).fillEllipse(x + 6, y + 2, 10, 5).fillEllipse(x - 1, y + 3, 4, 4);
+          this.trailHighlight.lineStyle(1, 0x786c53, .7).lineBetween(x + 4, y, x + 4, y + 4);
         }
         this.trailHint = this.add.text(780, 353, copy[this.options.language].trailMarker, {
           fontFamily: 'Arial', fontSize: '22px', color: '#ffe3a1',
@@ -191,12 +217,38 @@ export class PreviewScene extends Phaser.Scene {
         const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 9 : 21;
         return { x: Math.cos(a) * r, y: Math.sin(a) * r };
       });
-      this.lantern.fillStyle(0x514d43).fillPoints(points, true).lineStyle(2, 0xcdb77b).strokePoints(points, true).lineBetween(0, 21, 0, 33);
+      // Translucent paper panels, bamboo ribs and silk tassels.
+      this.lantern.fillStyle(0xffce68, .08).fillCircle(0, 0, 29);
+      const paper = [0xe99b45, 0xc96545, 0xe6b65b, 0xd77745, 0xf0c974];
+      for (let i = 0; i < 10; i++) {
+        const a = points[i], b = points[(i + 1) % 10];
+        this.lantern.fillStyle(paper[Math.floor(i / 2)], .95).fillTriangle(0, 0, a.x, a.y, b.x, b.y);
+      }
+      this.lantern.lineStyle(3, 0x624226).strokePoints(points, true);
+      this.lantern.lineStyle(1.2, 0xffdc8a).strokePoints(points, true);
+      for (let i = 0; i < 10; i += 2) this.lantern.lineBetween(0, 0, points[i].x, points[i].y);
+      this.lantern.fillStyle(0xffefb5).fillCircle(0, 0, 3);
+      this.lantern.lineStyle(3, 0x805634).lineBetween(0, 9, 0, 35);
+      for (const x of [-12, 12]) {
+        this.lantern.lineStyle(1, 0xf4d697).lineBetween(x, 15, x, 23);
+        this.lantern.fillStyle(0xb95339).fillRect(x - 2, 23, 4, 8);
+        this.lantern.lineStyle(1, 0xf1bb67).lineBetween(x, 23, x, 33);
+      }
       this.setQuest(this.options.quest, this.options.treeSpeaking);
       if (this.options.scene === 'surveyor') {
         this.digMarks = this.add.graphics().setDepth(1);
         this.digShadow = this.add.ellipse(0, 0, 65, 12, 0x15232b, .45).setVisible(false);
-        this.shovel = this.add.graphics().lineStyle(4, 0xcdb77b).lineBetween(0, -25, 10, 5).fillStyle(0xd8d7c9).fillTriangle(3, 3, 20, 0, 15, 16).setVisible(false);
+        this.shovel = this.add.graphics().setVisible(false);
+        this.shovel.lineStyle(6, 0x493e32).lineBetween(0, -27, 0, 5);
+        this.shovel.lineStyle(3, 0xb58a52).lineBetween(-1, -27, -1, 5);
+        this.shovel.lineStyle(3, 0x574637).strokeRoundedRect(-6, -36, 12, 11, 3);
+        this.shovel.lineStyle(1, 0xd2b27c).lineBetween(-4, -34, 4, -34);
+        const blade = [{x:-9,y:1},{x:9,y:1},{x:8,y:13},{x:3,y:19},{x:-3,y:19},{x:-8,y:13}];
+        this.shovel.fillStyle(0x899b9d).fillPoints(blade, true);
+        this.shovel.lineStyle(2, 0x35494f).strokePoints(blade, true);
+        this.shovel.fillStyle(0xc6d0c8).fillTriangle(-7, 3, -6, 12, 0, 17);
+        this.shovel.lineStyle(1, 0xe5e4cd).lineBetween(-7, 2, 7, 2);
+        this.shovel.lineStyle(3, 0x60777d).lineBetween(0, 1, 0, 10);
         this.drawDigMarks();
       }
     }

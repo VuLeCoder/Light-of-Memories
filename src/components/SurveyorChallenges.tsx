@@ -23,8 +23,7 @@ export function SurveyorChallenges({ language, progress, onChange }: { language:
     <button disabled={progress.order.length !== 3} onClick={() => eventOrder.every((id, i) => progress.order[i] === id) ? advance('complete') : setWrong(true)}>{t.check}</button>
     <p role="status" className="surveyor-feedback">{wrong ? t.hint : '\u00a0'}</p>
   </>;
-  return <div className="surveyor-memory"><span className="memory-light" aria-hidden="true">{phase === 'complete' ? '★' : '✦'}</span>
-    {phase === 'complete' ? <><p><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.thanks}</p><p><b>Cuội:</b> {t.promise}</p><ol className="surveyor-finished-story">{eventOrder.map(id => <li key={id}><img src={memoryPhotos[id]} alt="" />{digCopy[language].descriptions[id]}</li>)}</ol><p>{t.reward}</p></> : <p>{t.soilResult}</p>}
-    <p>{t.newEntry}</p>{phase === 'soil-memory' && <button className="journey-primary" onClick={() => advance('timeline-intro')}>{t.nextTimeline} →</button>}
+  return <div className="surveyor-memory"><span className="memory-light" aria-hidden="true">✦</span>
+    <p>{t.soilResult}</p><p>{t.newEntry}</p>{phase === 'soil-memory' && <button className="journey-primary" onClick={() => advance('timeline-intro')}>{t.nextTimeline} →</button>}
   </div>;
 }

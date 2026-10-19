@@ -29,9 +29,10 @@ export function SurveyorExcavation({ language, progress, near, onChange, onBack,
   return <div className="excavation-overlay">
     <div className="excavation-top"><span>{t.title} · {progress.found.length}/3</span><button onClick={onBack} disabled={busy}>{language === 'vi' ? 'Về lộ trình' : 'Back to route'}</button></div>
     {photo ? <section className="excavation-photo" role="dialog" aria-modal="true" aria-label={t.found}>
-      <img src={memoryPhotos[photo]} alt={t.descriptions[photo]} /><p>{t.descriptions[photo]}</p><small>NASA · {t.fiction}</small>
+      <figure className="memory-photo-frame"><img src={memoryPhotos[photo]} alt={t.descriptions[photo]} /><figcaption>NASA · {photo === 'arrive' ? '1967' : '1969'}</figcaption></figure>
+      <div className="memory-photo-copy"><span className="memory-eyebrow">{t.found} · {progress.found.length}/3</span><h2>{t.names[photo]}</h2><p>{t.descriptions[photo]}</p><small>{t.fiction}</small>
       <button autoFocus onClick={() => { setPhoto(null); onChange({ ...progress, phase: all ? 'timeline' : 'soil', order: [] });
-        if (!all) requestAnimationFrame(() => document.querySelector<HTMLElement>('.game-host')?.focus({ preventScroll: true })); }}>{all ? t.finish : t.continue}</button>
+        if (!all) requestAnimationFrame(() => document.querySelector<HTMLElement>('.game-host')?.focus({ preventScroll: true })); }}>{all ? t.finish : t.continue}</button></div>
     </section> : <div className="excavation-bottom">
       <p role="status">{busy ? t.digging : near ? progress.clues.includes(near) ? t.names[near] : t.unread : t.hint}</p>
       <div><button onClick={onBook} disabled={busy}>{t.open}</button>
