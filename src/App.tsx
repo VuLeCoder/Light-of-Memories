@@ -16,7 +16,7 @@ function BookPlaceholder({ language }: { language: Language }) {
   const t = copy[language];
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{t.bookTop}</span></div>
-    <aside className="book-panel" aria-labelledby="book-title">
+    <aside className="book-panel" lang={language} aria-labelledby="book-title">
       <div className="book-sheet">
         <div className="page-corner" aria-hidden="true" />
         <span className="book-kicker">{t.bookKicker}</span>

@@ -63,7 +63,7 @@ function JourneyBookPages({ language, activeLevel }: { language: Language; activ
   const detail = level?.text[language];
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-    <aside className="book-panel" aria-labelledby="book-title"><div className="book-sheet journey-book">
+    <aside className="book-panel" lang={language} aria-labelledby="book-title"><div className="book-sheet journey-book">
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{level && detail ? detail.friend : t.book}</h2>
       <p>{level && detail ? detail.invitation : t.guide}</p>

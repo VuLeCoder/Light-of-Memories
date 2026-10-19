@@ -192,3 +192,47 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .book-navigation button:focus-visible { outline-color: #72552a; outline-offset: 3px; }
 .book-navigation button:disabled { opacity: .35; cursor: default; }
 .book-navigation span { min-width: 80px; text-align: center; }
+
+/* Vietnamese needs room for diacritics; English titles need more horizontal space. */
+.book-panel:lang(vi) {
+  --book-title-size: clamp(25px, 2.7vw, 40px);
+  --book-title-leading: 1.35;
+  --book-body-size: 17px;
+  --book-body-leading: 1.6;
+  --book-text-width: 260px;
+  --book-label-spacing: .35px;
+  --book-list-gap: 8px;
+  --book-note-leading: 1.65;
+}
+.book-panel:lang(en) {
+  --book-title-size: clamp(24px, 2.5vw, 38px);
+  --book-title-leading: 1.25;
+  --book-body-size: 18px;
+  --book-body-leading: 1.5;
+  --book-text-width: 270px;
+  --book-label-spacing: .65px;
+  --book-list-gap: 9px;
+  --book-note-leading: 1.5;
+}
+.book-panel .book-sheet h2 {
+  max-width: 100%;
+  font-size: var(--book-title-size);
+  line-height: var(--book-title-leading);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.book-panel .book-sheet p {
+  max-width: min(100%, var(--book-text-width));
+  font-size: var(--book-body-size);
+  line-height: var(--book-body-leading);
+  text-wrap: pretty;
+}
+.book-panel .book-kicker { letter-spacing: var(--book-label-spacing); }
+.book-panel .journey-memories { max-width: 100%; gap: var(--book-list-gap); }
+.book-panel .journey-memories li { line-height: var(--book-body-leading); }
+.book-panel .book-note { line-height: var(--book-note-leading); text-wrap: balance; }
+
+@media (min-width: 760px) and (max-width: 1000px) {
+  .book-panel:lang(vi) { --book-body-size: 16px; --book-title-size: 25px; }
+  .book-panel:lang(en) { --book-body-size: 16px; --book-title-size: 24px; }
+}
