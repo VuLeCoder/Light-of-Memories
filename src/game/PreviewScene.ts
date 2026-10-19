@@ -18,12 +18,17 @@ export class PreviewScene extends Phaser.Scene {
   private benchHint?: Phaser.GameObjects.Text;
   private treeGlow?: Phaser.GameObjects.Graphics;
   private lantern?: Phaser.GameObjects.Graphics;
+  private trailHighlight?: Phaser.GameObjects.Graphics;
+  private trailHint?: Phaser.GameObjects.Text;
 
   setQuest(quest: PreviewOptions['quest'], treeSpeaking: boolean) {
     this.options.quest = quest;
     this.options.treeSpeaking = treeSpeaking;
     this.treeGlow?.setVisible(treeSpeaking);
     this.lantern?.setVisible(['lantern', 'trail', 'complete'].includes(quest));
+    const showTrail = quest === 'lantern' || quest === 'trail';
+    this.trailHighlight?.setVisible(showTrail);
+    this.trailHint?.setVisible(showTrail);
   }
 
   private interactBench() {
@@ -48,7 +53,10 @@ export class PreviewScene extends Phaser.Scene {
     if (this.awake) this.setCuoiFrame('rest');
   }
 
-  setLanguage(language: Language) { this.options.language = language; }
+  setLanguage(language: Language) {
+    this.options.language = language;
+    this.trailHint?.setText(copy[language].trailMarker);
+  }
 
   setMoonMode(mode: PreviewOptions['moonMode']) {
     if (this.moonMode === mode) return;
@@ -91,6 +99,16 @@ export class PreviewScene extends Phaser.Scene {
       this.addCharacter('an', 313, 465, 0.37);
     } else {
       moonScenery(this);
+      this.trailHighlight = this.add.graphics();
+      for (let i = 0; i < 9; i++) {
+        const x = 659 + i * 29, y = 435 - i * 3 + i % 2 * 10;
+        this.trailHighlight.fillStyle(0xffdf91, 0.18).fillEllipse(x + 5, y + 2, 26, 16);
+        this.trailHighlight.lineStyle(2, 0xffdf91, 0.95).strokeRect(x - 1, y - 1, 12, 7);
+      }
+      this.trailHint = this.add.text(780, 353, copy[this.options.language].trailMarker, {
+        fontFamily: 'Arial', fontSize: '22px', color: '#ffe3a1',
+        backgroundColor: '#15232b', padding: { x: 12, y: 8 },
+      }).setOrigin(0.5).setDepth(20);
       this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
       this.benchHint = this.add.text(520, 310, '', { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
       this.addMoonCuoi();
