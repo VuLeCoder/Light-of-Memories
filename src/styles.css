@@ -298,6 +298,14 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .excavation-photo small { font-size: 10px; }
 .clue-sketch { width: 100%; height: 80px; fill: none; stroke: #67502b; stroke-width: 3; }
 .field-book button { padding: 8px 12px; }
+.book-next-clue { margin-top: 8px; }
+.book-return-game, .excavation-bottom .dig-touch-controls { display: none; }
+.excavation-bottom .excavation-result { color: #ffe0a0; }
+@media (max-width: 760px) {
+  .book-sheet .book-return-game { display: block; min-height: 44px; margin-top: 12px; padding: 8px 12px; color: #513d20; background: #e6d4aa; border: 1px solid #ab8d55; border-radius: 6px; }
+  .excavation-bottom .dig-keyboard-controls { display: none; }
+  .excavation-bottom .dig-touch-controls { display: block; }
+}
 .book-memory-photo { width: 100%; max-height: 190px; object-fit: contain; }
 .surveyor-photo-card img { width: 100%; height: 100px; object-fit: contain; }
 .surveyor-photo-card small { font-size: 11px; line-height: 1.3; }
@@ -308,9 +316,9 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .game-stage:has(.excavation-overlay) { min-height: 380px; }
   .excavation-overlay { padding: 6px; }
   .excavation-top { font-size: 11px; }
-  .excavation-overlay button { font-size: 12px; padding: 6px 8px; }
-  .excavation-bottom p { font-size: 12px; }
-  .excavation-bottom small { font-size: 10px; }
+  .excavation-overlay button { font-size: 14px; min-height: 44px; padding: 8px 10px; }
+  .excavation-bottom p { font-size: 14px; }
+  .excavation-bottom small { font-size: 12px; line-height: 1.5; }
   .excavation-photo { inset: 8% 3%; padding: 10px; }
   .excavation-photo p { font-size: 13px; }
   .surveyor-photo-card img { height: 65px; }
@@ -318,7 +326,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .game-stage:has(.excavation-overlay) { padding-bottom: 112px; }
 .excavation-bottom { width: 100%; }
 @media (max-width: 760px) {
-  .game-stage:has(.excavation-overlay) { min-height: 0; padding-bottom: 140px; }
+  .game-stage:has(.excavation-overlay) { min-height: 0; padding-bottom: 200px; }
   .excavation-photo { inset: 4% 3%; }
 }
 .book-journal { padding-left: 18px; text-align: left; font-size: 13px; line-height: 1.5; }

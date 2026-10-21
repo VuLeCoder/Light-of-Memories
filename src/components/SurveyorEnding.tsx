@@ -128,7 +128,7 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
       : step < 10 ? <EarthDialogue key="ending-outro" language={language} paused={paused} lines={t.outro} initialIndex={step - 6} title={t.title} finalAction="moon" finalLabel={t.carry} onTurn={index => { if (index + 6 !== step) go(index + 6); }} onComplete={() => go(10)} />
       : <div className="ending-farewell">
         <nav className="ending-actions" aria-label={t.title}>
-          <button onClick={() => go(0)}>{t.replay}</button><button onClick={onReplay}>{t.playAgain}</button><button className="journey-primary" onClick={onBack}>{t.route} →</button>
+          <button onClick={() => go(0)}>{t.replay}</button><button onClick={onReplay}>{progress.replayCheckpoint ? (language === 'vi' ? 'Tiếp tục chơi lại' : 'Continue replay') : t.playAgain}</button><button className="journey-primary" onClick={onBack}>{t.route} →</button>
         </nav>
       </div>}
   </section>;

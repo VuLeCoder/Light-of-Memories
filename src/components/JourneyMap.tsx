@@ -1,5 +1,5 @@
 import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
-import { eventOrder } from '../content/levels/surveyor-progress';
+import { enterSurveyor, eventOrder } from '../content/levels/surveyor-progress';
 import { challengeCopy } from '../content/levels/surveyor-challenges';
 import { memoryCount } from '../content/levels/surveyor-progress';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ export const journeyCopy = {
     title: 'Lộ trình năm ánh sao', book: 'Hành trình của Cuội', reveal: 'Đèn ông sao đang soi đường…',
     lead: 'Năm điểm sáng… Có ai ở đó biết chị Hằng đang ở đâu không nhỉ?',
     guide: 'Cùng Cuội gặp năm người bạn trên Mặt Trăng và khám phá câu chuyện của họ.',
-    mystery: 'Người bạn bí ẩn', locked: 'Hoàn thành điểm trước để khám phá.', back: 'Về lộ trình',
+    mystery: 'Người bạn bí ẩn', locked: 'Người bạn này sẽ xuất hiện trong phần tiếp theo. Hẹn Cuội sớm nhé!', back: 'Về lộ trình',
     note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và thắp thêm một ánh sao trên chiếc đèn.',
     waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', completed: 'Đã hoàn thành câu chuyện', replay: 'Chơi lại cùng bạn',
   },
@@ -23,7 +23,7 @@ export const journeyCopy = {
     title: 'The five-star journey', book: 'Cuội’s journey', reveal: 'The star lantern lights the way…',
     lead: 'Five lights… Could someone there know where Hằng is?',
     guide: 'Join Cuội to meet five friends on the Moon and discover their stories.',
-    mystery: 'A mystery friend', locked: 'Complete the previous stop to discover this friend.', back: 'Back to the route',
+    mystery: 'A mystery friend', locked: 'This friend will appear in a future chapter. See you soon, Cuội!', back: 'Back to the route',
     note: 'Each encounter will leave a memory and light another star on the lantern.',
     waiting: 'Not yet discovered', ready: 'Your next destination', completed: 'Story completed', replay: 'Play again with a friend',
   },
@@ -39,7 +39,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, s
   const enterFriend = (id: LevelId) => {
     setLocked(false);
     if (id === 'surveyor' && surveyorProgress.completedOnce) {
-      onSurveyorChange({ ...surveyorProgress, phase: 'complete', turn: 10, matched: ['camera', 'scoop'], clues: [...eventOrder], found: [...eventOrder], order: [...eventOrder] });
+      onSurveyorChange(enterSurveyor(surveyorProgress));
     }
     onEnter(id);
   };
@@ -56,7 +56,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, s
         {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index} ${id ? (id === 'surveyor' && surveyorProgress.completedOnce ? 'stop-completed' : 'stop-unfinished') : 'stop-locked'}`} onClick={() => {
           setSelectedFriend(id);
           setLocked(!id);
-        }} aria-pressed={!!id && selectedFriend === id} aria-label={`${index + 1}. ${id ? `${getLevel(id)!.text[language].friend}. ${id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : t.ready}` : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
+        }} aria-pressed={!!id && selectedFriend === id} aria-label={`${index + 1}. ${id ? `${getLevel(id)!.text[language].friend}. ${id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : t.ready}` : `${t.mystery}. ${t.locked}`}`}>
           <span className="stop-orb">{id ? <img src={getLevel(id)!.portrait} alt="" /> : '?'}</span>
           <span>{id ? `${String(index + 1).padStart(2, '0')} · ${getLevel(id)!.label}` : `0${index + 1} · ${t.mystery}`}</span>
           {index === 0 && <small>Cuội ✦</small>}
@@ -82,10 +82,11 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
   const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
   const clueUnlocked = !clue || eventOrder.slice(0, eventOrder.indexOf(clue)).every(id => surveyorProgress.clues.includes(id) || surveyorProgress.found.includes(id));
   const photo = eventOrder.find(id => pages[page] === `photo-${id}`);
+  const nextClue = eventOrder.find(id => !surveyorProgress.clues.includes(id) && !surveyorProgress.found.includes(id))
+    ?? eventOrder.find(id => !surveyorProgress.found.includes(id)) ?? 'arrive';
   useEffect(() => {
     if (!bookRequest || !fieldUnlocked) return;
-    const next = eventOrder.find(id => !surveyorProgress.found.includes(id)) ?? 'arrive';
-    setPage(pages.indexOf(`clue-${next}`));
+    setPage(pages.indexOf(`clue-${nextClue}`));
     requestAnimationFrame(() => {
       const heading = document.getElementById('field-book-title');
       heading?.focus({ preventScroll: true });
@@ -105,6 +106,7 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
       <h2 id="journal-title">{language === 'vi' ? 'Nhật ký Mắt Tròn' : 'Round Eyes’ journal'}</h2>
       <ol className="book-journal">{eventOrder.map(id => <li key={id}><img src={memoryPhotos[id]} alt=""/><span>{ct.events[id]}</span></li>)}</ol>
       <p>{language === 'vi' ? 'Ba bức ảnh đã trở về đúng thứ tự trong ký ức.' : 'Three photos are back in the right order in my memory.'}</p>
+      {activeLevel && <BackToGame language={language} />}
       <BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/>
     </div><p className="book-note">{dt.fiction}</p></aside>
   </>;
@@ -120,8 +122,10 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
             {id === 'arrive' ? <g><ellipse cx="60" cy="38" rx="28" ry="12"/><ellipse cx="120" cy="25" rx="28" ry="12"/></g> : id === 'work' ? <path d="M30 25L150 15M30 40L150 30M30 55L150 45"/> : <g>{[0,1,2,3,4,5].map(i => <ellipse key={i} cx={30 + i * 24} cy={25 + i % 2 * 15} rx="8" ry="4"/>)}</g>}
           </svg><p>{dt.clues[id]}</p>
           <button disabled={surveyorProgress.clues.includes(id)} onClick={() => onSurveyorChange({ ...surveyorProgress, clues: [...surveyorProgress.clues, id] })}>{surveyorProgress.clues.includes(id) ? `✓ ${dt.ready}` : dt.read}</button>
+          {surveyorProgress.clues.includes(id) && eventOrder.indexOf(id) < eventOrder.length - 1 && <button className="book-next-clue" onClick={() => setPage(pages.indexOf(`clue-${eventOrder[eventOrder.indexOf(id) + 1]}`))}>{language === 'vi' ? 'Gợi ý tiếp theo →' : 'Next clue →'}</button>}
           {surveyorProgress.found.includes(id) && <p>✓ {dt.found}</p>}
         </> : <p role="status">{dt.lockedClue}</p> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><small>NASA</small></>}
+        {activeLevel && <BackToGame language={language} />}
         <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
       </div><p className="book-note">{dt.fiction}</p></aside>
     </>;
@@ -133,8 +137,18 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? detail.invitation : t.guide}</p>
       {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, (_, index) => level.id === 'surveyor' && index < memoryCount(surveyorProgress) ? '★' : '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">{id === 'surveyor' && surveyorProgress.completedOnce ? '★' : '☆'}</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : id ? t.ready : t.waiting}</small></span></li>)}</ol>}
-      {fieldUnlocked && !b01 && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : 'clue-arrive'))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
+      {fieldUnlocked && !b01 && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : `clue-${nextClue}`))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
+      {activeLevel && <BackToGame language={language} />}
       <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
     </div><p className="book-note">{t.note}</p></aside>
   </>;
+}
+
+function BackToGame({ language }: { language: Language }) {
+  return <button className="book-return-game" onClick={() => {
+    const stage = document.querySelector<HTMLElement>('.game-stage');
+    const target = stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .story-canvas:not([inert]) .game-host, .journey-view button');
+    (target ?? stage)?.focus({ preventScroll: true });
+    stage?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  }}>{language === 'vi' ? '↑ Quay lại trò chơi' : '↑ Back to the game'}</button>;
 }
