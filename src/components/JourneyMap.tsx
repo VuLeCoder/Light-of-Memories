@@ -17,7 +17,7 @@ export const journeyCopy = {
     guide: 'Cùng Cuội gặp năm người bạn trên Mặt Trăng và khám phá câu chuyện của họ.',
     mystery: 'Người bạn bí ẩn', locked: 'Hoàn thành điểm trước để khám phá.', back: 'Về lộ trình',
     note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và thắp thêm một ánh sao trên chiếc đèn.',
-    waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', replay: 'Chơi lại cùng bạn',
+    waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', completed: 'Đã hoàn thành câu chuyện', replay: 'Chơi lại cùng bạn',
   },
   en: {
     title: 'The five-star journey', book: 'Cuội’s journey', reveal: 'The star lantern lights the way…',
@@ -25,7 +25,7 @@ export const journeyCopy = {
     guide: 'Join Cuội to meet five friends on the Moon and discover their stories.',
     mystery: 'A mystery friend', locked: 'Complete the previous stop to discover this friend.', back: 'Back to the route',
     note: 'Each encounter will leave a memory and light another star on the lantern.',
-    waiting: 'Not yet discovered', ready: 'Your next destination', replay: 'Play again with a friend',
+    waiting: 'Not yet discovered', ready: 'Your next destination', completed: 'Story completed', replay: 'Play again with a friend',
   },
 };
 
@@ -45,7 +45,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, s
       <p className="journey-lead">{t.lead}</p>
       <div className="journey-route">
         <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M80 110 Q160 20 240 65 T400 110 T560 65 T720 110" /></svg>
-        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index}`} onClick={() => id === 'surveyor' && surveyorProgress.phase === 'complete' ? onReplay() : id ? onEnter(id) : setLocked(true)} aria-label={`${index + 1}. ${id ? getLevel(id)!.text[language].friend : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
+        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index} ${id ? (id === 'surveyor' && surveyorProgress.completedOnce ? 'stop-completed' : 'stop-unfinished') : 'stop-locked'}`} onClick={() => id === 'surveyor' && surveyorProgress.phase === 'complete' ? onReplay() : id ? onEnter(id) : setLocked(true)} aria-label={`${index + 1}. ${id ? `${getLevel(id)!.text[language].friend}. ${id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : t.ready}` : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
           <span className="stop-orb">{id ? <img src={getLevel(id)!.portrait} alt="" /> : '?'}</span>
           <span>{id ? `${String(index + 1).padStart(2, '0')} · ${getLevel(id)!.label}` : `0${index + 1} · ${t.mystery}`}</span>
           {index === 0 && <small>Cuội ✦</small>}
@@ -120,7 +120,7 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? detail.invitation : t.guide}</p>
-      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, (_, index) => level.id === 'surveyor' && index < memoryCount(surveyorProgress) ? '★' : '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">☆</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{index === 0 ? t.ready : t.waiting}</small></span></li>)}</ol>}
+      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {Array.from({ length: level.memoryCount }, (_, index) => level.id === 'surveyor' && index < memoryCount(surveyorProgress) ? '★' : '☆').join(' ')}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">{id === 'surveyor' && surveyorProgress.completedOnce ? '★' : '☆'}</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : id ? t.ready : t.waiting}</small></span></li>)}</ol>}
       {fieldUnlocked && !b01 && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : 'clue-arrive'))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
       <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
     </div><p className="book-note">{t.note}</p></aside>
