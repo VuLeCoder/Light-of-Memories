@@ -45,7 +45,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, s
       <p className="journey-lead">{t.lead}</p>
       <div className="journey-route">
         <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M80 110 Q160 20 240 65 T400 110 T560 65 T720 110" /></svg>
-        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index}`} onClick={() => id ? onEnter(id) : setLocked(true)} aria-label={`${index + 1}. ${id ? getLevel(id)!.text[language].friend : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
+        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index}`} onClick={() => id === 'surveyor' && surveyorProgress.phase === 'complete' ? onReplay() : id ? onEnter(id) : setLocked(true)} aria-label={`${index + 1}. ${id ? getLevel(id)!.text[language].friend : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
           <span className="stop-orb">{id ? <img src={getLevel(id)!.portrait} alt="" /> : '?'}</span>
           <span>{id ? `${String(index + 1).padStart(2, '0')} · ${getLevel(id)!.label}` : `0${index + 1} · ${t.mystery}`}</span>
           {index === 0 && <small>Cuội ✦</small>}

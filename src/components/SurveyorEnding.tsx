@@ -1,30 +1,69 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
+import type { StoryLine } from '../content/earth-dialogue';
 import type { SurveyorProgress } from '../content/levels/surveyor-progress';
-import { memoryPhotos } from '../content/levels/surveyor-dig';
+import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
+import { eventOrder } from '../content/levels/surveyor-progress';
+import { EarthDialogue } from './EarthDialogue';
 
 const endingCopy = {
   vi: {
-    labels: ['Một cuộc gặp giữa im lặng', 'Một ký ức, một ánh sao', 'Mang câu chuyện đi tiếp'],
-    story: 'Mình nhớ lần những vị khách ghé thăm năm 1969. Sau những ngày im lặng trên Mặt Trăng, lại có bước chân đến bên mình. Họ mang một phần của mình về Trái Đất… và hôm nay, Cuội đã tìm lại câu chuyện ấy.',
-    light: 'Cảm ơn Cuội đã lắng nghe. Hãy giữ ký ức này trong chiếc đèn của cậu nhé!',
-    promise: 'Mình sẽ nhớ tên bạn, Mắt Tròn. Mỗi khi nhìn cánh sao này, mình sẽ nhớ cuộc gặp của chúng ta.',
-    caption: 'Apollo 12 ghé thăm Surveyor 3 · NASA, 1969',
-    reward: 'Cánh sao đầu tiên đã sáng · 1/5',
-    next: 'Lắng nghe tiếp', kindle: 'Thắp sáng cánh sao', continue: 'Mang theo ánh sáng', back: 'Trở về lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại cùng bạn',
-    journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.',
+    title: 'Câu chuyện của Mắt Tròn', labels: ['Lần đầu chạm đất', 'Đôi mắt và chiếc xẻng', 'Những người bạn ghé thăm'],
+    stories: [
+      'Mình đến Mặt Trăng vào tháng 4 năm 1967. Những dấu chân đế trong ảnh là dấu tích của lần mình chạm xuống vùng đất xa lạ này.',
+      'Máy ảnh giúp mình quan sát, còn chiếc xẻng giúp mình khám phá đất dưới chân. Những rãnh mình đào năm 1967 vẫn còn khi Apollo 12 chụp lại năm 1969.',
+      'Tháng 11 năm 1969, Pete Conrad và Alan Bean của Apollo 12 đến thăm mình. Họ mang máy ảnh, xẻng và một số bộ phận về Trái Đất để nghiên cứu. Hôm nay, Cuội đã giúp mình tìm lại câu chuyện ấy.',
+    ],
+    captions: ['Chân đế Surveyor 3 · 1967 · NASA', 'Rãnh khảo sát năm 1967, được chụp lại năm 1969 · NASA', 'Pete Conrad bên Surveyor 3 · 1969 · NASA'],
+    before: 'Trang trước', next: 'Trang tiếp', return: 'Trở lại bên Mắt Tròn', listen: 'Nghe Mắt Tròn kể', carry: 'Mang theo ánh sáng',
+    route: 'Xem lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại cùng bạn', reward: 'Đã thắp sáng 1/5 cánh sao',
+    distant: 'Một điểm sáng đang đợi ở phía xa…', journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.', unavailable: 'Ảnh tư liệu chưa tải được.', retry: 'Tải lại ảnh',
+    intro: [
+      { id: 'ending-intro-0', speaker: 'matTron', text: 'Những bức ảnh… giờ đã trở về đúng chỗ rồi.' },
+      { id: 'ending-intro-1', speaker: 'cuoi', text: 'Vậy bạn đã nhớ ra những người từng đến thăm mình chưa?' },
+      { id: 'ending-intro-2', speaker: 'matTron', text: 'Mình nhớ rồi. Để mình kể Cuội nghe nhé.' },
+    ],
+    outro: [
+      { id: 'ending-outro-0', speaker: 'matTron', text: 'Cảm ơn Cuội đã giúp mình nhớ lại. Mong ánh sáng này sẽ soi đường cho bạn.' },
+      { id: 'ending-outro-1', speaker: 'cuoi', text: 'Một cánh sao sáng rồi! Mỗi khi nhìn cánh sao này, mình sẽ nhớ cuộc gặp của chúng ta.' },
+      { id: 'ending-outro-2', speaker: 'cuoi', text: 'Kìa, phía xa có một điểm sáng! Không biết còn ai đang đợi mình nhỉ?' },
+      { id: 'ending-outro-3', speaker: 'matTron', text: 'Ngoài kia còn một người bạn nữa. Có lẽ bạn ấy cũng có một câu chuyện muốn kể.' },
+    ],
   },
   en: {
-    labels: ['A visit in the silence', 'One memory, one light', 'Carry the story onward'],
-    story: 'I remember my visitors in 1969. After the quiet days on the Moon, footsteps reached me again. They took a part of me back to Earth… and today, Cuội, you have found that story again.',
-    light: 'Thank you for listening, Cuội. Keep this memory in your lantern!',
-    promise: 'I will remember your name, Round Eyes. Whenever I see this star point, I will remember our meeting.',
-    caption: 'Apollo 12 visits Surveyor 3 · NASA, 1969',
-    reward: 'The first star point is shining · 1/5',
-    next: 'Keep listening', kindle: 'Light the star point', continue: 'Carry the light', back: 'Return to the route', replay: 'Replay the ending', playAgain: 'Play again with a friend',
-    journal: 'All three photographs are now in Cuội’s notebook.',
+    title: 'Round Eyes’ story', labels: ['The first touchdown', 'A camera and a scoop', 'Visitors on the Moon'],
+    stories: [
+      'I reached the Moon in April 1967. The footpad marks in this photograph are traces of my first touchdown in this unfamiliar place.',
+      'My camera helped me observe, and my scoop helped me explore the soil beneath me. The trenches I dug in 1967 were still there when Apollo 12 photographed them in 1969.',
+      'In November 1969, Apollo 12 astronauts Pete Conrad and Alan Bean visited me. They brought my camera, scoop and other parts back to Earth for study. Today, Cuội has helped me find that story again.',
+    ],
+    captions: ['Surveyor 3 footpad · 1967 · NASA', 'Trenches dug in 1967, photographed in 1969 · NASA', 'Pete Conrad beside Surveyor 3 · 1969 · NASA'],
+    before: 'Previous page', next: 'Next page', return: 'Return to Round Eyes', listen: 'Listen to the story', carry: 'Carry the light',
+    route: 'View the route', replay: 'Replay the ending', playAgain: 'Play again with a friend', reward: 'One of five star points is shining',
+    distant: 'A light is waiting in the distance…', journal: 'All three photographs are now in Cuội’s notebook.', unavailable: 'The archive photo could not load.', retry: 'Retry photo',
+    intro: [
+      { id: 'ending-intro-0', speaker: 'matTron', text: 'The photographs… they are all back in the right places.' },
+      { id: 'ending-intro-1', speaker: 'cuoi', text: 'Do you remember the people who came to visit you now?' },
+      { id: 'ending-intro-2', speaker: 'matTron', text: 'I do. Let me tell you about them, Cuội.' },
+    ],
+    outro: [
+      { id: 'ending-outro-0', speaker: 'matTron', text: 'Thank you for helping me remember, Cuội. May this light guide your way.' },
+      { id: 'ending-outro-1', speaker: 'cuoi', text: 'One star point is shining! Whenever I see it, I will remember our meeting.' },
+      { id: 'ending-outro-2', speaker: 'cuoi', text: 'Look, a light in the distance! I wonder who else is waiting for me?' },
+      { id: 'ending-outro-3', speaker: 'matTron', text: 'There is another friend out there. Perhaps they have a story to tell, too.' },
+    ],
   },
-};
+} as const satisfies Record<Language, { intro: readonly StoryLine[]; outro: readonly StoryLine[] } & Record<string, unknown>>;
+
+function MemoryPhoto({ src, caption, language }: { src: string; caption: string; language: Language }) {
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  return <figure className="ending-photo">
+    {failed ? <div className="ending-photo-error" role="status"><p>{endingCopy[language].unavailable}</p><button onClick={() => { setFailed(false); setAttempt(n => n + 1); }}>{endingCopy[language].retry}</button></div>
+      : <img key={attempt} src={src} alt={caption} onError={() => setFailed(true)} />}
+    <figcaption>{caption}</figcaption>
+  </figure>;
+}
 
 /** Five separate paper panels; only the top point receives this friend's light. */
 function MemoryLantern({ lit }: { lit: boolean }) {
@@ -46,23 +85,52 @@ function MemoryLantern({ lit }: { lit: boolean }) {
   </svg>;
 }
 
-export function SurveyorEnding({ language, progress, onChange, onReplay, onBack }: {
-  language: Language; progress: SurveyorProgress; onChange: (p: SurveyorProgress) => void; onReplay: () => void; onBack: () => void;
+export function SurveyorEnding({ language, progress, onChange, onReplay, onBack, paused = false }: {
+  language: Language; progress: SurveyorProgress; onChange: (p: SurveyorProgress) => void; onReplay: () => void; onBack: () => void; paused?: boolean;
 }) {
   const t = endingCopy[language];
-  const step = Math.min(progress.turn, 3);
+  // 0–2: lunar conversation; 3–5: recollection; 6–9: lantern conversation; 10: farewell.
+  const step = Math.min(progress.turn, 10);
+  const recollection = step >= 3 && step <= 5;
+  const page = step - 3;
+  const lit = step >= 7;
+  const [gifting, setGifting] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [step]);
-  return <div className="surveyor-ending">
-    <div className="ending-steps" aria-label={`${step === 0 ? 1 : step < 3 ? 2 : 3}/3`}><span className="is-active" /><span className={step >= 1 ? 'is-active' : ''} /><span className={step >= 3 ? 'is-active' : ''} /></div>
-    <h3 ref={heading} tabIndex={-1}>{t.labels[step === 0 ? 0 : step < 3 ? 1 : 2]}</h3>
-    {step === 0 ? <figure className="ending-photo"><img src={memoryPhotos.visit} alt={t.caption} /><figcaption>{t.caption}</figcaption></figure> : <MemoryLantern lit={step >= 2} />}
-    <p className="ending-speech"><b>{step === 3 ? 'Cuội' : language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {step === 0 ? t.story : step === 3 ? t.promise : t.light}</p>
-    <p className="ending-note" role="status">{step >= 2 ? t.reward : t.journal}</p>
-    <nav className="ending-actions" aria-label={language === 'vi' ? 'Đoạn kết' : 'Ending'}>
-      {step === 3 && <button onClick={() => onChange({ ...progress, turn: 0 })}>{t.replay}</button>}
-      {step === 3 && <button className="journey-primary" onClick={onReplay}>{t.playAgain} →</button>}
-      <button className="journey-primary" onClick={() => step === 3 ? onBack() : onChange({ ...progress, turn: step + 1 })}>{step === 0 ? t.next : step === 1 ? t.kindle : step === 2 ? t.continue : t.back} →</button>
-    </nav>
-  </div>;
+  useEffect(() => { if (!paused) heading.current?.focus({ preventScroll: true }); }, [step, paused]);
+  const go = (turn: number) => {
+    if (step === 6 && turn === 7) setGifting(true);
+    if (turn < 7) setGifting(false);
+    onChange({ ...progress, turn });
+  };
+  if (recollection) return <section className="journey-view ending-recollection" hidden={paused} lang={language} aria-label={t.title}>
+    <header><span aria-hidden="true">★ ★ ★</span><h2>{t.title}</h2></header>
+    <div className="surveyor-ending">
+      <div className="ending-steps" aria-label={`${page + 1}/3`}>{eventOrder.map((id, index) => <span key={id} className={index === page ? 'is-active' : ''} />)}</div>
+      <h3 ref={heading} tabIndex={-1}>{t.labels[page]}</h3>
+      <MemoryPhoto key={page} src={memoryPhotos[eventOrder[page]]} caption={t.captions[page]} language={language} />
+      <p className="ending-speech"><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.stories[page]}</p>
+      <p className="ending-note">{t.journal}</p>
+      <nav className="ending-actions" aria-label={t.title}>
+        <button disabled={page === 0} onClick={() => go(step - 1)}>← {t.before}</button>
+        <button className="journey-primary" onClick={() => go(step + 1)}>{page === 2 ? t.return : t.next} →</button>
+      </nav>
+      <small className="ending-fiction">{digCopy[language].fiction}</small>
+    </div>
+  </section>;
+  return <section className={`ending-scene${gifting ? ' is-gifting' : ''}`} hidden={paused} lang={language} aria-label={t.title}>
+    <div className="surveyor-scene-hud"><span>{t.title}</span>{lit && <strong role="status">★ 1/5</strong>}</div>
+    {step >= 6 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} />
+      {gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}
+    </div>}
+    {gifting && <span className="ending-light-travel" aria-hidden="true" onAnimationEnd={() => setGifting(false)} />}
+    {step >= 8 && <span className="ending-distant-light" aria-label={t.distant}>✦</span>}
+    {step < 3 ? <EarthDialogue key="ending-intro" language={language} paused={paused} lines={t.intro} initialIndex={step} title={t.title} finalAction="moon" finalLabel={t.listen} onTurn={index => { if (index !== step) go(index); }} onComplete={() => go(3)} />
+      : step < 10 ? <EarthDialogue key="ending-outro" language={language} paused={paused} lines={t.outro} initialIndex={step - 6} title={t.title} finalAction="moon" finalLabel={t.carry} onTurn={index => { if (index + 6 !== step) go(index + 6); }} onComplete={() => go(10)} />
+      : <div className="ending-farewell">
+        <h3 ref={heading} tabIndex={-1}>{t.reward}</h3><p>{t.distant}</p>
+        <nav className="ending-actions" aria-label={t.title}>
+          <button onClick={() => go(0)}>{t.replay}</button><button onClick={onReplay}>{t.playAgain}</button><button className="journey-primary" onClick={onBack}>{t.route} →</button>
+        </nav>
+      </div>}
+  </section>;
 }

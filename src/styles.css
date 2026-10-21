@@ -353,9 +353,9 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .ending-photo img { display: block; margin: auto; width: 100%; max-width: 340px; height: 165px; object-fit: contain; border-radius: 6px; background: #112530; }
 .ending-photo figcaption { margin-top: 6px; color: #c5d2cf; font-size: 12px; line-height: 1.5; }
 .ending-lantern { width: 205px; height: 205px; flex-shrink: 0; }
-.ending-lantern .lit-point { transition: fill 1.2s ease; }
+.ending-lantern .lit-point { transition: fill 2.4s ease; }
 .ending-lantern.is-lit .lit-point { fill: #ffe29b; }
-.ending-lantern.is-lit .lantern-aura { animation: memory-kindled 1.4s ease-out forwards; }
+.ending-lantern.is-lit .lantern-aura { opacity: .13; }
 .ending-speech { margin: 0; font-size: 18px; line-height: 1.65; color: #f2ebdb; max-width: 620px; }
 .ending-speech b { color: #f3d18c; }
 .ending-note { margin: 0; color: #e8cc95; font-size: 15px; line-height: 1.5; }
@@ -421,3 +421,74 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .phase-timeline { gap: 12px; padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .journey-view .journal-card { transition: none; } }
+
+/* Chapter ending: the lunar scene remains underneath conversations and the gift. */
+.ending-scene { position: absolute; inset: 0; z-index: 24; pointer-events: none; animation: journey-appear .6s ease-out; }
+.ending-scene[hidden], .ending-recollection[hidden] { display: none; }
+.ending-scene > .dialogue { position: absolute; inset: auto 18px 18px; z-index: 2; max-height: calc(100% - 70px); overflow: auto; padding: 18px; border: 1px solid #d2ba8155; border-radius: 10px; background: linear-gradient(120deg,#21343bf5,#152831f5); pointer-events: auto; }
+.ending-scene-lantern { position: absolute; left: 69%; top: 70%; width: 9%; transform: translate(-50%,-50%); }
+.ending-scene-lantern .ending-lantern { display: block; width: 100%; height: auto; }
+.ending-scene-lantern.is-kindled { filter: drop-shadow(0 0 12px #ffd88a88); }
+.ending-light-travel { position: absolute; left: 74%; top: 60%; width: 9px; height: 9px; border-radius: 50%; background: #fff0ba; box-shadow: 0 0 20px 8px #ffd88a99; animation: ending-gift 5s ease-in-out both; }
+.ending-distant-light { position: absolute; left: 91%; top: 29%; color: #fff0ba; font-size: clamp(16px,2vw,26px); text-shadow: 0 0 12px #ffdf8d,0 0 25px #ffdf8d; animation: journey-appear 1.5s ease-out; }
+.ending-farewell { position: absolute; inset: auto 18px 18px; padding: 18px; border: 1px solid #d2ba8155; border-radius: 10px; background: #152831f5; color: #f2ebdb; text-align: center; pointer-events: auto; }
+.ending-farewell h3 { margin: 0; color: #ffe5b1; font: 500 24px/1.4 'Lora',Georgia,serif; }
+.ending-farewell h3:focus { outline: none; }
+.ending-scene button { min-height: 44px; border: 1px solid #d8c08a; border-radius: 8px; padding: 10px 16px; background: #253d48; color: #f0e4c8; }
+.ending-scene .journey-primary { background: #e2c58d; color: #25313b; font-weight: 600; }
+.ending-recollection { display: flex; flex-direction: column; gap: 16px; background: radial-gradient(ellipse at 50% 65%,#526168,#24343f 65%,#101e2b); }
+.ending-recollection .surveyor-ending { gap: 10px; }
+.ending-recollection .ending-photo { width: min(100%,360px); }
+.ending-recollection .ending-photo img { width: 100%; height: clamp(110px,15vw,175px); }
+.ending-recollection .ending-speech { font-size: clamp(15px,1.25vw,18px); line-height: 1.55; }
+.ending-recollection .ending-note { font-size: 13px; }
+.ending-fiction { color: #becbc7; font-size: 11px; line-height: 1.5; }
+.ending-photo-error { min-height: 130px; display: grid; place-content: center; background: #112530; border-radius: 6px; }
+.ending-recollection button:disabled { opacity: .45; cursor: default; }
+@keyframes ending-gift { from { transform: translate(0,0); opacity: 0; } 15% { opacity: .85; } 55% { transform: translate(-4.5vw,4vw); opacity: .85; } 75%, 100% { transform: translate(-4.5vw,4vw); opacity: 0; } }
+@media (max-width: 760px) {
+  .ending-scene > .dialogue { inset: auto 8px 8px; padding: 12px; }
+  .ending-scene .dialogue-text { font-size: 16px; }
+  .ending-scene .dialogue-footer > span { display: none; }
+  .ending-scene .dialogue-footer { justify-content: flex-end; }
+  .ending-farewell { inset: auto 8px 8px; padding: 14px; }
+  .ending-farewell h3 { font-size: 20px; }
+  .game-stage:has(.ending-recollection) { min-height: 600px; }
+  .ending-recollection .ending-photo img { height: 150px; }
+  .ending-recollection .ending-speech { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ending-scene, .ending-distant-light, .ending-light-travel { animation: none; }
+  .ending-light-travel { display: none; }
+}
+/* Leave the right side open so both friends and the lantern stay visible. */
+.ending-scene > .dialogue { right: auto; width: 57%; }
+.ending-scene .dialogue-portrait { width: 52px; height: 66px; }
+.ending-scene .dialogue-text { font-size: 17px; }
+.ending-scene .dialogue-footer > span { display: none; }
+.ending-scene .dialogue-footer { justify-content: flex-end; }
+@media (max-width: 760px) {
+  .ending-scene > .dialogue { width: 58%; }
+  .ending-scene .dialogue-portrait { display: none; }
+  .ending-scene .dialogue-text { font-size: 15px; }
+}
+
+/* The gift animates only on the dialogue transition, never on a saved ending. */
+.ending-scene.is-gifting .lit-point { animation: ending-kindle 5s ease both; }
+.ending-scene.is-gifting .lantern-aura { animation: memory-kindled 2.6s 2.4s ease-out both; }
+.ending-scene.is-gifting .ending-scene-lantern { animation: ending-glow 5s ease both; }
+.ending-sparkles { position: absolute; inset: 0; pointer-events: none; color: #ffe9ad; }
+.ending-sparkles span { position: absolute; opacity: 0; font-size: 12px; animation: ending-sparkle 1.6s 2.5s ease-in-out both; }
+.ending-sparkles span:nth-child(1) { left: 28%; top: 10%; }
+.ending-sparkles span:nth-child(2) { left: 67%; top: 24%; animation-delay: 2.9s; font-size: 9px; }
+.ending-sparkles span:nth-child(3) { left: 47%; top: -8%; animation-delay: 3.2s; }
+.ending-sparkles span:nth-child(4) { left: 12%; top: 37%; animation-delay: 3.1s; font-size: 8px; }
+.ending-sparkles span:nth-child(5) { left: 77%; top: 5%; animation-delay: 3.4s; font-size: 8px; }
+@keyframes ending-kindle { 0%, 45% { fill: #67503c; } 100% { fill: #ffe29b; } }
+@keyframes ending-glow { 0%, 45% { filter: drop-shadow(0 0 0 transparent); } 100% { filter: drop-shadow(0 0 12px #ffd88a88); } }
+@keyframes ending-sparkle { 0%, 100% { opacity: 0; transform: scale(.6); } 50% { opacity: .7; transform: scale(1); } }
+.ending-scene[hidden] * { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .ending-scene.is-gifting .lit-point, .ending-scene.is-gifting .lantern-aura, .ending-scene.is-gifting .ending-scene-lantern { animation: none; }
+  .ending-sparkles { display: none; }
+}

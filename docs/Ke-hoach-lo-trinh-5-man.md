@@ -91,3 +91,11 @@ Sau màn thứ năm, đèn có đủ năm ngôi sao sáng. Nội dung kết thú
 - Tiếp theo: hoàn thiện phần thưởng “Mắt phóng to”, cảnh kết màn và cơ chế mở khóa tuần tự khi có nội dung màn 2. Bốn đối tượng còn lại chưa chốt.
 
 Bối cảnh hố Surveyor và nguồn NASA: [ghi chú dựng cảnh](./Surveyor-3-Boicanh-NASA.md).
+
+### Đoạn kết chương Mắt Tròn
+
+- Sau T03, trở lại hố Surveyor. Cuội và Mắt Tròn trò chuyện ba lượt bằng khung chat; nhân vật giữ nguyên kích thước, khung chat bên trái để không che hai người bạn.
+- Hồi tưởng trên nền xanh xám: ba trang ảnh theo thứ tự hạ cánh năm 1967 → khảo sát đất → Apollo 12 ghé thăm năm 1969. Có nút trang trước/sau, chú thích NASA và lưu ảnh trong sách. Ảnh dùng tài sản cục bộ; lỗi tải ảnh có nút thử lại.
+- Trở về Mặt Trăng: Mắt Tròn trao một đốm sáng, chỉ cánh trên của đèn ông sao sáng lên. Cuội ghi nhớ cuộc gặp; hiện điểm sáng xa để gợi người bạn thứ hai, chưa tiết lộ danh tính.
+- Cuối cảnh có “Xem lộ trình”, “Xem lại đoạn kết”, “Chơi lại cùng bạn”. Vẫn giữ thành tích 1/5 khi chơi lại chương.
+- Tiến độ `complete.turn`: 0–2 hội thoại đầu; 3–5 hồi tưởng; 6–9 hội thoại trao ánh sáng; 10 kết cảnh. Tải lại tiếp tục đúng đoạn; menu tạm dừng chữ chạy. Có nội dung tiếng Việt/Anh và hỗ trợ giảm chuyển động.
