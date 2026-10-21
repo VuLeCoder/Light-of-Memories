@@ -533,13 +533,19 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 /* Keep scene changes inside one stable canvas and instruction strip. */
 .game-stage { aspect-ratio: 16 / 9; min-height: 0; padding: 0; container-type: inline-size; }
 .game-instructions { height: 96px; padding: 12px 20px; display: flex; align-items: center; font-size: 18px; line-height: 1.6; overflow: auto; }
-.game-stage .phase-timeline { padding: 12px 16px; gap: 8px; }
-.game-stage .journal-puzzle { flex: none; gap: 10px; }
-.game-stage .journal-card-photo img { height: clamp(60px, 12cqw, 120px); }
-.game-stage .journal-card-copy { gap: 4px; padding-top: 6px; }
+.game-stage .phase-timeline { padding: clamp(14px, 2.2cqw, 26px); gap: 12px; }
+.game-stage .journal-puzzle { flex: 1; width: 100%; max-width: 960px; margin-inline: auto; gap: clamp(10px, 1.5cqw, 18px); justify-content: safe center; }
+.game-stage .journal-instruction { max-width: 680px; margin-inline: auto; text-wrap: pretty; }
+.game-stage .journal-sequence { gap: clamp(12px, 3cqw, 32px); }
+.game-stage .journal-cards { gap: clamp(10px, 1.6cqw, 18px); align-items: stretch; }
+.game-stage .journal-card { padding: 10px; border-radius: 10px; }
+.game-stage .journal-card-photo img { height: clamp(90px, 14cqw, 160px); border-radius: 4px; }
+.game-stage .journal-card-copy { gap: 6px; padding: 10px 2px 2px; }
 .game-stage .journal-card-copy strong { font-size: 16px; }
 .game-stage .journal-card-copy > span { font-size: 13px; line-height: 1.4; }
-.game-stage .journal-submit { gap: 6px; }
+.game-stage .journal-submit { flex-direction: row; justify-content: space-between; gap: 16px; padding-top: 12px; border-top: 1px solid #cfba8430; }
+.game-stage .journal-submit p { text-align: left; }
+.game-stage .journal-submit button { flex-shrink: 0; min-width: 180px; }
 .game-stage .phase-timeline .surveyor-footer { padding-top: 6px; }
 .game-stage .excavation-photo { gap: 10px; padding: 14px; justify-content: safe center; }
 .game-stage .memory-photo-frame { flex-shrink: 0; width: min(100%, 300px); padding: 6px; }

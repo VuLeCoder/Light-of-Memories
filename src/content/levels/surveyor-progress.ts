@@ -37,6 +37,8 @@ export function readSurveyorProgress(value: unknown): SurveyorProgress {
   const found = legacyDone ? [...eventOrder] : validIds(data.found);
   const clues = legacyDone ? [...eventOrder] : [...new Set([...validIds(data.clues), ...found])];
   let phase = data.phase as SurveyorProgress['phase'];
+  // Resume older saves directly at the journal, skipping the retired chat.
+  if (phase === 'timeline-intro') phase = 'timeline';
   if (matched.length < 2 && phases.indexOf(phase) >= 3) phase = 'tools';
   if (matched.length === 2 && phases.indexOf(phase) < 3) phase = 'memory';
   if (phase === 'complete' && !eventOrder.every((id, i) => order[i] === id)) phase = 'timeline';

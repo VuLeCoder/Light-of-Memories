@@ -99,6 +99,6 @@ export function SurveyorLevel({ language, progress, onChange, onReplay, onBack }
     </> : phase !== 'memory' ? <SurveyorChallenges language={language} progress={progress} onChange={onChange} /> : <div className="surveyor-memory">
       <span className="memory-light" aria-hidden="true">✦</span><p><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.result}</p><p>{t.bookNotice}</p><button className="journey-primary" onClick={() => onChange({ ...progress, phase: 'soil-intro', turn: 0 })}>{ct.nextSoil} →</button>
     </div>}
-    {phase !== 'complete' && <footer className="surveyor-footer"><button onClick={onBack}>{t.back}</button><small>{t.fiction}</small></footer>}
+    {phase !== 'complete' && !phase.startsWith('timeline') && <footer className="surveyor-footer"><button onClick={onBack}>{t.back}</button><small>{t.fiction}</small></footer>}
   </section>;
 }
