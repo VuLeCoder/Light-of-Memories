@@ -85,7 +85,6 @@ export function SurveyorLevel({ language, progress, onChange, onReplay, onBack }
   return <section className={`journey-view surveyor-level phase-${phase}`} aria-labelledby="surveyor-title" lang={language}>
     <header><span aria-label={`${t.memories}: ${count}/3`}>{Array.from({ length: 3 }, (_, i) => i < count ? '★' : '☆').join(' ')}</span><h2 id="surveyor-title" ref={heading} tabIndex={-1}>{phase === 'tools' ? t.task : phase === 'memory' ? t.done : phase === 'complete' ? ct.complete : phase.startsWith('timeline') ? ct.timelineTitle : ct.soilTitle}</h2></header>
     {phase === 'complete' ? <SurveyorEnding language={language} progress={progress} onChange={onChange} onReplay={onReplay} onBack={onBack} /> : phase === 'tools' ? <>
-      <p className="surveyor-instruction">{t.instruction}</p>
       <div className="surveyor-tools-layout">
         <div className="surveyor-tool-picture"><SurveyorDrawing />
           {(['camera', 'scoop'] as const).map(tool => <button key={tool} className={`tool-hotspot tool-${tool} ${matched.includes(tool) ? 'is-matched' : ''}`} aria-label={`${t[tool]}${matched.includes(tool) ? ` · ${t.matched}` : ''}`} onClick={() => inspect(tool)}><span>{matched.includes(tool) ? '✓ ' : ''}{t[tool]}</span></button>)}

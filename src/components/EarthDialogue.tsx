@@ -68,7 +68,6 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
       </div>
     </div>
     <div className="dialogue-footer">
-      <span>{t.dialogueHint}</span>
       <button ref={nextButton} className={full ? 'dialogue-next is-ready' : 'dialogue-next'} onClick={() => dispatch('advance')}>
         {full ? (state.index === lines.length - 1 ? (finalLabel ?? (finalAction === 'earth' ? t.followMoon : finalAction === 'lantern' ? t.receiveLantern : t.explore)) : t.next) : t.reveal} <span aria-hidden="true">→</span>
       </button>

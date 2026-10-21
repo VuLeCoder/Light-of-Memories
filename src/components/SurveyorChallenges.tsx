@@ -32,7 +32,7 @@ export function SurveyorChallenges({ language, progress, onChange }: { language:
       onChange({ ...progress, order: progress.order.includes(id) ? progress.order.filter(item => item !== id) : [...progress.order, id] });
     };
     return <div className="journal-puzzle">
-      <p className="journal-instruction">{vi ? 'Chuyện nào xảy ra trước? Chọn các ảnh để kể lại câu chuyện từ đầu nhé! Chạm lại để bỏ chọn.' : 'What happened first? Choose the photos to tell the story from the beginning. Select again to undo.'}</p>
+      <p className="journal-instruction">{vi ? 'Cùng kể lại câu chuyện của Mắt Tròn từ đầu nhé!' : 'Let’s tell Round Eyes’ story from the beginning!'}</p>
       <ol className="journal-sequence" aria-label={vi ? 'Thứ tự đã chọn' : 'Selected order'}>{t.slots.map((slot, i) => <li key={slot} className={progress.order[i] ? 'is-filled' : ''}>
         <span>{i + 1}</span><span>{slot}</span><span aria-hidden="true">{progress.order[i] ? '✓' : '·'}</span>
       </li>)}</ol>
