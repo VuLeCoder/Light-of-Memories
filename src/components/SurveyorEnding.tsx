@@ -16,8 +16,8 @@ const endingCopy = {
     ],
     captions: ['Chân đế Surveyor 3 · 1967 · NASA', 'Rãnh khảo sát năm 1967, được chụp lại năm 1969 · NASA', 'Pete Conrad bên Surveyor 3 · 1969 · NASA'],
     before: 'Trang trước', next: 'Trang tiếp', return: 'Trở lại bên Mắt Tròn', listen: 'Nghe Mắt Tròn kể', carry: 'Mang theo ánh sáng',
-    route: 'Xem lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại cùng bạn', reward: 'Đã thắp sáng 1/5 cánh sao',
-    distant: 'Một điểm sáng đang đợi ở phía xa…', journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.', unavailable: 'Ảnh tư liệu chưa tải được.', retry: 'Tải lại ảnh',
+    route: 'Về lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại', reward: 'Đã thắp sáng 1/5 cánh sao',
+    distant: 'Đi đến điểm sáng phía xa để trở về lộ trình.', journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.', unavailable: 'Ảnh tư liệu chưa tải được.', retry: 'Tải lại ảnh',
     intro: [
       { id: 'ending-intro-0', speaker: 'matTron', text: 'Những bức ảnh… giờ đã trở về đúng chỗ rồi.' },
       { id: 'ending-intro-1', speaker: 'cuoi', text: 'Vậy bạn đã nhớ ra những người từng đến thăm mình chưa?' },
@@ -39,8 +39,8 @@ const endingCopy = {
     ],
     captions: ['Surveyor 3 footpad · 1967 · NASA', 'Trenches dug in 1967, photographed in 1969 · NASA', 'Pete Conrad beside Surveyor 3 · 1969 · NASA'],
     before: 'Previous page', next: 'Next page', return: 'Return to Round Eyes', listen: 'Listen to the story', carry: 'Carry the light',
-    route: 'View the route', replay: 'Replay the ending', playAgain: 'Play again with a friend', reward: 'One of five star points is shining',
-    distant: 'A light is waiting in the distance…', journal: 'All three photographs are now in Cuội’s notebook.', unavailable: 'The archive photo could not load.', retry: 'Retry photo',
+    route: 'View the route', replay: 'Replay the ending', playAgain: 'Play again', reward: 'One of five star points is shining',
+    distant: 'Walk to the distant light to return to the route.', journal: 'All three photographs are now in Cuội’s notebook.', unavailable: 'The archive photo could not load.', retry: 'Retry photo',
     intro: [
       { id: 'ending-intro-0', speaker: 'matTron', text: 'The photographs… they are all back in the right places.' },
       { id: 'ending-intro-1', speaker: 'cuoi', text: 'Do you remember the people who came to visit you now?' },
@@ -117,9 +117,9 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
       <small className="ending-fiction">{digCopy[language].fiction}</small>
     </div>
   </section>;
-  return <section className={`ending-scene${gifting ? ' is-gifting' : ''}`} hidden={paused} lang={language} aria-label={t.title}>
+  return <section className={`ending-scene${gifting ? ' is-gifting' : ''}${step === 10 ? ' is-exploring' : ''}`} hidden={paused} lang={language} aria-label={t.title}>
     <div className="surveyor-scene-hud"><span>{t.title}</span>{lit && <strong role="status">★ 1/5</strong>}</div>
-    {step >= 6 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} />
+    {step >= 6 && step < 10 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} />
       {gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}
     </div>}
     {gifting && <span className="ending-light-travel" aria-hidden="true" onAnimationEnd={() => setGifting(false)} />}
@@ -127,7 +127,6 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
     {step < 3 ? <EarthDialogue key="ending-intro" language={language} paused={paused} lines={t.intro} initialIndex={step} title={t.title} finalAction="moon" finalLabel={t.listen} onTurn={index => { if (index !== step) go(index); }} onComplete={() => go(3)} />
       : step < 10 ? <EarthDialogue key="ending-outro" language={language} paused={paused} lines={t.outro} initialIndex={step - 6} title={t.title} finalAction="moon" finalLabel={t.carry} onTurn={index => { if (index + 6 !== step) go(index + 6); }} onComplete={() => go(10)} />
       : <div className="ending-farewell">
-        <h3 ref={heading} tabIndex={-1}>{t.reward}</h3><p>{t.distant}</p>
         <nav className="ending-actions" aria-label={t.title}>
           <button onClick={() => go(0)}>{t.replay}</button><button onClick={onReplay}>{t.playAgain}</button><button className="journey-primary" onClick={onBack}>{t.route} →</button>
         </nav>

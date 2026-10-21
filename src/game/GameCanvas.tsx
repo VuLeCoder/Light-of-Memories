@@ -14,7 +14,8 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ initiallyAwake, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  freeRoam?: boolean;
   excavation?: PreviewOptions['excavation']; onDigNear?: PreviewOptions['onDigNear'];
   initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
@@ -22,8 +23,8 @@ export function GameCanvas({ initiallyAwake, excavation, onDigNear, encounterSta
 }) {
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear });
-  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear };
+  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam });
+  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -49,6 +50,7 @@ export function GameCanvas({ initiallyAwake, excavation, onDigNear, encounterSta
       if (cancelled) return;
       const previewScene = new PreviewScene({
         initiallyAwake: awakeRef.current,
+        freeRoam: progressRef.current.freeRoam,
         excavation: progressRef.current.excavation,
         onDigNear: id => progressRef.current.onDigNear?.(id),
         encounterStarted: progressRef.current.encounterStarted,
@@ -108,6 +110,7 @@ export function GameCanvas({ initiallyAwake, excavation, onDigNear, encounterSta
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.setFreeRoam(freeRoam); }, [freeRoam]);
   useEffect(() => { phaserScene.current?.setExcavation(excavation); }, [excavation]);
   useEffect(() => { phaserScene.current?.setQuest(quest, treeSpeaking); }, [quest, treeSpeaking]);
   useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);

@@ -494,3 +494,18 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 }
 
 .journey-entry-action{min-height:44px}
+
+/* Keep the completed chapter open for exploration. */
+.ending-scene.is-exploring .ending-farewell {
+  inset: 66px auto auto 14px; width: min(235px, 31%); padding: 12px;
+  text-align: left;
+}
+.ending-scene.is-exploring .ending-farewell h3 { font-size: clamp(13px, 1.5vw, 19px); }
+.ending-scene.is-exploring .ending-farewell p { font-size: clamp(11px, 1.15vw, 14px); line-height: 1.5; margin: 8px 0 12px; }
+.ending-scene.is-exploring .ending-actions { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.ending-scene.is-exploring .ending-actions button { width: 100%; font-size: clamp(11px, 1.15vw, 14px); padding: 8px; }
+.ending-scene.is-exploring .ending-distant-light { left: 91.6667%; top: 50.9259%; transform: translate(-50%, -100%); }
+@media(max-width:760px) {
+  .ending-scene.is-exploring .ending-farewell { inset: 48px auto auto 6px; padding: 8px; }
+  .ending-scene.is-exploring .ending-actions { gap: 5px; }
+}

@@ -105,10 +105,11 @@ export function App() {
   const openFieldBook = () => { setBookRequest(n => n + 1); };
   const surveyorMeeting = inSurveyor && (surveyorProgress.phase === 'arrival' || surveyorProgress.phase === 'dialogue');
   const surveyorEnding = inSurveyor && surveyorProgress.phase === 'complete';
+  const endingFreeRoam = surveyorEnding && surveyorProgress.turn >= 10;
   const surveyorDigIntro = inSurveyor && surveyorProgress.phase === 'soil-intro';
   const surveyorChat = surveyorMeeting && surveyorProgress.phase === 'dialogue';
   const encounterText = surveyorEncounterCopy[language];
-  const questLocked = questDialogue || (journeyOpen && !surveyorMeeting && !excavating) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat;
+  const questLocked = questDialogue || (journeyOpen && !surveyorMeeting && !excavating && !endingFreeRoam) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat;
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
@@ -227,7 +228,7 @@ export function App() {
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={surveyorMeeting ? onSurveyorInteract : onBench} onExit={onExit} scene={inSurveyor ? 'surveyor' : scene} encounterStarted={surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              <GameCanvas freeRoam={endingFreeRoam} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam ? () => setActiveLevel(null) : onExit} scene={inSurveyor ? 'surveyor' : scene} encounterStarted={surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}

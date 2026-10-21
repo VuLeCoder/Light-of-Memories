@@ -4,6 +4,7 @@ import type { Language } from '../content/i18n';
 export type MoonQuest = 'bench' | 'tree' | 'lantern' | 'trail' | 'complete';
 export type GameSceneId = SceneId | 'surveyor';
 export interface PreviewOptions {
+  freeRoam?: boolean;
   excavation?: { found: SurveyorEvent[]; clues: SurveyorEvent[]; digging: boolean };
   onDigNear?: (id: SurveyorEvent | null) => void;
   initiallyAwake: boolean;

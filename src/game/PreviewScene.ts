@@ -16,6 +16,7 @@ export class PreviewScene extends Phaser.Scene {
   private moonMode: PreviewOptions['moonMode'];
   private keys?: Record<'left' | 'right' | 'up' | 'down' | 'w' | 's' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
   private walkTarget?: number;
+  private earnedLight?: Phaser.GameObjects.Graphics;
   private digTarget?: { x: number; y: number };
   private digNear: SurveyorEvent | null = null;
   private digMarks?: Phaser.GameObjects.Graphics;
@@ -74,8 +75,12 @@ export class PreviewScene extends Phaser.Scene {
       }
     }
   }
+  setFreeRoam(value: boolean) {
+    this.options.freeRoam = value;
+    this.releaseControls();
+  }
   private updateExcavation(time: number, delta: number) {
-    if (!this.cuoi || !this.keys || !this.options.excavation) return;
+    if (!this.cuoi || !this.keys || (!this.options.excavation && !this.options.freeRoam)) return;
     const c = this.cuoi, k = this.keys;
     let dx = Number(k.right.isDown || k.d.isDown) - Number(k.left.isDown || k.a.isDown);
     let dy = Number(k.down.isDown || k.s.isDown) - Number(k.up.isDown || k.w.isDown);
@@ -92,8 +97,13 @@ export class PreviewScene extends Phaser.Scene {
     } else { this.setCuoiFrame('rest'); if (length <= 1) this.digTarget = undefined; }
     c.setScale(scale).setDepth(c.y);
     this.digShadow?.setVisible(true).setPosition(c.x, c.y + 1).setScale(scale / .62).setDepth(c.y - 1);
-    this.shovel?.setVisible(true).setPosition(c.x + (c.flipX ? -22 : 22) * scale / .62, c.y - 18 * scale / .62).setScale((c.flipX ? -1 : 1) * scale / .62, scale / .62).setDepth(c.y + 2).setRotation(this.options.excavation.digging ? Math.sin(time / 130) * .6 : -.3);
-    const near = digSites.find(site => !this.options.excavation!.found.includes(site.id) && Math.hypot(c.x - site.x, c.y - site.y) < 43)?.id ?? null;
+    this.shovel?.setVisible(!!this.options.excavation).setPosition(c.x + (c.flipX ? -22 : 22) * scale / .62, c.y - 18 * scale / .62).setScale((c.flipX ? -1 : 1) * scale / .62, scale / .62).setDepth(c.y + 2).setRotation(this.options.excavation?.digging ? Math.sin(time / 130) * .6 : -.3);
+    const near = this.options.excavation ? digSites.find(site => !this.options.excavation!.found.includes(site.id) && Math.hypot(c.x - site.x, c.y - site.y) < 43)?.id ?? null : null;
+    if (this.options.freeRoam && this.moonMode === 'free' && Math.hypot(c.x - 880, c.y - 275) < 38 && !this.exitTriggered) {
+      this.exitTriggered = true;
+      this.setMoonMode('story');
+      this.options.onExit();
+    }
     if (near !== this.digNear) { this.digNear = near; this.options.onDigNear?.(near); }
     this.interactionHint?.setVisible(false);
   }
@@ -117,7 +127,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   private get interactionX() { return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { return (this.options.scene === 'surveyor' && !this.options.excavation) || this.options.quest === 'bench'; }
+  private get canInteract() { return (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
   private interactionLabel() { return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
 
   private interactNearby() {
@@ -232,6 +242,10 @@ export class PreviewScene extends Phaser.Scene {
         this.lantern.fillStyle(0x744333).fillRect(x - 2, 23, 4, 8);
         this.lantern.lineStyle(1, 0xa77b4b).lineBetween(x, 23, x, 33);
       }
+      this.earnedLight = this.add.graphics();
+      this.earnedLight.fillStyle(0xffdf91, .14).fillCircle(0, -12, 20);
+      this.earnedLight.fillStyle(0xffe6a2).fillTriangle(0, 0, points[9].x, points[9].y, points[0].x, points[0].y);
+      this.earnedLight.fillTriangle(0, 0, points[0].x, points[0].y, points[1].x, points[1].y);
       this.syncLanternGrip();
       // Follow the final animated pose and position, including direction changes.
       this.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncLanternGrip, this);
@@ -261,7 +275,7 @@ export class PreviewScene extends Phaser.Scene {
       const x = Phaser.Math.Clamp(pointer.x, 0, VIEW.width);
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
       if (this.options.scene === 'earth' || this.moonMode !== 'free') return;
-      if (this.options.excavation) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
+      if (this.options.excavation || this.options.freeRoam) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
       this.pendingInteraction = this.canInteract && this.interactionRegion.contains(x, y);
       if (this.pendingInteraction) {
         this.walkTarget = this.interactionX;
@@ -276,7 +290,7 @@ export class PreviewScene extends Phaser.Scene {
 
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
-    if (this.options.excavation) { this.updateExcavation(_time, delta); return; }
+    if (this.options.excavation || this.options.freeRoam) { this.updateExcavation(_time, delta); return; }
     this.interactionHint?.setVisible(this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
@@ -325,6 +339,8 @@ export class PreviewScene extends Phaser.Scene {
     lantern.setScale(scale).setRotation(angle)
       .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
       .setDepth(c.depth - .1);
+    this.earnedLight?.setVisible(!!this.options.freeRoam)
+      .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
   }
 
   private get rightEdge() { return this.options.scene === 'surveyor' ? 890 : this.options.quest === 'trail' ? 908 : 830; }
