@@ -6,10 +6,10 @@ export const moonAwakeningDialogue = [
 
 export const moonTreeDialogue = [
   { id: 'moon-03', speaker: 'cuoi', text: 'Chị Hằng ơi!' },
-  { id: 'moon-04', speaker: 'narrator', text: 'Chỉ có tiếng vọng trả lời.' },
+  { id: 'moon-04', speaker: 'narrator', text: 'Cuội chờ một lúc. Vẫn chưa thấy chị Hằng đâu.' },
   { id: 'moon-05', speaker: 'cayDa', text: 'Chị ấy không đi xa đâu, con. Nhưng Mặt Trăng đã khác rồi.' },
-  { id: 'moon-06', speaker: 'cayDa', text: 'Trong lúc con ngủ, có những người bạn mới đã đến. Họ nhìn thấy nhiều hơn con tưởng. Hãy tìm họ.' },
-  { id: 'moon-07', speaker: 'cayDa', text: 'Mỗi người sẽ thắp cho con một cánh sao. Khi sao sáng đủ, ánh trăng sẽ chỉ cho con thấy chị.' },
+  { id: 'moon-06', speaker: 'cayDa', text: 'Trong lúc con ngủ, những người bạn mới đã đến. Họ có nhiều chuyện để kể. Con thử đến gặp họ nhé!' },
+  { id: 'moon-07', speaker: 'cayDa', text: 'Mỗi người bạn sẽ thắp sáng một cánh đèn. Khi cả năm cánh cùng sáng, ánh đèn sẽ dẫn con đến bên chị Hằng.' },
 ] as const;
 
 export const moonDepartureDialogue = [

@@ -19,7 +19,7 @@ export function SurveyorChallenges({ language, progress, onChange }: { language:
   if (phase === 'timeline') {
     const vi = language === 'vi';
     const cards = vi ? {
-      arrive: { title: 'Lần chạm đất', body: 'Mắt Tròn hạ cánh, chụp lại dấu chân đế trên đất.' },
+      arrive: { title: 'Lần chạm đất', body: 'Mắt Tròn đến Mặt Trăng và chụp lại dấu chân tàu trên đất.' },
       work: { title: 'Những rãnh nhỏ', body: 'Chiếc xẻng đào rãnh, giúp tìm hiểu đất Mặt Trăng.' },
       visit: { title: 'Cuộc ghé thăm', body: 'Hai phi hành gia đến thăm, mang một phần của tàu về nhà.' },
     } : {
@@ -32,7 +32,7 @@ export function SurveyorChallenges({ language, progress, onChange }: { language:
       onChange({ ...progress, order: progress.order.includes(id) ? progress.order.filter(item => item !== id) : [...progress.order, id] });
     };
     return <div className="journal-puzzle">
-      <p className="journal-instruction">{vi ? 'Chạm ảnh theo thứ tự câu chuyện. Chạm lại để bỏ chọn.' : 'Choose the photos in story order. Select again to undo.'}</p>
+      <p className="journal-instruction">{vi ? 'Chuyện nào xảy ra trước? Chọn các ảnh để kể lại câu chuyện từ đầu nhé! Chạm lại để bỏ chọn.' : 'What happened first? Choose the photos to tell the story from the beginning. Select again to undo.'}</p>
       <ol className="journal-sequence" aria-label={vi ? 'Thứ tự đã chọn' : 'Selected order'}>{t.slots.map((slot, i) => <li key={slot} className={progress.order[i] ? 'is-filled' : ''}>
         <span>{i + 1}</span><span>{slot}</span><span aria-hidden="true">{progress.order[i] ? '✓' : '·'}</span>
       </li>)}</ol>

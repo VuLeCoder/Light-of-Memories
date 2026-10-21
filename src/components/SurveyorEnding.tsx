@@ -10,9 +10,9 @@ const endingCopy = {
   vi: {
     title: 'Câu chuyện của Mắt Tròn', labels: ['Lần đầu chạm đất', 'Đôi mắt và chiếc xẻng', 'Những người bạn ghé thăm'],
     stories: [
-      'Mình đến Mặt Trăng vào tháng 4 năm 1967. Những dấu chân đế trong ảnh là dấu tích của lần mình chạm xuống vùng đất xa lạ này.',
-      'Máy ảnh giúp mình quan sát, còn chiếc xẻng giúp mình khám phá đất dưới chân. Những rãnh mình đào năm 1967 vẫn còn khi Apollo 12 chụp lại năm 1969.',
-      'Tháng 11 năm 1969, Pete Conrad và Alan Bean của Apollo 12 đến thăm mình. Họ mang máy ảnh, xẻng và một số bộ phận về Trái Đất để nghiên cứu. Hôm nay, Cuội đã giúp mình tìm lại câu chuyện ấy.',
+      'Mình đến Mặt Trăng năm 1967. Nhìn này, phần chân tàu của mình đã để lại dấu trên đất!',
+      'Mình dùng máy ảnh để quan sát và chiếc xẻng để đào đất. Hơn hai năm sau, những rãnh mình đào vẫn còn đó.',
+      'Rồi hai phi hành gia đến thăm mình. Họ mang vài bộ phận của mình về Trái Đất để tìm hiểu. Nhờ Cuội, mình đã nhớ lại cuộc gặp ấy!',
     ],
     captions: ['Chân đế Surveyor 3 · 1967 · NASA', 'Rãnh khảo sát năm 1967, được chụp lại năm 1969 · NASA', 'Pete Conrad bên Surveyor 3 · 1969 · NASA'],
     before: 'Trang trước', next: 'Trang tiếp', return: 'Trở lại bên Mắt Tròn', listen: 'Nghe Mắt Tròn kể', carry: 'Mang theo ánh sáng',
@@ -20,7 +20,7 @@ const endingCopy = {
     distant: 'Đi đến điểm sáng phía xa để trở về lộ trình.', journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.', unavailable: 'Ảnh tư liệu chưa tải được.', retry: 'Tải lại ảnh',
     intro: [
       { id: 'ending-intro-0', speaker: 'matTron', text: 'Những bức ảnh… giờ đã trở về đúng chỗ rồi.' },
-      { id: 'ending-intro-1', speaker: 'cuoi', text: 'Vậy bạn đã nhớ ra những người từng đến thăm mình chưa?' },
+      { id: 'ending-intro-1', speaker: 'cuoi', text: 'Bạn nhớ hai người từng đến thăm bạn chưa?' },
       { id: 'ending-intro-2', speaker: 'matTron', text: 'Mình nhớ rồi. Để mình kể Cuội nghe nhé.' },
     ],
     outro: [
@@ -33,9 +33,9 @@ const endingCopy = {
   en: {
     title: 'Round Eyes’ story', labels: ['The first touchdown', 'A camera and a scoop', 'Visitors on the Moon'],
     stories: [
-      'I reached the Moon in April 1967. The footpad marks in this photograph are traces of my first touchdown in this unfamiliar place.',
-      'My camera helped me observe, and my scoop helped me explore the soil beneath me. The trenches I dug in 1967 were still there when Apollo 12 photographed them in 1969.',
-      'In November 1969, Apollo 12 astronauts Pete Conrad and Alan Bean visited me. They brought my camera, scoop and other parts back to Earth for study. Today, Cuội has helped me find that story again.',
+      'I reached the Moon in 1967. Look! My feet left marks in the soil.',
+      'I used my camera to look around and my scoop to dig. More than two years later, my little trenches were still there.',
+      'Then two astronauts came to visit me. They took some of my parts back to Earth to study. Cuội helped me remember their visit!',
     ],
     captions: ['Surveyor 3 footpad · 1967 · NASA', 'Trenches dug in 1967, photographed in 1969 · NASA', 'Pete Conrad beside Surveyor 3 · 1969 · NASA'],
     before: 'Previous page', next: 'Next page', return: 'Return to Round Eyes', listen: 'Listen to the story', carry: 'Carry the light',
@@ -43,7 +43,7 @@ const endingCopy = {
     distant: 'Walk to the distant light to return to the route.', journal: 'All three photographs are now in Cuội’s notebook.', unavailable: 'The archive photo could not load.', retry: 'Retry photo',
     intro: [
       { id: 'ending-intro-0', speaker: 'matTron', text: 'The photographs… they are all back in the right places.' },
-      { id: 'ending-intro-1', speaker: 'cuoi', text: 'Do you remember the people who came to visit you now?' },
+      { id: 'ending-intro-1', speaker: 'cuoi', text: 'Do you remember the two people who came to visit you?' },
       { id: 'ending-intro-2', speaker: 'matTron', text: 'I do. Let me tell you about them, Cuội.' },
     ],
     outro: [

@@ -8,7 +8,7 @@ import type { SurveyorProgress, SurveyorTool } from '../content/levels/surveyor-
 
 export const surveyorPlayCopy = {
   vi: {
-    fiction: 'Câu chuyện tưởng tượng dựa trên thiết bị có thật. Hình minh họa ký ức lúc tàu còn hoạt động.',
+    fiction: 'Cuội trò chuyện với Mắt Tròn là chuyện tưởng tượng. Tàu Surveyor 3 có thật. Hình vẽ cho thấy tàu khi còn hoạt động.',
     task: 'T01 · Khám phá Mắt Tròn',
     instruction: 'Bấm một công dụng, rồi bấm dụng cụ tương ứng trên hình. Bạn có thể bấm từng dụng cụ để xem gợi ý.',
     camera: 'Máy ảnh', scoop: 'Chiếc xẻng khảo sát', photo: 'Chụp ảnh', soil: 'Khảo sát đất',
@@ -19,13 +19,13 @@ export const surveyorPlayCopy = {
     wrongScoop: 'Thử lại nhé! Dụng cụ nào giúp mình tìm hiểu đất dưới chân?',
     correct: 'Đúng rồi! Công dụng này đã được ghép.', done: 'Bạn đã hiểu các dụng cụ của Mắt Tròn!',
     result: 'Máy ảnh giúp mình quan sát. Chiếc xẻng giúp mình tìm hiểu đất!',
-    bookNotice: 'Sổ tay đã mở ba trang gợi ý. Hãy nhận dụng cụ, đọc sách rồi tìm lại ba bức ảnh ký ức.',
+    bookNotice: 'Sổ tay đã có ba trang gợi ý. Cùng nhận xẻng và tìm ba bức ảnh nhé! Khi cần giúp, Cuội có thể mở sách.',
     bookTitle: 'Đôi mắt và chiếc xẻng',
-    bookBody: 'Surveyor 3 là tàu đổ bộ không người lái của NASA, đến Mặt Trăng năm 1967. Tàu có máy ảnh để quan sát và dụng cụ khảo sát đất. Công việc của người bạn robot giúp chuẩn bị cho những chuyến đi có con người.',
+    bookBody: 'Mắt Tròn có tên thật là Surveyor 3. Đây là một tàu robot của NASA, đến Mặt Trăng năm 1967. Không có người ngồi bên trong. Máy ảnh giúp tàu quan sát; chiếc xẻng giúp tàu tìm hiểu đất. Những điều tàu khám phá giúp các nhà khoa học chuẩn bị cho người đến Mặt Trăng.',
     matched: 'Đã ghép', memories: 'Ký ức', back: 'Về lộ trình',
   },
   en: {
-    fiction: 'An imaginary story based on a real spacecraft. Illustration of its memory while it was operating.',
+    fiction: 'Cuội talking to Round Eyes is make-believe. Surveyor 3 is real. This picture shows it when its tools were still in place.',
     task: 'T01 · Discover Round Eyes',
     instruction: 'Choose a purpose, then choose its tool in the picture. You can inspect each tool for a hint.',
     camera: 'Camera', scoop: 'Soil scoop', photo: 'Take pictures', soil: 'Study the soil',
@@ -36,9 +36,9 @@ export const surveyorPlayCopy = {
     wrongScoop: 'Try again! Which tool helps me study the ground beneath me?',
     correct: 'That’s right! This purpose is now matched.', done: 'You have discovered Round Eyes’ tools!',
     result: 'My camera helps me observe. My scoop helps me study the soil!',
-    bookNotice: 'Three clue pages are now in your notebook. Receive the scoop, read the clues and find the three memory photos.',
+    bookNotice: 'Your notebook has three clue pages. Take the memory scoop and find the photos! Open the book whenever you need help.',
     bookTitle: 'A camera and a scoop',
-    bookBody: 'Surveyor 3 is a NASA robotic lander that reached the Moon in 1967. It had a camera to observe its surroundings and a tool to study the soil. Its work helped prepare for later journeys with people.',
+    bookBody: 'Round Eyes is really called Surveyor 3. This NASA robot reached the Moon in 1967. No one was inside. Its camera took pictures, and its scoop studied the soil. What it learned helped scientists get ready to send people to the Moon.',
     matched: 'Matched', memories: 'Memories', back: 'Back to the route',
   },
 };

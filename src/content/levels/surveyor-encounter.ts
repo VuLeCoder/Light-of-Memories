@@ -22,15 +22,15 @@ export const surveyorEncounterCopy = {
 // Keep the four saved dialogue turns stable for existing version-3 saves.
 export const surveyorEncounterLines = {
   vi: [
-    { id: 'surveyor-01', speaker: 'cuoi', text: 'Bạn là ai mà đứng đây một mình thế?' },
-    { id: 'surveyor-02', speaker: 'matTron', text: 'Mình là Surveyor 3. Cứ gọi mình là Mắt Tròn nhé! Mình đến đây năm 1967.' },
-    { id: 'surveyor-03', speaker: 'matTron', text: 'Máy ảnh và chiếc xẻng của mình đã được mang về Trái Đất. Cuội giúp mình nhớ lại lúc chúng còn ở đây nhé?' },
-    { id: 'surveyor-04', speaker: 'cuoi', text: 'Mình sẽ giúp bạn! Bắt đầu với ký ức về máy ảnh và chiếc xẻng nhé.' },
+    { id: 'surveyor-01', speaker: 'cuoi', text: 'Chào bạn! Mình là Cuội. Mình đang tìm chị Hằng. Bạn có gặp chị ấy không?' },
+    { id: 'surveyor-02', speaker: 'matTron', text: 'Mình chưa gặp chị ấy. Mình là Surveyor 3. Cứ gọi mình là Mắt Tròn nhé!' },
+    { id: 'surveyor-03', speaker: 'matTron', text: 'Mình đến đây năm 1967. Máy ảnh và chiếc xẻng của mình đã được mang về Trái Đất. Cuội giúp mình nhớ lại chuyện cũ nhé?' },
+    { id: 'surveyor-04', speaker: 'cuoi', text: 'Được chứ! Mình sẽ giúp bạn.' },
   ],
   en: [
-    { id: 'surveyor-01', speaker: 'cuoi', text: 'Who are you, standing here all alone?' },
-    { id: 'surveyor-02', speaker: 'matTron', text: 'I am Surveyor 3. You can call me Round Eyes! I arrived here in 1967.' },
-    { id: 'surveyor-03', speaker: 'matTron', text: 'My camera and scoop were taken back to Earth. Will you help me remember when they were still here?' },
-    { id: 'surveyor-04', speaker: 'cuoi', text: 'I will help! Let’s start with your memories of the camera and scoop.' },
+    { id: 'surveyor-01', speaker: 'cuoi', text: 'Hello! I am Cuội. I am looking for Hằng. Have you seen her?' },
+    { id: 'surveyor-02', speaker: 'matTron', text: 'I have not seen her. I am Surveyor 3. You can call me Round Eyes!' },
+    { id: 'surveyor-03', speaker: 'matTron', text: 'I arrived in 1967. My camera and scoop were taken back to Earth. Will you help me remember those days?' },
+    { id: 'surveyor-04', speaker: 'cuoi', text: 'Of course! I will help you.' },
   ],
 } as const satisfies Record<'vi' | 'en', readonly StoryLine[]>;
