@@ -503,6 +503,12 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 
 .journey-entry-action{min-height:44px}
 
+/* The play area alone gets an initial fit; native browser zoom stays available. */
+.workspace-fit.is-fitted { display: flex; justify-content: center; align-items: flex-start; }
+.workspace-fit.is-fitted > .workspace { flex: none; padding-top: 12px; padding-bottom: 12px; }
+/* Phaser measures visual bounds; avoid applying the page fit a second time. */
+.workspace-fit.is-fitted .game-host canvas { width: 100% !important; height: 100% !important; margin: 0 !important; }
+
 /* Keep the completed chapter open for exploration. */
 .ending-scene.is-exploring .ending-farewell {
   inset: 66px auto auto 14px; width: min(235px, 31%); padding: 12px;

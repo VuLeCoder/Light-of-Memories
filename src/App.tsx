@@ -17,6 +17,7 @@ import { challengeCopy, challengeLines } from './content/levels/surveyor-challen
 import { freshSurveyor, replaySurveyor } from './content/levels/surveyor-progress';
 import type { LevelId } from './content/levels';
 import type { MoonQuest } from './game/types';
+import { useWorkspaceFit } from './useWorkspaceFit';
 
 function BookPlaceholder({ language }: { language: Language }) {
   const t = copy[language];
@@ -39,6 +40,7 @@ function BookPlaceholder({ language }: { language: Language }) {
 }
 
 export function App() {
+  const fittedWorkspace = useWorkspaceFit();
   const gameStage = useRef<HTMLDivElement>(null);
   const gameOwnsFocus = useRef(false);
   // Clicking non-focusable page content must also release the game's focus.
@@ -187,7 +189,8 @@ export function App() {
       <a className="brand" href="#main-scene" aria-label={t.goToScene}><img className="brand-logo" src={brandLogo} alt="" width="52" height="52" decoding="async" /><span>CUỘI<span className="brand-caption">{t.brandCaption}</span></span></a>
       <div className="header-actions"><VisitorCounter language={language} /><label className="language-picker"><span>{language === 'vi' ? 'Ngôn ngữ' : 'Language'}</span><select aria-label={language === 'vi' ? 'Chọn ngôn ngữ' : 'Choose language'} value={language} onChange={(event) => { setLanguage(event.target.value as Language); }}>{languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label></div>
     </header>
-    <div className="workspace">
+    <div className="workspace-fit" ref={fittedWorkspace.frame}>
+    <div className="workspace" ref={fittedWorkspace.workspace}>
       <div className="scene-toolbar" aria-label={t.sceneControls}>
         <div className="scene-heading">
           <span className="scene-number">{current.number}</span>
@@ -264,6 +267,7 @@ export function App() {
         </div>
       </section>
       {journeyOpen && !revealing ? <JourneyBook key={journey} bookRequest={bookRequest} onSurveyorChange={setSurveyorProgress} language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
+    </div>
     </div>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">
