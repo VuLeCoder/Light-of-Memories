@@ -11,7 +11,7 @@ export function SurveyorChallenges({ language, progress, onChange }: { language:
   const [wrong, setWrong] = useState(false);
   const phase = progress.phase;
   useEffect(() => { setWrong(false); }, [phase]);
-  const advance = (next: SurveyorProgress['phase']) => onChange({ ...progress, phase: next, turn: 0 });
+  const advance = (next: SurveyorProgress['phase']) => onChange({ ...progress, phase: next, completedOnce: progress.completedOnce || next === 'complete', turn: 0 });
   if (phase === 'soil-intro' || phase === 'timeline-intro') return <>
     {phase === 'timeline-intro' && <figure className="surveyor-history"><img src={surveyorVisitPhoto} alt={t.photo} /><figcaption>{t.photo}</figcaption></figure>}
     <EarthDialogue key={phase} language={language} paused={false} lines={challengeLines(language, phase === 'timeline-intro')} initialIndex={progress.turn} title={phase === 'soil-intro' ? t.soilTitle : t.timelineTitle} finalAction="moon" finalLabel={t.begin} onTurn={turn => { if (turn !== progress.turn) onChange({ ...progress, turn }); }} onComplete={() => advance(phase === 'soil-intro' ? 'soil' : 'timeline')} />

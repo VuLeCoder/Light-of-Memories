@@ -17,7 +17,7 @@ export const journeyCopy = {
     guide: 'Cùng Cuội gặp năm người bạn trên Mặt Trăng và khám phá câu chuyện của họ.',
     mystery: 'Người bạn bí ẩn', locked: 'Hoàn thành điểm trước để khám phá.', back: 'Về lộ trình',
     note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và thắp thêm một ánh sao trên chiếc đèn.',
-    waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo',
+    waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', replay: 'Chơi lại cùng bạn',
   },
   en: {
     title: 'The five-star journey', book: 'Cuội’s journey', reveal: 'The star lantern lights the way…',
@@ -25,19 +25,19 @@ export const journeyCopy = {
     guide: 'Join Cuội to meet five friends on the Moon and discover their stories.',
     mystery: 'A mystery friend', locked: 'Complete the previous stop to discover this friend.', back: 'Back to the route',
     note: 'Each encounter will leave a memory and light another star on the lantern.',
-    waiting: 'Not yet discovered', ready: 'Your next destination',
+    waiting: 'Not yet discovered', ready: 'Your next destination', replay: 'Play again with a friend',
   },
 };
 
-export function JourneyMap({ language, activeLevel, onEnter, onBack, surveyorProgress, onSurveyorChange }: { surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
   const level = getLevel(activeLevel);
   const detail = level?.text[language];
   const firstLevel = getLevel(journeyStops[0])!;
   const [locked, setLocked] = useState(false);
-  if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onBack={onBack} />;
+  if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onReplay={onReplay} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
-    <header><span>{surveyorProgress.phase === 'complete' ? '★ 1' : '☆ 0'}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
+    <header><span>{surveyorProgress.completedOnce ? '★ 1' : '☆ 0'}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
     {level && detail ? <>
       <div className="surveyor-meeting"><img src={level.portrait} alt={detail.friend} /><div><p><b>Cuội:</b> {detail.intro}</p><p><b>{detail.friend}:</b> {detail.reply}</p><p>{detail.invitation}</p></div></div>
       <button onClick={onBack}>{t.back}</button>
@@ -52,7 +52,7 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, surveyorPro
         </button>)}
       </div>
       <p className="journey-message" role="status">{locked ? t.locked : t.guide}</p>
-      <button className="journey-primary" onClick={() => onEnter(firstLevel.id)}>{firstLevel.text[language].enter} →</button>
+      <button className="journey-primary" onClick={surveyorProgress.phase === 'complete' ? onReplay : () => onEnter(firstLevel.id)}>{surveyorProgress.phase === 'complete' ? t.replay : firstLevel.text[language].enter} →</button>
     </>}
   </section>;
 }

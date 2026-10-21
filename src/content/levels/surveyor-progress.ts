@@ -2,13 +2,15 @@ export type SurveyorTool = 'camera' | 'scoop';
 export type SurveyorEvent = 'arrive' | 'work' | 'visit';
 export interface SurveyorProgress {
   phase: 'arrival' | 'dialogue' | 'tools' | 'memory' | 'soil-intro' | 'soil' | 'digging' | 'soil-memory' | 'timeline-intro' | 'timeline' | 'complete';
+  completedOnce: boolean;
   clues: SurveyorEvent[];
   found: SurveyorEvent[];
   turn: number;
   matched: SurveyorTool[];
   order: SurveyorEvent[];
 }
-export const freshSurveyor = (): SurveyorProgress => ({ phase: 'arrival', turn: 0, matched: [], order: [], clues: [], found: [] });
+export const freshSurveyor = (completedOnce = false): SurveyorProgress => ({ phase: 'arrival', completedOnce, turn: 0, matched: [], order: [], clues: [], found: [] });
+export const replaySurveyor = (progress: SurveyorProgress): SurveyorProgress => freshSurveyor(progress.completedOnce || progress.phase === 'complete');
 export const eventOrder: SurveyorEvent[] = ['arrive', 'work', 'visit'];
 const phases: SurveyorProgress['phase'][] = ['arrival', 'dialogue', 'tools', 'memory', 'soil-intro', 'soil', 'digging', 'soil-memory', 'timeline-intro', 'timeline', 'complete'];
 export const memoryCount = (p: SurveyorProgress) => p.found.length;
@@ -30,5 +32,5 @@ export function readSurveyorProgress(value: unknown): SurveyorProgress {
   if (phase === 'complete' && found.length < 3) phase = 'soil';
   if (phase === 'digging') phase = 'soil';
   if (phase === 'soil' && found.length === 3) phase = 'soil-memory';
-  return { phase, matched, order, clues, found, turn: typeof data.turn === 'number' && Number.isInteger(data.turn) ? Math.max(0, Math.min(3, data.turn)) : 0 };
+  return { phase, completedOnce: data.completedOnce === true || phase === 'complete', matched, order, clues, found, turn: typeof data.turn === 'number' && Number.isInteger(data.turn) ? Math.max(0, Math.min(3, data.turn)) : 0 };
 }

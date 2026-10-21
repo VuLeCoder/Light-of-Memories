@@ -11,7 +11,7 @@ const endingCopy = {
     promise: 'Mình sẽ nhớ tên bạn, Mắt Tròn. Mỗi khi nhìn cánh sao này, mình sẽ nhớ cuộc gặp của chúng ta.',
     caption: 'Apollo 12 ghé thăm Surveyor 3 · NASA, 1969',
     reward: 'Cánh sao đầu tiên đã sáng · 1/5',
-    next: 'Lắng nghe tiếp', kindle: 'Thắp sáng cánh sao', continue: 'Mang theo ánh sáng', back: 'Trở về lộ trình', replay: 'Xem lại đoạn kết',
+    next: 'Lắng nghe tiếp', kindle: 'Thắp sáng cánh sao', continue: 'Mang theo ánh sáng', back: 'Trở về lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại cùng bạn',
     journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.',
   },
   en: {
@@ -21,7 +21,7 @@ const endingCopy = {
     promise: 'I will remember your name, Round Eyes. Whenever I see this star point, I will remember our meeting.',
     caption: 'Apollo 12 visits Surveyor 3 · NASA, 1969',
     reward: 'The first star point is shining · 1/5',
-    next: 'Keep listening', kindle: 'Light the star point', continue: 'Carry the light', back: 'Return to the route', replay: 'Replay the ending',
+    next: 'Keep listening', kindle: 'Light the star point', continue: 'Carry the light', back: 'Return to the route', replay: 'Replay the ending', playAgain: 'Play again with a friend',
     journal: 'All three photographs are now in Cuội’s notebook.',
   },
 };
@@ -46,8 +46,8 @@ function MemoryLantern({ lit }: { lit: boolean }) {
   </svg>;
 }
 
-export function SurveyorEnding({ language, progress, onChange, onBack }: {
-  language: Language; progress: SurveyorProgress; onChange: (p: SurveyorProgress) => void; onBack: () => void;
+export function SurveyorEnding({ language, progress, onChange, onReplay, onBack }: {
+  language: Language; progress: SurveyorProgress; onChange: (p: SurveyorProgress) => void; onReplay: () => void; onBack: () => void;
 }) {
   const t = endingCopy[language];
   const step = Math.min(progress.turn, 3);
@@ -61,6 +61,7 @@ export function SurveyorEnding({ language, progress, onChange, onBack }: {
     <p className="ending-note" role="status">{step >= 2 ? t.reward : t.journal}</p>
     <nav className="ending-actions" aria-label={language === 'vi' ? 'Đoạn kết' : 'Ending'}>
       {step === 3 && <button onClick={() => onChange({ ...progress, turn: 0 })}>{t.replay}</button>}
+      {step === 3 && <button className="journey-primary" onClick={onReplay}>{t.playAgain} →</button>}
       <button className="journey-primary" onClick={() => step === 3 ? onBack() : onChange({ ...progress, turn: step + 1 })}>{step === 0 ? t.next : step === 1 ? t.kindle : step === 2 ? t.continue : t.back} →</button>
     </nav>
   </div>;

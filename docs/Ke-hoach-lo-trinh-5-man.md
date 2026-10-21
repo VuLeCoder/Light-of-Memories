@@ -42,6 +42,8 @@ Lời dẫn mang tính kể chuyện. Bản đồ là minh họa lộ trình ch�
 
 Các màn mở lần lượt theo tiến độ. Chỉ điểm đang chọn hiển thị phần giới thiệu chi tiết để khung game dễ quan sát.
 
+Sau khi hoàn thành Surveyor 3, người chơi có thể chọn **Chơi lại cùng bạn** ở đoạn kết hoặc trên lộ trình. Lượt chơi mới bắt đầu từ cuộc gặp Cuội–Mắt Tròn và làm lại T01–T03; gợi ý, ảnh đào và thứ tự nhật ký được khám phá lại. Ngôi sao 1/5 đã nhận vẫn sáng trên lộ trình, kể cả khi tải lại trang giữa lượt chơi.
+
 ### Nội dung điểm đầu tiên
 
 > **01 · Surveyor 3 — Mắt Tròn**

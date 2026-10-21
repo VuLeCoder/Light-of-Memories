@@ -62,8 +62,8 @@ function SurveyorDrawing() {
   </svg>;
 }
 
-export function SurveyorLevel({ language, progress, onChange, onBack }: {
-  language: Language; progress: SurveyorProgress; onChange: (value: SurveyorProgress) => void; onBack: () => void;
+export function SurveyorLevel({ language, progress, onChange, onReplay, onBack }: {
+  language: Language; progress: SurveyorProgress; onChange: (value: SurveyorProgress) => void; onReplay: () => void; onBack: () => void;
 }) {
   const t = surveyorPlayCopy[language];
   const ct = challengeCopy[language];
@@ -84,7 +84,7 @@ export function SurveyorLevel({ language, progress, onChange, onBack }: {
   }
   return <section className={`journey-view surveyor-level phase-${phase}`} aria-labelledby="surveyor-title" lang={language}>
     <header><span aria-label={`${t.memories}: ${count}/3`}>{Array.from({ length: 3 }, (_, i) => i < count ? '★' : '☆').join(' ')}</span><h2 id="surveyor-title" ref={heading} tabIndex={-1}>{phase === 'tools' ? t.task : phase === 'memory' ? t.done : phase === 'complete' ? ct.complete : phase.startsWith('timeline') ? ct.timelineTitle : ct.soilTitle}</h2></header>
-    {phase === 'complete' ? <SurveyorEnding language={language} progress={progress} onChange={onChange} onBack={onBack} /> : phase === 'tools' ? <>
+    {phase === 'complete' ? <SurveyorEnding language={language} progress={progress} onChange={onChange} onReplay={onReplay} onBack={onBack} /> : phase === 'tools' ? <>
       <p className="surveyor-instruction">{t.instruction}</p>
       <div className="surveyor-tools-layout">
         <div className="surveyor-tool-picture"><SurveyorDrawing />
