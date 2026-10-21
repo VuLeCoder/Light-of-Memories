@@ -14,13 +14,13 @@ export const memoryPhotos = {
 };
 export const digCopy = {
   vi: {
-    title: 'T02 · Tìm ba bức ảnh ký ức', book: 'Sổ tay khảo sát', open: 'Xem gợi ý trong sách',
+    title: 'T02 · Tìm ba bức ảnh ký ức', book: 'Sổ tay khảo sát', open: 'Gợi ý',
     read: 'Ghi nhớ điểm cần kiểm tra', ready: 'Đã ghi nhớ gợi ý', digKey: 'Nhấn E để đào', lockedClue: 'Ghi nhớ gợi ý trước để đọc gợi ý tiếp theo.', dig: 'Đào ký ức', digging: 'Cuội đang đào…',
     controls: 'Mũi tên / WASD: di chuyển gần–xa, trái–phải. Hoặc chạm mặt đất để đi tới. E: đào ảnh ký ức.',
     hint: 'Nhấn E để đào ảnh ký ức. Nếu cần gợi ý, hãy mở sách.',
     empty: 'Chưa thấy ảnh ở đây. Thử chỗ khác nhé!',
-    touchControls: 'Chạm mặt đất để Cuội đi tới. Bấm “Đào ký ức” để đào. Cần giúp thì mở sách nhé!',
-    touchHint: 'Bấm “Đào ký ức” để tìm ảnh. Nếu cần gợi ý, hãy mở sách.',
+    touchControls: 'Chạm mặt đất để Cuội đi tới. Nhấn E trên bàn phím để đào. Cần giúp thì mở sách nhé!',
+    touchHint: 'Nhấn E để tìm ảnh. Nếu cần gợi ý, hãy mở sách.',
     unread: 'Có dấu vết ở đây. Cuội có thể đào ngay hoặc xem gợi ý trong sách.',
     continue: 'Tiếp tục tìm ảnh', finish: 'Ghép ba ảnh thành nhật ký', found: 'Ảnh đã tìm thấy',
     fiction: 'Cuội đào tìm ảnh là chuyện tưởng tượng. Mắt Tròn và các sự kiện trong ảnh là có thật.',
@@ -37,13 +37,13 @@ export const digCopy = {
     },
   },
   en: {
-    title: 'T02 · Find three memory photos', book: 'Field notebook', open: 'Read the book clues',
+    title: 'T02 · Find three memory photos', book: 'Field notebook', open: 'Hint',
     read: 'Remember this location', ready: 'Clue noted', digKey: 'Press E to dig', lockedClue: 'Note the previous clue to read the next one.', dig: 'Dig for a memory', digging: 'Cuội is digging…',
     controls: 'Arrows / WASD: move left, right, closer and farther. Or tap the ground to walk there. E: dig for memory photos.',
     hint: 'Press E to dig for memory photos. Open the book if you need a clue.',
     empty: 'No photo here. Try another spot!',
-    touchControls: 'Tap the ground to walk there. Tap “Dig for a memory” to dig. Open the book if you need help!',
-    touchHint: 'Tap “Dig for a memory” to find photos. Open the book if you need a clue.',
+    touchControls: 'Tap the ground to walk there. Press E on your keyboard to dig. Open the book if you need help!',
+    touchHint: 'Press E to find photos. Open the book if you need a clue.',
     unread: 'There is a trace here. You can dig now or check the book for a clue.',
     continue: 'Keep looking', finish: 'Arrange the photos into a journal', found: 'Photos found',
     fiction: 'Cuội digging for photos is make-believe. Round Eyes and the events in the photos are real.',

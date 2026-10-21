@@ -53,20 +53,16 @@ export function SurveyorExcavation({ language, progress, near, onChange, onBack,
   const busy = progress.phase === 'digging';
   const all = progress.found.length === 3;
   return <div className="excavation-overlay" style={paused ? { display: 'none' } : undefined}>
-    <div className="excavation-top"><span>{t.title} · {progress.found.length}/3</span><button onClick={onBack} disabled={busy}>{language === 'vi' ? 'Về lộ trình' : 'Back to route'}</button></div>
+    <div className="excavation-top"><span>{t.title} · {progress.found.length}/3</span><div className="excavation-top-actions"><button onClick={onBook} disabled={busy || !!photo}>{t.open}</button><button onClick={onBack} disabled={busy}>{language === 'vi' ? 'Về lộ trình' : 'Back to route'}</button></div></div>
     {photo ? <section className="excavation-photo" role="dialog" aria-modal="true" aria-label={t.found}>
       <figure className="memory-photo-frame"><img src={memoryPhotos[photo]} alt={t.descriptions[photo]} /><figcaption>NASA · {photo === 'arrive' ? '1967' : '1969'}</figcaption></figure>
       <div className="memory-photo-copy"><span className="memory-eyebrow">{t.found} · {progress.found.length}/3</span><h2>{t.names[photo]}</h2><p>{t.descriptions[photo]}</p><small>{t.fiction}</small>
       <button ref={photoButton} autoFocus onClick={() => { onChange({ ...progress, pendingPhoto: undefined, phase: all ? 'timeline-intro' : 'soil', turn: 0, order: [] });
         if (!all) requestAnimationFrame(() => document.querySelector<HTMLElement>('.game-host')?.focus({ preventScroll: true })); }}>{all ? t.finish : t.continue}</button></div>
-    </section> : <div className="excavation-bottom">
-      <p role="status">{busy ? t.digging : <><span className="dig-keyboard-controls">{t.hint}</span><span className="dig-touch-controls">{t.touchHint}</span></>}</p>
+    </section> : <div className="excavation-bottom" hidden={!busy && !empty && !all}>
+      {busy && <p role="status">{t.digging}</p>}
       {empty && !busy && <p className="excavation-result" role="status">{t.empty}</p>}
-      <div><button onClick={onBook} disabled={busy}>{t.open}</button>
-      {!all && <button disabled={busy} onClick={startDig}>{busy ? t.digging : t.dig}</button>}
-      {all && <button onClick={() => onChange({ ...progress, phase: 'timeline-intro', turn: 0, order: [] })}>{t.finish}</button>}</div>
-      <small className="dig-keyboard-controls">{t.controls}</small>
-      <small className="dig-touch-controls">{t.touchControls}</small>
+      {all && <div><button onClick={() => onChange({ ...progress, phase: 'timeline-intro', turn: 0, order: [] })}>{t.finish}</button></div>}
     </div>}
   </div>;
 }

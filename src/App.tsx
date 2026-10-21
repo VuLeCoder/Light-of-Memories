@@ -180,6 +180,30 @@ export function App() {
     setJourney(value => value + 1);
     gameOwnsFocus.current = true;
   }
+  const vi = language === 'vi';
+  const dialogueHelp = vi ? 'Nhấn Space / Enter hoặc bấm “Tiếp theo” để tiếp tục trò chuyện.' : 'Press Space / Enter or click “Next” to continue the conversation.';
+  const moveHelp = vi ? 'Di chuyển bằng A/D, ←/→ hoặc bấm vào mặt đất.' : 'Move with A/D, ←/→, or click the ground.';
+  const depthMoveHelp = vi ? 'Di chuyển: WASD / phím mũi tên hoặc chạm mặt đất.' : 'Move: WASD / arrow keys or tap the ground.';
+  let gameInstructions = '';
+  if (!menuOpen && !transitioning && !moonWaking && !revealing) {
+    if (tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro) gameInstructions = dialogueHelp;
+    else if (inSurveyor) {
+      const phase = surveyorProgress.phase;
+      if (surveyorMeeting) gameInstructions = `${moveHelp} ${vi ? 'Đến gần Mắt Tròn rồi nhấn E, hoặc bấm vào Mắt Tròn để trò chuyện.' : 'Approach Round Eyes and press E, or click Round Eyes to talk.'}`;
+      else if (excavating) gameInstructions = phase === 'soil-memory'
+        ? (vi ? 'Bấm nút bên cạnh ảnh để tiếp tục.' : 'Click the button beside the photo to continue.')
+        : `${depthMoveHelp} ${vi ? 'Nhấn E để đào; bấm “Gợi ý” khi cần.' : 'Press E to dig. Click “Hint” to check the book if you need help.'}`;
+      else if (phase === 'tools') gameInstructions = vi ? 'Bấm chọn công dụng, rồi bấm dụng cụ phù hợp trên hình.' : 'Choose a purpose, then click the matching tool in the picture.';
+      else if (phase === 'timeline') gameInstructions = vi ? 'Bấm các ảnh theo thứ tự xảy ra trước đến sau. Bấm lại để bỏ chọn, rồi bấm nút ghép nhật ký khi đủ ba ảnh.' : 'Select the photos from earliest to latest. Select again to undo, then click the journal button when all three are selected.';
+      else if (phase === 'timeline-intro') gameInstructions = dialogueHelp;
+      else if (endingFreeRoam) gameInstructions = `${depthMoveHelp} ${vi ? 'Đến điểm sáng hoặc bấm “Về lộ trình”.' : 'Walk to the distant light or click “View the route” to return to the route.'}`;
+      else if (surveyorEnding) gameInstructions = surveyorProgress.turn >= 3 && surveyorProgress.turn <= 5
+        ? (vi ? 'Bấm mũi tên để xem các trang, rồi bấm nút để trở lại Mắt Tròn.' : 'Click the arrows to read the pages, then use the button to return to Round Eyes.')
+        : dialogueHelp;
+      else gameInstructions = vi ? 'Bấm nút tiếp tục để sang thử thách tiếp theo.' : 'Click the continue button to start the next challenge.';
+    } else if (journeyOpen) gameInstructions = vi ? 'Bấm chọn một người bạn, rồi bấm nút bên dưới để đến gặp.' : 'Select a friend, then click the button below to visit.';
+    else if (chapter === 'moon-free') gameInstructions = `${moveHelp} ${quest === 'bench' ? t.benchHint : t.trailHint}`;
+  }
   const current = inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
   const currentText = inSurveyor ? encounterText : t[scene];
   const characterName = (id: keyof typeof portraits) => language === 'en' ? ({ an: 'An', ba: 'Grandma', cuoi: 'Cuội', cayDa: 'Banyan tree', matTron: 'Round Eyes', chiHang: 'Hằng' } as const)[id] : portraits[id].name;
@@ -257,18 +281,20 @@ export function App() {
             {journeyOpen && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
-          {moonWaking && !menuOpen && <p className="chapter-arrival" role="status">{t.moonWaking}</p>}
-          {chapter === 'moon-free' && scene === 'moon' && !menuOpen && <p className="chapter-arrival" role="status">{surveyorMeeting ? `${encounterText.goal}. ${encounterText.controls}` : quest === 'bench' ? `${t.moonMove} ${t.benchHint}` : quest === 'trail' ? t.trailHint : journeyOpen ? journeyCopy[language].title : t.treeTitle}</p>}
+          <p className="chapter-arrival game-instructions">{gameInstructions}</p>
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
-        <div className="scene-details">
-          <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
-          <p>{currentText.description}{inSurveyor && <> <a className="scenery-source" href="https://www.nasa.gov/humans-in-space/lunar-encore-leads-to-first-precision-extraterrestrial-landing/" target="_blank" rel="noreferrer">NASA ↗</a></>}</p>
-        </div>
       </section>
       {journeyOpen && !revealing ? <JourneyBook key={journey} bookRequest={bookRequest} onSurveyorChange={setSurveyorProgress} language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
     </div>
     </div>
+    <section className="characters-section" aria-labelledby="characters-title">
+      <h2 id="characters-title">{t.cast}</h2>
+        <div className="scene-details">
+          <div className="cast" aria-label={t.cast}>{current.characters.map((id) => <div className="cast-member" key={id}><span className={`portrait portrait-${id}`}><img src={portraits[id].url} alt="" /></span><span>{characterName(id)}</span></div>)}</div>
+          <p>{currentText.description}{inSurveyor && <> <a className="scenery-source" href="https://www.nasa.gov/humans-in-space/lunar-encore-leads-to-first-precision-extraterrestrial-landing/" target="_blank" rel="noreferrer">NASA ↗</a></>}</p>
+        </div>
+    </section>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">
           <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> {t.introLabel} <span className="label-line" /></div>

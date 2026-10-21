@@ -105,9 +105,10 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
   if (recollection) return <section className="journey-view ending-recollection" hidden={paused} lang={language} aria-label={t.title}>
     <header><span aria-hidden="true">★ ★ ★</span><h2>{t.title}</h2></header>
     <div className="surveyor-ending">
+      <MemoryPhoto key={page} src={memoryPhotos[eventOrder[page]]} caption={t.captions[page]} language={language} />
+      <div className="ending-story-copy">
       <div className="ending-steps" aria-label={`${page + 1}/3`}>{eventOrder.map((id, index) => <span key={id} className={index === page ? 'is-active' : ''} />)}</div>
       <h3 ref={heading} tabIndex={-1}>{t.labels[page]}</h3>
-      <MemoryPhoto key={page} src={memoryPhotos[eventOrder[page]]} caption={t.captions[page]} language={language} />
       <p className="ending-speech"><b>{language === 'vi' ? 'Mắt Tròn' : 'Round Eyes'}:</b> {t.stories[page]}</p>
       <p className="ending-note">{t.journal}</p>
       <nav className="ending-actions" aria-label={t.title}>
@@ -115,6 +116,7 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
         <button className="journey-primary" onClick={() => go(step + 1)}>{page === 2 ? t.return : t.next} →</button>
       </nav>
       <small className="ending-fiction">{digCopy[language].fiction}</small>
+      </div>
     </div>
   </section>;
   return <section className={`ending-scene${gifting ? ' is-gifting' : ''}${step === 10 ? ' is-exploring' : ''}`} hidden={paused} lang={language} aria-label={t.title}>
