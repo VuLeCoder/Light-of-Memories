@@ -33,8 +33,16 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, s
   const t = journeyCopy[language];
   const level = getLevel(activeLevel);
   const detail = level?.text[language];
-  const firstLevel = getLevel(journeyStops[0])!;
+  const [selectedFriend, setSelectedFriend] = useState<LevelId | null>(journeyStops[0]);
+  const selectedLevel = getLevel(selectedFriend);
   const [locked, setLocked] = useState(false);
+  const enterFriend = (id: LevelId) => {
+    setLocked(false);
+    if (id === 'surveyor' && surveyorProgress.completedOnce) {
+      onSurveyorChange({ ...surveyorProgress, phase: 'complete', turn: 10, matched: ['camera', 'scoop'], clues: [...eventOrder], found: [...eventOrder], order: [...eventOrder] });
+    }
+    onEnter(id);
+  };
   if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onReplay={onReplay} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
     <header><span>{surveyorProgress.completedOnce ? '★ 1' : '☆ 0'}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
@@ -45,14 +53,17 @@ export function JourneyMap({ language, activeLevel, onEnter, onBack, onReplay, s
       <p className="journey-lead">{t.lead}</p>
       <div className="journey-route">
         <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M80 110 Q160 20 240 65 T400 110 T560 65 T720 110" /></svg>
-        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index} ${id ? (id === 'surveyor' && surveyorProgress.completedOnce ? 'stop-completed' : 'stop-unfinished') : 'stop-locked'}`} onClick={() => id === 'surveyor' && surveyorProgress.phase === 'complete' ? onReplay() : id ? onEnter(id) : setLocked(true)} aria-label={`${index + 1}. ${id ? `${getLevel(id)!.text[language].friend}. ${id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : t.ready}` : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
+        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index} ${id ? (id === 'surveyor' && surveyorProgress.completedOnce ? 'stop-completed' : 'stop-unfinished') : 'stop-locked'}`} onClick={() => {
+          setSelectedFriend(id);
+          setLocked(!id);
+        }} aria-pressed={!!id && selectedFriend === id} aria-label={`${index + 1}. ${id ? `${getLevel(id)!.text[language].friend}. ${id === 'surveyor' && surveyorProgress.completedOnce ? t.completed : t.ready}` : `${t.mystery}. ${t.locked}`}`} aria-disabled={!id}>
           <span className="stop-orb">{id ? <img src={getLevel(id)!.portrait} alt="" /> : '?'}</span>
           <span>{id ? `${String(index + 1).padStart(2, '0')} · ${getLevel(id)!.label}` : `0${index + 1} · ${t.mystery}`}</span>
           {index === 0 && <small>Cuội ✦</small>}
         </button>)}
       </div>
       <p className="journey-message" role="status">{locked ? t.locked : t.guide}</p>
-      <button className="journey-primary" onClick={surveyorProgress.phase === 'complete' ? onReplay : () => onEnter(firstLevel.id)}>{surveyorProgress.phase === 'complete' ? t.replay : firstLevel.text[language].enter} →</button>
+      <div className="journey-entry-action">{selectedLevel && <button className="journey-primary" onClick={() => enterFriend(selectedLevel.id)}>{selectedLevel.text[language].enter} →</button>}</div>
     </>}
   </section>;
 }
