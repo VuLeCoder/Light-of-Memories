@@ -76,8 +76,16 @@ export class PreviewScene extends Phaser.Scene {
     }
   }
   setFreeRoam(value: boolean) {
+    const replayingEnding = this.options.freeRoam && !value;
     this.options.freeRoam = value;
     this.releaseControls();
+    if (replayingEnding && this.cuoi) {
+      const x = surveyorEncounter.x - 80;
+      this.cuoi.setPosition(x, surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
+      this.setCuoiFrame('rest');
+      this.digShadow?.setVisible(false);
+      this.exitTriggered = false;
+    }
   }
   private updateExcavation(time: number, delta: number) {
     if (!this.cuoi || !this.keys || (!this.options.excavation && !this.options.freeRoam)) return;
@@ -338,7 +346,8 @@ export class PreviewScene extends Phaser.Scene {
     // with the sprite drawn in front so its fingers cover the wooden shaft.
     lantern.setScale(scale).setRotation(angle)
       .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
-      .setDepth(c.depth - .1);
+      .setDepth(c.depth - .1)
+      .setVisible(this.options.scene === 'surveyor' ? !!this.options.freeRoam : ['lantern', 'trail', 'complete'].includes(this.options.quest));
     this.earnedLight?.setVisible(!!this.options.freeRoam)
       .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
   }
