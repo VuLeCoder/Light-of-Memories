@@ -80,6 +80,7 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
   const t = journeyCopy[language];
   const dt = digCopy[language];
   const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
+  const clueUnlocked = !clue || eventOrder.slice(0, eventOrder.indexOf(clue)).every(id => surveyorProgress.clues.includes(id) || surveyorProgress.found.includes(id));
   const photo = eventOrder.find(id => pages[page] === `photo-${id}`);
   useEffect(() => {
     if (!bookRequest || !fieldUnlocked) return;
@@ -114,13 +115,13 @@ function JourneyBookPages({ language, activeLevel, surveyorProgress, onSurveyorC
       <aside className="book-panel" lang={language} aria-labelledby="field-book-title"><div className="book-sheet journey-book field-book">
         <span className="book-kicker">{clue ? dt.book : dt.found} · {surveyorProgress.found.length}/3</span>
         <h2 id="field-book-title" tabIndex={-1}>{dt.names[id]}</h2>
-        {clue ? <>
+        {clue ? clueUnlocked ? <>
           <svg className="clue-sketch" viewBox="0 0 180 65" aria-hidden="true">
             {id === 'arrive' ? <g><ellipse cx="60" cy="38" rx="28" ry="12"/><ellipse cx="120" cy="25" rx="28" ry="12"/></g> : id === 'work' ? <path d="M30 25L150 15M30 40L150 30M30 55L150 45"/> : <g>{[0,1,2,3,4,5].map(i => <ellipse key={i} cx={30 + i * 24} cy={25 + i % 2 * 15} rx="8" ry="4"/>)}</g>}
           </svg><p>{dt.clues[id]}</p>
           <button disabled={surveyorProgress.clues.includes(id)} onClick={() => onSurveyorChange({ ...surveyorProgress, clues: [...surveyorProgress.clues, id] })}>{surveyorProgress.clues.includes(id) ? `✓ ${dt.ready}` : dt.read}</button>
           {surveyorProgress.found.includes(id) && <p>✓ {dt.found}</p>}
-        </> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><small>NASA</small></>}
+        </> : <p role="status">{dt.lockedClue}</p> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><small>NASA</small></>}
         <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
       </div><p className="book-note">{dt.fiction}</p></aside>
     </>;

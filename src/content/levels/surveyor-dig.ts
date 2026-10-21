@@ -15,9 +15,9 @@ export const memoryPhotos = {
 export const digCopy = {
   vi: {
     title: 'T02 · Tìm ba bức ảnh ký ức', book: 'Sổ tay khảo sát', open: 'Xem gợi ý trong sách',
-    read: 'Ghi nhớ điểm cần kiểm tra', ready: 'Đã ghi nhớ gợi ý', dig: 'Đào ký ức', digging: 'Cuội đang đào…',
-    controls: 'Mũi tên / WASD: di chuyển gần–xa, trái–phải. Hoặc chạm mặt đất để đi tới.',
-    hint: 'Hãy mở sổ tay, đọc dấu vết rồi tìm điểm tương ứng trên mặt đất.',
+    read: 'Ghi nhớ điểm cần kiểm tra', ready: 'Đã ghi nhớ gợi ý', digKey: 'Nhấn E để đào', lockedClue: 'Ghi nhớ gợi ý trước để đọc gợi ý tiếp theo.', dig: 'Đào ký ức', digging: 'Cuội đang đào…',
+    controls: 'Mũi tên / WASD: di chuyển gần–xa, trái–phải. Hoặc chạm mặt đất để đi tới. E: đào ảnh ký ức.',
+    hint: 'Nhấn E để đào ảnh ký ức. Nếu cần gợi ý, hãy mở sách.',
     unread: 'Có dấu vết ở đây. Hãy tìm mô tả trong sổ tay trước khi đào.',
     continue: 'Tiếp tục tìm ảnh', finish: 'Ghép ba ảnh thành nhật ký', found: 'Ảnh đã tìm thấy',
     fiction: 'Đào ảnh là tình tiết tưởng tượng; các ảnh và sự kiện dựa trên tư liệu NASA.',
@@ -35,9 +35,9 @@ export const digCopy = {
   },
   en: {
     title: 'T02 · Find three memory photos', book: 'Field notebook', open: 'Read the book clues',
-    read: 'Remember this location', ready: 'Clue noted', dig: 'Dig for a memory', digging: 'Cuội is digging…',
-    controls: 'Arrows / WASD: move left, right, closer and farther. Or tap the ground to walk there.',
-    hint: 'Open the notebook, read the traces and find the matching place on the ground.',
+    read: 'Remember this location', ready: 'Clue noted', digKey: 'Press E to dig', lockedClue: 'Note the previous clue to read the next one.', dig: 'Dig for a memory', digging: 'Cuội is digging…',
+    controls: 'Arrows / WASD: move left, right, closer and farther. Or tap the ground to walk there. E: dig for memory photos.',
+    hint: 'Press E to dig for memory photos. Open the book if you need a clue.',
     unread: 'There is a trace here. Find its description in the notebook before digging.',
     continue: 'Keep looking', finish: 'Arrange the photos into a journal', found: 'Photos found',
     fiction: 'Digging up photos is fictional; the photographs and events come from NASA records.',
