@@ -34,9 +34,8 @@ function BookPlaceholder({ language }: { language: Language }) {
         <div className="paper-divider" aria-hidden="true">✦</div>
         <p>{t.bookComing}</p>
         <div className="placeholder-lines" aria-hidden="true"><i /><i /><i /></div>
-        <BookNavigation language={language} page={0} count={1} onChange={() => {}} />
       </div>
-      <p className="book-note">{t.bookNote}</p>
+      <BookNavigation language={language} page={0} count={1} onChange={() => {}} />
     </aside>
   </>;
 }

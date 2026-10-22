@@ -77,7 +77,17 @@ export function JourneyBook({ sparkleProgress, language, activeLevel, surveyorPr
 function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
   // Only configured stops have readable pages. Reading never changes the game level.
   const fieldUnlocked = surveyorProgress.matched.length === 2;
-  const pages = [null, ...journeyStops.filter((id): id is LevelId => id !== null), ...(fieldUnlocked ? eventOrder.map(id => `clue-${id}`) : []), ...(fieldUnlocked ? ['surveyor-b01'] : []), ...surveyorProgress.found.map(id => `photo-${id}`), ...(surveyorProgress.phase === 'complete' ? ['journal'] : []), ...sparkleProgress.keepsakes.map(id => `sparkle-photo-${id}`)];
+  const pages = [null, ...journeyStops.flatMap(id => {
+    if (id === 'surveyor') return [
+      id,
+      ...(fieldUnlocked ? eventOrder.map(event => `clue-${event}`) : []),
+      ...(fieldUnlocked ? ['surveyor-b01'] : []),
+      ...eventOrder.filter(event => surveyorProgress.found.includes(event)).map(event => `photo-${event}`),
+      ...(surveyorProgress.phase === 'complete' ? ['journal'] : []),
+    ];
+    if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`)];
+    return id ? [id] : [];
+  })];
   const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
   const t = journeyCopy[language];
   const dt = digCopy[language];
@@ -110,8 +120,7 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
         <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{language === 'vi' ? 'Kỷ niệm cùng Lấp Lánh' : 'Memories with Sparkle'} · {sparklePhotoId + 1}/2</span>
         <h2 id="sparkle-photo-title">{photo[language].title}</h2><img className="book-memory-photo" src={photo.src} alt={photo[language].title} /><p>{photo[language].description}</p>
         {activeLevel && <BackToGame language={language} />}
-        <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
-      </div><p className="book-note">{t.note}</p></aside>
+        </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
     </>;
   }
   if (pages[page] === 'journal') return <>
@@ -122,8 +131,7 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
       <ol className="book-journal">{eventOrder.map(id => <li key={id}><img src={memoryPhotos[id]} alt=""/><span>{ct.events[id]}</span></li>)}</ol>
       <p>{language === 'vi' ? 'Ba bức ảnh đã trở về đúng thứ tự trong ký ức.' : 'Three photos are back in the right order in my memory.'}</p>
       {activeLevel && <BackToGame language={language} />}
-      <BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/>
-    </div><p className="book-note">{dt.fiction}</p></aside>
+      </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
   </>;
   if (clue || photo) {
     const id = (clue ?? photo)!;
@@ -141,8 +149,7 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
           {surveyorProgress.found.includes(id) && <p>✓ {dt.found}</p>}
         </> : <p role="status">{dt.lockedClue}</p> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><small>NASA</small></>}
         {activeLevel && <BackToGame language={language} />}
-        <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
-      </div><p className="book-note">{dt.fiction}</p></aside>
+        </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
     </>;
   }
   return <>
@@ -153,10 +160,9 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? detail.invitation : t.guide}</p>
       {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">{(id === 'surveyor' && surveyorProgress.completedOnce || id === 'lap-lanh' && sparkleProgress.completedOnce) ? '★' : '☆'}</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{(id === 'surveyor' && surveyorProgress.completedOnce || id === 'lap-lanh' && sparkleProgress.completedOnce) ? t.completed : id ? t.ready : t.waiting}</small></span></li>)}</ol>}
 
-      {fieldUnlocked && !b01 && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : `clue-${nextClue}`))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
+      {fieldUnlocked && !b01 && level?.id !== 'lap-lanh' && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : `clue-${nextClue}`))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
       {activeLevel && <BackToGame language={language} />}
-      <BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
-    </div><p className="book-note">{t.note}</p></aside>
+      </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
   </>;
 }
 

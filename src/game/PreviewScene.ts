@@ -444,7 +444,7 @@ export class PreviewScene extends Phaser.Scene {
     if (!this.cuoi || !this.keys) return;
     if (this.options.sparkleTrail) { this.updateTrail(delta); return; }
     if (this.options.excavation || this.options.freeRoam) { this.updateExcavation(_time, delta); return; }
-    this.interactionHint?.setVisible(this.options.scene !== 'lap-lanh' && this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
+    this.interactionHint?.setVisible((this.options.scene !== 'lap-lanh' || this.options.encounterStarted) && this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
     if (document.activeElement?.matches('input, select, textarea')) { this.walkTarget = undefined; this.pendingInteraction = false; this.setCuoiFrame('rest'); return; }
