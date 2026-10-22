@@ -62,7 +62,12 @@ export function GameCanvas({ initiallyAwake, sparkleDust = false, sparkleTrail =
         onExit: () => { if (!cancelled) progressRef.current.onExit(); },
         scene, moonMode: moonModeRef.current, language: languageRef.current,
         onAwake: () => { if (!cancelled) onAwakeRef.current(); },
-        onReady: () => { if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); } },
+        onReady: () => {
+          // Reveal overlays only after the scenery has reached the canvas.
+          previewScene.game.events.once(Phaser.Core.Events.POST_RENDER, () => {
+            if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); }
+          });
+        },
         onError: (assets) => { if (!cancelled) { setReady(false); setStatus({ kind: 'error', assets }); } },
       });
       phaserScene.current = previewScene;

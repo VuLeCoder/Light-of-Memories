@@ -442,7 +442,8 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .ending-scene-lantern .ending-lantern { display: block; width: 100%; height: auto; }
 .ending-scene-lantern.is-kindled { filter: drop-shadow(0 0 12px #ffd88a88); }
 .ending-light-travel { position: absolute; left: 74%; top: 60%; width: 9px; height: 9px; border-radius: 50%; background: #fff0ba; box-shadow: 0 0 20px 8px #ffd88a99; animation: ending-gift 5s ease-in-out both; }
-.ending-distant-light { position: absolute; left: 91%; top: 29%; color: #fff0ba; font-size: clamp(16px,2vw,26px); text-shadow: 0 0 12px #ffdf8d,0 0 25px #ffdf8d; animation: journey-appear 1.5s ease-out; }
+.ending-distant-light { position: absolute; right: 0; top: 50.9259%; width: 22%; height: 30%; transform: translateY(-50%); background: radial-gradient(ellipse 100% 50% at right center, #fff2c99e 0%, #ffe5a680 14%, #ffdf9152 32%, #ffdf9129 52%, #ffdf910d 72%, #ffdf9100 100%); pointer-events: none; animation: journey-appear 1.5s ease-out; }
+.game-stage:not(:has(.game-host[data-ready="true"])) .ending-distant-light { opacity: 0; animation: none; }
 .ending-farewell { position: absolute; inset: auto 18px 18px; padding: 18px; border: 1px solid #d2ba8155; border-radius: 10px; background: #152831f5; color: #f2ebdb; text-align: center; pointer-events: auto; }
 .ending-farewell h3 { margin: 0; color: #ffe5b1; font: 500 24px/1.4 'Lora',Georgia,serif; }
 .ending-farewell h3:focus { outline: none; }
@@ -522,7 +523,6 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .ending-scene.is-exploring .ending-farewell p { font-size: clamp(11px, 1.15vw, 14px); line-height: 1.5; margin: 8px 0 12px; }
 .ending-scene.is-exploring .ending-actions { display: flex; flex-direction: column; gap: 8px; margin: 0; }
 .ending-scene.is-exploring .ending-actions button { width: 100%; font-size: clamp(11px, 1.15vw, 14px); padding: 8px; }
-.ending-scene.is-exploring .ending-distant-light { left: 91.6667%; top: 50.9259%; transform: translate(-50%, -100%); }
 @media(max-width:760px) {
   .ending-scene.is-exploring .ending-farewell { inset: 48px auto auto 6px; padding: 8px; }
   .ending-scene.is-exploring .ending-actions { gap: 5px; }
