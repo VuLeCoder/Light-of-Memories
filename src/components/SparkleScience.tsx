@@ -1,43 +1,65 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
-import { mirrorCenters, mirrorRotation, traceSparkleLight } from '../game/sparkle-optics';
-import { sparkleRepairSolution, type SparkleProgress } from '../content/levels/lap-lanh';
+import { cornerMirrors, cornerPivot, laserSource, laserReceiver, normalizeRotation, traceSparkleLight } from '../game/sparkle-optics';
+import type { SparkleProgress } from '../content/levels/lap-lanh';
 
-// Shared unfolded model for the game and its book clue.
-export function CornerDiagram({ angles = sparkleRepairSolution, lit = 0, language = 'vi' }: { angles?: number[]; lit?: number; language?: Language }) {
+export function CornerDiagram({ rotation = 0, lit = 0, language = 'vi', onRotate }: { rotation?: number; lit?: number; language?: Language; onRotate?: (rotation: number) => void }) {
   const vi = language === 'vi';
-  const faces = mirrorCenters.map(({ x, y }) => [x, y]);
-  const beam = traceSparkleLight(angles);
+  const drag = useRef<{ id: number; angle: number; rotation: number } | null>(null);
+  const beam = traceSparkleLight(rotation);
+  const mirrors = cornerMirrors(rotation);
   const beamPath = beam.points.map((point, i) => `${i ? 'L' : 'M'}${point.x} ${point.y}`).join(' ');
-  return <svg className="sparkle-corner-diagram" viewBox="0 0 460 270" role="img" aria-label={vi ? 'Mô hình ba gương và đường phản xạ thực tế của tia sáng theo góc xoay hiện tại.' : 'Three-mirror model showing the reflected light path for the current angles.'}>
+  const pointerAngle = (svg: SVGSVGElement, x: number, y: number) => {
+    const matrix = svg.getScreenCTM();
+    if (!matrix) return null;
+    const point = new DOMPoint(x, y).matrixTransform(matrix.inverse());
+    return { angle: Math.atan2(point.y - cornerPivot.y, point.x - cornerPivot.x) * 180 / Math.PI, distance: Math.hypot(point.x - cornerPivot.x, point.y - cornerPivot.y) };
+  };
+  return <svg className={`sparkle-corner-diagram${onRotate ? ' is-rotatable' : ''}`} viewBox="0 0 460 270" role="img" aria-label={vi ? 'Hai gương vuông góc và đường phản xạ của tia sáng' : 'Two perpendicular mirrors and the reflected light path'}
+    onPointerDown={event => {
+      if (!onRotate || !event.isPrimary || event.button !== 0) return;
+      const point = pointerAngle(event.currentTarget, event.clientX, event.clientY);
+      if (!point || point.distance > 116 || point.distance < 10) return;
+      event.preventDefault();
+      drag.current = { id: event.pointerId, angle: point.angle, rotation };
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }}
+    onPointerMove={event => {
+      const start = drag.current;
+      if (!start || start.id !== event.pointerId) return;
+      const point = pointerAngle(event.currentTarget, event.clientX, event.clientY);
+      if (point && point.distance >= 10) onRotate?.(normalizeRotation(start.rotation + normalizeRotation(point.angle - start.angle)));
+    }}
+    onPointerUp={event => { if (drag.current?.id === event.pointerId) { drag.current = null; event.currentTarget.releasePointerCapture(event.pointerId); } }}
+    onPointerCancel={() => { drag.current = null; }} onLostPointerCapture={() => { drag.current = null; }}>
     <rect x="4" y="4" width="452" height="262" rx="8" fill="#1b3039" stroke="#9e8b64" strokeWidth="2" />
-    <path d="M130 207 280 29 429 207Z" fill="#293e44" stroke="#6c817d" strokeWidth="2" />
-    <path d="M280 29V136L130 207M280 136 429 207" fill="none" stroke="#6c817d" strokeDasharray="5 5" />
-    {faces.map(([x, y], i) => <g key={i}>
-      <circle cx={x + 2} cy={y + 4} r="28" fill="#6e83751f" />
-      <circle cx={x} cy={y} r="28" fill="#233941" stroke="#ad9870" strokeWidth="3" />
-      <g transform={`rotate(${mirrorRotation(i, angles[i])} ${x} ${y})`}>
-        <rect x={x - 22} y={y - 7} width="44" height="14" rx="4" fill="#8da9a6" stroke="#ad9870" strokeWidth="2" />
-        <path d={`M${x - 16} ${y - 3}H${x + 16}`} stroke="#e9e2cd" strokeWidth="3" strokeLinecap="round" />
-      </g>
-      <circle cx={x} cy={y + 38} r="12" fill="#ad9870" /><text x={x} y={y + 43} fill="white" textAnchor="middle" fontSize="15" fontWeight="bold">{i + 1}</text>
+    <circle cx={cornerPivot.x} cy={cornerPivot.y} r="112" fill="#293e44" stroke="#6c817d" strokeDasharray="4 6" />
+    <g transform={`rotate(${rotation} ${cornerPivot.x} ${cornerPivot.y})`}>
+      <path d="m307.27 147.73-12.73-12.73 12.73-12.73" fill="none" stroke="#ad9870" strokeWidth="1.5" />
+      <circle cx="425" cy="135" r="8" fill="#dfc18a" stroke="#30464b" strokeWidth="2" />
+      <path d="m421 135h8m-4-4v8" stroke="#30464b" />
+    </g>
+    {mirrors.map(({ start, end }, i) => <g key={i}>
+      <path d={`M${start.x} ${start.y}L${end.x} ${end.y}`} stroke="#ad9870" strokeWidth="9" strokeLinecap="round" />
+      <path d={`M${start.x} ${start.y}L${end.x} ${end.y}`} stroke="#a5bbb2" strokeWidth="5" strokeLinecap="round" />
+      <circle cx={end.x} cy={end.y} r="10" fill="#ad9870" /><text x={end.x} y={end.y + 4} textAnchor="middle" fill="#1b3039" fontSize="12">{i + 1}</text>
     </g>)}
-    <rect x="20" y="127" width="53" height="75" rx="5" fill="#30464b" stroke="#ac9870" strokeWidth="2" />
-    <circle cx="47" cy="150" r="11" fill="#dfc18a" /><path d="m43 145 7 5-7 5" fill="none" stroke="#665333" strokeWidth="2" />
-    <circle cx="47" cy="183" r="10" fill={lit > 0 && beam.success ? '#b8cbc1' : '#617774'} /><path d="m51 179-7 4 7 4" fill="none" stroke="#30464b" strokeWidth="2" />
-    <text x="48" y="224" textAnchor="middle" fill="#e6dbc1" fontSize="14" fontWeight="bold">{vi ? 'Trạm gửi' : 'Station'}</text>
-    {lit > 0 && <g>
+    <circle cx={cornerPivot.x} cy={cornerPivot.y} r="4" fill="#dfc18a" />
+    <text x="320" y="254" textAnchor="middle" fill="#e6dbc1" fontSize="13">90°</text>
+    <rect x="20" y="97" width="45" height="80" rx="5" fill="#30464b" stroke="#ac9870" strokeWidth="2" />
+    <circle cx={laserSource.x} cy={laserSource.y} r="5" fill="#dfc18a" />
+    <rect x={laserReceiver.x - 4} y={laserReceiver.y - laserReceiver.halfHeight} width="8" height={laserReceiver.halfHeight * 2} rx="2" fill={lit && beam.success ? '#b8cbc1' : '#617774'} stroke="#ad9870" />
+    <text x="48" y="200" textAnchor="middle" fill="#e6dbc1" fontSize="14">{vi ? 'Trạm gửi' : 'Station'}</text>
+    {lit > 0 && <g key={lit}>
       <path d={beamPath} fill="none" stroke="#e7c684" strokeWidth="8" opacity=".12" />
       <path d={beamPath} fill="none" stroke="#e7c684" strokeWidth="2.5" strokeLinecap="round" pathLength="1" className="sparkle-traced-ray" />
       {beam.points.slice(1).map((point, i) => {
         const from = beam.points[i];
-        const rotation = Math.atan2(point.y - from.y, point.x - from.x) * 180 / Math.PI;
-        return <path key={i} d="m-5-4 6 4-6 4" transform={`translate(${(from.x + point.x) / 2} ${(from.y + point.y) / 2}) rotate(${rotation})`} fill="none" stroke="#f0d69f" strokeWidth="2" />;
+        const angle = Math.atan2(point.y - from.y, point.x - from.x) * 180 / Math.PI;
+        return <path key={i} d="m-5-4 6 4-6 4" transform={`translate(${(from.x + point.x) / 2} ${(from.y + point.y) / 2}) rotate(${angle})`} fill="none" stroke="#f0d69f" strokeWidth="2" />;
       })}
-      <circle cx={beam.points.at(-1)!.x} cy={beam.points.at(-1)!.y} r="4" fill={beam.success ? '#b8cbc1' : '#e7c684'} />
+      <circle cx={beam.points.at(-1)!.x} cy={beam.points.at(-1)!.y} r="6" fill={beam.success ? '#b8cbc1' : '#ce9979'} />
     </g>}
-    <circle cx="155" cy="246" r="4" fill="#dfc18a" /><text x="165" y="251" fill="#e6dbc1" fontSize="13">{vi ? 'Tia sáng' : 'Light ray'}</text>
-    <circle cx="280" cy="246" r="4" fill="#a5bbb2" /><text x="290" y="251" fill="#d0dcd1" fontSize="13">{vi ? 'Ô nhận' : 'Receiver'}</text>
   </svg>;
 }
 
@@ -45,23 +67,20 @@ export function SparkleRepair({ language, progress: p, onChange, onComplete }: {
   const vi = language === 'vi';
   const [lit, setLit] = useState(0);
   const [tried, setTried] = useState(false);
-  const beam = traceSparkleLight(p.repairAngles);
+  const beam = traceSparkleLight(p.repairRotation);
   const success = tried && beam.success;
-  const rotate = (i: number) => {
+  const rotate = (rotation: number) => {
     setTried(false); setLit(0);
-    onChange({ ...p, repairAngles: p.repairAngles.map((angle, id) => id === i ? (angle + 1) % 3 : angle) });
-  };
-  const trace = () => {
-    setLit(value => value + 1); setTried(true);
+    onChange({ ...p, repairRotation: rotation });
   };
   return <section className="sparkle-card sparkle-science sparkle-repair" aria-labelledby="sparkle-repair-title">
-    <div className="sparkle-science-visual"><CornerDiagram key={lit} angles={p.repairAngles} lit={lit} language={language} /><small>{vi ? 'Mô hình góc gương · Sơ đồ khai triển' : 'Corner reflector model · Unfolded diagram'}</small></div>
+    <div className="sparkle-science-visual"><CornerDiagram rotation={p.repairRotation} lit={lit} language={language} onRotate={rotate} /><small>{vi ? 'Đây là mô hình 2D đơn giản. Thiết bị Apollo 11 thật sử dụng các lăng kính có ba mặt phản xạ vuông góc.' : 'This is a simplified 2D model. The real Apollo 11 device uses prisms with three mutually perpendicular reflecting faces.'}</small></div>
     <div className="sparkle-cleaning-copy">
-      <h2 id="sparkle-repair-title">{vi ? 'T03 · Đưa ánh sáng trở về' : 'T03 · Bring the light home'}</h2>
-      <p className="sparkle-repair-goal">{vi ? 'Mục tiêu: chỉnh 3 mặt gương để tia sáng đi qua cả ba và quay về đúng trạm gửi.' : 'Goal: align all 3 mirror faces so light passes through them and returns to the sending station.'}</p>
-      <div className="sparkle-face-controls">{p.repairAngles.map((angle, i) => <button key={i} onClick={() => rotate(i)} aria-label={`${vi ? 'Xoay mặt' : 'Rotate face'} ${i + 1}`}><span>{i + 1}</span><svg viewBox="0 0 40 40" width="30" height="30" aria-hidden="true"><path d="M5 20H35" transform={`rotate(${mirrorRotation(i, angle)} 20 20)`} stroke="currentColor" strokeWidth="4" /></svg>↻</button>)}</div>
-      {tried && <p className="sparkle-science-feedback" role="status">{success ? (vi ? 'Tia sáng đã trở về phía nguồn!' : 'The light returned toward its source!') : (vi ? `Tia đã chạm ${beam.hits.length} lần vào gương rồi ${beam.returned ? 'về trạm nhưng chưa qua đủ 3 mặt' : 'đi lệch khỏi trạm'}.` : `The ray reflected ${beam.hits.length} times, then ${beam.returned ? 'returned without reaching all 3 faces' : 'missed the station'}.`)}</p>}
-      <button onClick={trace}>{vi ? 'Thử tia sáng' : 'Try the light'}</button>
+      <h2 id="sparkle-repair-title">{vi ? 'T03 · Sửa kính phản xạ Apollo 11' : 'T03 · Repair the Apollo 11 reflector'}</h2>
+      <p className="sparkle-repair-goal">{vi ? 'Mục tiêu: tia sáng phản xạ trên cả hai gương rồi quay về vùng nhận tại trạm phát.' : 'Goal: reflect light off both mirrors and return it to the station’s receiver.'}</p>
+      <label className="sparkle-rotation-control">{vi ? 'Góc xoay cụm gương' : 'Mirror pair rotation'} <output>{Math.round(p.repairRotation)}°</output><input aria-label={vi ? 'Góc xoay cụm gương' : 'Mirror pair rotation'} type="range" min="-180" max="180" step="1" value={p.repairRotation} onChange={event => rotate(Number(event.target.value))} /></label>
+      {tried && <p className="sparkle-science-feedback" role="status">{success ? (vi ? 'Đủ hai lần phản xạ! Tia trở lại vùng nhận, ngược chiều tia tới.' : 'Two reflections! The ray reaches the receiver, opposite to its incoming direction.') : (vi ? `Tia phản xạ ${beam.hits.length} lần, chưa trở về vùng nhận qua đủ hai gương.` : `The ray reflected ${beam.hits.length} times, without returning through both mirrors.`)}</p>}
+      <button onClick={() => { setLit(value => value + 1); setTried(true); }}>{vi ? 'Thử tia sáng' : 'Try the light'}</button>
       <button className="journey-primary" disabled={!success} onClick={onComplete}>{vi ? 'Cùng đo khoảng cách →' : 'Measure the distance →'}</button>
     </div>
   </section>;

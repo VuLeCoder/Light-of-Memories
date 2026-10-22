@@ -223,7 +223,7 @@ export function App() {
         : 'Hold the mouse button or drag your finger across the glass to wipe dust. You can also select a panel with Tab and wipe with Enter. Clean every panel to receive the picture.';
       else if (phase === 'dust-photo') gameInstructions = vi ? 'Bấm “Cất ảnh và tiếp tục” để trò chuyện với Lấp Lánh.' : 'Select “Keep the picture and continue” to talk to Sparkle.';
       else if (phase === 'clean-photo') gameInstructions = vi ? 'Cất ảnh và tiếp tục để mở thử thách khôi phục đường sáng.' : 'Keep the picture and continue to restore the light path.';
-      else if (phase === 'repair') gameInstructions = vi ? 'Xem sơ đồ trong sách, bấm từng mặt để xoay rồi chọn “Thử tia sáng”. Có thể dùng Tab và Enter.' : 'Read the book diagram, rotate each face and try the light. You can use Tab and Enter.';
+      else if (phase === 'repair') gameInstructions = vi ? 'Kéo cụm gương để xoay rồi chọn “Thử tia sáng”. Có thể dùng thanh góc xoay hoặc Tab và phím mũi tên; xem manh mối trong sách.' : 'Drag the mirror pair to rotate it, then try the light. You can also use the rotation slider or Tab and arrow keys; see the book for clues.';
       else if (phase === 'ranging') gameInstructions = vi ? 'Gửi xung sáng, xem manh mối trong sách, nhập các số và chọn dấu. Bấm Nộp kết quả hoặc nhấn Enter để trả lời.' : 'Send a pulse, read the book clue, enter the numbers and choose operators. Click Submit answer or press Enter.';
       else if (phase === 'finished') gameInstructions = vi ? 'Đọc lại manh mối trong sách, về lộ trình hoặc chơi lại đoạn Lấp Lánh.' : 'Revisit the book, return to the route or replay Sparkle’s chapter.';
       else gameInstructions = dialogueHelp;

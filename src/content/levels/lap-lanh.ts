@@ -9,8 +9,8 @@ export const lapLanh = {
   },
 } as const satisfies LevelDefinition;
 export type SparklePhase = 'meeting' | 'dust-photo' | 'cleaning-intro' | 'clean-photo' | 'cleaning' | 'route' | 'search-intro' | 'search' | 'memories-intro' | 'memories' | 'arrival' | 'dialogue' | 'mirrors' | 'distance' | 'ending' | 'complete' | 'repair-intro' | 'repair' | 'ranging-intro' | 'ranging' | 'farewell' | 'finished';
-export interface SparkleProgress { phase: SparklePhase; turn: number; mirrors: boolean[]; distance: number; completedOnce: boolean; observations: number[]; photos: number[]; keepsakes: number[]; repairAngles: number[]; measured: boolean; calculation: boolean }
-export const freshSparkle = (): SparkleProgress => ({ phase: 'route', turn: 0, repairAngles: [1, 2, 0], measured: false, calculation: false, mirrors: [false, false], distance: 300000, completedOnce: false, observations: [], photos: [], keepsakes: [] });
+export interface SparkleProgress { phase: SparklePhase; turn: number; mirrors: boolean[]; distance: number; completedOnce: boolean; observations: number[]; photos: number[]; keepsakes: number[]; repairRotation: number; measured: boolean; calculation: boolean }
+export const freshSparkle = (): SparkleProgress => ({ phase: 'route', turn: 0, repairRotation: 70, measured: false, calculation: false, mirrors: [false, false], distance: 300000, completedOnce: false, observations: [], photos: [], keepsakes: [] });
 export function readSparkle(value: unknown): SparkleProgress {
   const p = value as Partial<SparkleProgress> | null;
   const fresh = freshSparkle();
@@ -18,7 +18,7 @@ export function readSparkle(value: unknown): SparkleProgress {
   // Older saves beyond cleaning resume at the current stopping point.
   const pastCleaning = ['dialogue', 'mirrors', 'distance', 'memories-intro', 'memories', 'ending', 'complete'].includes(p.phase!);
   return { phase: pastCleaning ? 'clean-photo' : p.phase!, turn: Number.isInteger(p.turn) ? Math.max(0, Math.min(6, p.turn!)) : 0,
-    repairAngles: [0, 1, 2].map((_, i) => Number.isInteger(p.repairAngles?.[i]) && p.repairAngles![i] >= 0 && p.repairAngles![i] < 3 ? p.repairAngles![i] : fresh.repairAngles[i]), measured: p.measured === true, calculation: p.calculation === true,
+    repairRotation: typeof p.repairRotation === 'number' && Number.isFinite(p.repairRotation) ? ((p.repairRotation + 180) % 360 + 360) % 360 - 180 : fresh.repairRotation, measured: p.measured === true, calculation: p.calculation === true,
     mirrors: [p.mirrors?.[0] === true, p.mirrors?.[1] === true], distance: typeof p.distance === 'number' && Number.isFinite(p.distance) ? Math.max(250000, Math.min(450000, Math.round(p.distance / 1000) * 1000)) : fresh.distance,
     observations: cleanIds(p.observations), photos: cleanIds(p.photos), keepsakes: pastCleaning ? [0, 1] : cleanIds(p.keepsakes).filter(id => id < 2),
     completedOnce: p.completedOnce === true || p.phase === 'complete' || p.phase === 'finished' };
@@ -76,7 +76,6 @@ export function sparkleMeetingLines(language: Language, cleaningIntro = false) {
 }
 
 
-export const sparkleRepairSolution = [0, 1, 2];
 export const sparkleRepairUnlocked = (p: SparkleProgress) => p.keepsakes.includes(1);
 export const sparkleRangingUnlocked = (p: SparkleProgress) => ['ranging-intro', 'ranging', 'farewell', 'finished'].includes(p.phase) || p.measured;
 export function sparkleScienceLines(language: Language, phase: 'repair-intro' | 'ranging-intro' | 'farewell') {
@@ -84,11 +83,11 @@ export function sparkleScienceLines(language: Language, phase: 'repair-intro' | 
   return lines(`sparkle-${phase}`, phase === 'repair-intro' ? vi ? [
     ['lapLanh', 'Sạch rồi! Đố bạn biết ánh sáng tìm đường về nhà bằng cách nào?'],
     ['cuoi', 'Để mình mở sách xem nhé! Có một mô hình góc gương ở đây.'],
-    ['lapLanh', 'Ba mặt phản xạ trong mô hình bị xáo trộn rồi. Bạn giúp mình sắp lại nhé! Ngoài đời, những ô kính của mình nằm cố định và chẳng cần động cơ đâu.'],
+    ['lapLanh', 'Cụm hai gương vuông góc đang quay lệch rồi. Bạn giúp mình xoay lại để đón tia sáng nhé! Những lăng kính thật của mình nằm cố định, chẳng cần động cơ đâu.'],
   ] : [
     ['lapLanh', 'All clean! Can you guess how light finds its way home?'],
     ['cuoi', 'Let me open the book! There is a corner reflector model here.'],
-    ['lapLanh', 'The model’s three reflecting faces are mixed up. Can you restore them? My real glass elements are fixed and need no motors.'],
+    ['lapLanh', 'The model’s two perpendicular mirrors are turned away. Can you rotate the pair to catch the light? My real glass prisms are fixed and need no motors.'],
   ] : phase === 'ranging-intro' ? vi ? [
     ['lapLanh', 'Tia sáng đã quay về phía nguồn rồi! Giờ mình cùng gửi một lời chào đến Trái Đất nhé.'],
     ['cuoi', 'Mình sẽ biết Trái Đất cách đây bao xa bằng cách nào?'],

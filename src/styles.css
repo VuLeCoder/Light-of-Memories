@@ -771,3 +771,15 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .sparkle-ranging .sparkle-calculation { gap: 4px; }
   .sparkle-number-field { gap: 3px; }
 }
+
+.sparkle-corner-diagram.is-rotatable { touch-action: none; user-select: none; cursor: grab; }
+.sparkle-corner-diagram.is-rotatable:active { cursor: grabbing; }
+.sparkle-rotation-control { font-size: clamp(11px, 1.5cqw, 15px); color: #e7d7b4; }
+.sparkle-rotation-control output { float: right; font-variant-numeric: tabular-nums; }
+.sparkle-card .sparkle-rotation-control input { display: block; margin: 6px 0; }
+@container (max-width: 600px) {
+  .sparkle-repair .sparkle-cleaning-copy h2 { font-size: 14px; line-height: 1.2; }
+  .sparkle-repair .sparkle-cleaning-copy { gap: 3px; }
+  .sparkle-repair .sparkle-rotation-control input { margin: 2px 0; }
+  .sparkle-repair .journey-primary { min-height: 28px; padding: 5px 6px; }
+}
