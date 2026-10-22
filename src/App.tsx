@@ -222,7 +222,10 @@ export function App() {
         ? 'Giữ chuột hoặc kéo ngón tay qua các ô kính để lau bụi. Có thể dùng Tab chọn ô, Enter để lau. Lau sạch rồi nhận ảnh.'
         : 'Hold the mouse button or drag your finger across the glass to wipe dust. You can also select a panel with Tab and wipe with Enter. Clean every panel to receive the picture.';
       else if (phase === 'dust-photo') gameInstructions = vi ? 'Bấm “Cất ảnh và tiếp tục” để trò chuyện với Lấp Lánh.' : 'Select “Keep the picture and continue” to talk to Sparkle.';
-      else if (phase === 'clean-photo') gameInstructions = vi ? 'Chọn về lộ trình hoặc chơi lại đoạn Lấp Lánh bằng các nút cạnh ảnh.' : 'Use the buttons beside the picture to return to the route or replay Sparkle’s chapter.';
+      else if (phase === 'clean-photo') gameInstructions = vi ? 'Cất ảnh và tiếp tục để mở thử thách khôi phục đường sáng.' : 'Keep the picture and continue to restore the light path.';
+      else if (phase === 'repair') gameInstructions = vi ? 'Xem sơ đồ trong sách, bấm từng mặt để xoay rồi chọn “Thử tia sáng”. Có thể dùng Tab và Enter.' : 'Read the book diagram, rotate each face and try the light. You can use Tab and Enter.';
+      else if (phase === 'ranging') gameInstructions = vi ? 'Gửi xung sáng, xem gợi ý trong sách, ghép phép tính rồi kéo thanh khoảng cách. Dùng phím mũi tên khi chọn thanh để chỉnh từng 1.000 km.' : 'Send a pulse, read the book, assemble the calculation and set the distance. Use arrow keys on the slider for 1,000 km steps.';
+      else if (phase === 'finished') gameInstructions = vi ? 'Đọc lại manh mối trong sách, về lộ trình hoặc chơi lại đoạn Lấp Lánh.' : 'Revisit the book, return to the route or replay Sparkle’s chapter.';
       else gameInstructions = dialogueHelp;
     }
     else if (tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro) gameInstructions = dialogueHelp;

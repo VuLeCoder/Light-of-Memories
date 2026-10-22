@@ -1,4 +1,5 @@
-import { sparkleKeepsakes, type SparkleProgress } from '../content/levels/lap-lanh';
+import { SparkleBookClue } from './SparkleBookClue';
+import { sparkleKeepsakes, sparkleRepairUnlocked, sparkleRangingUnlocked, type SparkleProgress } from '../content/levels/lap-lanh';
 import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
 import { enterSurveyor, eventOrder } from '../content/levels/surveyor-progress';
 import { challengeCopy } from '../content/levels/surveyor-challenges';
@@ -85,10 +86,16 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
       ...eventOrder.filter(event => surveyorProgress.found.includes(event)).map(event => `photo-${event}`),
       ...(surveyorProgress.phase === 'complete' ? ['journal'] : []),
     ];
-    if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`)];
+    if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkleProgress) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkleProgress) ? ['sparkle-ranging-clue'] : [])];
     return id ? [id] : [];
   })];
   const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
+  const scienceClue = activeLevel === 'lap-lanh' && sparkleRepairUnlocked(sparkleProgress)
+    ? sparkleRangingUnlocked(sparkleProgress) ? 'sparkle-ranging-clue' : ['repair-intro', 'repair'].includes(sparkleProgress.phase) ? 'sparkle-repair-clue' : null
+    : null;
+  useEffect(() => {
+    if (scienceClue) setPage(pages.indexOf(scienceClue));
+  }, [scienceClue]);
   const t = journeyCopy[language];
   const dt = digCopy[language];
   const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
@@ -111,6 +118,14 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
   const b01 = entry >= 0;
   const ct = challengeCopy[language];
   const st = surveyorPlayCopy[language];
+  if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
+    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
+      <div className="page-corner" aria-hidden="true" />
+      <SparkleBookClue key={pages[page]} language={language} ranging={pages[page] === 'sparkle-ranging-clue'} />
+      {activeLevel && <BackToGame language={language} />}
+    </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
+  </>;
   const sparklePhotoId = sparkleProgress.keepsakes.find(id => pages[page] === `sparkle-photo-${id}`);
   if (sparklePhotoId !== undefined) {
     const photo = sparkleKeepsakes[sparklePhotoId];

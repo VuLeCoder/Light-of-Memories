@@ -671,3 +671,84 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .sparkle-cleaning-copy p { font-size: 12px; }
   .sparkle-cleaning-copy small { font-size: 10px; }
 }
+
+/* Sparkle’s optical model and ranging station share the cleaning panel layout. */
+.sparkle-card.sparkle-science {
+  inset: 54px 12px 12px; width: auto; max-height: none; overflow: visible;
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center; gap: clamp(10px, 2cqw, 24px); padding: clamp(12px, 2cqw, 24px);
+}
+.sparkle-science-visual { min-width: 0; text-align: center; }
+.sparkle-science-visual svg { display: block; width: 100%; max-height: 33cqw; }
+.sparkle-corner-diagram { width: 100%; }
+.sparkle-ray { stroke-dasharray: 700; stroke-dashoffset: 0; animation: sparkle-ray-arrive 1s ease-out; }
+@keyframes sparkle-ray-arrive { from { stroke-dashoffset: 700; } to { stroke-dashoffset: 0; } }
+.sparkle-face-controls { display: flex; gap: 8px; }
+.sparkle-face-controls button { display: flex; flex: 1; gap: 6px; align-items: center; justify-content: center; min-width: 0; padding: 8px; }
+.sparkle-face-controls strong { color: #f1d49b; font-size: clamp(18px, 3cqw, 30px); }
+.sparkle-science-feedback { min-height: 2.9em; }
+.sparkle-level select { pointer-events: auto; }
+.sparkle-equation { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: clamp(12px, 1.7cqw, 18px); }
+.sparkle-equation select { background: #30464b; color: #f3e9d6; border: 1px solid #bda777; border-radius: 6px; padding: 6px; font: inherit; }
+.sparkle-distance-label { display: block; font-size: clamp(12px, 1.6cqw, 16px); }
+.sparkle-distance-label output { display: block; color: #f1d49b; font-size: clamp(17px, 2.6cqw, 25px); margin-top: 4px; }
+.sparkle-card .sparkle-distance-label input { margin: 8px 0 0; }
+.sparkle-clock { display: block; margin-bottom: 8px; color: #f1d49b; font: 600 clamp(22px, 4cqw, 38px) monospace; }
+.sparkle-science-visual small { font-size: clamp(9px, 1.3cqw, 12px); }
+.sparkle-science-book .sparkle-corner-diagram { max-height: 180px; margin: 0 auto; }
+.sparkle-book-blueprint { display: flex; justify-content: space-around; gap: 8px; padding: 12px 0; color: #775b29; font-size: 22px; border-block: 1px solid #bda777; }
+.sparkle-book-route { text-align: center; font-size: 32px; padding: 16px 0; }
+.sparkle-book-data { margin: 8px 0; }
+.sparkle-book-data dt { font-size: 13px; }
+.sparkle-book-data dd { margin: 2px 0 12px; font-size: 22px; color: #775b29; }
+.sparkle-science-book small { font-size: 12px; line-height: 1.5; }
+.sparkle-book-source { display: block; font-size: 12px; margin: 12px 0; color: #65532c; }
+.sparkle-book-formula { padding: 10px; background: #d6c5a04d; border-radius: 6px; }
+@container (max-width: 600px) {
+  .sparkle-card.sparkle-science { inset: 46px 8px 8px; padding: 10px; gap: 10px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); }
+  .sparkle-science .sparkle-cleaning-copy { gap: 4px; }
+  .sparkle-science button { padding: 6px 8px; font-size: 12px; }
+  .sparkle-science .journey-primary { min-height: 32px; padding: 6px; font-size: 12px; }
+  .sparkle-equation { gap: 3px; }
+  .sparkle-equation select { padding: 3px; }
+}
+@media (prefers-reduced-motion: reduce) { .sparkle-ray { animation: none; } }
+/* These illustrated clue pages can grow with expanded hints. */
+.book-sheet.sparkle-science-book { aspect-ratio: auto; min-height: 566px; }
+.book-panel .sparkle-science-book p { max-width: 100%; }
+.sparkle-science-book .sparkle-corner-diagram { height: 145px; }
+.sparkle-science-book > small { max-width: 100%; }
+.sparkle-book-route svg { display: block; width: 100%; height: 66px; }
+
+.sparkle-repair .sparkle-repair-goal { padding: 9px 12px; border-left: 3px solid #e7c575; background: #739d9a20; border-radius: 0 7px 7px 0; color: #f8edce; }
+.sparkle-repair .sparkle-face-controls button { background: #30464b; color: #e7d7b4; border: 1px solid #a38a5e; }
+
+.sparkle-repair .sparkle-science-feedback { min-height: 2.6em; }
+.book-sheet.sparkle-repair-book { height: 566px; min-height: 566px; aspect-ratio: auto; justify-content: center; gap: 6px; }
+.book-panel .sparkle-repair-book h2 { font-size: 28px; margin: 4px 0; }
+.book-panel .sparkle-repair-book p { font-size: 14px; line-height: 1.45; margin: 4px 0; }
+.sparkle-repair-book .sparkle-corner-diagram { height: 150px; max-height: 150px; }
+.sparkle-repair-book .sparkle-book-blueprint { padding: 5px 0; font-size: 19px; }
+.sparkle-repair-book .sparkle-book-source { margin: 3px 0; }
+.sparkle-repair-book small { font-size: 11px; line-height: 1.35; }
+@media (min-width: 1450px) { .book-sheet.sparkle-repair-book { height: 630px; min-height: 630px; } }
+@media (max-width: 1200px) { .book-sheet.sparkle-repair-book { height: 529px; min-height: 529px; } }
+@media (max-width: 900px) {
+  .book-sheet.sparkle-repair-book { height: 505px; min-height: 505px; gap: 4px; }
+  .book-panel .sparkle-repair-book h2 { font-size: 23px; }
+  .book-panel .sparkle-repair-book p { font-size: 13px; }
+  .sparkle-repair-book .sparkle-corner-diagram { height: 115px; }
+}
+@container (max-width: 600px) {
+  .sparkle-repair .sparkle-repair-goal { padding: 5px 7px; font-size: 11px; line-height: 1.35; }
+  .sparkle-repair .sparkle-science-feedback { min-height: 0; font-size: 11px; }
+}
+@media (max-width: 900px) {
+  .sparkle-repair-book .sparkle-corner-diagram { height: 95px; }
+  .sparkle-repair-book .book-return-game { margin-top: 3px; min-height: 36px; padding: 5px 8px; font-size: 13px; }
+}
+
+.sparkle-traced-ray { stroke-dasharray: 1; stroke-dashoffset: 0; animation: sparkle-trace 1.4s linear; }
+@keyframes sparkle-trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.sparkle-book-blueprint span { display: flex; align-items: center; gap: 3px; }
+@media (prefers-reduced-motion: reduce) { .sparkle-traced-ray { animation: none; } }

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { Language } from '../content/i18n';
-import { freshSparkle, sparkleKeepsakes, sparkleMeetingLines, sparkleChallengeLines, sparkleRouteLines, type SparkleProgress } from '../content/levels/lap-lanh';
+import { freshSparkle, sparkleKeepsakes, sparkleMeetingLines, sparkleChallengeLines, sparkleRouteLines, sparkleScienceLines, type SparkleProgress } from '../content/levels/lap-lanh';
+import { SparkleRepair, SparkleRanging } from './SparkleScience';
 import { SparkleCleaning } from './SparkleCleaning';
 import { EarthDialogue } from './EarthDialogue';
 
@@ -21,9 +22,13 @@ export function SparkleLevel({ language, progress: p, onChange, onBack, paused }
     {photoId !== null && <section className="excavation-photo sparkle-memory-photo" role="dialog" aria-modal="true" aria-label={vi ? 'Nhận bức ảnh' : 'Picture received'}>
       <figure className="memory-photo-frame"><img src={sparkleKeepsakes[photoId].src} alt={sparkleKeepsakes[photoId][language].title} /><figcaption>{vi ? 'Bảng gương trên Mặt Trăng' : 'Reflector on the Moon'}</figcaption></figure>
       <div className="memory-photo-copy"><span className="memory-eyebrow">{vi ? 'Nhận bức ảnh' : 'Picture received'} · {photoId + 1}/2</span><h2>{sparkleKeepsakes[photoId][language].title}</h2><p>{sparkleKeepsakes[photoId][language].description}</p><small>{vi ? 'Ảnh tư liệu minh họa thiết bị. Gặp gỡ và lau bụi là câu chuyện tưởng tượng trong game; hai ảnh không phải ảnh trước và sau khi lau.' : 'Archive pictures illustrate the equipment. The meeting and cleaning are fictional; these are not before-and-after cleaning photos.'}</small>
-      <div className="ending-actions"><button className="journey-primary" ref={photoButton} onClick={() => photoId === 0 ? go('cleaning-intro') : onBack()}>{photoId === 0 ? (vi ? 'Cất ảnh và tiếp tục' : 'Keep the picture and continue') : (vi ? 'Cất ảnh và về lộ trình' : 'Keep the picture and return to route')} →</button>
-      {photoId === 1 && <button className="journey-primary" onClick={() => onChange({ ...freshSparkle(), completedOnce: p.completedOnce, keepsakes: p.keepsakes })}>{vi ? 'Chơi lại đoạn Lấp Lánh' : 'Replay Sparkle’s chapter'}</button>}</div></div>
+      <div className="ending-actions"><button className="journey-primary" ref={photoButton} onClick={() => photoId === 0 ? go('cleaning-intro') : go('repair-intro')}>{photoId === 0 ? (vi ? 'Cất ảnh và tiếp tục' : 'Keep the picture and continue') : (vi ? 'Cất ảnh và tiếp tục' : 'Keep the picture and continue')} →</button>
+      </div></div>
     </section>}
+    {(phase === 'repair-intro' || phase === 'ranging-intro' || phase === 'farewell') && <EarthDialogue key={phase} language={language} paused={paused} title={title} lines={sparkleScienceLines(language, phase)} initialIndex={p.turn} onTurn={turn => { if (turn !== p.turn) onChange({ ...p, turn }); }} finalAction="moon" finalLabel={vi ? (phase === 'repair-intro' ? 'Mở mô hình góc gương' : phase === 'ranging-intro' ? 'Bắt đầu đo' : 'Cất manh mối') : (phase === 'repair-intro' ? 'Open the reflector model' : phase === 'ranging-intro' ? 'Start measuring' : 'Keep the clues')} onComplete={() => phase === 'farewell' ? onChange({ ...p, phase: 'finished', turn: 0, completedOnce: true }) : go(phase === 'repair-intro' ? 'repair' : 'ranging')} />}
+    {phase === 'repair' && <SparkleRepair language={language} progress={p} onChange={onChange} onComplete={() => go('ranging-intro')} />}
+    {phase === 'ranging' && <SparkleRanging language={language} progress={p} onChange={onChange} onComplete={() => go('farewell')} paused={paused} />}
+    {phase === 'finished' && <section className="sparkle-card sparkle-finished"><h2>{vi ? 'Lời chào đã trở về' : 'The greeting has returned'}</h2><p>{vi ? 'Cuội đã giúp Lấp Lánh và đo được khoảng cách mô phỏng: 384.000 km. Hai bức ảnh và những manh mối vẫn ở trong sách.' : 'Cuội helped Sparkle and measured a simulated distance of 384,000 km. Both pictures and the clues remain in the book.'}</p><div className="ending-actions"><button className="journey-primary" onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button><button onClick={() => onChange({ ...freshSparkle(), completedOnce: p.completedOnce, keepsakes: p.keepsakes })}>{vi ? 'Chơi lại đoạn Lấp Lánh' : 'Replay Sparkle’s chapter'}</button></div></section>}
     {phase === 'cleaning' && <SparkleCleaning language={language} onComplete={() => receivePhoto(1)} />}
   </section>;
 }
