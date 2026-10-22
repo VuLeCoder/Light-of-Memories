@@ -5,6 +5,7 @@ import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '.
 import { cacheScenery, earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
 import { surveyorScenery, surveyorGroundY, surveyorEncounter } from './surveyor-scenery';
+import { sparkleScenery } from './sparkle-scenery';
 import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
 import { copy, type Language } from '../content/i18n';
 
@@ -128,18 +129,150 @@ export class PreviewScene extends Phaser.Scene {
     this.options.quest = quest;
     this.options.treeSpeaking = treeSpeaking;
     this.treeGlow?.setVisible(treeSpeaking);
-    this.lantern?.setVisible(this.options.scene !== 'surveyor' && ['lantern', 'trail', 'complete'].includes(quest));
+    this.lantern?.setVisible(this.options.scene !== 'surveyor' && this.options.scene !== 'lap-lanh' && ['lantern', 'trail', 'complete'].includes(quest));
     const showTrail = quest === 'lantern' || quest === 'trail';
     this.trailHighlight?.setVisible(showTrail);
     this.trailHint?.setVisible(showTrail);
   }
 
-  private get interactionX() { return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { return (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
-  private interactionLabel() { return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
+  private get interactionX() { if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
+  private get canInteract() { return this.options.scene === 'lap-lanh' || (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  private trailDecor?: Phaser.GameObjects.Graphics;
+  private trailTarget?: { x: number; y: number };
+  private trailContact = false;
+  private readonly trailHoles = [
+    { x: 280, y: 425, rx: 78, ry: 34 },
+    { x: 430, y: 345, rx: 65, ry: 25 },
+    { x: 485, y: 516, rx: 118, ry: 62 },
+    { x: 640, y: 416, rx: 83, ry: 35 },
+    { x: 795, y: 310, rx: 51, ry: 18 },
+    { x: 230, y: 315, rx: 54, ry: 20 },
+  ];
+  setSparkleTrail(value: boolean) {
+    const entering = value && !this.options.sparkleTrail;
+    this.options.sparkleTrail = value;
+    this.trailDecor?.setVisible(value);
+    if (entering && this.cuoi) {
+      this.cuoi.setPosition(140, 431);
+      this.trailTarget = undefined;
+      this.releaseControls();
+    }
+    this.syncTrailPerspective();
+  }
+  private syncTrailPerspective() {
+    if (!this.cuoi) return;
+    // Keep the feet anchored; the starting row retains Cuội's usual size.
+    const distance = Phaser.Math.Clamp((this.cuoi.y - 280) / (515 - 280), 0, 1);
+    this.cuoi.setScale(this.options.sparkleTrail ? Phaser.Math.Linear(.4, .7424, distance) : .62);
+  }
+  private createTrailRoute() {
+    const g = this.trailDecor = this.add.graphics().setDepth(2);
+    const crater = (x: number, y: number, w: number, h: number) => {
+      g.fillStyle(0xb2b1a5, .7).fillEllipse(x, y, w, h);
+      g.fillStyle(0x505c61).fillEllipse(x + 1, y - 2, w - 5, h - 4);
+      g.fillStyle(0x829093).fillEllipse(x + w * .12, y + h * .1, w * .67, h * .48);
+    };
+    crater(105, 212, 43, 9); crater(480, 205, 26, 7); crater(874, 251, 63, 13);
+    crater(285, 283, 54, 12); crater(130, 342, 76, 18);
+    crater(91, 496, 139, 31); crater(890, 504, 152, 34);
+    // Draw far to near. Broad, flattened rims share the ground's muted palette;
+    // the foreground crater extends beyond the frame and closes the bottom shortcut.
+    for (const { x, y, rx, ry } of [...this.trailHoles].sort((a, b) => a.y - b.y)) {
+      const contour = (scale: number, offsetY = 0) => Array.from({ length: 32 }, (_, i) => {
+        const angle = i / 32 * Math.PI * 2;
+        const roughness = 1 + .025 * Math.sin(i * 2.7 + x) + .018 * Math.cos(i * 1.9);
+        return { x: x + Math.cos(angle) * rx * scale * roughness,
+          y: y + offsetY + Math.sin(angle) * ry * scale * roughness };
+      });
+      g.fillStyle(0x34464e, .18).fillPoints(contour(1.16, ry * .12), true);
+      g.fillStyle(0x84908f).fillPoints(contour(1.08), true);
+      g.fillStyle(0xadb0a3, .72).fillPoints(contour(1.02, -ry * .06), true);
+      g.fillStyle(0x43545c).fillPoints(contour(.94), true);
+      g.fillStyle(0x30434c).fillPoints(contour(.78, -ry * .08), true);
+      g.fillStyle(0x253740, .7).fillPoints(contour(.57, -ry * .15), true);
+      // Sunlit inner slope and broken near lip, avoiding a hard outlined oval.
+      const arc = (from: number, to: number, scale: number, offset: number) =>
+        Array.from({ length: 17 }, (_, i) => {
+          const angle = from + (to - from) * i / 16;
+          return { x: x + Math.cos(angle) * rx * scale,
+            y: y + Math.sin(angle) * ry * scale + offset };
+        });
+      g.lineStyle(Math.max(2, ry * .13), 0x748385, .85)
+        .strokePoints(arc(.12, Math.PI - .15, .84, 0), false);
+      g.lineStyle(Math.max(1, ry * .045), 0xc1bfae, .6)
+        .strokePoints(arc(.28, Math.PI - .3, 1.03, 0), false);
+      for (let i = 0; i < 7; i++) {
+        const angle = .2 + i * .43;
+        const px = x + Math.cos(angle) * rx * 1.13;
+        const py = y + Math.sin(angle) * ry * 1.13;
+        g.fillStyle(i % 2 ? 0x45585f : 0x9da59d, .5)
+          .fillEllipse(px, py, rx * .055, ry * .065);
+      }
+    }
+    for (let radius = 130; radius >= 20; radius -= 10) {
+      g.fillStyle(0xffdf91, .025).fillEllipse(970, 408, radius * 2, radius * 1.6);
+    }
+    this.setSparkleTrail(!!this.options.sparkleTrail);
+  }
+  private updateTrail(delta: number) {
+    if (!this.cuoi || !this.keys) return;
+    this.interactionHint?.setVisible(false);
+    if (this.moonMode !== 'free') return;
+    if (document.activeElement?.matches('input, select, textarea')) return;
+    let dx = Number(this.keys.right.isDown || this.keys.d.isDown) - Number(this.keys.left.isDown || this.keys.a.isDown);
+    let dy = Number(this.keys.down.isDown || this.keys.s.isDown) - Number(this.keys.up.isDown || this.keys.w.isDown);
+    if (dx || dy) this.trailTarget = undefined;
+    if (this.trailTarget) {
+      dx = this.trailTarget.x - this.cuoi.x;
+      dy = this.trailTarget.y - this.cuoi.y;
+    }
+    const length = Math.hypot(dx, dy), step = Math.min(130 * Math.min(delta, 32) / 1000, this.trailTarget ? length : Infinity);
+    const safe = (x: number, y: number) => !this.trailHoles.some(h => ((x - h.x) / h.rx) ** 2 + ((y - h.y) / h.ry) ** 2 < 1);
+    const oldX = this.cuoi.x, oldY = this.cuoi.y;
+    let blocked = false;
+    if (length > .5) {
+      const x = Phaser.Math.Clamp(oldX + dx / length * step, 35, 925);
+      if (safe(x, oldY)) this.cuoi.x = x; else blocked = true;
+      const y = Phaser.Math.Clamp(oldY + dy / length * step, 280, 515);
+      if (safe(this.cuoi.x, y)) this.cuoi.y = y; else blocked = true;
+    }
+    this.syncTrailPerspective();
+    if (blocked && !this.trailContact) {
+      this.trailContact = true;
+      this.releaseControls();
+      this.setCuoiFrame('rest');
+      this.setMoonMode('story');
+      this.options.onTrailHole?.();
+      return;
+    }
+    if (!blocked && length > .5) this.trailContact = false;
+    const moved = Math.hypot(this.cuoi.x - oldX, this.cuoi.y - oldY) > .1;
+    if (moved) {
+      if (dx) this.cuoi.setFlipX(dx < 0);
+      if (!this.cuoi.anims.isPlaying) this.cuoi.play('cuoi-walk');
+    } else { this.setCuoiFrame('rest'); this.trailTarget = undefined; }
+    if (this.cuoi.x >= 910) {
+      this.setMoonMode('story');
+      this.options.onInteract();
+    }
+  }
+  setSparkleDust(value: boolean) {
+    this.options.sparkleDust = value;
+    this.sparkleSprite?.setTint(value ? 0x686054 : 0xffffff);
+  }
+  private sparkleSprite?: Phaser.GameObjects.Image;
+  setEncounterStarted(value: boolean) {
+    this.options.encounterStarted = value;
+    this.sparkleSprite?.setVisible(value);
+    if (value && !this.options.sparkleTrail && this.cuoi && this.cuoi.x >= 900) {
+      this.cuoi.setPosition(140, 431);
+      this.releaseControls();
+    }
+  }
+  private interactionLabel() { if (this.options.scene === 'lap-lanh') return this.options.language === 'vi' ? 'E · Trò chuyện với Lấp Lánh' : 'E · Talk to Sparkle'; return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
 
   private interactNearby() {
-    if (this.moonMode !== 'free' || !this.canInteract || !this.cuoi || Math.abs(this.cuoi.x - this.interactionX) > 90) return;
+    if (this.options.sparkleTrail || this.moonMode !== 'free' || !this.canInteract || !this.cuoi || Math.abs(this.cuoi.x - this.interactionX) > 90) return;
     this.pendingInteraction = false;
     this.walkTarget = undefined;
     this.setMoonMode('story');
@@ -154,6 +287,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   releaseControls() {
+    this.trailTarget = undefined;
     this.walkTarget = undefined;
     this.digTarget = undefined;
     this.pendingInteraction = false;
@@ -181,6 +315,9 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   preload() {
+    if (this.options.scene === 'lap-lanh') {
+      this.load.image('sparkle', `${import.meta.env.BASE_URL}images/sprites/lap-lanh-idle.webp`);
+    }
     const onLoadError = (file: Phaser.Loader.File) => this.failedAssets.push(file.key);
     this.load.on('loaderror', onLoadError);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.load.off('loaderror', onLoadError));
@@ -208,7 +345,11 @@ export class PreviewScene extends Phaser.Scene {
       // Align An's seated hips with the porch edge (y=425), feet on the lower step.
       this.addCharacter('an', 313, 465, 0.37);
     } else {
-      if (this.options.scene === 'surveyor') {
+      if (this.options.scene === 'lap-lanh') {
+        cacheScenery(this, sparkleScenery);
+        if (this.textures.exists('sparkle')) this.sparkleSprite = this.add.image(480, 431, 'sparkle').setOrigin(.5, 1).setDisplaySize(140, 140).setVisible(this.options.encounterStarted);
+        this.interactionRegion = new Phaser.Geom.Rectangle(410, 291, 140, 140);
+      } else if (this.options.scene === 'surveyor') {
         cacheScenery(this, surveyorScenery);
         const { x, y, width, height } = surveyorEncounter.region;
         this.interactionRegion = new Phaser.Geom.Rectangle(x, y, width, height);
@@ -227,8 +368,10 @@ export class PreviewScene extends Phaser.Scene {
         }).setOrigin(0.5).setDepth(20);
         this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
       }
-      this.interactionHint = this.add.text(this.options.scene === 'surveyor' ? 705 : 520, this.options.scene === 'surveyor' ? 146 : 310, this.interactionLabel(), { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
+      this.interactionHint = this.add.text(this.options.scene === 'lap-lanh' ? 480 : this.options.scene === 'surveyor' ? 705 : 520, this.options.scene === 'surveyor' ? 146 : 310, this.interactionLabel(), { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
+      this.setSparkleDust(!!this.options.sparkleDust);
       this.addMoonCuoi();
+      if (this.options.scene === 'lap-lanh') this.createTrailRoute();
       this.lantern = this.add.graphics().setDepth(10);
       const points = Array.from({ length: 10 }, (_, i) => {
         const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 9 : 21;
@@ -283,6 +426,7 @@ export class PreviewScene extends Phaser.Scene {
       const x = Phaser.Math.Clamp(pointer.x, 0, VIEW.width);
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
       if (this.options.scene === 'earth' || this.moonMode !== 'free') return;
+      if (this.options.sparkleTrail) { if (y >= 280 && y <= 530) this.trailTarget = { x: Phaser.Math.Clamp(x, 35, 925), y: Phaser.Math.Clamp(y, 280, 515) }; return; }
       if (this.options.excavation || this.options.freeRoam) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
       this.pendingInteraction = this.canInteract && this.interactionRegion.contains(x, y);
       if (this.pendingInteraction) {
@@ -298,8 +442,9 @@ export class PreviewScene extends Phaser.Scene {
 
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
+    if (this.options.sparkleTrail) { this.updateTrail(delta); return; }
     if (this.options.excavation || this.options.freeRoam) { this.updateExcavation(_time, delta); return; }
-    this.interactionHint?.setVisible(this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
+    this.interactionHint?.setVisible(this.options.scene !== 'lap-lanh' && this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
     if (document.activeElement?.matches('input, select, textarea')) { this.walkTarget = undefined; this.pendingInteraction = false; this.setCuoiFrame('rest'); return; }
@@ -332,6 +477,11 @@ export class PreviewScene extends Phaser.Scene {
   private syncLanternGrip() {
     const c = this.cuoi, lantern = this.lantern;
     if (!c || !lantern) return;
+    if (this.options.scene === 'lap-lanh') {
+      lantern.setVisible(false);
+      this.earnedLight?.setVisible(false);
+      return;
+    }
     // Fist centers in each trimmed sprite frame (original image pixels).
     const walkingHands = [[139, 132], [114, 130], [132, 132], [139, 130], [119, 132], [132, 134]];
     const frame = String(c.frame.name);
@@ -356,9 +506,10 @@ export class PreviewScene extends Phaser.Scene {
 
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;
-    const startX = this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
+    const startX = this.options.scene === 'lap-lanh' ? 140 : this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
     this.cuoi = this.add.sprite(startX, this.options.scene === 'surveyor' ? surveyorGroundY(startX) : 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
       .setOrigin(0.5, 1).setScale(0.62).setDepth(10);
+    if (this.options.sparkleTrail) this.syncTrailPerspective();
     this.awake = this.options.initiallyAwake;
     this.anims.create({ key: 'cuoi-wake', frames: cuoiWakeFrames.map((_, index) => ({ key: 'cuoi', frame: `wake-${index}` })), frameRate: 5, repeat: 0 });
     this.anims.create({ key: 'cuoi-walk', frames: cuoiWalkFrames.map((_, index) => ({ key: 'cuoi', frame: `walk-${index}` })), frameRate: 8, repeat: -1 });

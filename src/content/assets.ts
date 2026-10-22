@@ -14,6 +14,7 @@ const baSheet = imageUrl('sprites/ba-spritesheet.webp');
 const cuoiSheet = imageUrl('sprites/cuoi-spritesheet.webp');
 
 export const portraits = {
+  lapLanh: { name: 'Lấp Lánh', url: imageUrl('portraits/lap-lanh.webp') },
   an: { name: 'An', url: anPortrait }, ba: { name: 'Bà', url: baPortrait },
   cuoi: { name: 'Cuội', url: cuoiPortrait }, cayDa: { name: 'Cây Đa', url: cayDaPortrait },
   matTron: { name: 'Mắt Tròn', url: matTronPortrait }, chiHang: { name: 'Chị Hằng', url: chiHangPortrait },

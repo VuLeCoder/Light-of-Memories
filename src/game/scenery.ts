@@ -23,6 +23,14 @@ export function cacheScenery(scene: Phaser.Scene, draw: (scene: Phaser.Scene) =>
   });
 }
 
+// Shared Earth illustration for the lunar awakening and Sparkle encounter.
+export function drawEarth(g: Phaser.GameObjects.Graphics, x: number, y: number) {
+  g.fillStyle(0x8ca8ad, 0.045).fillCircle(x, y, 67);
+  g.fillStyle(0x9bbcc4).fillCircle(x, y, 32);
+  g.fillStyle(0x668b88).fillRect(x - 18, y - 22, 21, 11).fillRect(x - 8, y - 13, 10, 22).fillRect(x + 8, y + 6, 16, 9);
+  g.fillStyle(0xd0dddb, 0.75).fillRect(x - 25, y - 8, 41, 4).fillRect(x - 3, y + 16, 22, 4);
+}
+
 // Temporary scenery drawn in game coordinates; replace each layer independently.
 export function sky(scene: Phaser.Scene, lunar = false) {
   const g = scene.add.graphics();
@@ -41,10 +49,7 @@ export function sky(scene: Phaser.Scene, lunar = false) {
     g.fillStyle(0xcfcda8, 0.6).fillRect(748, 91, 16, 8).fillRect(778, 135, 21, 9).fillRect(795, 103, 12, 19);
     g.fillStyle(0x8da1a4, 0.12).fillRect(656, 172, 131, 7).fillRect(697, 179, 143, 5);
   } else {
-    g.fillStyle(0x8ca8ad, 0.045).fillCircle(782, 118, 67);
-    g.fillStyle(0x9bbcc4).fillCircle(782, 118, 32);
-    g.fillStyle(0x668b88).fillRect(764, 96, 21, 11).fillRect(774, 105, 10, 22).fillRect(790, 124, 16, 9);
-    g.fillStyle(0xd0dddb, 0.75).fillRect(757, 110, 41, 4).fillRect(779, 134, 22, 4);
+    drawEarth(g, 782, 118);
   }
   return g;
 }

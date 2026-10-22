@@ -4,7 +4,7 @@ import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
 
-const canvasLabel = (scene: GameSceneId, language: Language) => scene === 'surveyor'
+const canvasLabel = (scene: GameSceneId, language: Language) => scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
   ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
 
 function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
@@ -14,8 +14,8 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
-  freeRoam?: boolean;
+export function GameCanvas({ initiallyAwake, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  sparkleDust?: boolean; freeRoam?: boolean; sparkleTrail?: boolean; onTrailHole?: PreviewOptions['onTrailHole'];
   excavation?: PreviewOptions['excavation']; onDigNear?: PreviewOptions['onDigNear'];
   initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
@@ -23,8 +23,8 @@ export function GameCanvas({ initiallyAwake, freeRoam = false, excavation, onDig
 }) {
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam });
-  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam };
+  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleDust, sparkleTrail, onTrailHole });
+  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleDust, sparkleTrail, onTrailHole };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -50,6 +50,9 @@ export function GameCanvas({ initiallyAwake, freeRoam = false, excavation, onDig
       if (cancelled) return;
       const previewScene = new PreviewScene({
         initiallyAwake: awakeRef.current,
+        sparkleDust: progressRef.current.sparkleDust,
+        sparkleTrail: progressRef.current.sparkleTrail,
+        onTrailHole: () => { if (!cancelled) progressRef.current.onTrailHole?.(); },
         freeRoam: progressRef.current.freeRoam,
         excavation: progressRef.current.excavation,
         onDigNear: id => progressRef.current.onDigNear?.(id),
@@ -110,10 +113,15 @@ export function GameCanvas({ initiallyAwake, freeRoam = false, excavation, onDig
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.setSparkleDust(sparkleDust); }, [sparkleDust]);
+  useEffect(() => { phaserScene.current?.setSparkleTrail(sparkleTrail); }, [sparkleTrail]);
+  useEffect(() => { phaserScene.current?.setEncounterStarted(encounterStarted); }, [encounterStarted]);
   useEffect(() => { phaserScene.current?.setFreeRoam(freeRoam); }, [freeRoam]);
   useEffect(() => { phaserScene.current?.setExcavation(excavation); }, [excavation]);
   useEffect(() => { phaserScene.current?.setQuest(quest, treeSpeaking); }, [quest, treeSpeaking]);
-  useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode]);
+  // Scene interactions temporarily lock movement. Restore the requested mode
+  // when the encounter changes, even when both phases use the same mode.
+  useEffect(() => { phaserScene.current?.setMoonMode(moonMode); }, [moonMode, sparkleTrail, encounterStarted]);
   useEffect(() => {
     phaserScene.current?.setLanguage(language);
     const canvas = host.current?.querySelector('canvas');
