@@ -35,10 +35,10 @@ Nội dung thoại thường 20px, xuống 18px ở màn hình hẹp; nút chín
 
 ## Tài nguyên để tham chiếu
 
-- [Cuội](../public/images/portraits/cuoi.png): áo nâu cổ viền sáng, quần xanh sẫm, tóc đen búi, thắt lưng vải, dáng thân thiện. Dùng ảnh thực tế làm chuẩn nhận diện.
-- [An](../public/images/portraits/an.png), [Bà](../public/images/portraits/ba.png), [Cây Đa](../public/images/portraits/cay-da.png), [Chị Hằng](../public/images/portraits/chi-hang.png), [Mắt Tròn](../public/images/portraits/mat-tron.png): mở ảnh tương ứng trước khi tạo biến thể.
-- [Sprite Cuội](../public/images/sprites/cuoi-spritesheet.png): chuẩn cho tỷ lệ nhân vật và hoạt ảnh trong game.
-- [Logo](../public/images/branding/light-of-memories-primary.png): trăng lưỡi liềm ôm đèn ngôi sao vàng, nền xanh đêm, chữ Light of Memories. Khi đặt logo tiếp tục dùng file có sẵn.
+- [Cuội](../public/images/portraits/cuoi.webp): áo nâu cổ viền sáng, quần xanh sẫm, tóc đen búi, thắt lưng vải, dáng thân thiện. Dùng ảnh thực tế làm chuẩn nhận diện.
+- [An](../public/images/portraits/an.webp), [Bà](../public/images/portraits/ba.webp), [Cây Đa](../public/images/portraits/cay-da.webp), [Chị Hằng](../public/images/portraits/chi-hang.webp), [Mắt Tròn](../public/images/portraits/mat-tron.webp): mở ảnh tương ứng trước khi tạo biến thể.
+- [Sprite Cuội](../public/images/sprites/cuoi-spritesheet.webp): chuẩn cho tỷ lệ nhân vật và hoạt ảnh trong game.
+- [Logo](../public/images/branding/light-of-memories-primary.webp): trăng lưỡi liềm ôm đèn ngôi sao vàng, nền xanh đêm, chữ Light of Memories. Khi đặt logo tiếp tục dùng file có sẵn.
 
 ## Quy cách đề xuất khi tạo ảnh mới
 

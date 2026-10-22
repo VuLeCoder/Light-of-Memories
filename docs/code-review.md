@@ -1,6 +1,6 @@
 # Review mã nguồn — 17/10/2026
 
-Phạm vi: luồng React–Phaser, hội thoại, lưu tiến trình, input/focus, CSS, bản dịch, đường dẫn ảnh và tài liệu. Đây là review mã nguồn kèm build và xác minh logic lưu; chưa xác nhận toàn bộ hành vi bằng trình duyệt hoặc thiết bị thật.
+Phạm vi: luồng React–Phaser, hội thoại, lưu tiến trình, input/focus, CSS, bản dịch, đường dẫn ảnh và tài liệu.
 
 ## Phát hiện đã xử lý
 
@@ -42,10 +42,3 @@ Trang sách dùng aspect ratio để khớp canvas ở tỉ lệ cột 7:3. Menu
 - Công tắc âm thanh lưu lựa chọn nhưng chưa phát nhạc; giao diện đã báo rõ.
 - Chỉ báo đèn 0/5 và kết thúc trước Mắt Tròn là phạm vi mở đầu, chưa có hệ thống thu thập tiếp theo.
 - Chân dung Chị Hằng và Mắt Tròn vẫn giữ để làm nội dung kế tiếp; không xóa chỉ vì chưa xuất hiện trong cảnh chơi hiện tại.
-
-## Kết quả xác minh
-
-- `npm run build`: đạt, gồm kiểm tra TypeScript và Vite build; còn cảnh báo kích thước chunk Phaser.
-- Chạy kiểm tra logic lưu trực tiếp trong bộ nhớ: vòng đọc/ghi các chặng, `moon-story`, giữ hoàn thành khi khám phá tiếp, tương thích mốc cũ, JSON hỏng, phiên bản lạ, localStorage bị chặn: đạt.
-- `git diff --check`: đạt.
-- Không thêm file test vào mã nguồn. Chưa chạy xác minh tương tác/ảnh chụp trình duyệt; kết quả build không thay thế đánh giá bố cục, cảm giác điều khiển hay khả năng đọc trên điện thoại.

@@ -6,15 +6,15 @@
 
 | Đường dẫn trong `public/images/` | Kích thước | Kênh | Vai trò |
 | --- | --- | --- | --- |
-| `portraits/an.png` | 1312 × 1199 | RGBA | Chân dung An |
-| `portraits/ba.png` | 1145 × 1374 | RGBA | Chân dung bà |
-| `portraits/cuoi.png` | 1024 × 1536 | RGBA | Chân dung Cuội |
-| `portraits/cay-da.png` | 1312 × 1199 | RGBA | Chân dung Cây Đa, không dùng làm cây pixel |
-| `portraits/mat-tron.png` | 1222 × 1287 | RGBA | Có trong danh sách, chưa sử dụng trong cảnh |
-| `portraits/chi-hang.png` | 1024 × 1536 | RGBA | Có trong danh sách, chưa sử dụng trong cảnh |
-| `sprites/an-spritesheet.png` | 1536 × 1024 | RGBA | 2 hàng × 6 tư thế quan sát được |
-| `sprites/ba-spritesheet.png` | 2172 × 724 | RGBA | 2 hàng × 6 tư thế quan sát được |
-| `sprites/cuoi-spritesheet.png` | 1536 × 1024 | RGBA | 5 hàng × 6 tư thế quan sát được |
+| `portraits/an.webp` | 1312 × 1199 | RGBA | Chân dung An |
+| `portraits/ba.webp` | 1145 × 1374 | RGBA | Chân dung bà |
+| `portraits/cuoi.webp` | 1024 × 1536 | RGBA | Chân dung Cuội |
+| `portraits/cay-da.webp` | 1312 × 1199 | RGBA | Chân dung Cây Đa, không dùng làm cây pixel |
+| `portraits/mat-tron.webp` | 1222 × 1287 | RGBA | Có trong danh sách, chưa sử dụng trong cảnh |
+| `portraits/chi-hang.webp` | 1024 × 1536 | RGBA | Có trong danh sách, chưa sử dụng trong cảnh |
+| `sprites/an-spritesheet.webp` | 1536 × 1024 | RGBA | 2 hàng × 6 tư thế quan sát được |
+| `sprites/ba-spritesheet.webp` | 2172 × 724 | RGBA | 2 hàng × 6 tư thế quan sát được |
+| `sprites/cuoi-spritesheet.webp` | 1536 × 1024 | RGBA | 5 hàng × 6 tư thế quan sát được |
 
 ## Frame nghỉ dùng trong bản dựng
 
