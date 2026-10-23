@@ -1,87 +1,61 @@
 # Tổng quan dự án Cuội
 
-Tài liệu mô tả mã nguồn hiện tại, cập nhật ngày 17/10/2026. Đọc tiếp [phong cách hình ảnh](visual-style.md), [review mã nguồn](code-review.md) và [kiểm kê ảnh](assets-inventory.md).
+Cập nhật **24/10/2026**. Đây là điểm vào tài liệu hiện tại. Mỗi màn có một bản tổng hợp chính; các kế hoạch và bàn giao Game3 đã được hợp nhất để tránh mô tả khác nhau.
 
-## Công nghệ
+## Tài liệu cần đọc
 
-| Thành phần | Công nghệ / vai trò |
+| Tài liệu | Nội dung |
 | --- | --- |
-| Giao diện | React 19, TypeScript, CSS thuần; không dùng thư viện component |
-| Game | Phaser 3.90; canvas 960 × 540, tỉ lệ 16:9, tự co theo container |
-| Công cụ | Vite 6; TypeScript kiểm tra kiểu trước khi build |
-| Nội dung | Dữ liệu hội thoại và bản dịch Việt/Anh trong các module TypeScript |
-| Lưu trữ | Tiến trình lưu localStorage; bộ đếm người truy cập lưu chung trên Upstash Redis qua `api/visitors.js` |
-| Triển khai | Giao diện từ `dist/`, ảnh từ `public/`; API bộ đếm chạy trên Vercel Functions |
+| [Game1 — Surveyor 3 / Mắt Tròn](done/Game1_Surveyor_3.md) | Lịch sử, sách, dụng cụ, đào ảnh, nhật ký và đoạn kết; mẫu cấu trúc cho các màn |
+| [Game2 — Apollo 11 / Lấp Lánh](done/Game2_Apollo_11.md) | T01–T04, hai ảnh, phản xạ/đo khoảng cách, cánh sao thứ hai |
+| [Game3 — Apollo 12 / Tai Thính](done/Game3_Apollo_12.md) | T01–T04, ba ảnh, khoa học/nguồn, sách, trạng thái, bàn giao M0–M8 |
+| [Hướng dẫn AI thiết kế màn mới](Huong-dan-AI-thiet-ke-man-choi-moi.md) | Quyết định chung, văn phong, UI, sách, focus, hậu kết và tích hợp |
+| [Phong cách hình ảnh](visual-style.md) | Màu, nét vẽ, sprite, chân dung và bố cục |
+| [Quy ước ảnh](image-assets.md), [kiểm kê tài nguyên ban đầu](assets-inventory.md) | Thư mục, tài nguyên và thông tin crop sprite |
+| [Logo](logo.md) | Thiết kế nhận diện nhóm |
 
-Phiên bản trên là dòng phiên bản khai báo trong `package.json`; `package-lock.json` khóa bộ cài. Chạy `npm ci`, `npm run dev`; xác minh bằng `npm run typecheck`, `npm run build`. Phaser được tách thành chunk riêng và khởi tạo sau khi component mount.
+## Trạng thái sản phẩm
 
-## Các phần đã dựng
+Game sách tranh cho trẻ tiểu học, kết hợp Trung Thu và thiết bị khoa học trên Mặt Trăng. Phần mở đầu gồm An/bà, Cuội thức dậy, trò chuyện với Cây Đa và nhận đèn ông sao. Sau dấu chân là **lộ trình năm ánh sao**.
 
-- Menu đầu game: bắt đầu, tiếp tục, hướng dẫn, bắt đầu lại có xác nhận. Mở menu tạm dừng tương tác.
-- Hiên nhà Trung Thu: An và bà, sáu lượt thoại, chân dung người nói, chữ hiện dần, nút hiện hết/tiếp theo và bỏ qua mở đầu.
-- Chuyển cảnh sang Mặt Trăng; Cuội ngủ, thức dậy, đọc hai câu dẫn rồi được di chuyển.
-- Di chuyển bằng A/D, trái/phải hoặc bấm mặt đất. Bấm ghế để đi tới tương tác hoặc đến gần rồi nhấn E.
-- Hội thoại Cây Đa, trao đèn ông sao, chỉ báo 0/5, lời lên đường và dấu chân dẫn sang phải.
-- Kết thúc mở đầu: thông báo hành trình Mắt Tròn sắp tới, ở lại khám phá hoặc về menu.
-- Chọn Việt/Anh ngay trong phiên; đổi tiêu đề trang, nội dung và nhãn hỗ trợ tiếp cận.
-- Lưu theo mốc, khôi phục qua menu khi tải lại; báo khi trình duyệt không cho lưu. Đoạn thoại đang dở bắt đầu lại từ đầu đoạn.
-- Xử lý focus bàn phím trong canvas/hội thoại và giữ focus khi chuyển cảnh. Có chữ dành cho trình đọc màn hình và hỗ trợ giảm chuyển động.
+Ba màn đã triển khai: Mắt Tròn → Lấp Lánh → Tai Thính. Mỗi màn có bài chơi, ảnh/sách và kết thắp một cánh đèn. Màn sau mở theo dấu hoàn thành lần đầu của màn trước; tối đa hiện có **3/5**. Chơi lại không làm mất quyền vào màn sau hoặc cộng thêm sao.
 
-Sách đồng hành vẫn là giao diện chờ nội dung. Chưa có chương Mắt Tròn, thu thập đủ năm cánh sao, âm thanh thật hay nội dung sách theo tiến trình. Công tắc âm thanh hiện chỉ lưu lựa chọn; Phaser đang dùng `noAudio: true`.
+Lộ trình có năm điểm; hai điểm cuối còn bí ẩn. Chọn điểm nào thì nhãn Cuội theo điểm đó. Nút vào điểm chưa có nội dung ẩn nhưng vẫn dành chỗ, thông báo giữ chiều cao để bố cục không giật.
 
-## Bố cục website
+Hậu kết cả ba màn cho Cuội đi lại và trò chuyện với bạn. Bạn cảm ơn, gợi dấu hiệu phía phải; đi tới đó về lộ trình. Mắt Tròn có điểm sáng, Lấp Lánh có vòng gợn, Tai Thính tạm dùng vệt sáng bí ẩn. Có nút xem lại kết/chơi lại/về lộ trình.
 
-```text
-Header: logo + CUỘI                    Ngôn ngữ + nhãn bản dựng
-────────────────────────────────────────────────────────────
-Số cảnh + tên cảnh + Bỏ qua / Menu     TRANG SÁCH BÊN BẠN
-Game (cột 7 phần)                     Sách (cột 3 phần)
-  Nền + nhân vật                       Trang giấy kem
-  Menu / thoại / mục tiêu               Hình trang trí
-  Thông báo theo chặng                  Ghi chú dưới sách
-Nhân vật + mô tả cảnh
-────────────────────────────────────────────────────────────
-Section giới thiệu                    Logo nhóm
-Footer
-```
+Sách có nội dung theo tiến trình, nhóm theo người bạn, ảnh và nguồn; văn ngôi thứ ba như Mắt Tròn. Game và sách có đủ Việt/Anh. Công tắc âm thanh hiện lưu lựa chọn; các bài Tai Thính không phụ thuộc âm thanh.
 
-Khung ngoài tối đa 1600px. Desktop dùng CSS Grid hai cột 7:3; toolbar và nhãn sách chung hàng. Khung canvas 16:9, trang sách 16:21 nhằm khớp chiều cao canvas khi hai cột giữ tỉ lệ này. Chiều cao menu có mức tối thiểu riêng, nên lúc mở menu sách không nhất thiết cao bằng toàn bộ game. Các dòng hướng dẫn và mô tả dưới canvas cũng không nằm trong chiều cao đối chiếu của trang sách.
+## Công nghệ và cấu trúc
 
-Dưới 760px, sách chuyển xuống dưới game, tiếp đó là giới thiệu. Trang sách có thể cuộn khi nội dung dài. Độ rộng tối thiểu toàn trang hiện là 360px. Hội thoại nằm đè ở đáy canvas; menu và bảng kết thúc cũng nằm bên trong khung game.
-
-## Cấu trúc mã nguồn
-
-| Đường dẫn | Trách nhiệm |
+| Thành phần | Vai trò |
 | --- | --- |
-| `src/main.tsx` | Mount React và nạp CSS |
-| `src/App.tsx` | Bố cục, trạng thái hành trình, menu, ngôn ngữ, điều phối focus và lưu |
-| `src/components/GameMenu.tsx` | Menu chính, hướng dẫn, xác nhận bắt đầu lại |
-| `src/components/EarthDialogue.tsx` | Hộp thoại dùng chung cho cả Trái Đất và Mặt Trăng, dù tên còn là Earth |
-| `src/game/GameCanvas.tsx` | Tạo/hủy Phaser, nạp module, resize, cầu nối callback React–Phaser |
-| `src/game/PreviewScene.ts` | Nạp sprite, hoạt ảnh, di chuyển, tương tác ghế, điều kiện kết thúc |
-| `src/game/scenery.ts` | Vẽ nền và đạo cụ bằng Phaser Graphics |
-| `src/game/types.ts` | Kích thước canvas và kiểu giao tiếp game |
-| `src/content/` | Hội thoại, bản dịch, thông tin cảnh và tọa độ crop ảnh |
-| `src/state/progress.ts` | Đọc/ghi mốc lưu, kiểm tra phiên bản và xử lý dữ liệu lỗi |
-| `src/styles.css` | Toàn bộ giao diện và breakpoint |
-| `public/images/` | `branding/`, `portraits/`, `sprites/` |
-| `docs/` | Tài liệu kỹ thuật, hình ảnh và review |
+| React 19 / TypeScript / CSS | Giao diện, câu chuyện, sách, điều phối và focus |
+| Phaser 3.90 | Canvas 960 × 540, nền pixel, sprite, di chuyển, hiệu ứng |
+| Vite 6 | Dev/build; TypeScript kiểm tra trước build |
+| `src/content/levels/` | Định nghĩa người bạn, nội dung Việt/Anh, tiến trình từng màn |
+| `src/components/` | Thoại, lộ trình/sách, các bài và đoạn kết |
+| `src/game/` | Cầu React–Phaser, input, cảnh, nền và vị trí |
+| `src/focus/game-focus.ts` | Chọn đích focus chung trong game |
+| `src/state/progress.ts` | Lưu/đọc và tương thích bản lưu |
+| `public/images/`, `public/assets/` | Ảnh, sprite và tư liệu cục bộ |
+| `api/visitors.js` | Bộ đếm truy cập dùng Upstash Redis trên Vercel |
+| `docs/` | Tài liệu chính, nguồn và hướng dẫn thiết kế |
 
-React giữ trạng thái câu chuyện; Phaser giữ vị trí, hoạt ảnh và nhận input. Phaser báo về React qua `onAwake`, `onInteract`, `onExit`; React truyền lại chế độ ngủ/thức/thoại/tự do/tạm dừng. Không nên tự tạo một bộ trạng thái câu chuyện thứ hai trong Phaser.
+React là nguồn trạng thái truyện; Phaser xử lý chuyển động và báo tương tác. Không tạo thêm một bản tiến trình riêng trong Phaser. Cách chạy và build xem [README](../README.md).
 
-## Lưu tiến trình
+## Bố cục, điều khiển và lưu
 
-Các khóa: `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Tiến trình có dạng `{ version: 1, milestone }`, không lưu vị trí pixel hay từng chữ đang gõ.
+Desktop game bên trái, sách giấy kem bên phải; màn hẹp xếp sách/panel xuống dưới. Màu xanh đêm, vàng dịu, chân dung màu vẽ và cảnh pixel. Chữ/nút có kích thước đọc và thao tác được; nội dung dài chia trang hoặc rút ngắn.
 
-| Mốc | Tiếp tục tại |
-| --- | --- |
-| `earth` | Đầu đoạn thoại An–bà |
-| `moon` | Cuội thức dậy |
-| `moon-story` | Hai câu dẫn sau khi thức dậy |
-| `awake` | Tự do di chuyển, nhiệm vụ quan sát ghế |
-| `tree` | Đầu đoạn thoại Cây Đa |
-| `lantern` | Đã nhận đèn, đầu đoạn lời lên đường |
-| `trail` | Theo dấu chân |
-| `complete` | Bảng hoàn thành mở đầu |
+A/D, mũi tên hoặc chạm đất để đi; các chặng có chiều sâu dùng thêm W/S hoặc lên/xuống. E hoặc bấm bạn để tương tác. Space/Enter hiện hết/tiếp tục thoại. Bài HTML dùng nút/biểu mẫu riêng; footer nêu cách điều khiển theo chặng.
 
-Mốc `moon-story` được bổ sung trong lần review này; dữ liệu phiên bản 1 với các mốc cũ vẫn đọc được. Không thể biết một bản lưu `awake` cũ từng bỏ qua lời dẫn hay đã đọc xong, nên vẫn giữ cách hiểu cũ cho mốc đó.
+Focus theo game qua chuyển thoại/bài/ảnh/hậu kết khi đang chơi, kể cả nút cũ bị gỡ hoặc khóa. Không giành focus từ ô nhập/sách; bấm ngoài, Tab ra ngoài hoặc đổi cửa sổ sẽ nhả bàn phím. Menu tạm dừng, tiếp tục bỏ phím/đích đi cũ.
+
+Các khóa localStorage: `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema tiến trình hiện **v5**, đọc v1–v4; lưu mốc mở đầu và tiến trình riêng từng màn, gồm phase/lượt thoại/ảnh/đáp án/dấu hoàn thành. Không đồng bộ giữa thiết bị. Không dùng reset toàn hành trình khi nâng schema.
+
+## Phần chưa chốt và giới hạn
+
+Người bạn thứ tư/thứ năm, dấu hiệu chính thức cuối Tai Thính và cảnh gặp lại chị Hằng chưa được duyệt. Các ý tưởng cũ về xe Bánh Bụi, gương Gương Nhỏ, Cờ Nhỏ, dấu chân Bước Nhỏ hoặc chọn chuyện kể cho chị Hằng chỉ là chất liệu tham khảo; thứ tự và nhiệm vụ trong các bản đó không thay thế ba màn hiện tại.
+
+Chưa có hệ thống kỹ năng hoặc thẻ bạn. Kiểm thử triển khai chủ yếu trên Chromium, chạm giả lập và Việt/Anh màn rộng/hẹp; chưa thay cho thử với học sinh, thiết bị thật, Safari/Firefox hoặc trình đọc màn hình. Font có fallback, build có cảnh báo kích thước chunk Phaser. Phạm vi kiểm tra cụ thể nằm trong tài liệu từng màn.
