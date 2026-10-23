@@ -2,11 +2,14 @@ export type Point = { x: number; y: number };
 const cross = (a: Point, b: Point) => a.x * b.y - a.y * b.x;
 export const cornerPivot = { x: 320, y: 135 };
 export const laserSource = { x: 65, y: 115 };
-export const laserReceiver = { x: 65, y: 155, halfHeight: 12 };
+export const laserReceiver = { x: 65, y: 155, halfHeight: 2 };
 export const normalizeRotation = (angle: number) => ((angle + 180) % 360 + 360) % 360 - 180;
-export function cornerMirrors(rotation: number) {
-  return [135, 225].map(base => {
-    const radians = (base + rotation) * Math.PI / 180;
+export const clampMirrorAngle = (angle: number) => Math.max(0, Math.min(180, angle));
+export function cornerMirrors(angleBetween = 90) {
+  // Mirror 1 stays above the pivot; only mirror 2 can rotate.
+  const fixed = 225;
+  return [fixed, fixed - clampMirrorAngle(angleBetween)].map(angle => {
+    const radians = angle * Math.PI / 180;
     const tangent = { x: Math.cos(radians), y: Math.sin(radians) };
     return { start: cornerPivot, end: { x: cornerPivot.x + tangent.x * 105, y: cornerPivot.y + tangent.y * 105 }, tangent };
   });
@@ -14,8 +17,8 @@ export function cornerMirrors(rotation: number) {
 
 // Intersect finite mirror segments, then reflect v across the surface tangent:
 // v' = 2(v · tangent)tangent - v. No target-dependent ray directions.
-export function traceSparkleLight(rotation: number) {
-  const mirrors = cornerMirrors(rotation);
+export function traceSparkleLight(angleBetween = 90) {
+  const mirrors = cornerMirrors(angleBetween);
   const points: Point[] = [laserSource];
   const hits: number[] = [];
   let origin: Point = laserSource;
@@ -52,6 +55,6 @@ export function traceSparkleLight(rotation: number) {
     const dot = direction.x * tangent.x + direction.y * tangent.y;
     direction = { x: 2 * dot * tangent.x - direction.x, y: 2 * dot * tangent.y - direction.y };
   }
-  const reversed = Math.abs(direction.x + 1) < 1e-7 && Math.abs(direction.y) < 1e-7;
-  return { points, hits, returned, direction, success: returned && hits.length === 2 && new Set(hits).size === 2 && reversed };
+  const parallelReturn = Math.abs(direction.x + 1) < 1e-7 && Math.abs(direction.y) < 1e-7;
+  return { points, hits, returned, direction, parallelReturn, success: returned && hits.length === 2 && hits[0] === 0 && hits[1] === 1 };
 }

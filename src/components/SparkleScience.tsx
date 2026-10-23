@@ -1,51 +1,56 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
-import { cornerMirrors, cornerPivot, laserSource, laserReceiver, normalizeRotation, traceSparkleLight } from '../game/sparkle-optics';
+import { cornerMirrors, cornerPivot, laserSource, laserReceiver, normalizeRotation, clampMirrorAngle, traceSparkleLight } from '../game/sparkle-optics';
 import type { SparkleProgress } from '../content/levels/lap-lanh';
 
-export function CornerDiagram({ rotation = 0, lit = 0, language = 'vi', onRotate }: { rotation?: number; lit?: number; language?: Language; onRotate?: (rotation: number) => void }) {
+export function CornerDiagram({ angle = 90, lit = 0, language = 'vi', onRotate }: { angle?: number; lit?: number; language?: Language; onRotate?: (angle: number) => void }) {
   const vi = language === 'vi';
   const drag = useRef<{ id: number; angle: number; rotation: number } | null>(null);
-  const beam = traceSparkleLight(rotation);
-  const mirrors = cornerMirrors(rotation);
+  const beam = traceSparkleLight(angle);
+  const mirrors = cornerMirrors(angle);
+  const angleBetween = Math.acos(Math.max(-1, Math.min(1, mirrors[0].tangent.x * mirrors[1].tangent.x + mirrors[0].tangent.y * mirrors[1].tangent.y))) * 180 / Math.PI;
   const beamPath = beam.points.map((point, i) => `${i ? 'L' : 'M'}${point.x} ${point.y}`).join(' ');
   const pointerAngle = (svg: SVGSVGElement, x: number, y: number) => {
     const matrix = svg.getScreenCTM();
     if (!matrix) return null;
     const point = new DOMPoint(x, y).matrixTransform(matrix.inverse());
-    return { angle: Math.atan2(point.y - cornerPivot.y, point.x - cornerPivot.x) * 180 / Math.PI, distance: Math.hypot(point.x - cornerPivot.x, point.y - cornerPivot.y) };
+    return { x: point.x, y: point.y, angle: Math.atan2(point.y - cornerPivot.y, point.x - cornerPivot.x) * 180 / Math.PI, distance: Math.hypot(point.x - cornerPivot.x, point.y - cornerPivot.y) };
   };
-  return <svg className={`sparkle-corner-diagram${onRotate ? ' is-rotatable' : ''}`} viewBox="0 0 460 270" role="img" aria-label={vi ? 'Hai gương vuông góc và đường phản xạ của tia sáng' : 'Two perpendicular mirrors and the reflected light path'}
+  return <svg className={`sparkle-corner-diagram${onRotate ? ' is-rotatable' : ''}`} viewBox="0 0 460 270" role="img" aria-label={vi ? 'Gương 1 cố định phía trên, gương 2 có thể xoay và đường phản xạ của tia sáng' : 'Fixed upper mirror 1, rotatable mirror 2 and the reflected light path'}
     onPointerDown={event => {
       if (!onRotate || !event.isPrimary || event.button !== 0) return;
       const point = pointerAngle(event.currentTarget, event.clientX, event.clientY);
       if (!point || point.distance > 116 || point.distance < 10) return;
+      const second = mirrors[1];
+      const along = Math.max(0, Math.min(105, (point.x - cornerPivot.x) * second.tangent.x + (point.y - cornerPivot.y) * second.tangent.y));
+      if (Math.hypot(point.x - cornerPivot.x - along * second.tangent.x, point.y - cornerPivot.y - along * second.tangent.y) > 18) return;
       event.preventDefault();
-      drag.current = { id: event.pointerId, angle: point.angle, rotation };
+      drag.current = { id: event.pointerId, angle: point.angle, rotation: angle };
       event.currentTarget.setPointerCapture(event.pointerId);
     }}
     onPointerMove={event => {
       const start = drag.current;
       if (!start || start.id !== event.pointerId) return;
       const point = pointerAngle(event.currentTarget, event.clientX, event.clientY);
-      if (point && point.distance >= 10) onRotate?.(normalizeRotation(start.rotation + normalizeRotation(point.angle - start.angle)));
+      if (point && point.distance >= 10) {
+        const next = clampMirrorAngle(start.rotation - normalizeRotation(point.angle - start.angle));
+        onRotate?.(Math.abs(next - 90) < .8 ? 90 : next);
+      }
     }}
     onPointerUp={event => { if (drag.current?.id === event.pointerId) { drag.current = null; event.currentTarget.releasePointerCapture(event.pointerId); } }}
     onPointerCancel={() => { drag.current = null; }} onLostPointerCapture={() => { drag.current = null; }}>
     <rect x="4" y="4" width="452" height="262" rx="8" fill="#1b3039" stroke="#9e8b64" strokeWidth="2" />
     <circle cx={cornerPivot.x} cy={cornerPivot.y} r="112" fill="#293e44" stroke="#6c817d" strokeDasharray="4 6" />
-    <g transform={`rotate(${rotation} ${cornerPivot.x} ${cornerPivot.y})`}>
-      <path d="m307.27 147.73-12.73-12.73 12.73-12.73" fill="none" stroke="#ad9870" strokeWidth="1.5" />
-      <circle cx="425" cy="135" r="8" fill="#dfc18a" stroke="#30464b" strokeWidth="2" />
-      <path d="m421 135h8m-4-4v8" stroke="#30464b" />
-    </g>
-    {mirrors.map(({ start, end }, i) => <g key={i}>
+    {Math.abs(angle - 90) < .01 && <path d={`M${cornerPivot.x + mirrors[0].tangent.x * 18} ${cornerPivot.y + mirrors[0].tangent.y * 18}l${mirrors[1].tangent.x * 18} ${mirrors[1].tangent.y * 18}l${-mirrors[0].tangent.x * 18} ${-mirrors[0].tangent.y * 18}`} fill="none" stroke="#ad9870" strokeWidth="1.5" />}
+    {mirrors.map(({ start, end }, i) => <g key={i} style={{ cursor: onRotate && i === 1 ? 'grab' : 'default' }}>
       <path d={`M${start.x} ${start.y}L${end.x} ${end.y}`} stroke="#ad9870" strokeWidth="9" strokeLinecap="round" />
       <path d={`M${start.x} ${start.y}L${end.x} ${end.y}`} stroke="#a5bbb2" strokeWidth="5" strokeLinecap="round" />
+      {i === 0 && <text x={end.x} y={end.y - 16} textAnchor="middle" fill="#bdcecb" fontSize="11">{vi ? 'Cố định' : 'Fixed'}</text>}
       <circle cx={end.x} cy={end.y} r="10" fill="#ad9870" /><text x={end.x} y={end.y + 4} textAnchor="middle" fill="#1b3039" fontSize="12">{i + 1}</text>
     </g>)}
+    {angle > 1 && <path d={`M${cornerPivot.x + mirrors[0].tangent.x * 27} ${cornerPivot.y + mirrors[0].tangent.y * 27}A27 27 0 0 0 ${cornerPivot.x + mirrors[1].tangent.x * 27} ${cornerPivot.y + mirrors[1].tangent.y * 27}`} fill="none" stroke="#dfc18a" strokeWidth="1.5" />}
     <circle cx={cornerPivot.x} cy={cornerPivot.y} r="4" fill="#dfc18a" />
-    <text x="320" y="254" textAnchor="middle" fill="#e6dbc1" fontSize="13">90°</text>
+    <text x="320" y="254" textAnchor="middle" fill="#e6dbc1" fontSize="13">{vi ? 'Góc giữa hai gương' : 'Angle between mirrors'}: {Math.round(angleBetween)}°</text>
     <rect x="20" y="97" width="45" height="80" rx="5" fill="#30464b" stroke="#ac9870" strokeWidth="2" />
     <circle cx={laserSource.x} cy={laserSource.y} r="5" fill="#dfc18a" />
     <rect x={laserReceiver.x - 4} y={laserReceiver.y - laserReceiver.halfHeight} width="8" height={laserReceiver.halfHeight * 2} rx="2" fill={lit && beam.success ? '#b8cbc1' : '#617774'} stroke="#ad9870" />
@@ -67,25 +72,25 @@ export function CornerDiagram({ rotation = 0, lit = 0, language = 'vi', onRotate
   </svg>;
 }
 
-export function SparkleRepair({ language, progress: p, onChange, onComplete }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onComplete: () => void }) {
+export function SparkleRepair({ language, progress: p, onChange, onComplete, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onComplete: () => void; paused: boolean }) {
   const vi = language === 'vi';
   const [lit, setLit] = useState(0);
   const [tried, setTried] = useState(false);
-  const beam = traceSparkleLight(p.repairRotation);
+  const beam = traceSparkleLight(p.repairAngle);
   const success = tried && beam.success;
-  const rotate = (rotation: number) => {
+  const rotate = (angle: number) => {
     setTried(false); setLit(0);
-    onChange({ ...p, repairRotation: rotation });
+    onChange({ ...p, repairAngle: angle });
   };
   return <section className="sparkle-card sparkle-science sparkle-repair" aria-labelledby="sparkle-repair-title">
-    <div className="sparkle-science-visual"><CornerDiagram rotation={p.repairRotation} lit={lit} language={language} onRotate={rotate} /><small>{vi ? 'Đây là mô hình 2D đơn giản. Thiết bị Apollo 11 thật sử dụng các lăng kính có ba mặt phản xạ vuông góc.' : 'This is a simplified 2D model. The real Apollo 11 device uses prisms with three mutually perpendicular reflecting faces.'}</small></div>
+    <div className="sparkle-science-visual"><CornerDiagram angle={p.repairAngle} lit={lit} language={language} onRotate={rotate} /><small>{vi ? 'Đây là mô hình 2D đơn giản. Thiết bị Apollo 11 thật sử dụng các lăng kính có ba mặt phản xạ vuông góc.' : 'This is a simplified 2D model. The real Apollo 11 device uses prisms with three mutually perpendicular reflecting faces.'}</small></div>
     <div className="sparkle-cleaning-copy">
       <h2 id="sparkle-repair-title">{vi ? 'T03 · Sửa kính phản xạ Apollo 11' : 'T03 · Repair the Apollo 11 reflector'}</h2>
-      <p className="sparkle-repair-goal">{vi ? 'Mục tiêu: tia sáng phản xạ trên cả hai gương rồi quay về vùng nhận tại trạm phát.' : 'Goal: reflect light off both mirrors and return it to the station’s receiver.'}</p>
-      <label className="sparkle-rotation-control">{vi ? 'Góc xoay cụm gương' : 'Mirror pair rotation'} <output>{Math.round(p.repairRotation)}°</output><input aria-label={vi ? 'Góc xoay cụm gương' : 'Mirror pair rotation'} type="range" min="-180" max="180" step="1" value={p.repairRotation} onChange={event => rotate(Number(event.target.value))} /></label>
-      {tried && <p className="sparkle-science-feedback" role="status">{success ? (vi ? 'Đủ hai lần phản xạ! Tia trở lại vùng nhận, ngược chiều tia tới.' : 'Two reflections! The ray reaches the receiver, opposite to its incoming direction.') : (vi ? `Tia phản xạ ${beam.hits.length} lần, chưa trở về vùng nhận qua đủ hai gương.` : `The ray reflected ${beam.hits.length} times, without returning through both mirrors.`)}</p>}
-      <button onClick={() => { setLit(value => value + 1); setTried(true); }}>{vi ? 'Thử tia sáng' : 'Try the light'}</button>
-      <button className="journey-primary" disabled={!success} onClick={onComplete}>{vi ? 'Cùng đo khoảng cách →' : 'Measure the distance →'}</button>
+      <p className="sparkle-repair-goal">{vi ? 'Mục tiêu: Căn chỉnh gương 2 để tia phản xạ qua hai gương và về vùng nhận.' : 'Goal: keep mirror 1 fixed and align mirror 2 so light reflects off both mirrors into the station’s receiver.'}</p>
+      <label className="sparkle-rotation-control">{vi ? 'Góc gương 2 so với gương 1' : 'Mirror 2 angle relative to mirror 1'} <output>{Math.round(p.repairAngle)}°</output><input aria-label={vi ? 'Góc gương 2 so với gương 1' : 'Mirror 2 angle relative to mirror 1'} type="range" disabled={paused} min="0" max="180" step="1" value={p.repairAngle} onChange={event => rotate(Number(event.target.value))} /></label>
+      {tried && <p className="sparkle-science-feedback" role="status">{success ? (vi ? 'Căn chỉnh đúng rồi! Tia phản xạ qua hai gương và trở về khe nhận sáng.' : 'Aligned! The ray reflects off both mirrors and returns to the receiving slit.') : (vi ? (beam.returned ? 'Tia đã tới vùng nhận. Căn đúng 90° để tia về song song với tia tới nhé!' : `Tia phản xạ ${beam.hits.length} lần, chưa trở về vùng nhận.`) : (beam.returned ? 'The ray reached the receiver. Align to exactly 90° for a parallel return!' : `The ray reflected ${beam.hits.length} times, without returning through both mirrors.`))}</p>}
+      <button disabled={paused} onClick={() => { setLit(value => value + 1); setTried(true); }}>{vi ? 'Thử tia sáng' : 'Try the light'}</button>
+      <button className="journey-primary" disabled={!success || paused} onClick={onComplete}>{vi ? 'Cùng đo khoảng cách →' : 'Measure the distance →'}</button>
     </div>
   </section>;
 }

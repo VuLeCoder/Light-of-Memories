@@ -19,8 +19,8 @@ export function SparkleBookClue({ language, ranging }: { language: Language; ran
       <a className="sparkle-book-source" href="https://www.nist.gov/history/moon-and-back-25-seconds" target="_blank" rel="noreferrer">{vi ? 'Tư liệu NIST: Đo khoảng cách bằng laser ↗' : 'NIST: Measuring distance with lasers ↗'}</a>
     </> : <>
       <CornerDiagram lit={4} language={language} />
-      <p>{vi ? 'Hai gương luôn giữ góc 90°. Cả cụm cần đón tia để ánh sáng chạm được cả hai mặt.' : 'The two mirrors always form a 90° corner. The pair must catch the light so it reaches both surfaces.'}</p>
-      <p>{vi ? 'Góc tới bằng góc phản xạ. Sau hai lần phản xạ trên hai mặt vuông góc, tia đi ra ngược chiều tia tới.' : 'The angle of incidence equals the angle of reflection. Two reflections on perpendicular surfaces reverse the ray’s direction.'}</p>
+      <p>{vi ? 'Gương 1 được giữ cố định. Góc của gương 2 được tính từ mặt gương 1; 90° nghĩa là hai mặt gương vuông góc.' : 'Mirror 1 stays fixed. Mirror 2’s angle is measured from mirror 1; 90° means the mirror faces are perpendicular.'}</p>
+      <p>{vi ? 'Góc tới bằng góc phản xạ. Khi hai mặt gương vuông góc, sau hai lần phản xạ tia đi ra ngược chiều tia tới. Tia trở về song song với tia tới dù đổi hướng đặt cặp gương, miễn tia chạm đủ cả hai mặt.' : 'The angle of incidence equals the angle of reflection. When the mirrors are perpendicular, two reflections reverse the ray’s direction. The returning ray is parallel to the incoming ray in either orientation, provided it hits both mirrors.'}</p>
       <small>{vi ? 'Mô hình 2D có hai mặt gương. Lăng kính Apollo 11 thật có ba mặt phản xạ vuông góc và nằm cố định.' : 'The 2D model has two mirror faces. Real Apollo 11 prisms have three fixed, mutually perpendicular reflecting faces.'}</small>
       <a className="sparkle-book-source" href="https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/" target="_blank" rel="noreferrer">{vi ? 'Nguồn: Apache Point ↗' : 'Source: Apache Point ↗'}</a>
     </>}

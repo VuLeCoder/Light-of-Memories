@@ -7,7 +7,7 @@ import { memoryCount } from '../content/levels/surveyor-progress';
 import { useEffect, useState } from 'react';
 import type { Language } from '../content/i18n';
 import { copy } from '../content/i18n';
-import { getLevel, journeyStops, type LevelId } from '../content/levels';
+import { getLevel, journeyStops, journeyStatus, type LevelId } from '../content/levels';
 import { SurveyorLevel, surveyorPlayCopy } from './SurveyorLevel';
 import type { SurveyorProgress } from '../content/levels/surveyor-progress';
 import { BookNavigation } from './BookNavigation';
@@ -17,7 +17,7 @@ export const journeyCopy = {
     title: 'Lộ trình năm ánh sao', book: 'Hành trình của Cuội', reveal: 'Đèn ông sao đang soi đường…',
     lead: 'Năm điểm sáng… Có ai ở đó biết chị Hằng đang ở đâu không nhỉ?',
     guide: 'Cùng Cuội gặp năm người bạn trên Mặt Trăng và khám phá câu chuyện của họ.',
-    mystery: 'Người bạn bí ẩn', locked: 'Người bạn này sẽ xuất hiện trong phần tiếp theo. Hẹn Cuội sớm nhé!', back: 'Về lộ trình',
+    prerequisite: 'Hoàn thành câu chuyện của người bạn phía trước để mở khóa cuộc gặp này.', mystery: 'Người bạn bí ẩn', locked: 'Người bạn này sẽ xuất hiện trong phần tiếp theo. Hẹn Cuội sớm nhé!', back: 'Về lộ trình',
     note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và thắp thêm một ánh sao trên chiếc đèn.',
     waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', completed: 'Đã hoàn thành câu chuyện', replay: 'Chơi lại cùng bạn',
   },
@@ -25,7 +25,7 @@ export const journeyCopy = {
     title: 'The five-star journey', book: 'Cuội’s journey', reveal: 'The star lantern lights the way…',
     lead: 'Five lights… Could someone there know where Hằng is?',
     guide: 'Join Cuội to meet five friends on the Moon and discover their stories.',
-    mystery: 'A mystery friend', locked: 'This friend will appear in a future chapter. See you soon, Cuội!', back: 'Back to the route',
+    prerequisite: 'Finish the previous friend’s story to unlock this encounter.', mystery: 'A mystery friend', locked: 'This friend will appear in a future chapter. See you soon, Cuội!', back: 'Back to the route',
     note: 'Each encounter will leave a memory and light another star on the lantern.',
     waiting: 'Not yet discovered', ready: 'Your next destination', completed: 'Story completed', replay: 'Play again with a friend',
   },
@@ -33,14 +33,16 @@ export const journeyCopy = {
 
 export function JourneyMap({ sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
-  const level = getLevel(activeLevel);
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce };
+  const status = (id: LevelId | null) => journeyStatus(id, completed);
+  const level = status(activeLevel) === 'locked' ? undefined : getLevel(activeLevel);
   const detail = level?.text[language];
   const [selectedFriend, setSelectedFriend] = useState<LevelId | null>(journeyStops[0]);
-  const selectedLevel = getLevel(selectedFriend);
+  const selectedLevel = status(selectedFriend) === 'locked' ? undefined : getLevel(selectedFriend);
   const [locked, setLocked] = useState(false);
   const enterFriend = (id: LevelId) => {
     setLocked(false);
-    if (id === 'lap-lanh' && !surveyorProgress.completedOnce) { setLocked(true); return; }
+    if (status(id) === 'locked') { setLocked(true); return; }
     if (id === 'surveyor' && surveyorProgress.completedOnce) {
       onSurveyorChange(enterSurveyor(surveyorProgress));
     }
@@ -56,17 +58,21 @@ export function JourneyMap({ sparkleProgress, language, activeLevel, onEnter, on
       <p className="journey-lead">{t.lead}</p>
       <div className="journey-route">
         <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M80 110 Q160 20 240 65 T400 110 T560 65 T720 110" /></svg>
-        {journeyStops.map((id, index) => <button key={index} className={`journey-stop stop-${index} ${id ? ((id === 'surveyor' && surveyorProgress.completedOnce || id === 'lap-lanh' && sparkleProgress.completedOnce) ? 'stop-completed' : 'stop-unfinished') : 'stop-locked'}`} onClick={() => {
-          setSelectedFriend(id);
-          setLocked(!id || id === 'lap-lanh' && !surveyorProgress.completedOnce);
-        }} aria-pressed={!!id && selectedFriend === id} aria-label={`${index + 1}. ${id ? `${getLevel(id)!.text[language].friend}. ${(id === 'surveyor' && surveyorProgress.completedOnce || id === 'lap-lanh' && sparkleProgress.completedOnce) ? t.completed : t.ready}` : `${t.mystery}. ${t.locked}`}`}>
-          <span className="stop-orb">{id ? <img src={getLevel(id)!.portrait} alt="" /> : '?'}</span>
-          <span>{id ? `${String(index + 1).padStart(2, '0')} · ${getLevel(id)!.label}` : `0${index + 1} · ${t.mystery}`}</span>
-          {index === 0 && <small>Cuội ✦</small>}
-        </button>)}
+        {journeyStops.map((id, index) => {
+          const state = status(id);
+          const friend = state === 'locked' ? undefined : getLevel(id);
+          return <button key={index} className={`journey-stop stop-${index} stop-${state}`} onClick={() => {
+            setSelectedFriend(id);
+            setLocked(state === 'locked');
+          }} aria-pressed={!!id && selectedFriend === id} aria-label={`${index + 1}. ${friend ? `${friend.text[language].friend}. ${state === 'completed' ? t.completed : t.ready}` : `${t.mystery}. ${id ? t.prerequisite : t.locked}`}`}>
+            <span className="stop-orb">{friend ? <img src={friend.portrait} alt="" /> : '?'}</span>
+            <span>{`${String(index + 1).padStart(2, '0')} · ${friend ? friend.label : t.mystery}`}</span>
+            {index === 0 && <small>Cuội ✦</small>}
+          </button>;
+        })}
       </div>
-      <p className="journey-message" role="status">{locked ? selectedFriend === 'lap-lanh' ? (language === 'vi' ? 'Hoàn thành câu chuyện Mắt Tròn để mở đường đến Lấp Lánh.' : 'Finish Round Eyes’ story to unlock Sparkle.') : t.locked : t.guide}</p>
-      <div className="journey-entry-action">{selectedLevel && <button className="journey-primary" disabled={selectedFriend === 'lap-lanh' && !surveyorProgress.completedOnce} onClick={() => enterFriend(selectedLevel.id)}>{selectedLevel.text[language].enter} →</button>}</div>
+      <p className="journey-message" role="status">{locked ? selectedFriend ? t.prerequisite : t.locked : t.guide}</p>
+      <div className="journey-entry-action">{selectedLevel && <button className="journey-primary" onClick={() => enterFriend(selectedLevel.id)}>{selectedLevel.text[language].enter} →</button>}</div>
     </>}
   </section>;
 }
@@ -76,9 +82,12 @@ export function JourneyBook({ sparkleProgress, language, activeLevel, surveyorPr
 }
 
 function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce };
+  const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
   const fieldUnlocked = surveyorProgress.matched.length === 2;
   const pages = [null, ...journeyStops.flatMap(id => {
+    if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,
       ...(fieldUnlocked ? eventOrder.map(event => `clue-${event}`) : []),
@@ -90,7 +99,7 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
     return id ? [id] : [];
   })];
   const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
-  const scienceClue = activeLevel === 'lap-lanh' && sparkleRepairUnlocked(sparkleProgress)
+  const scienceClue = activeLevel === 'lap-lanh' && status(activeLevel) !== 'locked' && sparkleRepairUnlocked(sparkleProgress)
     ? sparkleRangingUnlocked(sparkleProgress) ? 'sparkle-ranging-clue' : ['repair-intro', 'repair'].includes(sparkleProgress.phase) ? 'sparkle-repair-clue' : null
     : null;
   useEffect(() => {
@@ -118,6 +127,14 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
   const b01 = entry >= 0;
   const ct = challengeCopy[language];
   const st = surveyorPlayCopy[language];
+  if (level && status(level.id) === 'locked') return <>
+    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <aside className="book-panel" lang={language} aria-labelledby="book-title"><div className="book-sheet journey-book">
+      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · {t.waiting}</span>
+      <h2 id="book-title">{t.mystery}</h2><p>{t.prerequisite}</p>
+      {activeLevel && <BackToGame language={language} />}
+    </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
+  </>;
   if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
@@ -173,7 +190,11 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? detail.invitation : t.guide}</p>
-      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => <li key={index}><span aria-hidden="true">{(id === 'surveyor' && surveyorProgress.completedOnce || id === 'lap-lanh' && sparkleProgress.completedOnce) ? '★' : '☆'}</span><span>{id ? getLevel(id)!.text[language].friend : t.mystery}<small>{(id === 'surveyor' && surveyorProgress.completedOnce || id === 'lap-lanh' && sparkleProgress.completedOnce) ? t.completed : id ? t.ready : t.waiting}</small></span></li>)}</ol>}
+      {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => {
+        const state = status(id);
+        const friend = state === 'locked' ? undefined : getLevel(id);
+        return <li key={index}><span aria-hidden="true">{state === 'completed' ? '★' : '☆'}</span><span>{friend ? friend.text[language].friend : t.mystery}<small>{state === 'completed' ? t.completed : friend ? t.ready : t.waiting}</small></span></li>;
+      })}</ol>}
 
       {fieldUnlocked && !b01 && level?.id !== 'lap-lanh' && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : `clue-${nextClue}`))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
       {activeLevel && <BackToGame language={language} />}
