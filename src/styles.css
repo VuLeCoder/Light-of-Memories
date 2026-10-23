@@ -443,6 +443,16 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .ending-scene-lantern.is-kindled { filter: drop-shadow(0 0 12px #ffd88a88); }
 .ending-light-travel { position: absolute; left: 74%; top: 60%; width: 9px; height: 9px; border-radius: 50%; background: #fff0ba; box-shadow: 0 0 20px 8px #ffd88a99; animation: ending-gift 5s ease-in-out both; }
 .ending-distant-light { position: absolute; right: 0; top: 50.9259%; width: 22%; height: 30%; transform: translateY(-50%); background: radial-gradient(ellipse 100% 50% at right center, #fff2c99e 0%, #ffe5a680 14%, #ffdf9152 32%, #ffdf9129 52%, #ffdf910d 72%, #ffdf9100 100%); pointer-events: none; animation: journey-appear 1.5s ease-out; }
+.ending-trail { position: absolute; right: 0; top: 66%; width: 23%; height: 24%; pointer-events: none; background: radial-gradient(ellipse at 94% 60%, #ffe5a666, #ffdf9126 36%, transparent 72%); }
+.ending-trail > span { position: absolute; left: 65%; top: 60%; width: 8%; aspect-ratio: 1; border-radius: 50%; background: #fff0be; box-shadow: 0 0 12px 5px #ffe5a655; }
+.ending-trail > span:nth-child(2) { left: 80%; top: 45%; width: 5%; }
+.ending-trail > span:nth-child(3) { left: 91%; top: 32%; width: 3%; }
+.ending-trail-ripple { background: radial-gradient(ellipse at 65% 60%, #c8dcd92b, transparent 70%); }
+.ending-trail-ripple > span { left: 65%; top: 60%; width: 30%; height: 17%; aspect-ratio: auto; border: 2px solid #e5dbb2; background: transparent; box-shadow: none; transform: translate(-50%, -50%); animation: ending-ground-ripple 3s ease-out infinite; }
+.ending-trail-ripple > span:nth-child(2) { left: 65%; top: 60%; width: 54%; height: 31%; animation-delay: -1s; }
+.ending-trail-ripple > span:nth-child(3) { left: 65%; top: 60%; width: 80%; height: 46%; animation-delay: -2s; }
+@keyframes ending-ground-ripple { from { opacity: .8; scale: .75; } to { opacity: .2; scale: 1.1; } }
+@media (prefers-reduced-motion: reduce) { .ending-trail-ripple > span { animation: none; } }
 .game-stage:not(:has(.game-host[data-ready="true"])) .ending-distant-light { opacity: 0; animation: none; }
 .ending-farewell { position: absolute; inset: auto 18px 18px; padding: 18px; border: 1px solid #d2ba8155; border-radius: 10px; background: #152831f5; color: #f2ebdb; text-align: center; pointer-events: auto; }
 .ending-farewell h3 { margin: 0; color: #ffe5b1; font: 500 24px/1.4 'Lora',Georgia,serif; }

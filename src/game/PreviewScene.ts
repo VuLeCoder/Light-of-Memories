@@ -540,7 +540,8 @@ export class PreviewScene extends Phaser.Scene {
     const rightEdge = this.rightEdge;
     this.cuoi.x = Phaser.Math.Clamp(this.cuoi.x + heading * Math.min(distance, remaining), 52, rightEdge);
     if (this.options.scene === 'surveyor') this.cuoi.y = surveyorGroundY(this.cuoi.x);
-    if (this.options.scene === 'moon' && this.options.quest === 'trail' && this.cuoi.x >= 890 && !this.exitTriggered) {
+    const finishedTrail = this.options.freeRoam && ['lap-lanh', 'tai-thinh'].includes(this.options.scene);
+    if (((this.options.scene === 'moon' && this.options.quest === 'trail' && this.cuoi.x >= 890) || (finishedTrail && this.cuoi.x >= 875)) && !this.exitTriggered) {
       this.exitTriggered = true;
       this.setMoonMode('story');
       this.options.onExit();
@@ -580,7 +581,7 @@ export class PreviewScene extends Phaser.Scene {
       .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
   }
 
-  private get rightEdge() { return this.options.scene === 'surveyor' ? 890 : this.options.quest === 'trail' ? 908 : 830; }
+  private get rightEdge() { return this.options.freeRoam || this.options.scene === 'surveyor' ? 895 : this.options.quest === 'trail' ? 908 : 830; }
 
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;

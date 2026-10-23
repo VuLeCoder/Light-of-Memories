@@ -5,6 +5,7 @@ import { SparkleRepair, SparkleRanging } from './SparkleScience';
 import { SparkleEnding } from './SparkleEnding';
 import { SparkleCleaning } from './SparkleCleaning';
 import { EarthDialogue } from './EarthDialogue';
+import { EndingTrail } from './EndingTrail';
 
 export function SparkleLevel({ language, progress: p, onChange, onBack, onBook, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onBack: () => void; onBook: () => void; paused: boolean }) {
   const vi = language === 'vi';
@@ -32,7 +33,8 @@ export function SparkleLevel({ language, progress: p, onChange, onBack, onBook, 
     {phase === 'farewell' && <SparkleEnding language={language} progress={p} onChange={onChange} paused={paused} />}
     {phase === 'finished' && <section className="ending-scene sparkle-ending-scene is-exploring" aria-label={vi ? 'Cánh sao thứ hai đã sáng' : 'The second star point is shining'}>
       <div className="surveyor-scene-hud"><span>{vi ? 'Câu chuyện của Lấp Lánh' : 'Sparkle’s story'}</span><strong>★ 2/5</strong></div>
-      <div className="ending-farewell"><nav className="ending-actions" aria-label={vi ? 'Sau cuộc gặp Lấp Lánh' : 'After meeting Sparkle'}>
+      <EndingTrail language={language} ripple />
+      <div className="ending-farewell"><p>{vi ? 'Đi đến những vòng gợn phía xa để về lộ trình.' : 'Walk to the distant ripples to return to the route.'}</p><nav className="ending-actions" aria-label={vi ? 'Sau cuộc gặp Lấp Lánh' : 'After meeting Sparkle'}>
         <button onClick={() => onChange({ ...p, phase: 'farewell', turn: 0 })}>{vi ? 'Xem lại đoạn kết' : 'Replay the ending'}</button>
         <button onClick={() => onChange({ ...freshSparkle(), completedOnce: p.completedOnce, keepsakes: p.keepsakes })}>{vi ? 'Chơi lại' : 'Play again'}</button>
         <button className="journey-primary" onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'} →</button>

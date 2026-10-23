@@ -64,7 +64,7 @@ export const taiThinhScript = {
     line('farewell-03', 'taiThinh', 'Vẫn còn trong kho dữ liệu trên Trái Đất. Hôm nay, mình lại có một người bạn lắng nghe câu chuyện.', 'They are still in archives on Earth. And today, I have a friend to listen to my story.'),
     line('farewell-04', 'cuoi', 'Mình nhớ bạn rồi, Tai Thính. Mình sẽ mang câu chuyện của bạn đi cùng.', 'I will remember you, Keen Ears. I will carry your story with me.'),
     line('farewell-05', 'taiThinh', 'Cảm ơn bạn. Mong cánh sao này soi sáng chặng đường Cuội đi tìm chị Hằng.', 'Thank you. May this star point light your way as you search for Hằng.'),
-    line('farewell-06', 'cuoi', 'Cánh sao thứ ba sáng rồi! Có những câu chuyện chỉ cần mình dừng lại và lắng nghe.', 'The third star point is shining! Some stories just need us to pause and listen.'),
+    line('farewell-06', 'cuoi', 'Cánh sao thứ ba sáng rồi! Kìa, cuối đường có một vệt sáng… Không biết người bạn nào đang đợi mình nhỉ?', 'The third star point is shining! Look, a glow at the end of the path… I wonder which friend is waiting for me?'),
   ],
 } as const;
 

@@ -4,6 +4,7 @@ import { taiThinhDialogue, taiThinhMemories, taiThinhTaskCopy as copy } from '..
 import { replayTaiThinh, type TaiThinhProgress } from '../content/levels/tai-thinh-progress';
 import { EarthDialogue } from './EarthDialogue';
 import { TaiThinhArchiveImage } from './TaiThinhPhoto';
+import { EndingTrail } from './EndingTrail';
 
 export function TaiThinhEnding({ language, progress: p, onChange, onBack, paused, stars }: {
   language: Language; progress: TaiThinhProgress; onChange: (p: TaiThinhProgress) => void; onBack: () => void; paused: boolean; stars: number;
@@ -39,8 +40,9 @@ export function TaiThinhEnding({ language, progress: p, onChange, onBack, paused
   const gifting = p.phase === 'gift' && p.turn === 0;
   return <section className={`ending-scene tai-ending-scene${p.phase === 'finished' ? ' is-exploring' : ''}`} aria-label={title}>
     <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {stars}/5</strong></div>
+    {(p.phase === 'finished' || (p.phase === 'gift' && p.turn > 0)) && <EndingTrail language={language} />}
     {gifting ? <p className="tai-gift-status" role="status">{vi ? 'Một chút ánh sáng đang tìm đến chiếc đèn của Cuội…' : 'A little light is reaching Cuội’s lantern…'}</p>
-      : p.phase === 'finished' ? <div className="ending-farewell"><nav className="ending-actions" aria-label={title}>
+      : p.phase === 'finished' ? <div className="ending-farewell"><p>{vi ? 'Đi đến vệt sáng phía xa để về lộ trình.' : 'Walk to the distant glow to return to the route.'}</p><nav className="ending-actions" aria-label={title}>
         <button data-tai-primary onClick={() => go('memoriesIntro', 0)}>{copy.replayEnding[language]}</button>
         <button onClick={() => { if (!paused) onChange(replayTaiThinh(p)); }}>{copy.playAgain[language]}</button>
         <button className="journey-primary" onClick={onBack}>{copy.route[language]} →</button>
