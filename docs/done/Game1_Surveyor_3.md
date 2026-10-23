@@ -34,7 +34,7 @@ Sách đứng cạnh game và người chơi có thể lật **trang trước/tr
 
 **Quy tắc gợi ý:** người chơi có thể đào ảnh **không theo thứ tự** và **không bắt buộc mở sách**. Riêng ba trang gợi ý chỉ đọc/ghi nhớ **theo thứ tự**: cần ghi nhớ gợi ý trước, hoặc đã tìm được ảnh đó, mới mở được gợi ý tiếp theo. Vị trí đánh dấu, hình phác trong sách và vị trí đào là thiết kế của game; NASA không công bố ba tọa độ “đào ảnh” như vậy. [Mã gợi ý và ảnh](../src/content/levels/surveyor-dig.ts), [trang sách](../src/components/JourneyMap.tsx), [vị trí minh họa](../src/game/PreviewScene.ts).
 
-Các tài liệu kế hoạch cũ trong `docs` có thể còn mô tả B02/B03 hoặc thử thách T02 theo bản thiết kế trước. **Bản đang chạy chỉ tạo B01, ba trang gợi ý, ba trang ảnh và nhật ký hoàn chỉnh**; phần giải thích việc khảo sát đất và cuộc ghé thăm được kể trong ảnh, T03 và đoạn kết.
+**Bản đang chạy chỉ tạo B01, ba trang gợi ý, ba trang ảnh và nhật ký hoàn chỉnh**; phần giải thích việc khảo sát đất và cuộc ghé thăm được kể trong ảnh, T03 và đoạn kết.
 
 ## 4. Chi tiết các thử thách
 
@@ -52,7 +52,7 @@ Mắt Tròn giải thích **xẻng thật đã được mang về Trái Đất**
 | **Những rãnh đất nhỏ** ở phía phải, xa hơn | Xẻng của Surveyor 3 đã đào rãnh **1967**; ảnh tư liệu **Apollo 12 chụp năm 1969** cho thấy các rãnh vẫn còn. | [NASA SP-284](https://ntrs.nasa.gov/citations/19720019081), [NASA — dấu rãnh còn thấy khi Apollo 12 ghé thăm](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/) |
 | **Dấu bước chân** ở phía xa bên trái | Hai phi hành gia Apollo 12 đến Surveyor 3 **tháng 11/1969**; ảnh game là **Pete Conrad bên tàu**, do chuyến Apollo 12 chụp. | [NASA — bài và ảnh Apollo 12](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/) |
 
-Ba ảnh game tương ứng với `public/assets/surveyor-footpad.jpg`, `surveyor-trenches.jpg` và `surveyor-apollo12.jpg`; nguồn tư liệu ảnh và mã ảnh được ghi thêm trong [Surveyor-3-Dao-ky-uc.md](Surveyor-3-Dao-ky-uc.md). **Ảnh nằm dưới đất để Cuội đào lên là cách kể hư cấu**. Những dấu trong game gợi từ chân đế, rãnh xẻng và đường đi của phi hành gia; hình dáng và vị trí chúng được bố trí để dễ chơi, không phải sơ đồ khảo cổ của NASA.
+Ba ảnh game tương ứng với `public/assets/surveyor-footpad.jpg`, `surveyor-trenches.jpg` và `surveyor-apollo12.jpg`; nguồn tư liệu được đối chiếu trong bảng trên và mục 6 của tài liệu này. **Ảnh nằm dưới đất để Cuội đào lên là cách kể hư cấu**. Những dấu trong game gợi từ chân đế, rãnh xẻng và đường đi của phi hành gia; hình dáng và vị trí chúng được bố trí để dễ chơi, không phải sơ đồ khảo cổ của NASA.
 
 ### T03 — Ghép nhật ký Mắt Tròn
 
