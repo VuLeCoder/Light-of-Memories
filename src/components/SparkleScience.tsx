@@ -51,8 +51,12 @@ export function CornerDiagram({ rotation = 0, lit = 0, language = 'vi', onRotate
     <rect x={laserReceiver.x - 4} y={laserReceiver.y - laserReceiver.halfHeight} width="8" height={laserReceiver.halfHeight * 2} rx="2" fill={lit && beam.success ? '#b8cbc1' : '#617774'} stroke="#ad9870" />
     <text x="48" y="200" textAnchor="middle" fill="#e6dbc1" fontSize="14">{vi ? 'Trạm gửi' : 'Station'}</text>
     {lit > 0 && <g key={lit}>
-      <path d={beamPath} fill="none" stroke="#e7c684" strokeWidth="8" opacity=".12" />
-      <path d={beamPath} fill="none" stroke="#e7c684" strokeWidth="2.5" strokeLinecap="round" pathLength="1" className="sparkle-traced-ray" />
+      <path d={beamPath} fill="none" stroke="#e7c684" strokeWidth="8" strokeLinejoin="round" strokeLinecap="round" opacity=".12" />
+      <path d={beamPath} fill="none" stroke="#e7c684" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" pathLength="1" className="sparkle-traced-ray" />
+      {beam.hits.map((_, i) => {
+        const point = beam.points[i + 1];
+        return <circle key={`contact-${i}`} cx={point.x} cy={point.y} r="2.5" fill="#f0d69f" />;
+      })}
       {beam.points.slice(1).map((point, i) => {
         const from = beam.points[i];
         const angle = Math.atan2(point.y - from.y, point.x - from.x) * 180 / Math.PI;
