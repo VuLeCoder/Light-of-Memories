@@ -802,3 +802,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   55% { left: 40%; top: 71%; opacity: .85; }
   75%, 100% { left: 40%; top: 71%; opacity: 0; }
 }
+
+.sparkle-science-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.sparkle-science-heading h2 { flex: 1; min-width: 0; }
+.sparkle-science-heading .sparkle-hint-button { flex-shrink: 0; min-height: 36px; padding: 6px 12px; border: 1px solid #ad9870; border-radius: 8px; background: #30464b; color: #e7d7b4; font-size: clamp(12px, 1.5cqw, 15px); }

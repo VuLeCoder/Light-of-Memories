@@ -50,7 +50,6 @@ export function CornerDiagram({ angle = 90, lit = 0, language = 'vi', onRotate }
     </g>)}
     {angle > 1 && <path d={`M${cornerPivot.x + mirrors[0].tangent.x * 27} ${cornerPivot.y + mirrors[0].tangent.y * 27}A27 27 0 0 0 ${cornerPivot.x + mirrors[1].tangent.x * 27} ${cornerPivot.y + mirrors[1].tangent.y * 27}`} fill="none" stroke="#dfc18a" strokeWidth="1.5" />}
     <circle cx={cornerPivot.x} cy={cornerPivot.y} r="4" fill="#dfc18a" />
-    <text x="320" y="254" textAnchor="middle" fill="#e6dbc1" fontSize="13">{vi ? 'Góc giữa hai gương' : 'Angle between mirrors'}: {Math.round(angleBetween)}°</text>
     <rect x="20" y="97" width="45" height="80" rx="5" fill="#30464b" stroke="#ac9870" strokeWidth="2" />
     <circle cx={laserSource.x} cy={laserSource.y} r="5" fill="#dfc18a" />
     <rect x={laserReceiver.x - 4} y={laserReceiver.y - laserReceiver.halfHeight} width="8" height={laserReceiver.halfHeight * 2} rx="2" fill={lit && beam.success ? '#b8cbc1' : '#617774'} stroke="#ad9870" />
@@ -72,7 +71,7 @@ export function CornerDiagram({ angle = 90, lit = 0, language = 'vi', onRotate }
   </svg>;
 }
 
-export function SparkleRepair({ language, progress: p, onChange, onComplete, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onComplete: () => void; paused: boolean }) {
+export function SparkleRepair({ language, progress: p, onChange, onComplete, onBook, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onComplete: () => void; onBook: () => void; paused: boolean }) {
   const vi = language === 'vi';
   const [lit, setLit] = useState(0);
   const [tried, setTried] = useState(false);
@@ -85,7 +84,7 @@ export function SparkleRepair({ language, progress: p, onChange, onComplete, pau
   return <section className="sparkle-card sparkle-science sparkle-repair" aria-labelledby="sparkle-repair-title">
     <div className="sparkle-science-visual"><CornerDiagram angle={p.repairAngle} lit={lit} language={language} onRotate={rotate} /><small>{vi ? 'Đây là mô hình 2D đơn giản. Thiết bị Apollo 11 thật sử dụng các lăng kính có ba mặt phản xạ vuông góc.' : 'This is a simplified 2D model. The real Apollo 11 device uses prisms with three mutually perpendicular reflecting faces.'}</small></div>
     <div className="sparkle-cleaning-copy">
-      <h2 id="sparkle-repair-title">{vi ? 'T03 · Sửa kính phản xạ Apollo 11' : 'T03 · Repair the Apollo 11 reflector'}</h2>
+      <div className="sparkle-science-heading"><h2 id="sparkle-repair-title">{vi ? 'T03 · Sửa kính phản xạ Apollo 11' : 'T03 · Repair the Apollo 11 reflector'}</h2><button className="sparkle-hint-button" disabled={paused} onClick={onBook}>{vi ? 'Gợi ý' : 'Hint'}</button></div>
       <p className="sparkle-repair-goal">{vi ? 'Mục tiêu: Căn chỉnh gương 2 để tia phản xạ qua hai gương và về vùng nhận.' : 'Goal: keep mirror 1 fixed and align mirror 2 so light reflects off both mirrors into the station’s receiver.'}</p>
       <label className="sparkle-rotation-control">{vi ? 'Góc gương 2 so với gương 1' : 'Mirror 2 angle relative to mirror 1'} <output>{Math.round(p.repairAngle)}°</output><input aria-label={vi ? 'Góc gương 2 so với gương 1' : 'Mirror 2 angle relative to mirror 1'} type="range" disabled={paused} min="0" max="180" step="1" value={p.repairAngle} onChange={event => rotate(Number(event.target.value))} /></label>
       {tried && <p className="sparkle-science-feedback" role="status">{success ? (vi ? 'Căn chỉnh đúng rồi! Tia phản xạ qua hai gương và trở về khe nhận sáng.' : 'Aligned! The ray reflects off both mirrors and returns to the receiving slit.') : (vi ? (beam.returned ? 'Tia đã tới vùng nhận. Căn đúng 90° để tia về song song với tia tới nhé!' : `Tia phản xạ ${beam.hits.length} lần, chưa trở về vùng nhận.`) : (beam.returned ? 'The ray reached the receiver. Align to exactly 90° for a parallel return!' : `The ray reflected ${beam.hits.length} times, without returning through both mirrors.`))}</p>}
@@ -129,7 +128,7 @@ export function RangingDiagram({ elapsed = null, language = 'vi' }: { elapsed?: 
   </svg>;
 }
 
-export function SparkleRanging({ language, progress: p, onChange, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; paused: boolean }) {
+export function SparkleRanging({ language, progress: p, onChange, onBook, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onBook: () => void; paused: boolean }) {
   const vi = language === 'vi';
   const [elapsed, setElapsed] = useState<number | null>(null);
   const [numbers, setNumbers] = useState(p.calculation ? ['300000', '2,56', '2', String(p.distance)] : ['', '', '', '']);
@@ -171,7 +170,7 @@ export function SparkleRanging({ language, progress: p, onChange, paused }: { la
       <small>{vi ? 'Số liệu mô phỏng · Hình không theo tỉ lệ' : 'Simulated data · Not to scale'}</small>
     </div>
     <div className="sparkle-cleaning-copy">
-      <h2 id="sparkle-ranging-title">{vi ? 'T04 · Lời chào mất bao lâu?' : 'T04 · How long is a greeting?'}</h2>
+      <div className="sparkle-science-heading"><h2 id="sparkle-ranging-title">{vi ? 'T04 · Lời chào mất bao lâu?' : 'T04 · How long is a greeting?'}</h2><button className="sparkle-hint-button" disabled={paused} onClick={onBook}>{vi ? 'Gợi ý' : 'Hint'}</button></div>
       {p.measured ? <form className="sparkle-calculation" onSubmit={event => { event.preventDefault(); if (!running && !paused) check(); }}>
         <div className="sparkle-equation">{numberField(0)}{operatorField(0)}{numberField(1)}{operatorField(1)}{numberField(2)}</div>
         <div className="sparkle-answer"><span aria-hidden="true">=</span>{numberField(3)}</div>

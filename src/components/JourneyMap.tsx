@@ -4,7 +4,7 @@ import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
 import { enterSurveyor, eventOrder } from '../content/levels/surveyor-progress';
 import { challengeCopy } from '../content/levels/surveyor-challenges';
 import { memoryCount } from '../content/levels/surveyor-progress';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
 import { copy } from '../content/i18n';
 import { getLevel, journeyStops, journeyStatus, type LevelId } from '../content/levels';
@@ -98,13 +98,11 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
     if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkleProgress) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkleProgress) ? ['sparkle-ranging-clue'] : [])];
     return id ? [id] : [];
   })];
-  const [page, setPage] = useState(() => Math.max(0, pages.indexOf(activeLevel)));
-  const scienceClue = activeLevel === 'lap-lanh' && status(activeLevel) !== 'locked' && sparkleRepairUnlocked(sparkleProgress)
-    ? sparkleRangingUnlocked(sparkleProgress) ? 'sparkle-ranging-clue' : ['repair-intro', 'repair'].includes(sparkleProgress.phase) ? 'sparkle-repair-clue' : null
-    : null;
-  useEffect(() => {
-    if (scienceClue) setPage(pages.indexOf(scienceClue));
-  }, [scienceClue]);
+  // Keep the selected page's identity when new photos or clues are inserted.
+  const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel);
+  const page = Math.max(0, pages.indexOf(selectedPage));
+  const setPage = (index: number) => setSelectedPage(pages[index] ?? null);
+  const lastBookRequest = useRef(bookRequest);
   const t = journeyCopy[language];
   const dt = digCopy[language];
   const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
@@ -113,13 +111,19 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
   const nextClue = eventOrder.find(id => !surveyorProgress.clues.includes(id) && !surveyorProgress.found.includes(id))
     ?? eventOrder.find(id => !surveyorProgress.found.includes(id)) ?? 'arrive';
   useEffect(() => {
-    if (!bookRequest || !fieldUnlocked) return;
-    setPage(pages.indexOf(`clue-${nextClue}`));
-    requestAnimationFrame(() => {
-      const heading = document.getElementById('field-book-title');
+    if (lastBookRequest.current === bookRequest) return;
+    lastBookRequest.current = bookRequest;
+    const target = activeLevel === 'lap-lanh'
+      ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
+      : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
+    if (!target || !pages.includes(target)) return;
+    setSelectedPage(target);
+    const frame = requestAnimationFrame(() => {
+      const heading = document.getElementById(activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
       heading?.focus({ preventScroll: true });
       heading?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
+    return () => cancelAnimationFrame(frame);
   }, [bookRequest]);
   const level = getLevel(pages[page]);
   const detail = level?.text[language];

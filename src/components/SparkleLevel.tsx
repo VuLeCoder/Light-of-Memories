@@ -6,7 +6,7 @@ import { SparkleEnding } from './SparkleEnding';
 import { SparkleCleaning } from './SparkleCleaning';
 import { EarthDialogue } from './EarthDialogue';
 
-export function SparkleLevel({ language, progress: p, onChange, onBack, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onBack: () => void; paused: boolean }) {
+export function SparkleLevel({ language, progress: p, onChange, onBack, onBook, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onBack: () => void; onBook: () => void; paused: boolean }) {
   const vi = language === 'vi';
   const phase = p.phase;
   const go = (next: SparkleProgress['phase']) => { onChange({ ...p, phase: next, turn: 0 }); };
@@ -27,8 +27,8 @@ export function SparkleLevel({ language, progress: p, onChange, onBack, paused }
       </div></div>
     </section>}
     {(phase === 'repair-intro' || phase === 'ranging-intro') && <EarthDialogue key={phase} language={language} paused={paused} title={title} lines={sparkleScienceLines(language, phase)} initialIndex={p.turn} onTurn={turn => { if (turn !== p.turn) onChange({ ...p, turn }); }} finalAction="moon" finalLabel={vi ? (phase === 'repair-intro' ? 'Mở mô hình góc gương' : phase === 'ranging-intro' ? 'Bắt đầu đo' : 'Cất manh mối') : (phase === 'repair-intro' ? 'Open the reflector model' : phase === 'ranging-intro' ? 'Start measuring' : 'Keep the clues')} onComplete={() => go(phase === 'repair-intro' ? 'repair' : 'ranging')} />}
-    {phase === 'repair' && <SparkleRepair paused={paused} language={language} progress={p} onChange={onChange} onComplete={() => go('ranging-intro')} />}
-    {phase === 'ranging' && <SparkleRanging language={language} progress={p} onChange={onChange} paused={paused} />}
+    {phase === 'repair' && <SparkleRepair onBook={onBook} paused={paused} language={language} progress={p} onChange={onChange} onComplete={() => go('ranging-intro')} />}
+    {phase === 'ranging' && <SparkleRanging onBook={onBook} language={language} progress={p} onChange={onChange} paused={paused} />}
     {phase === 'farewell' && <SparkleEnding language={language} progress={p} onChange={onChange} paused={paused} />}
     {phase === 'finished' && <section className="ending-scene sparkle-ending-scene is-exploring" aria-label={vi ? 'Cánh sao thứ hai đã sáng' : 'The second star point is shining'}>
       <div className="surveyor-scene-hud"><span>{vi ? 'Câu chuyện của Lấp Lánh' : 'Sparkle’s story'}</span><strong>★ 2/5</strong></div>
