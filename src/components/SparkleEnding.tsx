@@ -49,7 +49,7 @@ export function SparkleEnding({ language, progress, onChange, paused }: {
     </section>;
   }
   const lit = step >= 5;
-  return <section className={`ending-scene${gifting ? ' is-gifting' : ''}`} hidden={paused} lang={language} aria-label={title}>
+  return <section className={`ending-scene sparkle-ending-scene${gifting ? ' is-gifting' : ''}`} hidden={paused} lang={language} aria-label={title}>
     <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {lit ? '2' : '1'}/5</strong></div>
     {step >= 4 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} second />{gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}</div>}
     {gifting && <span className="ending-light-travel" aria-hidden="true" onAnimationEnd={() => setGifting(false)} />}

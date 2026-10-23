@@ -783,3 +783,22 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .sparkle-repair .sparkle-rotation-control input { margin: 2px 0; }
   .sparkle-repair .journey-primary { min-height: 28px; padding: 5px 6px; }
 }
+
+/* Keep Sparkle's farewell above the characters on the ground. */
+.sparkle-ending-scene > .dialogue {
+  inset: 12% 18px auto;
+  width: auto;
+  max-height: 38%;
+  padding: clamp(8px, 1.5cqw, 16px);
+}
+.sparkle-ending-scene .dialogue-text { font-size: clamp(13px, 1.8cqw, 17px); }
+.sparkle-ending-scene .dialogue-footer { margin-top: 8px; }
+.sparkle-ending-scene .dialogue-next { min-height: 36px; padding: 6px 12px; font-size: clamp(13px, 1.7cqw, 16px); }
+.sparkle-ending-scene .ending-scene-lantern { left: 40%; top: 71%; width: 7%; }
+.sparkle-ending-scene .ending-light-travel { left: 50%; top: 60%; animation-name: sparkle-ending-gift; }
+@keyframes sparkle-ending-gift {
+  0% { left: 50%; top: 60%; opacity: 0; }
+  15% { opacity: .85; }
+  55% { left: 40%; top: 71%; opacity: .85; }
+  75%, 100% { left: 40%; top: 71%; opacity: 0; }
+}

@@ -6,6 +6,7 @@ export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh';
 export interface PreviewOptions {
   freeRoam?: boolean;
   sparkleTrail?: boolean;
+  sparkleEnding?: boolean;
   sparkleDust?: boolean;
   onTrailHole?: () => void;
   excavation?: { found: SurveyorEvent[]; clues: SurveyorEvent[]; digging: boolean };

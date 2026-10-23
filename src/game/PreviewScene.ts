@@ -80,9 +80,10 @@ export class PreviewScene extends Phaser.Scene {
     const replayingEnding = this.options.freeRoam && !value;
     this.options.freeRoam = value;
     this.releaseControls();
-    if (replayingEnding && this.cuoi) {
-      const x = surveyorEncounter.x - 80;
-      this.cuoi.setPosition(x, surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
+    if (replayingEnding && this.cuoi && (this.options.scene !== 'lap-lanh' || this.options.sparkleEnding)) {
+      const sparkle = this.options.scene === 'lap-lanh';
+      const x = sparkle ? 340 : surveyorEncounter.x - 80;
+      this.cuoi.setPosition(x, sparkle ? 431 : surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
       this.setCuoiFrame('rest');
       this.digShadow?.setVisible(false);
       this.exitTriggered = false;
@@ -136,7 +137,15 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   private get interactionX() { if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { return this.options.scene === 'lap-lanh' || (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  private get canInteract() { return this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  setSparkleEnding(value: boolean) {
+    const entering = value && !this.options.sparkleEnding;
+    this.options.sparkleEnding = value;
+    if (entering && this.cuoi) {
+      this.releaseControls();
+      this.cuoi.setPosition(340, 431).setScale(.62).setFlipX(false);
+    }
+  }
   private trailDecor?: Phaser.GameObjects.Graphics;
   private trailTarget?: { x: number; y: number };
   private trailContact = false;
@@ -398,6 +407,10 @@ export class PreviewScene extends Phaser.Scene {
       this.earnedLight.fillStyle(0xffdf91, .14).fillCircle(0, -12, 20);
       this.earnedLight.fillStyle(0xffe6a2).fillTriangle(0, 0, points[9].x, points[9].y, points[0].x, points[0].y);
       this.earnedLight.fillTriangle(0, 0, points[0].x, points[0].y, points[1].x, points[1].y);
+      if (this.options.scene === 'lap-lanh') {
+        this.earnedLight.fillTriangle(0, 0, points[1].x, points[1].y, points[2].x, points[2].y);
+        this.earnedLight.fillTriangle(0, 0, points[2].x, points[2].y, points[3].x, points[3].y);
+      }
       this.syncLanternGrip();
       // Follow the final animated pose and position, including direction changes.
       this.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncLanternGrip, this);
@@ -428,7 +441,7 @@ export class PreviewScene extends Phaser.Scene {
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
       if (this.options.scene === 'earth' || this.moonMode !== 'free') return;
       if (this.options.sparkleTrail) { if (y >= 280 && y <= 530) this.trailTarget = { x: Phaser.Math.Clamp(x, 35, 925), y: Phaser.Math.Clamp(y, 280, 515) }; return; }
-      if (this.options.excavation || this.options.freeRoam) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
+      if (this.options.excavation || (this.options.freeRoam && this.options.scene === 'surveyor')) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
       this.pendingInteraction = this.canInteract && this.interactionRegion.contains(x, y);
       if (this.pendingInteraction) {
         this.walkTarget = this.interactionX;
@@ -444,7 +457,7 @@ export class PreviewScene extends Phaser.Scene {
   update(_time: number, delta: number) {
     if (!this.cuoi || !this.keys) return;
     if (this.options.sparkleTrail) { this.updateTrail(delta); return; }
-    if (this.options.excavation || this.options.freeRoam) { this.updateExcavation(_time, delta); return; }
+    if (this.options.excavation || (this.options.freeRoam && this.options.scene === 'surveyor')) { this.updateExcavation(_time, delta); return; }
     this.interactionHint?.setVisible((this.options.scene !== 'lap-lanh' || this.options.encounterStarted) && this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
@@ -478,7 +491,7 @@ export class PreviewScene extends Phaser.Scene {
   private syncLanternGrip() {
     const c = this.cuoi, lantern = this.lantern;
     if (!c || !lantern) return;
-    if (this.options.scene === 'lap-lanh') {
+    if (this.options.scene === 'lap-lanh' && !this.options.freeRoam) {
       lantern.setVisible(false);
       this.earnedLight?.setVisible(false);
       return;
@@ -507,7 +520,7 @@ export class PreviewScene extends Phaser.Scene {
 
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;
-    const startX = this.options.scene === 'lap-lanh' ? 140 : this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
+    const startX = this.options.scene === 'lap-lanh' ? (this.options.sparkleEnding ? 340 : 140) : this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
     this.cuoi = this.add.sprite(startX, this.options.scene === 'surveyor' ? surveyorGroundY(startX) : 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
       .setOrigin(0.5, 1).setScale(0.62).setDepth(10);
     if (this.options.sparkleTrail) this.syncTrailPerspective();

@@ -103,7 +103,7 @@ export function App() {
   const journeyOpen = quest === 'complete';
   const inSparkle = journeyOpen && activeLevel === 'lap-lanh';
   const sparkleTrail = inSparkle && ['route', 'search-intro', 'search'].includes(sparkleProgress.phase);
-  const sparkleWalking = inSparkle && ['arrival', 'search'].includes(sparkleProgress.phase);
+  const sparkleWalking = inSparkle && ['arrival', 'search', 'finished'].includes(sparkleProgress.phase);
   useEffect(() => {
     if (!inSparkle || sparkleProgress.phase !== 'search') setTrailWarning(false);
   }, [inSparkle, sparkleProgress.phase]);
@@ -153,7 +153,7 @@ export function App() {
   // T01 can lose its focused button when a dialogue closes or becomes inert.
   // Recover only while the game owns focus; outside pointer presses release it above.
   useEffect(() => {
-    if (!inSparkle || !['search', 'arrival'].includes(sparkleProgress.phase) || menuOpen) return;
+    if (!inSparkle || !['search', 'arrival', 'finished'].includes(sparkleProgress.phase) || menuOpen) return;
     const stage = gameStage.current;
     let frame = 0;
     const restoreFocus = () => {
@@ -229,7 +229,7 @@ export function App() {
       else if (phase === 'clean-photo') gameInstructions = vi ? 'Cất ảnh và tiếp tục để mở thử thách khôi phục đường sáng.' : 'Keep the picture and continue to restore the light path.';
       else if (phase === 'repair') gameInstructions = vi ? 'Kéo cụm gương để xoay rồi chọn “Thử tia sáng”. Có thể dùng thanh góc xoay hoặc Tab và phím mũi tên; xem manh mối trong sách.' : 'Drag the mirror pair to rotate it, then try the light. You can also use the rotation slider or Tab and arrow keys; see the book for clues.';
       else if (phase === 'ranging') gameInstructions = vi ? 'Gửi xung sáng, xem manh mối trong sách, nhập các số và chọn dấu. Bấm Nộp kết quả hoặc nhấn Enter để trả lời.' : 'Send a pulse, read the book clue, enter the numbers and choose operators. Click Submit answer or press Enter.';
-      else if (phase === 'finished') gameInstructions = vi ? 'Đọc lại manh mối trong sách, về lộ trình hoặc chơi lại đoạn Lấp Lánh.' : 'Revisit the book, return to the route or replay Sparkle’s chapter.';
+      else if (phase === 'finished') gameInstructions = moveHelp;
       else gameInstructions = dialogueHelp;
     }
     else if (tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro) gameInstructions = dialogueHelp;
@@ -301,7 +301,7 @@ export function App() {
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingFreeRoam} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam ? () => setActiveLevel(null) : onExit} scene={inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              <GameCanvas sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished')} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam ? () => setActiveLevel(null) : onExit} scene={inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}

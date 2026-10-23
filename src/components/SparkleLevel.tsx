@@ -16,7 +16,7 @@ export function SparkleLevel({ language, progress: p, onChange, onBack, paused }
   useEffect(() => { if (!paused && photoId !== null) photoButton.current?.focus({ preventScroll: true }); }, [photoId, paused]);
   const receivePhoto = (id: number) => onChange({ ...p, phase: id === 0 ? 'dust-photo' : 'clean-photo', turn: 0, keepsakes: [...new Set([...p.keepsakes, id])], ...(id === 1 ? { observations: [0, 1, 2] } : {}) });
   return <section className="sparkle-level" hidden={paused} lang={language} aria-label={title}>
-    {phase !== 'farewell' && <div className="surveyor-scene-hud"><span>{phase === 'search' ? (vi ? 'T01 · Theo điểm sáng' : 'T01 · Follow the glint') : (vi ? 'Biển Yên Tĩnh · Apollo 11' : 'Sea of Tranquility · Apollo 11')}</span><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></div>}
+    {!['farewell', 'finished'].includes(phase) && <div className="surveyor-scene-hud"><span>{phase === 'search' ? (vi ? 'T01 · Theo điểm sáng' : 'T01 · Follow the glint') : (vi ? 'Biển Yên Tĩnh · Apollo 11' : 'Sea of Tranquility · Apollo 11')}</span><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></div>}
     {phase === 'route' && <EarthDialogue key="route" language={language} paused={paused} title={vi ? 'Theo ánh sáng xa xăm' : 'Following the distant light'} lines={sparkleRouteLines(language)} initialIndex={p.turn} onTurn={turn => { if (turn !== p.turn) onChange({ ...p, turn }); }} finalAction="moon" finalLabel={vi ? 'Đến Biển Yên Tĩnh' : 'Arrive at the Sea of Tranquility'} onComplete={() => go('search-intro')} />}
     {phase === 'search-intro' && <EarthDialogue key={phase} language={language} paused={paused} title={title} lines={sparkleChallengeLines(language)} initialIndex={p.turn} onTurn={turn => { if (turn !== p.turn) onChange({ ...p, turn }); }} finalAction="moon" finalLabel={vi ? 'Bắt đầu thử thách' : 'Start challenge'} onComplete={() => go('search')} />}
     {(phase === 'meeting' || phase === 'cleaning-intro') && <EarthDialogue key={phase} language={language} paused={paused} title={title} lines={sparkleMeetingLines(language, phase === 'cleaning-intro')} initialIndex={p.turn} onTurn={turn => { if (turn !== p.turn) onChange({ ...p, turn }); }} finalAction="moon" finalLabel={vi ? (phase === 'meeting' ? 'Nhận bức ảnh' : 'Giúp Lấp Lánh lau kính') : (phase === 'meeting' ? 'Receive the picture' : 'Help clean the glass')} onComplete={() => phase === 'meeting' ? receivePhoto(0) : go('cleaning')} />}
@@ -30,7 +30,14 @@ export function SparkleLevel({ language, progress: p, onChange, onBack, paused }
     {phase === 'repair' && <SparkleRepair language={language} progress={p} onChange={onChange} onComplete={() => go('ranging-intro')} />}
     {phase === 'ranging' && <SparkleRanging language={language} progress={p} onChange={onChange} onComplete={() => go('farewell')} paused={paused} />}
     {phase === 'farewell' && <SparkleEnding language={language} progress={p} onChange={onChange} paused={paused} />}
-    {phase === 'finished' && <section className="sparkle-card sparkle-finished"><h2>{vi ? 'Cánh sao thứ hai đã sáng!' : 'The second star point is shining!'}</h2><p>{vi ? 'Cuội đã giúp Lấp Lánh và đo được khoảng cách mô phỏng: 384.000 km. Hai bức ảnh và những manh mối vẫn ở trong sách.' : 'Cuội helped Sparkle and measured a simulated distance of 384,000 km. Both pictures and the clues remain in the book.'}</p><div className="ending-actions"><button className="journey-primary" onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button><button onClick={() => onChange({ ...freshSparkle(), completedOnce: p.completedOnce, keepsakes: p.keepsakes })}>{vi ? 'Chơi lại đoạn Lấp Lánh' : 'Replay Sparkle’s chapter'}</button></div></section>}
+    {phase === 'finished' && <section className="ending-scene sparkle-ending-scene is-exploring" aria-label={vi ? 'Cánh sao thứ hai đã sáng' : 'The second star point is shining'}>
+      <div className="surveyor-scene-hud"><span>{vi ? 'Câu chuyện của Lấp Lánh' : 'Sparkle’s story'}</span><strong>★ 2/5</strong></div>
+      <div className="ending-farewell"><nav className="ending-actions" aria-label={vi ? 'Sau cuộc gặp Lấp Lánh' : 'After meeting Sparkle'}>
+        <button onClick={() => onChange({ ...p, phase: 'farewell', turn: 0 })}>{vi ? 'Xem lại đoạn kết' : 'Replay the ending'}</button>
+        <button onClick={() => onChange({ ...freshSparkle(), completedOnce: p.completedOnce, keepsakes: p.keepsakes })}>{vi ? 'Chơi lại' : 'Play again'}</button>
+        <button className="journey-primary" onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'} →</button>
+      </nav></div>
+    </section>}
     {phase === 'cleaning' && <SparkleCleaning language={language} onComplete={() => receivePhoto(1)} />}
   </section>;
 }
