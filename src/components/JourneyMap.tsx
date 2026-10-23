@@ -93,7 +93,6 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
       ...(fieldUnlocked ? eventOrder.map(event => `clue-${event}`) : []),
       ...(fieldUnlocked ? ['surveyor-b01'] : []),
       ...eventOrder.filter(event => surveyorProgress.found.includes(event)).map(event => `photo-${event}`),
-      ...(surveyorProgress.phase === 'complete' ? ['journal'] : []),
     ];
     if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkleProgress) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkleProgress) ? ['sparkle-ranging-clue'] : [])];
     return id ? [id] : [];
@@ -125,6 +124,9 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
     });
     return () => cancelAnimationFrame(frame);
   }, [bookRequest]);
+  useEffect(() => {
+    document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
+  }, [selectedPage]);
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
   const entry = ['surveyor-b01', 'surveyor-b02', 'surveyor-b03'].indexOf(pages[page] ?? '');
@@ -133,7 +135,7 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
   const st = surveyorPlayCopy[language];
   if (level && status(level.id) === 'locked') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-    <aside className="book-panel" lang={language} aria-labelledby="book-title"><div className="book-sheet journey-book">
+    <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · {t.waiting}</span>
       <h2 id="book-title">{t.mystery}</h2><p>{t.prerequisite}</p>
       {activeLevel && <BackToGame language={language} />}
@@ -141,7 +143,7 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
   </>;
   if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-    <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
+    <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div tabIndex={0} className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
       <div className="page-corner" aria-hidden="true" />
       <SparkleBookClue key={pages[page]} language={language} ranging={pages[page] === 'sparkle-ranging-clue'} />
       {activeLevel && <BackToGame language={language} />}
@@ -152,28 +154,18 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
     const photo = sparkleKeepsakes[sparklePhotoId];
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="sparkle-photo-title"><div className="book-sheet journey-book">
+      <aside className="book-panel" lang={language} aria-labelledby="sparkle-photo-title"><div tabIndex={0} className="book-sheet journey-book">
         <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{language === 'vi' ? 'Kỷ niệm cùng Lấp Lánh' : 'Memories with Sparkle'} · {sparklePhotoId + 1}/2</span>
-        <h2 id="sparkle-photo-title">{photo[language].title}</h2><img className="book-memory-photo" src={photo.src} alt={photo[language].title} /><p>{photo[language].description}</p>
+        <h2 id="sparkle-photo-title">{photo[language].title}</h2><img className="book-memory-photo" src={photo.src} alt={photo[language].title} /><p>{photo[language].description}</p><BookSource language={language} sparkle photo />
         {activeLevel && <BackToGame language={language} />}
         </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
     </>;
   }
-  if (pages[page] === 'journal') return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-    <aside className="book-panel" lang={language} aria-labelledby="journal-title"><div className="book-sheet journey-book">
-      <span className="book-kicker">Surveyor 3 · ★ 1/5</span>
-      <h2 id="journal-title">{language === 'vi' ? 'Nhật ký Mắt Tròn' : 'Round Eyes’ journal'}</h2>
-      <ol className="book-journal">{eventOrder.map(id => <li key={id}><img src={memoryPhotos[id]} alt=""/><span>{ct.events[id]}</span></li>)}</ol>
-      <p>{language === 'vi' ? 'Ba bức ảnh đã trở về đúng thứ tự trong ký ức.' : 'Three photos are back in the right order in my memory.'}</p>
-      {activeLevel && <BackToGame language={language} />}
-      </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
-  </>;
   if (clue || photo) {
     const id = (clue ?? photo)!;
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="field-book-title"><div className="book-sheet journey-book field-book">
+      <aside className="book-panel" lang={language} aria-labelledby="field-book-title"><div tabIndex={0} className="book-sheet journey-book field-book">
         <span className="book-kicker">{clue ? dt.book : dt.found} · {surveyorProgress.found.length}/3</span>
         <h2 id="field-book-title" tabIndex={-1}>{dt.names[id]}</h2>
         {clue ? clueUnlocked ? <>
@@ -183,24 +175,27 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
           <button disabled={surveyorProgress.clues.includes(id)} onClick={() => onSurveyorChange({ ...surveyorProgress, clues: [...surveyorProgress.clues, id] })}>{surveyorProgress.clues.includes(id) ? `✓ ${dt.ready}` : dt.read}</button>
           {surveyorProgress.clues.includes(id) && eventOrder.indexOf(id) < eventOrder.length - 1 && <button className="book-next-clue" onClick={() => setPage(pages.indexOf(`clue-${eventOrder[eventOrder.indexOf(id) + 1]}`))}>{language === 'vi' ? 'Gợi ý tiếp theo →' : 'Next clue →'}</button>}
           {surveyorProgress.found.includes(id) && <p>✓ {dt.found}</p>}
-        </> : <p role="status">{dt.lockedClue}</p> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><small>NASA</small></>}
+        </> : <p role="status">{dt.lockedClue}</p> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><BookSource language={language} /></>}
         {activeLevel && <BackToGame language={language} />}
         </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
     </>;
   }
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-    <aside className="book-panel" lang={language} aria-labelledby="book-title"><div className="book-sheet journey-book">
+    <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
-      <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? detail.invitation : t.guide}</p>
+      <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? level.id === 'lap-lanh'
+        ? (language === 'vi' ? 'Apollo 11 đặt Lấp Lánh tại Biển Yên Tĩnh năm 1969. Bảng gồm 100 lăng kính, phản xạ tia laser từ Trái Đất trở về mà không cần điện.' : 'Apollo 11 placed Sparkle in the Sea of Tranquility in 1969. Its 100 prisms reflect laser light back toward Earth without electricity.')
+        : (language === 'vi' ? 'Surveyor 3 là tàu robot NASA đến Mặt Trăng tháng 4/1967. Tàu chụp ảnh và dùng xẻng khảo sát đất. Tháng 11/1969, các phi hành gia Apollo 12 đến thăm và mang một số bộ phận về nghiên cứu.' : 'Surveyor 3 is a NASA robot that reached the Moon in April 1967. It took photos and studied soil with a scoop. In November 1969, Apollo 12 astronauts visited and returned some parts to Earth for study.')
+        : t.guide}</p>
       {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => {
         const state = status(id);
         const friend = state === 'locked' ? undefined : getLevel(id);
         return <li key={index}><span aria-hidden="true">{state === 'completed' ? '★' : '☆'}</span><span>{friend ? friend.text[language].friend : t.mystery}<small>{state === 'completed' ? t.completed : friend ? t.ready : t.waiting}</small></span></li>;
       })}</ol>}
 
-      {fieldUnlocked && !b01 && level?.id !== 'lap-lanh' && <button className="book-new-entry" onClick={() => setPage(pages.indexOf(surveyorProgress.phase === 'complete' ? 'journal' : `clue-${nextClue}`))}>{surveyorProgress.phase === 'complete' ? (language === 'vi' ? 'Đọc nhật ký hoàn chỉnh' : 'Read the completed journal') : dt.open}</button>}
+      {(level || b01) && <BookSource language={language} sparkle={level?.id === 'lap-lanh'} />}
       {activeLevel && <BackToGame language={language} />}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
   </>;
@@ -213,4 +208,12 @@ function BackToGame({ language }: { language: Language }) {
     (target ?? stage)?.focus({ preventScroll: true });
     stage?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
   }}>{language === 'vi' ? '↑ Quay lại trò chơi' : '↑ Back to the game'}</button>;
+}
+
+function BookSource({ language, sparkle = false, photo = false }: { language: Language; sparkle?: boolean; photo?: boolean }) {
+  return <a className="sparkle-book-source" href={sparkle
+    ? photo ? 'https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html' : 'https://www.jpl.nasa.gov/news/apollo-11-experiment-still-going-strong-after-35-years/'
+    : 'https://science.nasa.gov/mission/surveyor-3/'} target="_blank" rel="noreferrer">
+    {language === 'vi' ? 'Nguồn NASA' : 'NASA source'} · {sparkle ? 'Apollo 11' : 'Surveyor 3'} ↗
+  </a>;
 }

@@ -25,9 +25,9 @@ export const digCopy = {
     continue: 'Tiếp tục tìm ảnh', finish: 'Ghép ba ảnh thành nhật ký', found: 'Ảnh đã tìm thấy',
     fiction: 'Cuội đào tìm ảnh là chuyện tưởng tượng. Mắt Tròn và các sự kiện trong ảnh là có thật.',
     clues: {
-      arrive: 'Đi sang bên trái Mắt Tròn, ở vùng đất gần phía trước. Tìm hai vết lõm hình bầu dục cạnh nhau. Đó là dấu chân tàu để lại khi chạm đất.',
-      work: 'Đi xa hơn về bên phải Mắt Tròn. Tìm những rãnh đất dài nằm cạnh nhau. Chiếc xẻng đã đào những rãnh này.',
-      visit: 'Đi lên vùng đất xa phía trái. Tìm dấu chân dẫn về phía Mắt Tròn. Hai vị khách từng đi qua đó.',
+      arrive: 'Trong màn chơi, đi sang bên trái Mắt Tròn, ở vùng đất gần phía trước. Tìm hai vết lõm hình bầu dục cạnh nhau. Đó là dấu chân tàu để lại khi chạm đất.',
+      work: 'Trong màn chơi, đi xa hơn về bên phải Mắt Tròn. Tìm những rãnh đất dài nằm cạnh nhau. Chiếc xẻng đã đào những rãnh này.',
+      visit: 'Trong màn chơi, đi lên vùng đất xa phía trái. Tìm dấu chân dẫn về phía Mắt Tròn. Hai vị khách từng đi qua đó.',
     },
     names: { arrive: 'Dấu chân Mắt Tròn', work: 'Những rãnh đất nhỏ', visit: 'Dấu bước chân' },
     descriptions: {
@@ -48,9 +48,9 @@ export const digCopy = {
     continue: 'Keep looking', finish: 'Arrange the photos into a journal', found: 'Photos found',
     fiction: 'Cuội digging for photos is make-believe. Round Eyes and the events in the photos are real.',
     clues: {
-      arrive: 'Look left of Round Eyes, near the front. Find two oval marks side by side. The spacecraft made them when it touched the ground.',
-      work: 'Walk farther away, to the right of Round Eyes. Find long marks in the soil, side by side. The scoop dug them.',
-      visit: 'Walk to the far ground on the left. Find footprints leading toward Round Eyes. Two visitors once walked there.',
+      arrive: 'In the game, look left of Round Eyes, near the front. Find two oval marks side by side. The spacecraft made them when it touched the ground.',
+      work: 'In the game, walk farther away, to the right of Round Eyes. Find long marks in the soil, side by side. The scoop dug them.',
+      visit: 'In the game, walk to the far ground on the left. Find footprints leading toward Round Eyes. Two visitors once walked there.',
     },
     names: { arrive: 'Round Eyes’ foot marks', work: 'Little soil trenches', visit: 'Astronaut footprints' },
     descriptions: {
