@@ -1,6 +1,6 @@
 import { taiThinhScript } from './tai-thinh-content';
 
-export const taiThinhPhases = ['route', 'approach', 'arrival', 'identify', 'meeting', 'photoA', 'recordsIntro', 'records', 'afterRecords', 'photoB', 'ringingIntro', 'graph', 'duration', 'afterRinging', 'rhythmIntro', 'rhythm', 'door', 'afterRhythm', 'photoC', 'afterPhotoC', 'memoriesIntro', 'recallA', 'recallB', 'recallC', 'farewell', 'gift', 'finished'] as const;
+export const taiThinhPhases = ['route', 'approach', 'arrival', 'identify', 'meeting', 'photoA', 'recordsIntro', 'records', 'afterRecords', 'photoB', 'ringingIntro', 'graph', 'duration', 'afterRinging', 'rhythmIntro', 'rhythm', 'afterRhythm', 'photoC', 'afterPhotoC', 'memoriesIntro', 'recallA', 'recallB', 'recallC', 'farewell', 'gift', 'finished'] as const;
 export type TaiThinhPhase = typeof taiThinhPhases[number];
 export type TaiThinhMemory = 'pse' | 'station' | 'magnetometer';
 export type TaiThinhRecord = 'inside' | 'impact' | 'electronics';
@@ -22,7 +22,9 @@ export const freshTaiThinh = (): TaiThinhProgress => ({ phase: 'route', turn: 0,
 /** Validate each prerequisite rather than trusting a later phase in stored JSON. */
 export function readTaiThinh(value: unknown): TaiThinhProgress {
   if (!value || typeof value !== 'object') return freshTaiThinh();
-  const d = value as Record<string, unknown>;
+  const stored = value as Record<string, unknown>;
+  // Skip the retired door scene when loading an older save.
+  const d = stored.phase === 'door' ? { ...stored, phase: 'afterRhythm', turn: 0 } : stored;
   if (!taiThinhPhases.includes(d.phase as TaiThinhPhase)) return freshTaiThinh();
   const ids = <T extends string>(allowed: readonly T[], input: unknown): T[] => allowed.filter(id => Array.isArray(input) && input.includes(id));
   const matches = ids(['inside', 'impact', 'electronics'] as const, d.matches);

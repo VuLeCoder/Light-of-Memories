@@ -47,23 +47,10 @@ export function TaiThinhRhythms({ language, progress: p, paused, onChange }: { l
       <button className="journey-primary" aria-label={`${copy.choose[language]} ${option.id.toUpperCase()}`} onClick={() => {
         if (paused) return;
         if (option.id !== rhythm.correct) { setWrong(true); return; }
-        onChange({ ...p, rhythmCorrect: true, phase: 'door', turn: 0 });
+        onChange({ ...p, rhythmCorrect: true, phase: 'afterRhythm', turn: 0 });
       }}>{copy.choose[language]}</button>
     </section>)}</div>
     <p className="tai-feedback" role="status">{wrong ? copy.rhythmWrong[language] : playback.elapsed !== null ? `${vi ? 'Đang xem' : 'Watching'}: ${source === 'sample' ? (vi ? 'mẫu' : 'sample') : source.toUpperCase()}${playback.playing ? '' : (vi ? ' · đã hết chuỗi' : ' · sequence complete')}` : (vi ? 'Các dấu tròn cùng thang thời gian; có thể chọn ngay, không cần bấm theo nhịp.' : 'Dots share one time scale; choose whenever ready, without tapping in time.')}</p>
     <small className="tai-record-note">{vi ? 'Mở menu sẽ dừng chuỗi; trở lại tiếp tục từ chỗ đã dừng.' : 'The menu pauses playback; returning resumes from the same point.'} {copy.fiction[language]}</small>
-  </section>;
-}
-
-export function TaiThinhDoor({ language, paused, onOpen }: { language: Language; paused: boolean; onOpen: () => void }) {
-  const playback = usePlayback(paused, 1000);
-  const complete = useRef(false);
-  useEffect(() => { playback.start(); }, []);
-  useEffect(() => {
-    if (!paused && playback.elapsed === 1000 && !complete.current) { complete.current = true; onOpen(); }
-  }, [paused, playback.elapsed, onOpen]);
-  return <section className="tai-door tai-task-panel" role="status">
-    <svg viewBox="0 0 280 180" aria-hidden="true"><path d="M65 160V60Q140 -15 215 60V160" fill="#34434a" stroke="#b49c69" strokeWidth="6"/><path d="M85 157V64Q140 7 195 64V157" fill="#ead39c" opacity={.2 + (playback.elapsed ?? 0) / 1250}/><g className="tai-door-leaf" transform={`translate(${-42 * (playback.elapsed ?? 0) / 1000} 0)`}><path d="M85 157V64Q111 34 140 32V158Z" fill="#4a514c" stroke="#b49c69" strokeWidth="2"/><circle cx="129" cy="100" r="4" fill="#f8eac5"/></g><g className="tai-door-leaf" transform={`translate(${42 * (playback.elapsed ?? 0) / 1000} 0)`}><path d="M140 32Q169 34 195 64V157H140Z" fill="#4a514c" stroke="#b49c69" strokeWidth="2"/><circle cx="151" cy="100" r="4" fill="#f8eac5"/></g></svg>
-    <h3>{language === 'vi' ? 'Đúng nhịp rồi! Cánh cửa ký ức mở ra…' : 'A matching rhythm! The memory door opens…'}</h3>
   </section>;
 }
