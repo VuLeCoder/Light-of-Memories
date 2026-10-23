@@ -1,0 +1,100 @@
+.tai-art { max-width: 1420px; margin: auto; padding: 28px; color: #eae7dc; }
+.tai-art-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.tai-art-header h1 { margin: 6px 0; font: 36px Georgia, serif; color: #dfc18a; }
+.tai-art-header p { color: #bdcecb; margin: 8px 0; }
+.tai-art button, .tai-art select { min-height: 40px; border: 1px solid #d7b87580; border-radius: 6px; background: #21343b; color: #eae7dc; padding: 8px 12px; font: inherit; }
+.tai-art button { cursor: pointer; }
+.tai-art button:focus-visible, .tai-art select:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
+.tai-art button[aria-pressed="true"] { color: #22333b; background: #dfc18a; }
+.tai-art .book-navigation button { padding: 0; border-radius: 50%; background: #e3d9bc; color: #574322; border: 1px solid #a18e64; }
+.tai-art button:disabled { cursor: default; }
+.tai-art-modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+.tai-art-script { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: -8px 0 20px; }
+.tai-art-workspace { display: grid; grid-template-columns: minmax(0, 2fr) minmax(285px, 1fr); gap: 24px; align-items: start; }
+.tai-art-book { grid-area: auto; min-width: 0; }
+.tai-art-game { min-width: 0; border: 1px solid #bdcecb33; border-radius: 6px; overflow: hidden; background: #182c35; }
+.tai-art-stage { position: relative; aspect-ratio: 16 / 9; container-type: inline-size; isolation: isolate; }
+.tai-art-canvas { position: absolute; inset: 0; }
+.tai-art-canvas canvas { display: block; image-rendering: pixelated; }
+.tai-art-hud { position: absolute; top: 2.5%; left: 2.5%; right: 2.5%; display: flex; gap: 8px; align-items: center; font-size: clamp(11px, 1.8cqw, 17px); z-index: 2; }
+.tai-art-hud > span { padding: 8px 10px; border-radius: 6px; border: 1px solid #d7b87580; background: #10212ae8; }
+.tai-art-hud button { margin-left: auto; min-height: 32px; padding: 6px 10px; font-size: inherit; }
+.tai-art-dialogue { position: absolute; left: 2.5%; right: 2.5%; top: 13%; }
+.tai-art-dialogue .dialogue { position: static; width: auto; margin: 0; padding: 12px; border: 1px solid #d7b87580; border-radius: 8px; background: #10212aee; }
+.tai-art-dialogue .dialogue-portrait { width: 64px; height: 64px; }
+.tai-art-dialogue .dialogue-portrait img { object-fit: contain; }
+.tai-art-dialogue .dialogue-text { font-size: clamp(12px, 1.9cqw, 18px); margin: 5px 0; min-height: 0; line-height: 1.4; }
+.tai-art-dialogue .dialogue-meta { font-size: 13px; }
+.tai-art-dialogue .dialogue-footer { margin: 6px 0 0; }
+.tai-art-dialogue .dialogue-next { min-height: 30px; padding: 5px 10px; font-size: 14px; }
+.tai-art-device { position: absolute; transform: translateX(-50%); font-size: clamp(10px, 1.5cqw, 14px) !important; min-height: 30px !important; padding: 5px 8px !important; }
+.tai-art-inspect { position: absolute; left: 2.5%; right: 2.5%; bottom: 2.5%; display: flex; align-items: center; gap: 14px; padding: 8px 12px; background: #10212af5; border: 1px solid #d7b87580; border-radius: 6px; font-size: clamp(11px, 1.7cqw, 16px); }
+.tai-art-inspect p { margin: 0; line-height: 1.4; }
+.tai-art-inspect button { flex-shrink: 0; font-size: inherit; }
+.tai-art-panel { position: absolute; inset: 13% 2.5% 3%; padding: 2.5%; display: flex; flex-direction: column; justify-content: center; gap: 12px; border: 1px solid #d7b875; border-radius: 10px; background: linear-gradient(115deg, #263e46f7, #10212af7); font-size: clamp(12px, 1.9cqw, 18px); }
+.tai-art-panel h2 { font: 500 clamp(15px, 2.4cqw, 23px)/1.35 Georgia, serif; margin: 0; color: #dfc18a; }
+.tai-art-panel p { margin: 0; line-height: 1.45; }
+.tai-art-panel small { font-size: clamp(10px, 1.5cqw, 14px); color: #bdcecb; line-height: 1.4; }
+.tai-art-panel > svg { height: 28%; color: #dfc18a; }
+.tai-art-panel svg text { fill: currentColor; font: 11px sans-serif; }
+.tai-art-record-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.tai-art-record-tabs > span { border: 1px solid #d7b87560; border-radius: 6px; padding: 8px; }
+.tai-art-answer { background: #d7b875; color: #10212a; }
+.tai-art-graphs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; color: #dfc18a; }
+.tai-art-graphs b { font-size: clamp(11px, 1.7cqw, 16px); }
+.tai-art-stones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0; }
+.tai-art-stone { border-radius: 40% 25% 12% 16%; background: #647576; border: 2px solid #9da9a0; padding: 16px 6px; text-align: center; color: #f4dfad; }
+.tai-art-photo { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 22px; }
+.tai-art-photo .memory-photo-frame { margin: 0; width: 100%; max-width: none; padding: 6px; background: #e8dfc6; color: #554c3b; }
+.tai-art-photo .memory-photo-frame img { width: 100%; height: 30cqw; object-fit: contain; background: #101e28; display: block; }
+.tai-art-photo figcaption { font-size: 11px; padding-top: 6px; }
+.tai-art-photo .memory-photo-copy { display: flex; flex-direction: column; gap: 12px; }
+.tai-art-star { position: absolute; bottom: 5%; right: 4%; padding: 8px; border-radius: 4px; background: #10212acc; color: #f2d193; }
+.tai-art-footnote { padding: 12px 16px; margin: 0; color: #bdcecb; font-size: 13px; line-height: 1.5; }
+.tai-art-book .book-sheet { height: 529px; min-height: 529px; max-height: 529px; justify-content: center; gap: 12px; padding: 30px 24px; overflow: hidden; }
+.tai-art-book .book-sheet h2 { font: 28px/1.3 Georgia, serif; }
+.tai-art-book .book-sheet p { font-size: 17px; line-height: 1.5; }
+.tai-art-book .book-sheet a { color: #725b32; font-size: 13px; }
+.tai-art-portrait { width: 150px; height: 105px; object-fit: contain; margin: 0 auto; }
+.tai-art-note { color: #bdcecb; line-height: 1.6; font-size: 14px; max-width: 900px; margin-top: 24px; }
+@media (max-width: 1050px) { .tai-art-workspace { grid-template-columns: 1fr; } .tai-art-book { width: min(100%, 600px); margin: 0 auto; } }
+@media (max-width: 600px) {
+  .tai-art { padding: 14px; }
+  .tai-art-header { display: block; }
+  .tai-art-header label { display: block; margin-top: 16px; }
+  .tai-art-modes { gap: 6px; }
+  .tai-art-modes button { font-size: 13px; padding: 6px; }
+  /* Keep the art in 16:9; move the reading surface below it on a phone. */
+  .tai-art-stage { aspect-ratio: auto; padding-top: 56.25cqw; }
+  .tai-art-canvas { height: 56.25cqw; bottom: auto; }
+  .tai-art-hud { top: 8px; }
+  .tai-art-panel, .tai-art-inspect, .tai-art-dialogue { position: relative; inset: auto; margin: 8px; }
+  .tai-art-panel { padding: 16px; gap: 12px; font-size: 15px; }
+  .tai-art-panel h2 { font-size: 19px; }
+  .tai-art-panel p { font-size: 15px; }
+  .tai-art-panel small { font-size: 12px; }
+  .tai-art-panel > svg { height: 100px; }
+  .tai-art-panel button { min-height: 40px; font-size: 14px; }
+  .tai-art-inspect { display: block; padding: 12px; font-size: 15px; }
+  .tai-art-inspect button { margin-top: 10px; }
+  .tai-art-device { font-size: 11px !important; padding: 4px !important; min-height: 28px !important; }
+  .tai-art-dialogue .dialogue { padding: 12px; }
+  .tai-art-dialogue .dialogue-portrait { width: 50px; height: 50px; }
+  .tai-art-dialogue .dialogue-body { gap: 10px; }
+  .tai-art-dialogue .dialogue-text { font-size: 15px; }
+  .tai-art-dialogue .dialogue-meta { font-size: 12px; }
+  .tai-art-dialogue .dialogue-meta strong { font-size: 16px; }
+  .tai-art-dialogue .dialogue-next { min-height: 40px; font-size: 14px; }
+  .tai-art-dialogue .dialogue-footer { flex-direction: row; }
+  .tai-art-record-tabs { gap: 6px; }
+  .tai-art-record-tabs > span { padding: 6px; font-size: 13px; }
+  .tai-art-graphs { gap: 8px; }
+  .tai-art-graphs b { font-size: 12px; }
+  .tai-art-stones { margin: 2px 0; gap: 6px; }
+  .tai-art-stone { padding: 10px 6px; }
+  .tai-art-photo { grid-template-columns: 1fr; gap: 16px; }
+  .tai-art-photo .memory-photo-frame img { height: 200px; }
+  .tai-art-photo .memory-photo-copy { gap: 10px; }
+  .tai-art-photo figcaption { font-size: 11px; }
+  .tai-art-star { top: 44cqw; bottom: auto; }
+}

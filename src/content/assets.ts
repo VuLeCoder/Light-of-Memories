@@ -1,4 +1,4 @@
-// Lossless WebP copies preserve source pixels and respect the deployment base path.
+// Project image URLs respect the deployment base path. Conversion details live in docs/image-assets.md.
 const imageUrl = (path: string) => `${import.meta.env.BASE_URL}images/${path}`;
 
 export const brandLogo = imageUrl('branding/light-of-memories-primary.webp');
@@ -14,10 +14,18 @@ const baSheet = imageUrl('sprites/ba-spritesheet.webp');
 const cuoiSheet = imageUrl('sprites/cuoi-spritesheet.webp');
 
 export const portraits = {
+  taiThinh: { name: 'Tai Thính', url: imageUrl('portraits/tai-thinh.webp') },
   lapLanh: { name: 'Lấp Lánh', url: imageUrl('portraits/lap-lanh.webp') },
   an: { name: 'An', url: anPortrait }, ba: { name: 'Bà', url: baPortrait },
   cuoi: { name: 'Cuội', url: cuoiPortrait }, cayDa: { name: 'Cây Đa', url: cayDaPortrait },
   matTron: { name: 'Mắt Tròn', url: matTronPortrait }, chiHang: { name: 'Chị Hằng', url: chiHangPortrait },
+} as const;
+
+// M0–M1 art preparation; chapter registration and saves are handled in M2.
+export const taiThinhPhotos = {
+  pse: imageUrl('memories/tai-thinh/apollo-12-as12-47-6916.webp'),
+  station: imageUrl('memories/tai-thinh/apollo-12-as12-47-6918.webp'),
+  magnetometer: imageUrl('memories/tai-thinh/apollo-12-as12-47-6921.webp'),
 } as const;
 
 // Hand-inspected rectangles in ORIGINAL image pixels, not an assumed uniform grid.

@@ -9,7 +9,7 @@ export const earthDialogue = [
 ] as const;
 
 export type DialogueState = { index: number; visible: number; finished: boolean };
-export type StoryLine = { id: string; speaker: 'narrator' | 'an' | 'ba' | 'cuoi' | 'cayDa' | 'matTron' | 'lapLanh'; text: string };
+export type StoryLine = { id: string; speaker: 'narrator' | 'an' | 'ba' | 'cuoi' | 'cayDa' | 'matTron' | 'lapLanh' | 'taiThinh'; text: string };
 export function dialogueReducer(state: DialogueState, action: 'tick' | 'advance' | 'reveal', lines: readonly StoryLine[] = earthDialogue): DialogueState {
   if (state.finished) return state;
   const length = lines[state.index].text.length;
