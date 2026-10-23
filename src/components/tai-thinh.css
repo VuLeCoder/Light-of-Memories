@@ -1,0 +1,25 @@
+.tai-thinh-level { position:absolute; inset:0; z-index:25; pointer-events:none; }
+.tai-thinh-level[hidden] { display:none; }
+.tai-thinh-level button,.tai-thinh-level .dialogue { pointer-events:auto; }
+.tai-thinh-level > .dialogue { position:absolute; top:12%; left:2.5%; right:2.5%; padding:12px 16px; border:1px solid #d2ba8180; border-radius:10px; background:#142831f5; }
+.tai-thinh-level .dialogue-text { font-size:clamp(14px,1.9cqw,18px); }
+.tai-thinh-level .dialogue-next { min-height:36px; font-size:clamp(13px,1.7cqw,16px); padding:6px 12px; }
+.tai-thinh-level .dialogue-footer > span { display:none; }
+.tai-thinh-level .dialogue-portrait { width:55px; height:68px; }
+.tai-thinh-level .dialogue-portrait img { object-fit:contain; }
+.tai-route-map { position:absolute; inset:51% 12% 4%; margin:0; padding:8px; border:1px solid #a9957066; border-radius:12px; background:#142831ed; text-align:center; }
+.tai-route-map svg { width:100%; height:80%; }
+.tai-route-map figcaption { color:#e7cf9c; font-size:clamp(12px,1.7cqw,16px); }
+.tai-milestone-stop { position:absolute; top:13%; left:2.5%; width:65%; padding:12px 18px; border:1px solid #a99570; border-radius:10px; background:#142831f5; font-size:clamp(14px,1.8cqw,18px); }
+.tai-milestone-stop p { margin:0 0 12px; }
+@media(max-width:600px) {
+  .game-stage:has(.tai-thinh-level) { aspect-ratio:auto; }
+  .game-stage:has(.tai-thinh-level) > .story-canvas { aspect-ratio:16/9; }
+  .tai-thinh-level { position:relative; }
+  .tai-thinh-level .surveyor-scene-hud { position:relative; inset:auto; padding:8px; font-size:12px; background:#142831; }
+  .tai-thinh-level > .dialogue { position:relative; inset:auto; border-radius:0; }
+  .tai-route-map { position:relative; inset:auto; height:170px; margin:0; border-radius:0; }
+  .tai-milestone-stop { position:relative; inset:auto; width:auto; border-radius:0; }
+}
+
+.game-stage:not(:has(.game-host[data-ready="true"])) .tai-thinh-level { visibility:hidden; }

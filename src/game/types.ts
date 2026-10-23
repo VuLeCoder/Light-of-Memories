@@ -2,7 +2,7 @@ import type { SurveyorEvent } from '../content/levels/surveyor-progress';
 import type { SceneId } from '../content/scenes';
 import type { Language } from '../content/i18n';
 export type MoonQuest = 'bench' | 'tree' | 'lantern' | 'trail' | 'complete';
-export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh';
+export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh' | 'tai-thinh';
 export interface PreviewOptions {
   freeRoam?: boolean;
   sparkleTrail?: boolean;

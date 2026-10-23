@@ -2,7 +2,7 @@ import type { Language } from '../i18n';
 import type { StoryLine } from '../earth-dialogue';
 import { taiThinhPhotos } from '../assets';
 
-// Authored M0 content, not a registered/playable level yet. Sources: docs/game3/Tu-lieu.md.
+// Authored M0 content; opening integrated in M2, challenges follow in M3–M7. Sources: docs/game3/Tu-lieu.md.
 const text = (vi: string, en: string) => ({ vi, en });
 const line = (id: string, speaker: StoryLine['speaker'], vi: string, en: string) => ({ id: `tai-thinh-${id}`, speaker, ...text(vi, en) });
 

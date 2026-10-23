@@ -1,3 +1,5 @@
+import type { TaiThinhProgress } from '../content/levels/tai-thinh-progress';
+import { taiThinhBook, taiThinhBookSources } from '../content/levels/tai-thinh-content';
 import { SparkleBookClue } from './SparkleBookClue';
 import { sparkleKeepsakes, sparkleRepairUnlocked, sparkleRangingUnlocked, type SparkleProgress } from '../content/levels/lap-lanh';
 import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
@@ -31,9 +33,9 @@ export const journeyCopy = {
   },
 };
 
-export function JourneyMap({ sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce };
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const level = status(activeLevel) === 'locked' ? undefined : getLevel(activeLevel);
   const detail = level?.text[language];
@@ -50,7 +52,7 @@ export function JourneyMap({ sparkleProgress, language, activeLevel, onEnter, on
   };
   if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onReplay={onReplay} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
-    <header><span>{`★ ${Number(surveyorProgress.completedOnce) + Number(sparkleProgress.completedOnce)}`}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
+    <header><span>{`★ ${Object.values(completed).filter(Boolean).length}`}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
     {level && detail ? <>
       <div className="surveyor-meeting"><img src={level.portrait} alt={detail.friend} /><div><p><b>Cuội:</b> {detail.intro}</p><p><b>{detail.friend}:</b> {detail.reply}</p><p>{detail.invitation}</p></div></div>
       <button onClick={onBack}>{t.back}</button>
@@ -77,12 +79,12 @@ export function JourneyMap({ sparkleProgress, language, activeLevel, onEnter, on
   </section>;
 }
 
-export function JourneyBook({ sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  return <JourneyBookPages sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
+export function JourneyBook({ taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce };
+function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
   const fieldUnlocked = surveyorProgress.matched.length === 2;
@@ -141,6 +143,18 @@ function JourneyBookPages({ sparkleProgress, language, activeLevel, surveyorProg
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
   </>;
+  if (pages[page] === 'tai-thinh') {
+    const intro = taiThinhBook[0];
+    return <>
+      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
+        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
+        <h2 id="book-title">{getLevel('tai-thinh')!.text[language].friend}</h2><img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/><p>{intro.body[language]}</p>
+        <a className="sparkle-book-source" href={taiThinhBookSources.intro!} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>
+        {activeLevel && <BackToGame language={language}/>}
+      </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
+    </>;
+  }
   if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div tabIndex={0} className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
