@@ -507,6 +507,8 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 }
 
 .journey-entry-action{min-height:44px}
+.journey-overview .journey-message { display: grid; }
+.journey-overview .journey-message > span { grid-area: 1 / 1; }
 
 /* The play area alone gets an initial fit; native browser zoom stays available. */
 .workspace-fit.is-fitted { display: flex; justify-content: center; align-items: flex-start; }

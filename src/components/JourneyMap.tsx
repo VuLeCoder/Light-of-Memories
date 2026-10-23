@@ -40,8 +40,11 @@ export function JourneyMap({ taiThinhProgress, sparkleProgress, language, active
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const level = status(activeLevel) === 'locked' ? undefined : getLevel(activeLevel);
   const detail = level?.text[language];
-  const [selectedFriend, setSelectedFriend] = useState<LevelId | null>(journeyStops[0]);
+  const [selectedStop, setSelectedStop] = useState(0);
+  const [entryFriend, setEntryFriend] = useState<LevelId>('surveyor');
+  const selectedFriend = journeyStops[selectedStop];
   const selectedLevel = status(selectedFriend) === 'locked' ? undefined : getLevel(selectedFriend);
+  const entryLevel = selectedLevel ?? getLevel(entryFriend)!;
   const [locked, setLocked] = useState(false);
   const enterFriend = (id: LevelId) => {
     setLocked(false);
@@ -65,17 +68,21 @@ export function JourneyMap({ taiThinhProgress, sparkleProgress, language, active
           const state = status(id);
           const friend = state === 'locked' ? undefined : getLevel(id);
           return <button key={index} className={`journey-stop stop-${index} stop-${state}`} onClick={() => {
-            setSelectedFriend(id);
+            setSelectedStop(index);
+            if (friend) setEntryFriend(friend.id);
             setLocked(state === 'locked');
-          }} aria-pressed={!!id && selectedFriend === id} aria-label={`${index + 1}. ${friend ? `${friend.text[language].friend}. ${state === 'completed' ? t.completed : t.ready}` : `${t.mystery}. ${id ? t.prerequisite : t.locked}`}`}>
+          }} aria-pressed={selectedStop === index} aria-label={`${index + 1}. ${friend ? `${friend.text[language].friend}. ${state === 'completed' ? t.completed : t.ready}` : `${t.mystery}. ${id ? t.prerequisite : t.locked}`}`}>
             <span className="stop-orb">{friend ? <img src={friend.portrait} alt="" /> : '?'}</span>
             <span>{`${String(index + 1).padStart(2, '0')} · ${friend ? friend.label : t.mystery}`}</span>
-            {index === 0 && <small>Cuội ✦</small>}
+            <small style={{ visibility: selectedStop === index ? 'visible' : 'hidden' }}>Cuội ✦</small>
           </button>;
         })}
       </div>
-      <p className="journey-message" role="status">{locked ? selectedFriend ? t.prerequisite : t.locked : t.guide}</p>
-      <div className="journey-entry-action">{selectedLevel && <button className="journey-primary" onClick={() => enterFriend(selectedLevel.id)}>{selectedLevel.text[language].enter} →</button>}</div>
+      <p className="journey-message" role="status">{[t.guide, t.prerequisite, t.locked].map((message, index) => {
+        const visible = index === (locked ? selectedFriend ? 1 : 2 : 0);
+        return <span key={index} style={{ visibility: visible ? 'visible' : 'hidden' }} aria-hidden={!visible}>{message}</span>;
+      })}</p>
+      <div className="journey-entry-action"><button className="journey-primary" style={{ visibility: selectedLevel ? 'visible' : 'hidden' }} disabled={!selectedLevel} onClick={() => { if (selectedLevel) enterFriend(selectedLevel.id); }}>{entryLevel.text[language].enter} →</button></div>
     </>}
   </section>;
 }
