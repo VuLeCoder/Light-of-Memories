@@ -1,4 +1,5 @@
 import { TaiThinhArchiveImage } from './TaiThinhPhoto';
+import { focusGame } from '../focus/game-focus';
 import { taiThinhPageIds, type TaiThinhProgress } from '../content/levels/tai-thinh-progress';
 import { taiThinhBook, taiThinhBookSources, taiThinhMemories } from '../content/levels/tai-thinh-content';
 import { SparkleBookClue } from './SparkleBookClue';
@@ -237,8 +238,7 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
 function BackToGame({ language }: { language: Language }) {
   return <button className="book-return-game" onClick={() => {
     const stage = document.querySelector<HTMLElement>('.game-stage');
-    const target = stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, [data-tai-primary], .story-canvas:not([inert]) .game-host, .journey-view button');
-    (target ?? stage)?.focus({ preventScroll: true });
+    focusGame(stage);
     stage?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
   }}>{language === 'vi' ? '↑ Quay lại trò chơi' : '↑ Back to the game'}</button>;
 }

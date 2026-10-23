@@ -1,4 +1,5 @@
 import { endingChatLines } from './content/levels/ending-chat';
+import { focusGame } from './focus/game-focus';
 import { TaiThinhSceneLabels } from './components/TaiThinhChallenges';
 import { TaiThinhLevel } from './components/TaiThinhLevel';
 import { freshTaiThinh } from './content/levels/tai-thinh-progress';
@@ -59,10 +60,16 @@ export function App() {
       if (active instanceof HTMLElement && active.closest('.game-stage')) active.blur();
     };
     const onWindowBlur = () => releaseFocus();
+    const onFocusOutside = (event: FocusEvent) => {
+      // A removed/inert control can send focus to body without a user action.
+      if (event.target instanceof Element && event.target !== document.body && !event.target.closest('.game-stage')) gameOwnsFocus.current = false;
+    };
     document.addEventListener('pointerdown', releaseFocus, true);
+    document.addEventListener('focusin', onFocusOutside);
     window.addEventListener('blur', onWindowBlur);
     return () => {
       document.removeEventListener('pointerdown', releaseFocus, true);
+      document.removeEventListener('focusin', onFocusOutside);
       window.removeEventListener('blur', onWindowBlur);
     };
   }, []);
@@ -164,14 +171,14 @@ export function App() {
   useLayoutEffect(() => {
     if (menuOpen || !gameOwnsFocus.current) return;
     const stage = gameStage.current;
-    const target = transitioning || moonWaking ? stage
-      : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, [data-tai-primary], .tai-milestone-stop button, .journey-view button, .story-canvas:not([inert]) .game-host');
-    (target ?? stage)?.focus({ preventScroll: true });
-  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, trailWarning, canvasReady]);
-  // T01 can lose its focused button when a dialogue closes or becomes inert.
-  // Recover only while the game owns focus; outside pointer presses release it above.
+    if (transitioning || moonWaking) stage?.focus({ preventScroll: true });
+    else focusGame(stage);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, trailWarning, chattingAtEnd, canvasReady]);
+  // Removal, disabling and inert updates do not consistently emit focusout.
+  // Recover after the DOM settles, for every scene, without taking focus from
+  // another game control, the companion book, or the rest of the page.
   useEffect(() => {
-    if (!inSparkle || !['search', 'arrival', 'finished'].includes(sparkleProgress.phase) || menuOpen) return;
+    if (menuOpen) return;
     const stage = gameStage.current;
     let frame = 0;
     const restoreFocus = () => {
@@ -179,17 +186,22 @@ export function App() {
       frame = requestAnimationFrame(() => {
         if (!gameOwnsFocus.current || !document.hasFocus()) return;
         const active = document.activeElement;
-        if (active !== document.body && active !== stage) return;
-        stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .story-canvas:not([inert]) .game-host')?.focus({ preventScroll: true });
+        if (active instanceof HTMLElement && active !== stage && active !== document.body
+          && !active.closest('[hidden], [inert]') && !active.matches(':disabled') && active.getClientRects().length) return;
+        if (transitioning || moonWaking) stage?.focus({ preventScroll: true });
+        else focusGame(stage);
       });
     };
+    const observer = new MutationObserver(restoreFocus);
+    if (stage) observer.observe(stage, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'inert', 'disabled'] });
     stage?.addEventListener('focusout', restoreFocus);
     restoreFocus();
     return () => {
       cancelAnimationFrame(frame);
       stage?.removeEventListener('focusout', restoreFocus);
+      observer.disconnect();
     };
-  }, [inSparkle, sparkleProgress.phase, menuOpen, trailWarning]);
+  }, [menuOpen, transitioning, moonWaking]);
   const noopTurn = useCallback(() => {}, []);
   useEffect(() => {
     if (!transitioning) return;
@@ -299,8 +311,9 @@ export function App() {
         <div className="scene-frame">
           <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
             onFocusCapture={() => { gameOwnsFocus.current = true; }}
+            onPointerDownCapture={() => { gameOwnsFocus.current = true; }}
             onBlurCapture={(event) => {
-              if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) gameOwnsFocus.current = false;
+              if (event.relatedTarget instanceof Node && event.relatedTarget !== document.body && !event.currentTarget.contains(event.relatedTarget)) gameOwnsFocus.current = false;
             }}
             onKeyDown={(event) => {
               if (event.target === event.currentTarget && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
