@@ -66,13 +66,13 @@ function MemoryPhoto({ src, caption, language }: { src: string; caption: string;
 }
 
 /** Five separate paper panels; only the top point receives this friend's light. */
-function MemoryLantern({ lit }: { lit: boolean }) {
-  return <svg className={`ending-lantern ${lit ? 'is-lit' : ''}`} viewBox="0 0 240 240" role="img" aria-label={lit ? '★ 1/5' : '☆ 0/5'}>
+export function MemoryLantern({ lit, second = false }: { lit: boolean; second?: boolean }) {
+  return <svg className={`ending-lantern ${lit ? 'is-lit' : ''}`} viewBox="0 0 240 240" role="img" aria-label={second ? (lit ? '★ 2/5' : '★ 1/5') : (lit ? '★ 1/5' : '☆ 0/5')}>
     <circle className="lantern-aura" cx="120" cy="110" r="90" fill="#ffd88a" opacity="0" />
     <path d="M120 26V10M114 10H126" stroke="#bd9761" strokeWidth="3" fill="none" />
     <g stroke="#c89b61" strokeWidth="2" strokeLinejoin="round">
-      <path className="lit-point" d="M120 110L97 79L120 26L143 79Z" fill="#67503c" />
-      <path d="M120 110L143 79L208 85L159 126Z" fill="#664e3c" />
+      <path className={second ? undefined : "lit-point"} d="M120 110L97 79L120 26L143 79Z" fill={second ? "#ffe29b" : "#67503c"} />
+      <path className={second ? "lit-point" : undefined} d="M120 110L143 79L208 85L159 126Z" fill="#664e3c" />
       <path d="M120 110L159 126L175 190L120 156Z" fill="#594638" />
       <path d="M120 110L120 156L65 190L81 126Z" fill="#624a39" />
       <path d="M120 110L81 126L32 85L97 79Z" fill="#71543b" />

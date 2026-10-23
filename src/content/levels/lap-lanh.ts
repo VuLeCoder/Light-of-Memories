@@ -45,33 +45,33 @@ export function sparkleChallengeLines(language: Language) {
 }
 
 export const sparkleKeepsakes = [
-  { src: `${import.meta.env.BASE_URL}images/memories/lap-lanh/reflector-on-moon.webp`,
-    vi: { title: 'Lấp Lánh giữa bụi trăng', description: 'Một bảng gương nhỏ nằm trên mặt đất Mặt Trăng, bên những dấu giày và thiết bị của chuyến thám hiểm. Cuội giữ bức ảnh này để nhớ lần đầu gặp Lấp Lánh.' },
-    en: { title: 'Sparkle in the lunar dust', description: 'A small reflector rests on the Moon beside bootprints and exploration equipment. Cuội keeps this picture to remember meeting Sparkle.' } },
-  { src: `${import.meta.env.BASE_URL}images/memories/lap-lanh/reflector-closeup.webp`,
-    vi: { title: 'Những ô gương lấp lánh', description: 'Nhìn gần, bảng phản xạ có nhiều ô kính nhỏ. Chúng giúp đưa ánh sáng trở về phía nguồn mà không cần pin hay động cơ.' },
-    en: { title: 'Sparkling glass panels', description: 'Up close, the reflector has many small glass elements. They return light toward its source without batteries or motors.' } },
+  { src: `${import.meta.env.BASE_URL}images/memories/lap-lanh/apollo-11-deployed-as11-40-5952.webp`,
+    vi: { title: 'Lấp Lánh sẵn sàng đón ánh sáng · 1969', description: 'Năm 1969, bảng gương Apollo 11 được đặt và căn chỉnh tại Biển Yên Tĩnh. Một trăm lăng kính nhỏ đã sẵn sàng đón tia laser từ Trái Đất và phản xạ ánh sáng trở về. Ảnh: NASA · AS11-40-5952.' },
+    en: { title: 'Sparkle is ready to receive light · 1969', description: 'In 1969, the Apollo 11 reflector was deployed and aligned in the Sea of Tranquility. One hundred small prisms were ready to receive laser light from Earth and send it back. Photo: NASA · AS11-40-5952.' } },
+  { src: `${import.meta.env.BASE_URL}images/memories/lap-lanh/apollo-11-placement-as11-40-5945.webp`,
+    vi: { title: 'Lấp Lánh vừa được đặt xuống · 1969', description: 'Một khoảnh khắc trước đó trong chuyến đi Apollo 11 năm 1969: Buzz Aldrin vừa đặt bảng gương xuống mặt đất tại Biển Yên Tĩnh. Sau đó, Neil Armstrong sẽ mở và căn chỉnh thiết bị để bắt đầu công việc. Ảnh: NASA · AS11-40-5945.' },
+    en: { title: 'Sparkle has just been set down · 1969', description: 'An earlier moment during the Apollo 11 mission in 1969: Buzz Aldrin has just set the reflector down in the Sea of Tranquility. Neil Armstrong will then unfold and align the instrument for its work. Photo: NASA · AS11-40-5945.' } },
 ] as const;
 
 export function sparkleMeetingLines(language: Language, cleaningIntro = false) {
   return lines(cleaningIntro ? 'sparkle-cleaning-intro' : 'sparkle-first-meeting', language === 'vi' ? cleaningIntro ? [
-    ['cuoi', 'Mình cất ảnh rồi nhé! Nhưng sao những ô kính của bạn tối thế?'],
-    ['lapLanh', 'Bụi phủ lên mình mất rồi. Bạn giúp mình lau nhẹ những ô kính nhé?'],
+    ['cuoi', 'Mình cất ảnh vào sách rồi! Để mình giúp bạn lau những ô kính này nhé?'],
+    ['lapLanh', 'Cảm ơn Cuội! Bạn nhẹ tay nhé, mình còn muốn đón những lời chào bằng ánh sáng nữa!'],
     ['cuoi', 'Để mình giúp bạn sáng trở lại!'],
   ] : [
     ['cuoi', 'Mình tìm thấy bạn rồi! Bạn là điểm sáng phía sau những hố kia à?'],
     ['lapLanh', 'Đố bạn đoán được mình là ai! Mình là bảng gương phản xạ laser của Apollo 11. Bạn cứ gọi mình là Lấp Lánh nhé!'],
     ['cuoi', 'Chào Lấp Lánh! Bạn bám bụi nhiều quá.'],
-    ['lapLanh', 'Mình ở đây lâu rồi mà! Tặng bạn một bức ảnh để nhớ cuộc gặp hôm nay nhé.'],
+    ['lapLanh', 'Mình ở đây từ năm 1969 cơ! Xem này, đây là mình khi đã sẵn sàng đón ánh sáng từ Trái Đất. Tặng bạn giữ làm kỷ niệm nhé!'],
   ] : cleaningIntro ? [
-    ['cuoi', 'I have kept your picture! Why are your glass panels so dark?'],
-    ['lapLanh', 'I am covered in dust. Could you gently wipe my glass panels?'],
+    ['cuoi', 'Your picture is safe in my book! Shall I help you clean these glass panels?'],
+    ['lapLanh', 'Thank you, Cuội! Be gentle, please. I still have greetings made of light to welcome!'],
     ['cuoi', 'Let me help you shine again!'],
   ] : [
     ['cuoi', 'I found you! Were you the glint beyond those craters?'],
     ['lapLanh', 'Can you guess who I am? I am the Apollo 11 laser reflector. You can call me Sparkle!'],
     ['cuoi', 'Hello, Sparkle! You are so dusty.'],
-    ['lapLanh', 'I have been here a long time! Here is a picture to remember our meeting.'],
+    ['lapLanh', 'I have been here since 1969! Look, this is me all ready to welcome light from Earth. Keep it as a souvenir!'],
   ]);
 }
 
@@ -81,11 +81,11 @@ export const sparkleRangingUnlocked = (p: SparkleProgress) => ['ranging-intro', 
 export function sparkleScienceLines(language: Language, phase: 'repair-intro' | 'ranging-intro' | 'farewell') {
   const vi = language === 'vi';
   return lines(`sparkle-${phase}`, phase === 'repair-intro' ? vi ? [
-    ['lapLanh', 'Sạch rồi! Đố bạn biết ánh sáng tìm đường về nhà bằng cách nào?'],
+    ['lapLanh', 'Cảm ơn Cuội! Bức ảnh vừa rồi là lúc mình mới được đặt xuống, trước cả bức đầu tiên đấy. Giờ đố bạn biết ánh sáng tìm đường về nhà bằng cách nào?'],
     ['cuoi', 'Để mình mở sách xem nhé! Có một mô hình góc gương ở đây.'],
     ['lapLanh', 'Cụm hai gương vuông góc đang quay lệch rồi. Bạn giúp mình xoay lại để đón tia sáng nhé! Những lăng kính thật của mình nằm cố định, chẳng cần động cơ đâu.'],
   ] : [
-    ['lapLanh', 'All clean! Can you guess how light finds its way home?'],
+    ['lapLanh', 'Thank you, Cuội! That picture shows me just after I was set down, before the first picture was taken. Now, can you guess how light finds its way home?'],
     ['cuoi', 'Let me open the book! There is a corner reflector model here.'],
     ['lapLanh', 'The model’s two perpendicular mirrors are turned away. Can you rotate the pair to catch the light? My real glass prisms are fixed and need no motors.'],
   ] : phase === 'ranging-intro' ? vi ? [

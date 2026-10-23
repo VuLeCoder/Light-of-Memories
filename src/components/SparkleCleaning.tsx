@@ -21,7 +21,7 @@ export function SparkleCleaning({ language, onComplete }: { language: Language; 
     <div className="sparkle-cleaning-copy">
     <h2>{vi ? 'T02 · Cuội lau kính' : 'T02 · Clean the reflector'}</h2>
     <p role="status">{finished ? (vi ? 'Sạch rồi! Bạn Lấp Lánh sáng trở lại.' : 'All clean! Sparkle shines again.') : `${vi ? 'Đã lau' : 'Cleaned'}: ${Math.round(clean.length / 24 * 100)}%`}</p>
-    <small>{vi ? 'Lau bụi là hoạt động tưởng tượng trong trò chơi.' : 'Cleaning the dust is an imagined game activity.'}</small>
+    {finished && <p>{vi ? 'Lấp Lánh: “Cảm ơn Cuội! Mình còn giữ một bức ảnh lúc vừa đến đây. Tặng bạn thêm một kỷ niệm nhé!”' : 'Sparkle: “Thank you, Cuội! I have another picture from when I first arrived. Here is one more memory for you!”'}</p>}
     <button className="journey-primary" disabled={!finished} onClick={onComplete}>{vi ? 'Nhận bức ảnh thứ hai →' : 'Receive the second picture →'}</button>
     </div>
   </div>;
