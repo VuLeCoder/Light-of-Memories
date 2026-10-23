@@ -153,9 +153,10 @@ export class PreviewScene extends Phaser.Scene {
     this.options.sparkleTrail = value;
     this.trailDecor?.setVisible(value);
     if (entering && this.cuoi) {
-      this.cuoi.setPosition(140, 431);
-      this.trailTarget = undefined;
       this.releaseControls();
+      this.trailContact = false;
+      this.cuoi.setPosition(140, 431).setFlipX(false);
+      this.setCuoiFrame('rest');
     }
     this.syncTrailPerspective();
   }
