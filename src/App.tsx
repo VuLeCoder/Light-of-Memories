@@ -288,7 +288,7 @@ export function App() {
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
-          <div ref={gameStage} tabIndex={-1} className={`game-stage ${menuOpen ? 'has-menu' : ''}`}
+          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''}`}
             onFocusCapture={() => { gameOwnsFocus.current = true; }}
             onBlurCapture={(event) => {
               if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) gameOwnsFocus.current = false;

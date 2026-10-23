@@ -113,6 +113,7 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
   const page = Math.max(0, pages.indexOf(selectedPage));
   const setPage = (index: number) => setSelectedPage(pages[index] ?? null);
   const lastBookRequest = useRef(bookRequest);
+  const [bookFocusRequest, setBookFocusRequest] = useState(0);
   const t = journeyCopy[language];
   const dt = digCopy[language];
   const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
@@ -129,13 +130,18 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
       : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);
+    setBookFocusRequest(bookRequest);
+  }, [bookRequest]);
+  // Wait until the requested page has rendered before looking up its heading.
+  useEffect(() => {
+    if (!bookFocusRequest) return;
     const frame = requestAnimationFrame(() => {
       const heading = document.getElementById(activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
       heading?.focus({ preventScroll: true });
       heading?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
     });
     return () => cancelAnimationFrame(frame);
-  }, [bookRequest]);
+  }, [bookFocusRequest, activeLevel]);
   useEffect(() => {
     document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
   }, [selectedPage]);

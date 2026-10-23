@@ -57,12 +57,12 @@ export function SurveyorExcavation({ language, progress, near, onChange, onBack,
     {photo ? <section className="excavation-photo" role="dialog" aria-modal="true" aria-label={t.found}>
       <figure className="memory-photo-frame"><img src={memoryPhotos[photo]} alt={t.descriptions[photo]} /><figcaption>NASA · {photo === 'arrive' ? '1967' : '1969'}</figcaption></figure>
       <div className="memory-photo-copy"><span className="memory-eyebrow">{t.found} · {progress.found.length}/3</span><h2>{t.names[photo]}</h2><p>{t.descriptions[photo]}</p><small>{t.fiction}</small>
-      <button ref={photoButton} autoFocus onClick={() => { onChange({ ...progress, pendingPhoto: undefined, phase: all ? 'timeline' : 'soil', turn: 0, order: [] });
+      <button className="journey-primary" ref={photoButton} autoFocus onClick={() => { onChange({ ...progress, pendingPhoto: undefined, phase: all ? 'timeline' : 'soil', turn: 0, order: [] });
         if (!all) requestAnimationFrame(() => document.querySelector<HTMLElement>('.game-host')?.focus({ preventScroll: true })); }}>{all ? t.finish : t.continue}</button></div>
     </section> : <div className="excavation-bottom" hidden={!busy && !empty && !all}>
       {busy && <p role="status">{t.digging}</p>}
       {empty && !busy && <p className="excavation-result" role="status">{t.empty}</p>}
-      {all && <div><button onClick={() => onChange({ ...progress, phase: 'timeline', turn: 0, order: [] })}>{t.finish}</button></div>}
+      {all && <div><button className="journey-primary" onClick={() => onChange({ ...progress, phase: 'timeline', turn: 0, order: [] })}>{t.finish}</button></div>}
     </div>}
   </div>;
 }
