@@ -941,3 +941,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .game-stage .sparkle-recollection .surveyor-ending { grid-template-columns: 1fr; }
   .game-stage .sparkle-recollection .ending-photo img { height: 220px; }
 }
+
+/* Keep the edge cue visible while a friend speaks after the ending. */
+.has-ending-chat .ending-farewell { display: none; }
+.ending-chat { z-index: 26; }

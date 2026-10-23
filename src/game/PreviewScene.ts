@@ -80,6 +80,7 @@ export class PreviewScene extends Phaser.Scene {
   setFreeRoam(value: boolean) {
     const replayingEnding = this.options.freeRoam && !value;
     this.options.freeRoam = value;
+    this.interactionHint?.setText(this.interactionLabel());
     this.releaseControls();
     if (replayingEnding && this.cuoi && (this.options.scene !== 'lap-lanh' || this.options.sparkleEnding)) {
       const sparkle = this.options.scene === 'lap-lanh';
@@ -117,7 +118,8 @@ export class PreviewScene extends Phaser.Scene {
       this.options.onExit();
     }
     if (near !== this.digNear) { this.digNear = near; this.options.onDigNear?.(near); }
-    this.interactionHint?.setVisible(false);
+    this.interactionHint?.setVisible(!!this.options.freeRoam && this.moonMode === 'free' && this.inInteractionRange);
+    if (this.pendingInteraction && this.inInteractionRange) this.interactNearby();
   }
   private ripple?: Phaser.GameObjects.Graphics;
   private rippleTime = 0;
@@ -140,8 +142,8 @@ export class PreviewScene extends Phaser.Scene {
     this.trailHint?.setVisible(showTrail);
   }
 
-  private get interactionX() { if (this.options.scene === 'tai-thinh') return 520; if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  private get interactionX() { if (this.options.scene === 'tai-thinh') return this.options.freeRoam ? taiThinhLayout.pse.x : 520; if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
+  private get canInteract() { if (this.options.freeRoam) return true; return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
   setSparkleEnding(value: boolean) {
     const entering = value && !this.options.sparkleEnding;
     this.options.sparkleEnding = value;
@@ -325,12 +327,19 @@ export class PreviewScene extends Phaser.Scene {
       this.releaseControls();
     }
   }
-  private interactionLabel() { if (this.options.scene === 'tai-thinh') return this.options.language === 'vi' ? 'E · Quan sát cụm thiết bị' : 'E · Observe the instruments'; if (this.options.scene === 'lap-lanh') return this.options.language === 'vi' ? 'E · Trò chuyện với Lấp Lánh' : 'E · Talk to Sparkle'; return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
+  private get inInteractionRange() {
+    return !!this.cuoi && (this.options.freeRoam && this.options.scene === 'surveyor'
+      ? Math.hypot(this.cuoi.x - this.interactionX, this.cuoi.y - 390) <= 85
+      : Math.abs(this.cuoi.x - this.interactionX) <= 90);
+  }
+
+  private interactionLabel() { if (this.options.scene === 'tai-thinh' && this.options.freeRoam) return this.options.language === 'vi' ? 'E · Trò chuyện với Tai Thính' : 'E · Talk to Keen Ears'; if (this.options.scene === 'tai-thinh') return this.options.language === 'vi' ? 'E · Quan sát cụm thiết bị' : 'E · Observe the instruments'; if (this.options.scene === 'lap-lanh') return this.options.language === 'vi' ? 'E · Trò chuyện với Lấp Lánh' : 'E · Talk to Sparkle'; return this.options.scene === 'surveyor' ? surveyorEncounterCopy[this.options.language].interact : copy[this.options.language].interactBench; }
 
   private interactNearby() {
-    if (this.options.sparkleTrail || this.moonMode !== 'free' || !this.canInteract || !this.cuoi || Math.abs(this.cuoi.x - this.interactionX) > 90) return;
+    if (this.options.sparkleTrail || this.moonMode !== 'free' || !this.canInteract || !this.inInteractionRange) return;
     this.pendingInteraction = false;
     this.walkTarget = undefined;
+    this.digTarget = undefined;
     this.setMoonMode('story');
     this.options.onInteract();
   }
@@ -500,11 +509,24 @@ export class PreviewScene extends Phaser.Scene {
       const y = Phaser.Math.Clamp(pointer.y, 0, VIEW.height);
       if (this.options.scene === 'earth' || this.moonMode !== 'free') return;
       if (this.options.sparkleTrail) { if (y >= 280 && y <= 530) this.trailTarget = { x: Phaser.Math.Clamp(x, 35, 925), y: Phaser.Math.Clamp(y, 280, 515) }; return; }
-      if (this.options.excavation || (this.options.freeRoam && this.options.scene === 'surveyor')) { if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
-      this.pendingInteraction = this.canInteract && this.interactionRegion.contains(x, y);
+      if (this.options.freeRoam && this.options.scene === 'surveyor' && this.interactionRegion.contains(x, y)) {
+        this.pendingInteraction = true;
+        this.digTarget = { x: this.interactionX, y: 390 };
+        if (this.inInteractionRange) this.interactNearby();
+        return;
+      }
+      if (this.options.excavation || (this.options.freeRoam && this.options.scene === 'surveyor')) {
+        this.pendingInteraction = false; if (y >= 250) this.digTarget = { x: Phaser.Math.Clamp(x, 65, 895), y: Phaser.Math.Clamp(y, 265, 500) }; return; }
+      const hitsFriend = this.options.freeRoam && this.options.scene === 'tai-thinh'
+        ? (['pse', 'station', 'magnetometer'] as const).some(id => {
+          const device = taiThinhLayout[id];
+          return Math.abs(x - device.x) <= device.width / 2 && y >= device.y - device.height && y <= device.y;
+        })
+        : this.interactionRegion.contains(x, y);
+      this.pendingInteraction = this.canInteract && hitsFriend;
       if (this.pendingInteraction) {
         this.walkTarget = this.interactionX;
-        if (this.cuoi && Math.abs(this.cuoi.x - this.interactionX) <= 90) this.interactNearby();
+        if (this.inInteractionRange) this.interactNearby();
       } else if (y >= (this.options.scene === 'surveyor' ? 300 : 400)) this.walkTarget = Phaser.Math.Clamp(x, 52, this.rightEdge);
     };
     this.input.on('pointerdown', onPointerDown);
@@ -522,7 +544,7 @@ export class PreviewScene extends Phaser.Scene {
     this.updateTaiGift(delta);
     if (this.options.sparkleTrail) { this.updateTrail(delta); return; }
     if (this.options.excavation || (this.options.freeRoam && this.options.scene === 'surveyor')) { this.updateExcavation(_time, delta); return; }
-    this.interactionHint?.setVisible((this.options.scene !== 'lap-lanh' || this.options.encounterStarted) && this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
+    this.interactionHint?.setVisible((this.options.scene !== 'lap-lanh' || this.options.encounterStarted) && this.moonMode === 'free' && this.canInteract && this.inInteractionRange);
     if (this.moonMode !== 'free' || !this.awake) return;
     if (this.cuoi.x < 850) this.exitTriggered = false;
     if (document.activeElement?.matches('input, select, textarea')) { this.walkTarget = undefined; this.pendingInteraction = false; this.setCuoiFrame('rest'); return; }
@@ -532,7 +554,7 @@ export class PreviewScene extends Phaser.Scene {
     const direction = left === right ? 0 : left ? -1 : 1;
     const targetDirection = this.walkTarget === undefined ? 0 : Math.sign(this.walkTarget - this.cuoi.x);
     const heading = direction || targetDirection;
-    if (this.pendingInteraction && Math.abs(this.cuoi.x - this.interactionX) <= 90) { this.interactNearby(); return; }
+    if (this.pendingInteraction && this.inInteractionRange) { this.interactNearby(); return; }
     if (!heading) { this.setCuoiFrame('rest'); return; }
     this.cuoi.setFlipX(heading < 0);
     const distance = 165 * Math.min(delta, 50) / 1000;

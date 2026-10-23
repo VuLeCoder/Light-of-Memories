@@ -1,3 +1,4 @@
+import { endingChatLines } from './content/levels/ending-chat';
 import { TaiThinhSceneLabels } from './components/TaiThinhChallenges';
 import { TaiThinhLevel } from './components/TaiThinhLevel';
 import { freshTaiThinh } from './content/levels/tai-thinh-progress';
@@ -129,7 +130,15 @@ export function App() {
   const surveyorDigIntro = inSurveyor && surveyorProgress.phase === 'soil-intro';
   const surveyorChat = surveyorMeeting && surveyorProgress.phase === 'dialogue';
   const encounterText = surveyorEncounterCopy[language];
-  const questLocked = inTaiThinh ? !['approach', 'finished'].includes(taiThinhProgress.phase) : inSparkle ? (!sparkleWalking || trailWarning) : questDialogue || (journeyOpen && !surveyorMeeting && !excavating && !endingFreeRoam) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat;
+  const endingExploring = endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished') || (inTaiThinh && taiThinhProgress.phase === 'finished');
+  const [endingChat, setEndingChat] = useState<LevelId | null>(null);
+  const chattingAtEnd = endingExploring && endingChat === activeLevel;
+  useEffect(() => { setEndingChat(null); }, [activeLevel, endingExploring]);
+  const closeEndingChat = () => {
+    setEndingChat(null);
+    gameStage.current?.querySelector<HTMLElement>('.game-host')?.focus({ preventScroll: true });
+  };
+  const questLocked = chattingAtEnd || ( inTaiThinh ? !['approach', 'finished'].includes(taiThinhProgress.phase) : inSparkle ? (!sparkleWalking || trailWarning) : questDialogue || (journeyOpen && !surveyorMeeting && !excavating && !endingFreeRoam) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat);
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
@@ -288,7 +297,7 @@ export function App() {
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
-          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''}`}
+          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
             onFocusCapture={() => { gameOwnsFocus.current = true; }}
             onBlurCapture={(event) => {
               if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) gameOwnsFocus.current = false;
@@ -313,7 +322,7 @@ export function App() {
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas taiEnding={taiEnding} taiStars={litStars} onTaiGift={() => setTaiThinhProgress(p => p.phase === 'gift' && p.turn === 0 ? { ...p, turn: 1, completedOnce: true } : p)} onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished') || (inTaiThinh && taiThinhProgress.phase === 'finished')} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={inTaiThinh ? () => setTaiThinhProgress(p => p.phase === 'approach' ? { ...p, phase: 'arrival', turn: 0 } : p) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished') || (inTaiThinh && taiThinhProgress.phase === 'finished') ? () => setActiveLevel(null) : onExit} scene={inTaiThinh ? 'tai-thinh' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inTaiThinh ? !['route', 'approach'].includes(taiThinhProgress.phase) : inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              <GameCanvas taiEnding={taiEnding} taiStars={litStars} onTaiGift={() => setTaiThinhProgress(p => p.phase === 'gift' && p.turn === 0 ? { ...p, turn: 1, completedOnce: true } : p)} onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished') || (inTaiThinh && taiThinhProgress.phase === 'finished')} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={endingExploring ? () => setEndingChat(activeLevel) : inTaiThinh ? () => setTaiThinhProgress(p => p.phase === 'approach' ? { ...p, phase: 'arrival', turn: 0 } : p) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished') || (inTaiThinh && taiThinhProgress.phase === 'finished') ? () => setActiveLevel(null) : onExit} scene={inTaiThinh ? 'tai-thinh' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inTaiThinh ? !['route', 'approach'].includes(taiThinhProgress.phase) : inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
               {inTaiThinh && taiThinhProgress.phase === 'identify' && <TaiThinhSceneLabels language={language}/>}
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
@@ -340,10 +349,11 @@ export function App() {
             {inSparkle && sparkleProgress.phase === 'search' && trailWarning && <EarthDialogue language={language} paused={menuOpen} title={language === 'vi' ? 'Cuội' : 'Cuội'} lines={[{ id: 'sparkle-hole-warning', speaker: 'cuoi', text: language === 'vi' ? 'Hố này sâu quá, mình đi vào là ngã, đau lắm.' : 'This crater is so deep. If I walk in, I will fall and hurt myself.' }]} onTurn={noopTurn} finalAction="moon" finalLabel={language === 'vi' ? 'Tìm lối khác' : 'Find another way'} onComplete={() => setTrailWarning(false)} />}
             {inTaiThinh && <TaiThinhLevel stars={litStars} onBook={openFieldBook} language={language} progress={taiThinhProgress} onChange={setTaiThinhProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {inSparkle && <SparkleLevel onBook={openFieldBook} language={language} progress={sparkleProgress} onChange={setSparkleProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
+            {chattingAtEnd && activeLevel && <section className="ending-scene ending-chat" hidden={menuOpen}><EarthDialogue language={language} paused={menuOpen} title={language === 'vi' ? 'Trò chuyện cùng bạn' : 'A chat with your friend'} lines={endingChatLines[activeLevel][language]} onTurn={noopTurn} onComplete={closeEndingChat} finalAction="moon" finalLabel={language === 'vi' ? 'Mình đi xem nhé!' : 'Let’s take a look!'} /></section>}
             {journeyOpen && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
-          <p className="chapter-arrival game-instructions">{gameInstructions}</p>
+          <p className="chapter-arrival game-instructions">{chattingAtEnd ? dialogueHelp : endingExploring ? `${gameInstructions} ${language === 'vi' ? 'Đến gần bạn rồi nhấn E, hoặc bấm vào bạn để trò chuyện.' : 'Approach your friend and press E, or click your friend to chat.'}` : gameInstructions}</p>
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
       </section>
