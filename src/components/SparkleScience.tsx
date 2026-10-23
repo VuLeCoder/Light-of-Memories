@@ -124,7 +124,7 @@ export function RangingDiagram({ elapsed = null, language = 'vi' }: { elapsed?: 
   </svg>;
 }
 
-export function SparkleRanging({ language, progress: p, onChange, onComplete, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; onComplete: () => void; paused: boolean }) {
+export function SparkleRanging({ language, progress: p, onChange, paused }: { language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; paused: boolean }) {
   const vi = language === 'vi';
   const [elapsed, setElapsed] = useState<number | null>(null);
   const [numbers, setNumbers] = useState(p.calculation ? ['300000', '2,56', '2', String(p.distance)] : ['', '', '', '']);
@@ -152,7 +152,7 @@ export function SparkleRanging({ language, progress: p, onChange, onComplete, pa
     });
     const complete = numbers.every(value => value.trim() !== '') && values.every(Number.isFinite) && operations.every(Boolean);
     const correct = complete && values[0] === 300000 && values[1] === 2.56 && values[2] === 2 && values[3] === 384000 && operations[0] === '×' && operations[1] === '÷';
-    onChange({ ...p, calculation: correct, ...(correct ? { distance: values[3] } : {}) });
+    onChange({ ...p, calculation: correct, ...(correct ? { distance: values[3], phase: 'farewell', turn: 0 } : {}) });
     setFeedback(correct ? (vi ? 'Đúng rồi! Mặt Trăng cách trạm khoảng 384.000 km trong lần đo này.' : 'Correct! The Moon is about 384,000 km from the station in this measurement.') : !complete ? (vi ? 'Hãy nhập đủ các số đúng định dạng và chọn hai dấu trước khi nộp nhé.' : 'Enter valid numbers in every field and choose both operators before submitting.') : (vi ? 'Chưa đúng rồi. Xem lại sách: ánh sáng đi bao xa mỗi giây, và đồng hồ tính mấy lượt?' : 'Not quite. Check the book: how far does light travel per second, and how many journeys did the clock time?'));
   };
   const labels = vi ? ['Vận tốc ánh sáng (km/s)', 'Thời gian (s)', 'Số lượt', 'Kết quả (km)'] : ['Light speed (km/s)', 'Time (s)', 'Journeys', 'Result (km)'];
@@ -173,7 +173,6 @@ export function SparkleRanging({ language, progress: p, onChange, onComplete, pa
         <button type="submit" disabled={running}>{vi ? 'Nộp kết quả' : 'Submit answer'}</button>
       </form> : <p>{vi ? 'Trạm trên Trái Đất đã sẵn sàng.' : 'The station on Earth is ready.'}</p>}
       {(feedback || p.calculation) && <p className="sparkle-science-feedback" role="status">{feedback || (vi ? 'Đã ghi nhận khoảng cách: 384.000 km.' : 'Distance recorded: 384,000 km.')}</p>}
-      <button className="journey-primary" disabled={!p.measured || !p.calculation || p.distance !== 384000 || running} onClick={onComplete}>{vi ? 'Xác nhận khoảng cách →' : 'Confirm the distance →'}</button>
     </div>
   </section>;
 }

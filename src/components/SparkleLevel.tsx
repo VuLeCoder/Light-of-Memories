@@ -28,7 +28,7 @@ export function SparkleLevel({ language, progress: p, onChange, onBack, paused }
     </section>}
     {(phase === 'repair-intro' || phase === 'ranging-intro') && <EarthDialogue key={phase} language={language} paused={paused} title={title} lines={sparkleScienceLines(language, phase)} initialIndex={p.turn} onTurn={turn => { if (turn !== p.turn) onChange({ ...p, turn }); }} finalAction="moon" finalLabel={vi ? (phase === 'repair-intro' ? 'Mở mô hình góc gương' : phase === 'ranging-intro' ? 'Bắt đầu đo' : 'Cất manh mối') : (phase === 'repair-intro' ? 'Open the reflector model' : phase === 'ranging-intro' ? 'Start measuring' : 'Keep the clues')} onComplete={() => go(phase === 'repair-intro' ? 'repair' : 'ranging')} />}
     {phase === 'repair' && <SparkleRepair language={language} progress={p} onChange={onChange} onComplete={() => go('ranging-intro')} />}
-    {phase === 'ranging' && <SparkleRanging language={language} progress={p} onChange={onChange} onComplete={() => go('farewell')} paused={paused} />}
+    {phase === 'ranging' && <SparkleRanging language={language} progress={p} onChange={onChange} paused={paused} />}
     {phase === 'farewell' && <SparkleEnding language={language} progress={p} onChange={onChange} paused={paused} />}
     {phase === 'finished' && <section className="ending-scene sparkle-ending-scene is-exploring" aria-label={vi ? 'Cánh sao thứ hai đã sáng' : 'The second star point is shining'}>
       <div className="surveyor-scene-hud"><span>{vi ? 'Câu chuyện của Lấp Lánh' : 'Sparkle’s story'}</span><strong>★ 2/5</strong></div>

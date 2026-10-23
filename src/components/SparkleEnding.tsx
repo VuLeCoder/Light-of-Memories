@@ -17,8 +17,8 @@ export function SparkleEnding({ language, progress, onChange, paused }: {
     onChange({ ...progress, turn });
   };
   const intro: StoryLine[] = [{ id: 'sparkle-ending-intro', speaker: 'lapLanh', text: vi
-    ? 'Cuội đã giải được câu đố ánh sáng rồi! Giờ mình cùng mở lại hai bức ảnh, để mình kể từ ngày đầu đến đây nhé.'
-    : 'You solved the light puzzle, Cuội! Let us open those two pictures and start my story from the day I arrived.' }];
+    ? 'Đúng rồi, khoảng 384.000 ki-lô-mét trong lần đo này! Giờ mình cùng mở lại hai bức ảnh, để mình kể từ ngày đầu đến đây nhé.'
+    : 'That is right, about 384,000 kilometres in this measurement! Let us open those two pictures and start my story from the day I arrived.' }];
   const outro: StoryLine[] = [
     { id: 'sparkle-ending-thanks', speaker: 'lapLanh', text: vi ? 'Cảm ơn Cuội đã tìm đến, lau bụi và cùng mình khám phá đường đi của ánh sáng. Mình tặng bạn một chút lấp lánh để mang theo nhé!' : 'Thank you for finding me, cleaning the dust and exploring light with me. Here is a little sparkle for your journey!' },
     { id: 'sparkle-ending-star', speaker: 'cuoi', text: vi ? 'Cánh sao thứ hai sáng rồi! Mỗi khi nhìn nó, mình sẽ nhớ người bạn nhỏ vẫn gửi những lời chào về Trái Đất.' : 'The second star point is shining! It will remind me of my little friend who sends greetings back to Earth.' },
