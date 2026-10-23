@@ -2,16 +2,7 @@ import Phaser from 'phaser';
 
 // Composed for a 960 × 540 side-view, not a scale survey of the ALSEP site.
 // The renderer is deterministic so cacheScenery can rebuild it after context loss.
-export const taiThinhLayout = {
-  groundY: 431,
-  cuoi: { x: 350, y: 431, scale: .62 },
-  pse: { x: 610, y: 431, width: 190, height: 106 },
-  station: { x: 470, y: 332, width: 94, height: 98 },
-  magnetometer: { x: 821, y: 402, width: 142, height: 106 },
-  dialogue: { x: 24, y: 65, width: 912, height: 166 },
-  taskPanel: { x: 24, y: 70, width: 912, height: 446 },
-  photoPanel: { x: 24, y: 70, width: 912, height: 446 },
-} as const;
+export { taiThinhLayout } from './tai-thinh-layout';
 
 export function taiThinhScenery(scene: Phaser.Scene) {
   const g = scene.add.graphics();

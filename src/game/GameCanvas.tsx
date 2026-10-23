@@ -14,13 +14,16 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ initiallyAwake, onReady, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  onReady?: () => void;
   sparkleEnding?: boolean; sparkleDust?: boolean; freeRoam?: boolean; sparkleTrail?: boolean; onTrailHole?: PreviewOptions['onTrailHole'];
   excavation?: PreviewOptions['excavation']; onDigNear?: PreviewOptions['onDigNear'];
   initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
   onAwake: () => void;
 }) {
+  const readyRef = useRef(onReady);
+  readyRef.current = onReady;
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
   const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
@@ -66,7 +69,7 @@ export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust 
         onReady: () => {
           // Reveal overlays only after the scenery has reached the canvas.
           previewScene.game.events.once(Phaser.Core.Events.POST_RENDER, () => {
-            if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); }
+            if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); readyRef.current?.(); }
           });
         },
         onError: (assets) => { if (!cancelled) { setReady(false); setStatus({ kind: 'error', assets }); } },

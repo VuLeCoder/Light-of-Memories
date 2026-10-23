@@ -1,3 +1,4 @@
+import { TaiThinhSceneLabels } from './components/TaiThinhChallenges';
 import { TaiThinhLevel } from './components/TaiThinhLevel';
 import { freshTaiThinh } from './content/levels/tai-thinh-progress';
 import { SparkleLevel } from './components/SparkleLevel';
@@ -46,6 +47,8 @@ export function App() {
   const fittedWorkspace = useWorkspaceFit();
   const gameStage = useRef<HTMLDivElement>(null);
   const gameOwnsFocus = useRef(false);
+  const [canvasReady, setCanvasReady] = useState(0);
+  const onCanvasReady = useCallback(() => setCanvasReady(n => n + 1), []);
   // Clicking non-focusable page content must also release the game's focus.
   useEffect(() => {
     const releaseFocus = (event?: PointerEvent) => {
@@ -151,9 +154,9 @@ export function App() {
     if (menuOpen || !gameOwnsFocus.current) return;
     const stage = gameStage.current;
     const target = transitioning || moonWaking ? stage
-      : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .tai-milestone-stop button, .journey-view button, .story-canvas:not([inert]) .game-host');
+      : stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, [data-tai-primary], .tai-milestone-stop button, .journey-view button, .story-canvas:not([inert]) .game-host');
     (target ?? stage)?.focus({ preventScroll: true });
-  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, trailWarning]);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, trailWarning, canvasReady]);
   // T01 can lose its focused button when a dialogue closes or becomes inert.
   // Recover only while the game owns focus; outside pointer presses release it above.
   useEffect(() => {
@@ -224,7 +227,7 @@ export function App() {
   let gameInstructions = '';
   if (!menuOpen && !transitioning && !moonWaking && !revealing) {
     if (inTaiThinh) {
-      gameInstructions = taiThinhProgress.phase === 'approach' ? `${moveHelp} ${vi ? 'Đến gần cụm thiết bị rồi nhấn E, hoặc bấm vào cụm thiết bị.' : 'Approach the instruments and press E, or click the instruments.'}` : ['route', 'arrival'].includes(taiThinhProgress.phase) ? dialogueHelp : (vi ? 'Tiến trình đã được lưu. Bạn có thể quay lại lộ trình.' : 'Your progress is saved. You can return to the route.');
+      gameInstructions = taiThinhProgress.phase === 'approach' ? `${moveHelp} ${vi ? 'Đến gần cụm thiết bị rồi nhấn E, hoặc bấm vào cụm thiết bị.' : 'Approach the instruments and press E, or click the instruments.'}` : ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro'].includes(taiThinhProgress.phase) ? dialogueHelp : taiThinhProgress.phase === 'identify' ? (vi ? 'Bấm thiết bị để xem manh mối, rồi xác nhận lựa chọn. Dùng Tab và Enter/Space hoặc bấm “Gợi ý” để đọc sách.' : 'Inspect an instrument, then confirm your choice. Use Tab and Enter/Space, or select “Hint” to read the book.') : taiThinhProgress.phase === 'records' ? (vi ? 'Chọn bản ghi, đọc ghi chú rồi chọn nhãn. Dùng chuột/chạm hoặc Tab và Enter/Space; các cặp đúng được giữ lại.' : 'Choose a record, read its note, then select a label. Use mouse/touch or Tab and Enter/Space; correct matches stay in place.') : ['photoA', 'photoB'].includes(taiThinhProgress.phase) ? (vi ? 'Bấm “Cất ảnh và tiếp tục” để thêm ảnh vào sách.' : 'Select “Keep the photo and continue” to add it to the book.') : (vi ? 'Tiến trình đã được lưu. Bạn có thể quay lại lộ trình.' : 'Your progress is saved. You can return to the route.');
     } else if (inSparkle) {
       const phase = sparkleProgress.phase;
       if (phase === 'search' && !trailWarning) gameInstructions = `${depthMoveHelp} ${vi ? 'Đi vòng qua các hố đến vầng sáng bên phải.' : 'Go around the craters toward the glow on the right.'}`;
@@ -302,13 +305,14 @@ export function App() {
             }}
             onClick={(event) => {
               if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
-              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inTaiThinh && ['route', 'arrival'].includes(taiThinhProgress.phase)))) return;
+              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inTaiThinh && ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro'].includes(taiThinhProgress.phase)))) return;
               if ((event.target as Element).closest('button, select, input, a')) return;
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              <GameCanvas sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished')} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={inTaiThinh ? () => setTaiThinhProgress(p => p.phase === 'approach' ? { ...p, phase: 'arrival', turn: 0 } : p) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam ? () => setActiveLevel(null) : onExit} scene={inTaiThinh ? 'tai-thinh' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inTaiThinh ? !['route', 'approach'].includes(taiThinhProgress.phase) : inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              <GameCanvas onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished')} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={inTaiThinh ? () => setTaiThinhProgress(p => p.phase === 'approach' ? { ...p, phase: 'arrival', turn: 0 } : p) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingFreeRoam ? () => setActiveLevel(null) : onExit} scene={inTaiThinh ? 'tai-thinh' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inTaiThinh ? !['route', 'approach'].includes(taiThinhProgress.phase) : inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />
+              {inTaiThinh && taiThinhProgress.phase === 'identify' && <TaiThinhSceneLabels language={language}/>}
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
@@ -332,7 +336,7 @@ export function App() {
             {excavating && <SurveyorExcavation paused={menuOpen} language={language} progress={surveyorProgress} near={digNear} onChange={setSurveyorProgress} onBack={() => setActiveLevel(null)} onBook={openFieldBook} />}
             {surveyorEnding && <SurveyorEnding language={language} progress={surveyorProgress} onChange={setSurveyorProgress} onReplay={playSurveyorAgain} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {inSparkle && sparkleProgress.phase === 'search' && trailWarning && <EarthDialogue language={language} paused={menuOpen} title={language === 'vi' ? 'Cuội' : 'Cuội'} lines={[{ id: 'sparkle-hole-warning', speaker: 'cuoi', text: language === 'vi' ? 'Hố này sâu quá, mình đi vào là ngã, đau lắm.' : 'This crater is so deep. If I walk in, I will fall and hurt myself.' }]} onTurn={noopTurn} finalAction="moon" finalLabel={language === 'vi' ? 'Tìm lối khác' : 'Find another way'} onComplete={() => setTrailWarning(false)} />}
-            {inTaiThinh && <TaiThinhLevel language={language} progress={taiThinhProgress} onChange={setTaiThinhProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
+            {inTaiThinh && <TaiThinhLevel onBook={openFieldBook} language={language} progress={taiThinhProgress} onChange={setTaiThinhProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {inSparkle && <SparkleLevel onBook={openFieldBook} language={language} progress={sparkleProgress} onChange={setSparkleProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {journeyOpen && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}

@@ -56,3 +56,12 @@ export function readTaiThinh(value: unknown): TaiThinhProgress {
   }
   return p;
 }
+
+/** Page IDs stay stable when a new photograph is inserted in this friend's group. */
+export function taiThinhPageIds(p: TaiThinhProgress): string[] {
+  return ['tai-thinh',
+    ...(taiThinhPhases.indexOf(p.phase) >= taiThinhPhases.indexOf('identify') || p.keepsakes.length > 0 ? ['tai-book-devices'] : []),
+    ...(p.keepsakes.includes('pse') ? ['tai-photo-pse', 'tai-book-sensor', 'tai-book-sources', 'tai-book-noise'] : []),
+    ...(p.keepsakes.includes('station') ? ['tai-photo-station'] : []),
+  ];
+}

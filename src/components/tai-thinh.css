@@ -12,7 +12,7 @@
 .tai-route-map figcaption { color:#e7cf9c; font-size:clamp(12px,1.7cqw,16px); }
 .tai-milestone-stop { position:absolute; top:13%; left:2.5%; width:65%; padding:12px 18px; border:1px solid #a99570; border-radius:10px; background:#142831f5; font-size:clamp(14px,1.8cqw,18px); }
 .tai-milestone-stop p { margin:0 0 12px; }
-@media(max-width:600px) {
+@media(max-width:800px) {
   .game-stage:has(.tai-thinh-level) { aspect-ratio:auto; }
   .game-stage:has(.tai-thinh-level) > .story-canvas { aspect-ratio:16/9; }
   .tai-thinh-level { position:relative; }
@@ -23,3 +23,62 @@
 }
 
 .game-stage:not(:has(.game-host[data-ready="true"])) .tai-thinh-level { visibility:hidden; }
+
+/* T01 overlays use the same coordinates as the three Phaser props. */
+.tai-identify { position:absolute; inset:0; }
+.tai-thinh-level .surveyor-scene-hud { z-index:3; }
+.tai-thinh-level .surveyor-scene-hud > span { margin-right:auto; }
+.tai-inspection { position:absolute; top:13%; left:2.5%; width:39%; padding:12px 16px; background:#142831f5; border:1px solid #a9957080; border-radius:10px; font-size:clamp(13px,1.7cqw,17px); }
+.tai-inspection h3,.tai-task-panel h3 { margin:0 0 10px; font-size:inherit; color:#f0d49a; }
+.tai-inspection p { margin:8px 0; line-height:1.5; }
+.tai-inspection button { padding:8px 12px; min-height:40px; font-size:inherit; }
+.tai-device-choice { position:absolute; pointer-events:auto; border:2px solid transparent; background:transparent; color:#f4e6c7; border-radius:8px; padding:0; }
+.tai-device-choice span { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); white-space:nowrap; border:1px solid #c9ae74aa; background:#142831ee; border-radius:6px; padding:7px 9px; font-size:clamp(12px,1.6cqw,16px); }
+.tai-device-choice[aria-pressed=true],.tai-device-choice:focus-visible { border-color:#edd090; background:#e8d7a319; outline-offset:3px; }
+.tai-task-panel { position:absolute; inset:13% 2.5% 3%; padding:clamp(12px,2cqw,20px); border:1px solid #c3a96e80; border-radius:10px; background:#142831f5; font-size:clamp(13px,1.7cqw,17px); pointer-events:auto; }
+.tai-task-panel h3 { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.tai-record-tabs,.tai-record-labels { display:flex; gap:10px; }
+.tai-record-tabs button,.tai-record-labels button { flex:1; font-size:inherit; padding:9px 10px; min-height:42px; background:#293e46; color:#eee5d1; border:1px solid #a9957080; border-radius:7px; }
+.tai-record-tabs button[aria-pressed=true] { background:#dfc18a; color:#1c3039; }
+.tai-record-labels button:disabled { opacity:.65; }
+.tai-record-detail { display:grid; grid-template-columns:1fr 1.2fr; align-items:center; gap:20px; min-height:140px; }
+.tai-record-detail p { margin:10px 0; line-height:1.5; }
+.tai-wave { display:block; width:100%; color:#e1c68a; }
+.tai-feedback { min-height:2.8em; color:#e9d7ae; line-height:1.45; }
+.tai-record-note { display:block; color:#b7cac7; line-height:1.4; }
+.tai-memory-photo { position:absolute; inset:13% 2.5% 3%; background:#142831f5; border:1px solid #c3a96e80; border-radius:10px; pointer-events:auto; }
+.tai-memory-photo small { color:#b7cac7; }
+.tai-photo-error { padding:16px; color:inherit; }
+.tai-book-photo { height:auto; }
+.tai-book-photo img { display:block; width:100%; max-height:200px; object-fit:contain; }
+@media(max-width:800px) {
+  .tai-identify { position:relative; display:flex; flex-direction:column; gap:8px; padding:12px; background:#142831; }
+  .tai-device-choice { position:relative; inset:auto !important; width:100% !important; height:auto !important; min-height:44px; border:1px solid #a9957080; order:0; }
+  .tai-device-choice span { position:static; display:block; transform:none; border:0; background:transparent; padding:10px; }
+  .tai-inspection { position:relative; inset:auto; width:auto; order:1; padding:12px; }
+  .tai-task-panel { position:relative; inset:auto; border-radius:0; }
+  .tai-record-detail { grid-template-columns:1fr; gap:0; min-height:0; }
+  .tai-wave { max-height:90px; }
+  .tai-record-labels { flex-direction:column; gap:6px; }
+  .tai-record-tabs { gap:6px; }
+  .tai-feedback { min-height:0; }
+  .game-stage .tai-memory-photo { position:relative; inset:auto; display:flex; flex-direction:column; border-radius:0; }
+  .game-stage .tai-memory-photo .memory-photo-frame { width:100%; max-width:none; }
+  .game-stage .tai-memory-photo .memory-photo-frame img { height:200px; }
+}
+.tai-thinh-level .journey-primary { color:#20313a; background:#dfc18a; border:1px solid #ead4a4; border-radius:7px; padding:9px 13px; font-size:inherit; min-height:42px; }
+.tai-photo-error button { color:inherit; background:transparent; border:1px solid #b49c69; border-radius:6px; padding:8px 12px; }
+
+.tai-scene-labels { display:none; pointer-events:none; position:absolute; inset:0; }
+.tai-scene-labels span { position:absolute; transform:translate(-50%,-110%); white-space:nowrap; padding:3px 5px; border:1px solid #c9ae74aa; border-radius:4px; background:#142831ee; color:#f4e6c7; font-size:clamp(10px,1.6cqw,14px); }
+.tai-records { display:flex; flex-direction:column; gap:clamp(6px,.8cqw,8px); }
+.tai-records h3,.tai-records .tai-feedback { margin:0; }
+.tai-records .tai-record-detail { flex:1; min-height:0; }
+@media(max-width:800px) {
+  .tai-scene-labels { display:block; }
+  .tai-records .tai-record-detail { flex:none; }
+}
+@media(max-width:800px) {
+  .tai-inspection,.tai-task-panel { font-size:16px; }
+  .tai-device-choice span { font-size:14px; }
+}

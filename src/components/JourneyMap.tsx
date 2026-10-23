@@ -1,5 +1,6 @@
-import type { TaiThinhProgress } from '../content/levels/tai-thinh-progress';
-import { taiThinhBook, taiThinhBookSources } from '../content/levels/tai-thinh-content';
+import { TaiThinhArchiveImage } from './TaiThinhPhoto';
+import { taiThinhPageIds, type TaiThinhProgress } from '../content/levels/tai-thinh-progress';
+import { taiThinhBook, taiThinhBookSources, taiThinhMemories } from '../content/levels/tai-thinh-content';
 import { SparkleBookClue } from './SparkleBookClue';
 import { sparkleKeepsakes, sparkleRepairUnlocked, sparkleRangingUnlocked, type SparkleProgress } from '../content/levels/lap-lanh';
 import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
@@ -97,6 +98,7 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
       ...eventOrder.filter(event => surveyorProgress.found.includes(event)).map(event => `photo-${event}`),
     ];
     if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkleProgress) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkleProgress) ? ['sparkle-ranging-clue'] : [])];
+    if (id === 'tai-thinh') return taiThinhPageIds(taiThinhProgress);
     return id ? [id] : [];
   })];
   // Keep the selected page's identity when new photos or clues are inserted.
@@ -116,13 +118,14 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
     lastBookRequest.current = bookRequest;
     const target = activeLevel === 'lap-lanh'
       ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
+      : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : null
       : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);
     const frame = requestAnimationFrame(() => {
-      const heading = document.getElementById(activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
+      const heading = document.getElementById(activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
       heading?.focus({ preventScroll: true });
-      heading?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      heading?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
     });
     return () => cancelAnimationFrame(frame);
   }, [bookRequest]);
@@ -143,14 +146,17 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
   </>;
-  if (pages[page] === 'tai-thinh') {
-    const intro = taiThinhBook[0];
+  const taiPage = taiThinhBook.find(entry => pages[page] === `tai-book-${entry.id}` || entry.id === 'intro' && pages[page] === 'tai-thinh');
+  const taiPhoto = taiThinhMemories.find(photo => pages[page] === `tai-photo-${photo.id}`);
+  if (taiPage || taiPhoto) {
+    const source = taiPage ? taiThinhBookSources[taiPage.id] : 'https://apollojournals.org/alsj/a12/images12.html';
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
+      <aside className="book-panel" lang={language} aria-labelledby="tai-book-title"><div tabIndex={0} className="book-sheet journey-book tai-book">
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
-        <h2 id="book-title">{getLevel('tai-thinh')!.text[language].friend}</h2><img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/><p>{intro.body[language]}</p>
-        <a className="sparkle-book-source" href={taiThinhBookSources.intro!} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>
+        <h2 id="tai-book-title" tabIndex={-1}>{taiPhoto ? taiPhoto.title[language] : taiPage!.id === 'intro' ? getLevel('tai-thinh')!.text[language].friend : taiPage!.title[language]}</h2>
+        {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/>}<p>{taiPage!.body[language]}</p></>}
+        {source && <a className="sparkle-book-source" href={source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>}
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
     </>;
@@ -218,7 +224,7 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
 function BackToGame({ language }: { language: Language }) {
   return <button className="book-return-game" onClick={() => {
     const stage = document.querySelector<HTMLElement>('.game-stage');
-    const target = stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, .story-canvas:not([inert]) .game-host, .journey-view button');
+    const target = stage?.querySelector<HTMLElement>('.dialogue:not([hidden]) .dialogue-next, [data-tai-primary], .story-canvas:not([inert]) .game-host, .journey-view button');
     (target ?? stage)?.focus({ preventScroll: true });
     stage?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
   }}>{language === 'vi' ? '↑ Quay lại trò chơi' : '↑ Back to the game'}</button>;
