@@ -92,16 +92,15 @@ Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `loca
 - Chưa có phần thưởng kỹ năng hoặc thẻ bạn.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
 - Font sử dụng bộ có sẵn trên máy và font dự phòng, nên có thể khác nhau giữa thiết bị.
-- Bản build còn cảnh báo kích thước gói Phaser; các hạn chế khác được ghi trong tài liệu review bên dưới.
+- Bản build còn cảnh báo kích thước gói Phaser; các giới hạn đã biết được ghi trong tài liệu từng màn.
 
 ### Tài liệu tham khảo
 
 - [Tổng quan và mục lục tài liệu](docs/project-overview.md)
-- [Game1 — Mắt Tròn](docs/Game1_Surveyor_3.md)
-- [Game2 — Lấp Lánh](docs/Game2_Ban-Lap-Lanh.md)
-- [Game3 — Tai Thính](docs/Game3.md)
+- [Game1 — Mắt Tròn](docs/done/Game1_Surveyor_3.md)
+- [Game2 — Lấp Lánh](docs/done/Game2_Apollo_11.md)
+- [Game3 — Tai Thính](docs/done/Game3_Apollo_12.md)
 - [Hướng dẫn AI thiết kế màn chơi mới](docs/Huong-dan-AI-thiet-ke-man-choi-moi.md)
 - [Phong cách hình ảnh và hướng dẫn sinh ảnh cho AI](docs/visual-style.md)
 - [Quy ước thư mục ảnh](docs/image-assets.md)
 - [Kiểm kê ảnh và thông tin sprite](docs/assets-inventory.md)
-- [Review mã nguồn ngày 17/10/2026 — ghi nhận lịch sử](docs/code-review.md)

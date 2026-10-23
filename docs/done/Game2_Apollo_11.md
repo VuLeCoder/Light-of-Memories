@@ -42,13 +42,13 @@ Văn sách dùng ngôi thứ ba, câu ngắn, kể và giải thích như sách 
 
 Cuội tìm đường vòng qua **sáu hố** tới vùng sáng bên phải. Đi bằng WASD, mũi tên hoặc bấm/chạm đất; đi xa nhỏ lại, đi gần lớn hơn. Hố hiện từ lời dẫn đầu bài, có lối vòng và khoảng đệm cho vùng đích.
 
-Chạm mép hố thì dừng, có lời Cuội nhắc; không nhảy hoặc rơi rồi xuất hiện lại ở đầu. Tới đích chuyển sang cảnh không có hố thử thách, Cuội ở trái và Lấp Lánh ở giữa. Đến gần nhấn E hoặc bấm thiết bị để trò chuyện, rồi nhận ảnh đầu tiên. [SparkleLevel.tsx](../src/components/SparkleLevel.tsx), [PreviewScene.ts](../src/game/PreviewScene.ts)
+Chạm mép hố thì dừng, có lời Cuội nhắc; không nhảy hoặc rơi rồi xuất hiện lại ở đầu. Tới đích chuyển sang cảnh không có hố thử thách, Cuội ở trái và Lấp Lánh ở giữa. Đến gần nhấn E hoặc bấm thiết bị để trò chuyện, rồi nhận ảnh đầu tiên. [SparkleLevel.tsx](../../src/components/SparkleLevel.tsx), [PreviewScene.ts](../../src/game/PreviewScene.ts)
 
 ### T02 — Cuội lau kính
 
 Bấm/kéo chuột, dùng cảm ứng hoặc Tab và Enter để lau **24 ô bụi**. Đủ 100% mở nút nhận ảnh thứ hai. 24 ô là cách chia vùng thao tác, không phải số lăng kính thật.
 
-Lau bụi là hoạt động tưởng tượng. Hai ảnh lịch sử không phải cặp trước/sau hành động của Cuội. Panel dành đủ chỗ cho thao tác, không có thanh cuộn nội bộ ngoài ý muốn. [SparkleCleaning.tsx](../src/components/SparkleCleaning.tsx)
+Lau bụi là hoạt động tưởng tượng. Hai ảnh lịch sử không phải cặp trước/sau hành động của Cuội. Panel dành đủ chỗ cho thao tác, không có thanh cuộn nội bộ ngoài ý muốn. [SparkleCleaning.tsx](../../src/components/SparkleCleaning.tsx)
 
 ### T03 — Sửa kính phản xạ Apollo 11
 
@@ -56,7 +56,7 @@ Lau bụi là hoạt động tưởng tượng. Hai ảnh lịch sử không ph�
 
 Mô phỏng tính giao điểm và phản xạ từ góc hiện tại. Thành công khi tia chạm lần lượt hai gương rồi lọt khe nhận hẹp. Hai gương vuông góc đưa hướng tia ra ngược hướng tia vào; **89°/91° trượt khe**. Không dùng kiểm tra góc đúng thay cho tính đường tia. Xoay lại xóa kết quả lần thử trước.
 
-Sách và bài dùng cùng sơ đồ. Chú thích phân biệt mô hình hai mặt với lăng kính **ba mặt vuông góc** của thiết bị thật. [SparkleScience.tsx](../src/components/SparkleScience.tsx), [sparkle-optics.ts](../src/game/sparkle-optics.ts), [Apache Point — Retroreflector Arrays](https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/)
+Sách và bài dùng cùng sơ đồ. Chú thích phân biệt mô hình hai mặt với lăng kính **ba mặt vuông góc** của thiết bị thật. [SparkleScience.tsx](../../src/components/SparkleScience.tsx), [sparkle-optics.ts](../../src/game/sparkle-optics.ts), [Apache Point — Retroreflector Arrays](https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/)
 
 ### T04 — Lời chào mất bao lâu?
 
@@ -66,7 +66,7 @@ Gửi xung từ Trái Đất, quan sát đồng hồ đo **2,56 giây cho cả l
 300.000 × 2,56 ÷ 2 = 384.000 km
 ```
 
-Chấp nhận dấu phẩy hoặc chấm ở số thập phân. Nộp bằng nút hoặc Enter; thiếu/sai có phản hồi và được sửa. Đã đo và nộp đúng thì vào ngay lời dẫn hồi tưởng, không thêm bước xác nhận khoảng cách. [SparkleScience.tsx](../src/components/SparkleScience.tsx), [SparkleBookClue.tsx](../src/components/SparkleBookClue.tsx)
+Chấp nhận dấu phẩy hoặc chấm ở số thập phân. Nộp bằng nút hoặc Enter; thiếu/sai có phản hồi và được sửa. Đã đo và nộp đúng thì vào ngay lời dẫn hồi tưởng, không thêm bước xác nhận khoảng cách. [SparkleScience.tsx](../../src/components/SparkleScience.tsx), [SparkleBookClue.tsx](../../src/components/SparkleBookClue.tsx)
 
 ## 5. Ảnh kỷ niệm, đoạn kết và thông điệp
 
@@ -77,11 +77,11 @@ Chấp nhận dấu phẩy hoặc chấm ở số thập phân. Nộp bằng nú
 
 Ảnh ghi NASA và mã tư liệu; không suy ra lượng bụi từ độ tối/sáng. Nguồn đối chiếu: [Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [ghi chú triển khai](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html). Chân dung/sprite minh họa không dùng làm ảnh lịch sử.
 
-Sau T04, Lấp Lánh kể **5945 → 5952**. Mỗi trang kể ngắn, vừa khung, không dồn toàn bộ kiến thức và thành tích của Cuội vào một đoạn. Trở lại cảnh trăng, bạn cảm ơn và thắp **cánh sao thứ hai**. Thông điệp: một thiết bị nhỏ vẫn có thể giúp con người hiểu thêm những khoảng cách rất xa. [SparkleEnding.tsx](../src/components/SparkleEnding.tsx)
+Sau T04, Lấp Lánh kể **5945 → 5952**. Mỗi trang kể ngắn, vừa khung, không dồn toàn bộ kiến thức và thành tích của Cuội vào một đoạn. Trở lại cảnh trăng, bạn cảm ơn và thắp **cánh sao thứ hai**. Thông điệp: một thiết bị nhỏ vẫn có thể giúp con người hiểu thêm những khoảng cách rất xa. [SparkleEnding.tsx](../../src/components/SparkleEnding.tsx)
 
-Hậu kết cho đi ngang, giữ y/scale, đèn theo tay. Có **Xem lại đoạn kết / Chơi lại / Về lộ trình**. Bấm bạn để đi tới hoặc đến gần nhấn E: bạn cảm ơn Cuội ghé trò chuyện, rồi gợi nhìn **vòng gợn ở rìa phải**. Đi tới đó trở về lộ trình; vòng gợn gợi Tai Thính, thuộc cách kể kỳ ảo. Hội thoại nghe lại không trao thêm phần thưởng. [ending-chat.ts](../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../src/components/EndingTrail.tsx)
+Hậu kết cho đi ngang, giữ y/scale, đèn theo tay. Có **Xem lại đoạn kết / Chơi lại / Về lộ trình**. Bấm bạn để đi tới hoặc đến gần nhấn E: bạn cảm ơn Cuội ghé trò chuyện, rồi gợi nhìn **vòng gợn ở rìa phải**. Đi tới đó trở về lộ trình; vòng gợn gợi Tai Thính, thuộc cách kể kỳ ảo. Hội thoại nghe lại không trao thêm phần thưởng. [ending-chat.ts](../../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../../src/components/EndingTrail.tsx)
 
-Chơi lại từ lời dẫn chuyển vùng, giữ hai ảnh và `completedOnce`; xem lại kết giữ đáp án và ảnh. Hoàn thành mở Tai Thính; xem lại/chơi lại không tăng sao trùng. Bộ đọc vẫn tiếp nhận góc cũ `repairRotation` và phase cũ theo [lap-lanh.ts](../src/content/levels/lap-lanh.ts).
+Chơi lại từ lời dẫn chuyển vùng, giữ hai ảnh và `completedOnce`; xem lại kết giữ đáp án và ảnh. Hoàn thành mở Tai Thính; xem lại/chơi lại không tăng sao trùng. Bộ đọc vẫn tiếp nhận góc cũ `repairRotation` và phase cũ theo [lap-lanh.ts](../../src/content/levels/lap-lanh.ts).
 
 ## 6. Bảng đối chiếu thông tin và nguồn
 
@@ -96,8 +96,8 @@ Chơi lại từ lời dẫn chuyển vùng, giữ hai ảnh và `completedOnce`
 
 ## 7. Ghi chú duy trì màn
 
-- Nội dung/bản lưu: [lap-lanh.ts](../src/content/levels/lap-lanh.ts); điều phối: [App.tsx](../src/App.tsx); sách: [JourneyMap.tsx](../src/components/JourneyMap.tsx).
-- Nền: [sparkle-scenery.ts](../src/game/sparkle-scenery.ts). Chân dung `public/images/portraits/lap-lanh.webp`; sprite một frame nghỉ `public/images/sprites/lap-lanh-idle.webp`.
-- Dùng kiểu nút, Gợi ý và giữ focus chung theo [hướng dẫn màn mới](Huong-dan-AI-thiet-ke-man-choi-moi.md). Chat đặt theo vùng trống, không che thiết bị/đèn; màn hẹp đưa panel xuống dưới cảnh.
+- Nội dung/bản lưu: [lap-lanh.ts](../../src/content/levels/lap-lanh.ts); điều phối: [App.tsx](../../src/App.tsx); sách: [JourneyMap.tsx](../../src/components/JourneyMap.tsx).
+- Nền: [sparkle-scenery.ts](../../src/game/sparkle-scenery.ts). Chân dung `public/images/portraits/lap-lanh.webp`; sprite một frame nghỉ `public/images/sprites/lap-lanh-idle.webp`.
+- Dùng kiểu nút, Gợi ý và giữ focus chung theo [hướng dẫn màn mới](../Huong-dan-AI-thiet-ke-man-choi-moi.md). Chat đặt theo vùng trống, không che thiết bị/đèn; màn hẹp đưa panel xuống dưới cảnh.
 - Kiểm tra trước đây đã rà bố cục Việt/Anh màn rộng/hẹp, hồi tưởng ngắn, nhập số, focus và hậu kết. Đây là ghi nhận bàn giao, chưa phải đánh giá với học sinh hoặc xác nhận mọi trình duyệt.
 - Ý tưởng tìm ảnh dưới hố bằng đèn, thêm ảnh đài laser hoặc LRO chưa thuộc luồng hiện tại. Không coi chúng là T03/T04 còn thiếu.

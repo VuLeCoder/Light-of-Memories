@@ -14,15 +14,15 @@ Surveyor 3 nằm trên **sườn trong của hố Surveyor**. Tháng **11/1969**
 
 ## 2. Bối cảnh dựng game
 
-Cuội đang tìm chị Hằng. Sau phần mở đầu dưới Cây Đa, Cuội có đèn ông sao, đi theo dấu chân và nhìn thấy lộ trình năm người bạn. Người bạn đầu tiên là **Surveyor 3 — Mắt Tròn**. Cuội tới gần tàu trên Mặt Trăng và trò chuyện: Mắt Tròn chưa gặp chị Hằng, nhưng muốn Cuội giúp nhớ lại ba bức ảnh về chuyến đi của mình. Nội dung này nằm trong [cấu hình màn 1](../src/content/levels/surveyor.ts), [lời thoại gặp gỡ](../src/content/levels/surveyor-encounter.ts) và [luồng game](../src/App.tsx).
+Cuội đang tìm chị Hằng. Sau phần mở đầu dưới Cây Đa, Cuội có đèn ông sao, đi theo dấu chân và nhìn thấy lộ trình năm người bạn. Người bạn đầu tiên là **Surveyor 3 — Mắt Tròn**. Cuội tới gần tàu trên Mặt Trăng và trò chuyện: Mắt Tròn chưa gặp chị Hằng, nhưng muốn Cuội giúp nhớ lại ba bức ảnh về chuyến đi của mình. Nội dung này nằm trong [cấu hình màn 1](../../src/content/levels/surveyor.ts), [lời thoại gặp gỡ](../../src/content/levels/surveyor-encounter.ts) và [luồng game](../../src/App.tsx).
 
-Cảnh gặp gỡ và cảnh kết đều dùng nền **hố Surveyor**: bầu trời đen, nền bụi xám, vành hố thấp, tàu trên sườn trong. Đây là minh họa góc nhìn ngang do game sắp xếp để Cuội đi lại, **không phải bản đồ tọa độ hoặc ảnh hiện trạng**. Hình tàu trong cảnh hiện tại không còn máy ảnh và đầu xẻng vì Apollo 12 đã mang chúng về; hình ở T01 thể hiện **ký ức khi tàu còn đủ dụng cụ**. Cơ sở: [NASA — View of Surveyor III in Its Crater](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/), [NASA — Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/). Cách vẽ nằm trong [surveyor-scenery.ts](../src/game/surveyor-scenery.ts).
+Cảnh gặp gỡ và cảnh kết đều dùng nền **hố Surveyor**: bầu trời đen, nền bụi xám, vành hố thấp, tàu trên sườn trong. Đây là minh họa góc nhìn ngang do game sắp xếp để Cuội đi lại, **không phải bản đồ tọa độ hoặc ảnh hiện trạng**. Hình tàu trong cảnh hiện tại không còn máy ảnh và đầu xẻng vì Apollo 12 đã mang chúng về; hình ở T01 thể hiện **ký ức khi tàu còn đủ dụng cụ**. Cơ sở: [NASA — View of Surveyor III in Its Crater](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/), [NASA — Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/). Cách vẽ nằm trong [surveyor-scenery.ts](../../src/game/surveyor-scenery.ts).
 
 Mạch truyện của màn 1: **gặp Mắt Tròn → nhận ra hai dụng cụ → nhận “xẻng ký ức” → tìm ba ảnh → sắp ảnh thành nhật ký → nghe Mắt Tròn kể lại → thắp sáng một cánh đèn → thấy điểm sáng xa dẫn về lộ trình**. Điểm sáng gợi người bạn tiếp theo nhưng chưa tiết lộ danh tính. Đèn sáng và dụng cụ ký ức là phép màu của truyện, không phải hoạt động thật của Surveyor 3.
 
 ## 3. Nội dung sách đồng hành đang có
 
-Sách đứng cạnh game và người chơi có thể lật **trang trước/trang sau**. Màn Surveyor 3 hiện có các nhóm trang sau trong [JourneyMap.tsx](../src/components/JourneyMap.tsx):
+Sách đứng cạnh game và người chơi có thể lật **trang trước/trang sau**. Màn Surveyor 3 hiện có các nhóm trang sau trong [JourneyMap.tsx](../../src/components/JourneyMap.tsx):
 
 | Trang | Nội dung và thời điểm xuất hiện | Vai trò |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Sách đứng cạnh game và người chơi có thể lật **trang trước/tr
 | **Ba trang ảnh tìm được** | Mỗi ảnh xuất hiện sau khi Cuội đào thấy ảnh tương ứng. | Lưu ảnh và chú thích sự kiện để xem lại. |
 | **Nhật ký Mắt Tròn** | Xuất hiện khi đã ghép đúng ba ảnh và hoàn thành màn. | Đọc lại ba sự kiện theo thứ tự. |
 
-**Quy tắc gợi ý:** người chơi có thể đào ảnh **không theo thứ tự** và **không bắt buộc mở sách**. Riêng ba trang gợi ý chỉ đọc/ghi nhớ **theo thứ tự**: cần ghi nhớ gợi ý trước, hoặc đã tìm được ảnh đó, mới mở được gợi ý tiếp theo. Vị trí đánh dấu, hình phác trong sách và vị trí đào là thiết kế của game; NASA không công bố ba tọa độ “đào ảnh” như vậy. [Mã gợi ý và ảnh](../src/content/levels/surveyor-dig.ts), [trang sách](../src/components/JourneyMap.tsx), [vị trí minh họa](../src/game/PreviewScene.ts).
+**Quy tắc gợi ý:** người chơi có thể đào ảnh **không theo thứ tự** và **không bắt buộc mở sách**. Riêng ba trang gợi ý chỉ đọc/ghi nhớ **theo thứ tự**: cần ghi nhớ gợi ý trước, hoặc đã tìm được ảnh đó, mới mở được gợi ý tiếp theo. Vị trí đánh dấu, hình phác trong sách và vị trí đào là thiết kế của game; NASA không công bố ba tọa độ “đào ảnh” như vậy. [Mã gợi ý và ảnh](../../src/content/levels/surveyor-dig.ts), [trang sách](../../src/components/JourneyMap.tsx), [vị trí minh họa](../../src/game/PreviewScene.ts).
 
 **Bản đang chạy chỉ tạo B01, ba trang gợi ý, ba trang ảnh và nhật ký hoàn chỉnh**; phần giải thích việc khảo sát đất và cuộc ghé thăm được kể trong ảnh, T03 và đoạn kết.
 
@@ -40,11 +40,11 @@ Sách đứng cạnh game và người chơi có thể lật **trang trước/tr
 
 ### T01 — Khám phá Mắt Tròn
 
-Người chơi nhìn hình Surveyor 3 **trong ký ức lúc còn hoạt động**, chọn công dụng “Chụp ảnh” hoặc “Khảo sát đất”, rồi bấm đúng vùng **máy ảnh** hoặc **chiếc xẻng khảo sát**. Có thể bấm riêng dụng cụ để nhận gợi ý; ghép sai thì thử lại, phần đã ghép đúng được giữ. Ghép đủ hai công dụng mở B01 và dẫn vào T02. Đây là bài nhận biết thiết bị dựa trên hai dụng cụ thật của tàu. [Triển khai T01](../src/components/SurveyorLevel.tsx), [NASA Science — thiết bị của Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
+Người chơi nhìn hình Surveyor 3 **trong ký ức lúc còn hoạt động**, chọn công dụng “Chụp ảnh” hoặc “Khảo sát đất”, rồi bấm đúng vùng **máy ảnh** hoặc **chiếc xẻng khảo sát**. Có thể bấm riêng dụng cụ để nhận gợi ý; ghép sai thì thử lại, phần đã ghép đúng được giữ. Ghép đủ hai công dụng mở B01 và dẫn vào T02. Đây là bài nhận biết thiết bị dựa trên hai dụng cụ thật của tàu. [Triển khai T01](../../src/components/SurveyorLevel.tsx), [NASA Science — thiết bị của Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
 
 ### T02 — Đào tìm ba bức ảnh ký ức
 
-Mắt Tròn giải thích **xẻng thật đã được mang về Trái Đất**, rồi tặng Cuội một **xẻng ký ức**. Cuội di chuyển trái/phải và gần/xa bằng WASD, phím mũi tên hoặc chọn điểm trên mặt đất; kích thước nhân vật thay đổi để tạo chiều sâu giả 3D. Bấm **E** để đào ở bất cứ đâu. Nếu chưa gần dấu vết, game báo chưa thấy ảnh. Nếu gần đúng dấu vết, sau hoạt ảnh đào sẽ hiện **ảnh NASA, tên và mô tả**, rồi người chơi tiếp tục tìm ảnh khác. Ảnh được tìm theo **bất kỳ thứ tự nào**. Nút “Gợi ý” mở sách khi cần. [Triển khai đào](../src/components/SurveyorExcavation.tsx), [dữ liệu ba dấu vết](../src/content/levels/surveyor-dig.ts), [cảnh di chuyển](../src/game/PreviewScene.ts)
+Mắt Tròn giải thích **xẻng thật đã được mang về Trái Đất**, rồi tặng Cuội một **xẻng ký ức**. Cuội di chuyển trái/phải và gần/xa bằng WASD, phím mũi tên hoặc chọn điểm trên mặt đất; kích thước nhân vật thay đổi để tạo chiều sâu giả 3D. Bấm **E** để đào ở bất cứ đâu. Nếu chưa gần dấu vết, game báo chưa thấy ảnh. Nếu gần đúng dấu vết, sau hoạt ảnh đào sẽ hiện **ảnh NASA, tên và mô tả**, rồi người chơi tiếp tục tìm ảnh khác. Ảnh được tìm theo **bất kỳ thứ tự nào**. Nút “Gợi ý” mở sách khi cần. [Triển khai đào](../../src/components/SurveyorExcavation.tsx), [dữ liệu ba dấu vết](../../src/content/levels/surveyor-dig.ts), [cảnh di chuyển](../../src/game/PreviewScene.ts)
 
 | Dấu vết trong game | Ảnh ký ức và điều trẻ học | Cơ sở tư liệu |
 | --- | --- | --- |
@@ -56,11 +56,11 @@ Ba ảnh game tương ứng với `public/assets/surveyor-footpad.jpg`, `surveyo
 
 ### T03 — Ghép nhật ký Mắt Tròn
 
-Ngay sau ảnh thứ ba, người chơi vào màn **xếp ba ảnh theo thứ tự thời gian**. Các thẻ hiện theo thứ tự trộn, người chơi bấm để đưa vào ba vị trí “Đầu tiên – Tiếp theo – Sau đó”, bấm lại để bỏ chọn, rồi bấm “Ghép trang nhật ký”. Đáp án: **(1) robot đến Mặt Trăng → (2) robot chụp ảnh, khảo sát đất → (3) phi hành gia ghé thăm, mang vài bộ phận về nghiên cứu**. Ghép sai được gợi ý và thử lại. [Triển khai T03](../src/components/SurveyorChallenges.tsx), [thứ tự sự kiện](../src/content/levels/surveyor-progress.ts), [NASA Science — lịch sử sứ mệnh](https://science.nasa.gov/mission/surveyor-3/)
+Ngay sau ảnh thứ ba, người chơi vào màn **xếp ba ảnh theo thứ tự thời gian**. Các thẻ hiện theo thứ tự trộn, người chơi bấm để đưa vào ba vị trí “Đầu tiên – Tiếp theo – Sau đó”, bấm lại để bỏ chọn, rồi bấm “Ghép trang nhật ký”. Đáp án: **(1) robot đến Mặt Trăng → (2) robot chụp ảnh, khảo sát đất → (3) phi hành gia ghé thăm, mang vài bộ phận về nghiên cứu**. Ghép sai được gợi ý và thử lại. [Triển khai T03](../../src/components/SurveyorChallenges.tsx), [thứ tự sự kiện](../../src/content/levels/surveyor-progress.ts), [NASA Science — lịch sử sứ mệnh](https://science.nasa.gov/mission/surveyor-3/)
 
 ## 5. Đoạn kết và thông điệp
 
-Sau T03, Cuội và Mắt Tròn nói chuyện ngắn trên nền Mặt Trăng. Màn kể chuyện tóm tắt lần chạm đất, công việc với máy ảnh/xẻng và cuộc ghé thăm, mỗi phần đi cùng một trong ba ảnh. Trở lại cảnh Mặt Trăng, Mắt Tròn **thắp sáng cánh đầu tiên của đèn ông sao**; Cuội thấy điểm sáng ở xa và nghe gợi ý về một người bạn khác. Người chơi có thể **xem lại đoạn kết, chơi lại màn hoặc về lộ trình**; đi tới điểm sáng cũng về lộ trình. [Triển khai đoạn kết](../src/components/SurveyorEnding.tsx), [NASA — cuộc ghé thăm của Apollo 12](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/)
+Sau T03, Cuội và Mắt Tròn nói chuyện ngắn trên nền Mặt Trăng. Màn kể chuyện tóm tắt lần chạm đất, công việc với máy ảnh/xẻng và cuộc ghé thăm, mỗi phần đi cùng một trong ba ảnh. Trở lại cảnh Mặt Trăng, Mắt Tròn **thắp sáng cánh đầu tiên của đèn ông sao**; Cuội thấy điểm sáng ở xa và nghe gợi ý về một người bạn khác. Người chơi có thể **xem lại đoạn kết, chơi lại màn hoặc về lộ trình**; đi tới điểm sáng cũng về lộ trình. [Triển khai đoạn kết](../../src/components/SurveyorEnding.tsx), [NASA — cuộc ghé thăm của Apollo 12](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/)
 
 Thông điệp của màn: một robot đi trước đã giúp con người hiểu thêm về Mặt Trăng; những bộ phận được mang về nghiên cứu còn phần tàu vẫn ở nơi nó hạ cánh. Tình bạn giữa Cuội và Mắt Tròn, việc “khôi phục ký ức” và cánh đèn phát sáng là cách trò chơi giúp trẻ nhớ câu chuyện, **không phải sự kiện NASA ghi nhận**.
 

@@ -47,7 +47,7 @@ Nhóm Tai Thính nằm sau toàn bộ Lấp Lánh. Trước mở khóa, sách v�
 | Ảnh C (`tai-photo-magnetometer`) | Cất ảnh sau T04 | Lưu AS12-47-6921 |
 | **Những điều còn được lưu giữ** (`legacy`) | Tới cảm ơn, hoặc đã hoàn thành | Năm 1977, dữ liệu còn lưu, lời hứa của Cuội |
 
-Gợi ý T01 tới `devices`, T02 tới `sources`, T03 tới `ringing`, T04 tới `rhythm`, kèm focus vào tiêu đề. Mở khóa trang không tự lật; đổi ngôn ngữ giữ danh tính trang. Chơi lại giữ ảnh và các trang theo điều kiện tiến trình, dấu hoàn thành. [tai-thinh-progress.ts](../src/content/levels/tai-thinh-progress.ts), [JourneyMap.tsx](../src/components/JourneyMap.tsx)
+Gợi ý T01 tới `devices`, T02 tới `sources`, T03 tới `ringing`, T04 tới `rhythm`, kèm focus vào tiêu đề. Mở khóa trang không tự lật; đổi ngôn ngữ giữ danh tính trang. Chơi lại giữ ảnh và các trang theo điều kiện tiến trình, dấu hoàn thành. [tai-thinh-progress.ts](../../src/content/levels/tai-thinh-progress.ts), [JourneyMap.tsx](../../src/components/JourneyMap.tsx)
 
 Văn sách theo ngôi thứ ba như Mắt Tròn: giới thiệu người bạn, kể công việc/sự kiện, giải thích một ý mỗi đoạn. Ví dụ: “Tai Thính đo những chuyển động rất nhỏ của đất, giúp các nhà khoa học tìm hiểu Mặt Trăng.” Lời nói thân mật thuộc hội thoại.
 
@@ -57,7 +57,7 @@ Văn sách theo ngôi thứ ba như Mắt Tròn: giới thiệu người bạn, 
 
 Quan sát ba thiết bị, chọn để xem công dụng rồi bấm **Chọn thiết bị này**. Bấm xem chưa phải nộp. Đáp án **PSE / thiết bị A**; trạm ăng-ten cao nhận/gửi dữ liệu, máy ba cần đo từ trường.
 
-Sai có phản hồi, không trừ điểm. Đúng mở lời giới thiệu và ảnh A; chỉ thao tác cất ảnh mới ghi ảnh vào sách. Panel co theo nội dung, không chừa khoảng trống lớn dưới nút. [TaiThinhChallenges.tsx](../src/components/TaiThinhChallenges.tsx)
+Sai có phản hồi, không trừ điểm. Đúng mở lời giới thiệu và ảnh A; chỉ thao tác cất ảnh mới ghi ảnh vào sách. Panel co theo nội dung, không chừa khoảng trống lớn dưới nút. [TaiThinhChallenges.tsx](../../src/components/TaiThinhChallenges.tsx)
 
 ### T02 — Phân loại bản ghi
 
@@ -69,13 +69,13 @@ Chọn bản ghi, đọc ghi chú rồi chọn nhãn; không bắt kéo thả.
 | `impact` — manh mối vật từ ngoài va xuống | `meteoroid` — Va chạm thiên thạch |
 | `electronics` — dấu hiệu nghi liên quan điện tử | `noise` — Nhiễu cần kiểm tra |
 
-Giữ các cặp đúng khi sai hoặc tải lại. Đủ ba cặp chuyển sang lời Tai Thính rồi ảnh B. Sóng là minh họa tổng hợp, không phải bộ ba dữ liệu NASA; cần ngữ cảnh, không phân loại chỉ qua hình sóng. [TaiThinhChallenges.tsx](../src/components/TaiThinhChallenges.tsx)
+Giữ các cặp đúng khi sai hoặc tải lại. Đủ ba cặp chuyển sang lời Tai Thính rồi ảnh B. Sóng là minh họa tổng hợp, không phải bộ ba dữ liệu NASA; cần ngữ cảnh, không phân loại chỉ qua hình sóng. [TaiThinhChallenges.tsx](../../src/components/TaiThinhChallenges.tsx)
 
 ### T03 — Vì sao Mặt Trăng ngân vang?
 
 So sánh hai đồ thị cùng trục **0–60 phút**. Đồ thị **B** tăng tới khoảng phút 7–8 rồi giảm chậm, còn dấu sau phút 55; A tắt nhanh. Có mốc va chạm 0 và ghi chú minh họa/tua nhanh, không gọi đây là dữ liệu thô.
 
-Chọn B rồi chọn **Hơn 55 phút** giữa ba đáp án: vài giây / hơn 55 phút / nhiều ngày. Sai thời lượng giữ đáp án đồ thị. Đủ hai bước dẫn tới giải thích tán xạ và T04. [TaiThinhTremors.tsx](../src/components/TaiThinhTremors.tsx)
+Chọn B rồi chọn **Hơn 55 phút** giữa ba đáp án: vài giây / hơn 55 phút / nhiều ngày. Sai thời lượng giữ đáp án đồ thị. Đủ hai bước dẫn tới giải thích tán xạ và T04. [TaiThinhTremors.tsx](../../src/components/TaiThinhTremors.tsx)
 
 ### T04 — Chuỗi nhịp mở ký ức
 
@@ -90,7 +90,7 @@ Bài bắt buộc, dùng quan sát và so sánh, không đo phản xạ nhanh ho
 
 Dấu tĩnh, mô tả chữ và ánh sáng diễn tả cùng dữ liệu; xung 220 ms, lượt phát 2.500 ms. Xem lại không giới hạn, chỉ phát một chuỗi mỗi lần. Xem mẫu không nộp đáp án; có nút chọn riêng và có thể chọn từ sơ đồ tĩnh.
 
-Menu dừng đồng hồ, tiếp tục đúng thời điểm; tải lại về trạng thái chờ phát. Sai giữ T01–T03, đúng lưu `rhythmCorrect` và sang `afterRhythm`, không trao sao tại T04. [TaiThinhRhythms.tsx](../src/components/TaiThinhRhythms.tsx)
+Menu dừng đồng hồ, tiếp tục đúng thời điểm; tải lại về trạng thái chờ phát. Sai giữ T01–T03, đúng lưu `rhythmCorrect` và sang `afterRhythm`, không trao sao tại T04. [TaiThinhRhythms.tsx](../../src/components/TaiThinhRhythms.tsx)
 
 ## 5. Ảnh kỷ niệm, đoạn kết và thông điệp
 
@@ -104,13 +104,13 @@ Ba ảnh do **Alan Bean chụp ngày 19/11/1969**, credit **NASA · Alan Bean**,
 
 Ảnh gốc: [6916](https://apollojournals.org/alsj/a12/AS12-47-6916HR.jpg), [6918](https://apollojournals.org/alsj/a12/AS12-47-6918HR.jpg), [6921](https://apollojournals.org/alsj/a12/AS12-47-6921HR.jpg). Mốc GET 117:30:24 cho 6916/6918 và 117:40:50 cho 6921 là tham chiếu hoạt động trong chú giải, không phải giờ chụp chính xác tới giây. Không gọi ảnh B là lúc ăng-ten đã lắp xong.
 
-Bản WebP tối đa 1280 px, chất lượng 90, giữ toàn khung; không sinh thêm chi tiết hoặc tô lại. Có tên, chú thích, mã, nguồn, alt, lỗi và tải lại. Mạng lỗi không khóa việc cất ảnh; có thể tải lại trong sách. Chỉ cất mới thêm ID, không ghi trùng. [TaiThinhPhoto.tsx](../src/components/TaiThinhPhoto.tsx)
+Bản WebP tối đa 1280 px, chất lượng 90, giữ toàn khung; không sinh thêm chi tiết hoặc tô lại. Có tên, chú thích, mã, nguồn, alt, lỗi và tải lại. Mạng lỗi không khóa việc cất ảnh; có thể tải lại trong sách. Chỉ cất mới thêm ID, không ghi trùng. [TaiThinhPhoto.tsx](../../src/components/TaiThinhPhoto.tsx)
 
 Ảnh C thay ứng viên PIA12903 vì chi tiết thiết bị trong ảnh quỹ đạo khó đọc ở khung chơi; PIA12903 không thuộc bộ nhận ảnh. Không dùng ngày đăng ảnh làm ngày sự kiện.
 
-Hồi tưởng **A → B → C** có Trang trước/Trang tiếp. Sau C mới kể cú va chạm ngày hôm sau; trở lại bên Tai Thính mới kể năm 1977. Bạn cảm ơn Cuội đã lắng nghe; ánh sáng từ PSE đến đèn khoảng 1,4 giây, tới nơi mới lưu hoàn thành và thắp **cánh thứ ba**, giữ hai cánh trước. Giảm chuyển động bỏ đường bay, menu tạm dừng hiệu ứng. [TaiThinhEnding.tsx](../src/components/TaiThinhEnding.tsx)
+Hồi tưởng **A → B → C** có Trang trước/Trang tiếp. Sau C mới kể cú va chạm ngày hôm sau; trở lại bên Tai Thính mới kể năm 1977. Bạn cảm ơn Cuội đã lắng nghe; ánh sáng từ PSE đến đèn khoảng 1,4 giây, tới nơi mới lưu hoàn thành và thắp **cánh thứ ba**, giữ hai cánh trước. Giảm chuyển động bỏ đường bay, menu tạm dừng hiệu ứng. [TaiThinhEnding.tsx](../../src/components/TaiThinhEnding.tsx)
 
-Hậu kết có **Xem lại đoạn kết / Chơi lại / Về lộ trình** và cho Cuội đi ngang. Bấm bạn hoặc đến gần nhấn E để nghe lời cảm ơn, gợi nhìn **vệt sáng bí ẩn ở rìa phải**. Đi tới vệt sáng về lộ trình, không tự vào màn 4. Đây là dấu hiệu tạm đã chốt, danh tính người bạn tiếp theo chưa được chọn. Trò chuyện nghe lại không đổi sao/ảnh. [ending-chat.ts](../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../src/components/EndingTrail.tsx)
+Hậu kết có **Xem lại đoạn kết / Chơi lại / Về lộ trình** và cho Cuội đi ngang. Bấm bạn hoặc đến gần nhấn E để nghe lời cảm ơn, gợi nhìn **vệt sáng bí ẩn ở rìa phải**. Đi tới vệt sáng về lộ trình, không tự vào màn 4. Đây là dấu hiệu tạm đã chốt, danh tính người bạn tiếp theo chưa được chọn. Trò chuyện nghe lại không đổi sao/ảnh. [ending-chat.ts](../../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../../src/components/EndingTrail.tsx)
 
 Thông điệp: những phép đo nhỏ có thể giúp con người tìm hiểu một thế giới xa; công việc đã khép lại vẫn để lại dữ liệu và câu chuyện đáng nhớ.
 
@@ -149,12 +149,12 @@ Cất ảnh và chuyển chặng cùng cập nhật. Không lưu thời gian hi�
 
 | File | Vai trò |
 | --- | --- |
-| [tai-thinh-content.ts](../src/content/levels/tai-thinh-content.ts) | Thoại Việt/Anh, thiết bị, bài tập, ảnh, chín trang sách và nguồn |
-| [tai-thinh-progress.ts](../src/content/levels/tai-thinh-progress.ts) | Bộ đọc, luồng, trang mở, chơi lại |
-| [TaiThinhLevel.tsx](../src/components/TaiThinhLevel.tsx) | Ghép thoại, thử thách, ảnh, kết |
-| [tai-thinh-layout.ts](../src/game/tai-thinh-layout.ts), [tai-thinh-scenery.ts](../src/game/tai-thinh-scenery.ts) | Vị trí dùng chung và nền/thiết bị bằng mã |
-| [App.tsx](../src/App.tsx), [JourneyMap.tsx](../src/components/JourneyMap.tsx), [progress.ts](../src/state/progress.ts) | Tích hợp, mở khóa, sách và lưu |
-| [tai-thinh.css](../src/components/tai-thinh.css) | Bố cục riêng, panel hẹp và hồi tưởng |
+| [tai-thinh-content.ts](../../src/content/levels/tai-thinh-content.ts) | Thoại Việt/Anh, thiết bị, bài tập, ảnh, chín trang sách và nguồn |
+| [tai-thinh-progress.ts](../../src/content/levels/tai-thinh-progress.ts) | Bộ đọc, luồng, trang mở, chơi lại |
+| [TaiThinhLevel.tsx](../../src/components/TaiThinhLevel.tsx) | Ghép thoại, thử thách, ảnh, kết |
+| [tai-thinh-layout.ts](../../src/game/tai-thinh-layout.ts), [tai-thinh-scenery.ts](../../src/game/tai-thinh-scenery.ts) | Vị trí dùng chung và nền/thiết bị bằng mã |
+| [App.tsx](../../src/App.tsx), [JourneyMap.tsx](../../src/components/JourneyMap.tsx), [progress.ts](../../src/state/progress.ts) | Tích hợp, mở khóa, sách và lưu |
+| [tai-thinh.css](../../src/components/tai-thinh.css) | Bố cục riêng, panel hẹp và hồi tưởng |
 
 Canvas 960 × 540, Cuội neo chân y=431, scale 0,62; PSE tại (610,431), trạm (470,332), máy đo từ trường (821,402). Tọa độ phục vụ thiết kế game. Nền tĩnh được cache, có khôi phục WebGL; thiết bị và gợn là lớp riêng.
 
