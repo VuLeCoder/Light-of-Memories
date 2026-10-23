@@ -1,11 +1,12 @@
 # Tài nguyên hình ảnh
 
-Phân loại theo mục 4 của [kế hoạch mở đầu game Cuội](../Ke-hoach-Codex-Mo-dau-game-Cuoi.md).
-Ảnh gốc được giữ nguyên trong `public/images/`. Vite sao chép tài nguyên sang `dist/images/` khi build; đường dẫn được quản lý tại `src/content/assets.ts`.
+Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md), [Game1](Game1_Surveyor_3.md), [Game2](Game2_Ban-Lap-Lanh.md) và [Game3](Game3.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
 
 - `branding/`: logo website.
-- `portraits/`: 6 ảnh minh họa nhân vật dùng cho chân dung hội thoại.
-- `sprites/`: 3 sprite sheet thiết kế cho An, bà và Cuội.
+- `portraits/`: chân dung hội thoại, gồm nhân vật mở đầu và ba người bạn.
+- `sprites/`: ba sheet An/bà/Cuội và sprite nghỉ Lấp Lánh.
+- `memories/<id>/`: ảnh tư liệu của Lấp Lánh/Tai Thính, có mã nhiệm vụ/ảnh trong tên file.
+- `public/assets/`: ba ảnh ký ức JPG của Mắt Tròn vẫn đang dùng; không tự di chuyển khi chỉ dọn tài liệu.
 - Tên file dùng chữ thường, tiếng Việt không dấu và dấu gạch ngang.
 
 ## Ánh xạ tên cũ và mới
@@ -28,4 +29,13 @@ Phân loại theo mục 4 của [kế hoạch mở đầu game Cuội](../Ke-hoa
 - An và bà có 2 hàng, Cuội có 5 hàng; mỗi hàng nhìn thấy 6 tư thế. Không mặc định chia được bằng lưới đều.
 - Cả ba sheet có alpha, vùng ngoài nhân vật trong các frame đã chọn hiển thị trong suốt. RGB nền/ánh sáng trong bản xem ảnh không có nghĩa là nền bị vẽ đục. Ba frame nghỉ giữ đủ nhân vật.
 - Chân dung Cây Đa là ảnh minh họa, không phải đạo cụ pixel trong cảnh.
-- Chưa có ảnh nền hiên nhà, ảnh nền Mặt Trăng, cây đa pixel, ghế đá và đèn ông sao tách riêng. Lượt 1 dùng các lớp đồ họa Phaser tạm cho nền, cây và ghế; chưa có đèn ông sao độc lập.
+- Nền, cây, ghế, đèn và các thiết bị Tai Thính được vẽ bằng mã theo cảnh. Không coi việc thiếu bitmap riêng là thiếu tài nguyên cần sinh thêm.
+
+## Tài nguyên ba màn đã tích hợp (24/10/2026)
+
+- `portraits/tai-thinh.webp`: chân dung minh họa PSE, 1024 × 683, RGBA; tạo mới bằng image_gen tích hợp, WebP chất lượng 92. [Nhận diện và tham chiếu](Game3.md#7-tiến-trình-tài-nguyên-và-bàn-giao).
+- `memories/tai-thinh/apollo-12-as12-47-6916.webp`, `...6918.webp`, `...6921.webp`: ba ảnh NASA/Alan Bean đã kiểm tra, tối đa 1280 px, WebP chất lượng 90, giữ toàn khung. Đây là bản tối ưu để hiển thị, không phải chuyển lossless của ảnh gốc. [Nguồn và chú thích](Game3.md#5-ảnh-kỷ-niệm-đoạn-kết-và-thông-điệp).
+- Nền và ba thiết bị trong cảnh được vẽ bằng `src/game/tai-thinh-scenery.ts`, không dùng chân dung làm sprite. URL bitmap qua `src/content/assets.ts`, có `BASE_URL`.
+- Các ảnh Tai Thính đã dùng trong game chính, nhận sau T01/T02/T04 và được lưu vào sách. `/design/tai-thinh.html` chỉ là bản xem dev, không ghi tiến trình.
+- Lấp Lánh dùng `portraits/lap-lanh.webp`, `sprites/lap-lanh-idle.webp` và hai ảnh Apollo 11 AS11-40-5952/5945. Chi tiết nguồn và thứ tự kể xem [Game2](Game2_Ban-Lap-Lanh.md).
+- Không xóa hoặc sửa ảnh trong lần hợp nhất tài liệu. File ảnh tham khảo bổ sung chỉ được đưa vào gameplay sau khi kiểm tra chủ thể, nguồn và vai trò.

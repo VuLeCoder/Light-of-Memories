@@ -27,11 +27,17 @@ Website đang kết hợp ba cách thể hiện có chủ đích:
 
 Ánh trăng thiên lạnh; đèn ông sao và cửa sổ thiên vàng ấm. Giữ vùng phát sáng cục bộ, không phủ bloom mạnh toàn cảnh. Mái ngói, áo nâu, tre, cây đa, hiên nhà và ghế đá là các dấu hiệu nhận diện quan trọng.
 
+Hậu kết mỗi người bạn có dấu hiệu ở rìa phải để Cuội đi tới và trở về lộ trình: Mắt Tròn có ánh sáng gợi Lấp Lánh; Lấp Lánh có vòng gợn trên mặt đất gợi Tai Thính; Tai Thính tạm có vệt sáng bí ẩn, chờ chốt người bạn thứ tư. Hiệu ứng nhẹ, không che nhân vật; chế độ giảm chuyển động giữ dấu hiệu tĩnh.
+
 ## Chữ và UI
 
 CSS khai báo Lora/Georgia cho tiêu đề, Be Vietnam Pro/sans-serif cho phần đọc và điều khiển. Hiện chưa đóng gói hoặc tải hai font đầu; máy không có font sẽ dùng dự phòng. Vì vậy không coi font hiển thị là giống tuyệt đối trên mọi máy.
 
 Nội dung thoại thường 20px, xuống 18px ở màn hình hẹp; nút chính khoảng 18px, phần hướng dẫn khoảng 16px. Một số nhãn trang trí nhỏ hơn. Ảnh sinh mới không nên chứa chữ giao diện: để React hiển thị chữ, dễ đổi Việt/Anh và giữ độ rõ. Bo góc nhẹ, viền mảnh, không dùng khung sci-fi hoặc nút neon.
+
+Các chương Mắt Tròn và Lấp Lánh dùng kiểu nút tham chiếu từ Tai Thính: nút phụ xanh xám `#293e46`, chữ kem `#eee5d1`, viền `#a9957080`, bo 8px; nút chính vàng `#dfc18a`, chữ `#20313a`, viền `#ead4a4`, bo 7px. Nút thường cao tối thiểu 42px; có trạng thái hover, focus và khóa rõ ràng. Vùng bấm dụng cụ, thẻ ảnh và ô lau kính giữ hình thức riêng theo thao tác.
+
+Đặt nút “Gợi ý” cạnh “Về lộ trình” trên thanh đầu cảnh khi có trang manh mối tương ứng: T02 Mắt Tròn, T03/T04 Lấp Lánh và các thử thách Tai Thính. Giữ vị trí nút theo nội dung từng bảng; không ép các mô hình hoặc ảnh có bố cục giống nhau. Trên cửa sổ rộng tối đa 800px, bảng lau kính và mô hình khoa học Lấp Lánh nằm dưới cảnh Mặt Trăng, cho phép chữ và nút có đủ chỗ.
 
 ## Tài nguyên để tham chiếu
 
@@ -59,3 +65,7 @@ Thay phần trong ngoặc vuông và gửi kèm ảnh nhân vật hoặc sprite 
 > Tạo [nền cảnh / đạo cụ / sprite] cho game cổ tích Việt Nam Cuội, dành cho trẻ tiểu học. Cảnh đêm Trung Thu yên tĩnh, hoài niệm, ấm áp và kỳ diệu. Góc nhìn ngang 2D. Phong cách pixel phù hợp sprite tham chiếu, hình khối rõ, xanh đêm và xám xanh làm nền, ánh trăng kem, điểm sáng đèn vàng dịu. Nội dung: [mô tả cụ thể]. Giữ nguyên nhận diện, trang phục và tỷ lệ nhân vật tham chiếu. [Nền 16:9 có vùng đất đi lại rõ / PNG đạo cụ nền trong suốt / sheet có N frame lưới đều]. Không chữ, không watermark, không UI, không neon, không 3D bóng nhựa, không phối cảnh isometric, không kinh dị. Không cắt chân hay đạo cụ. Vùng đáy ít chi tiết để đặt hội thoại.
 
 Với chân dung, thay yêu cầu pixel bằng “minh họa truyện thiếu nhi vẽ tay, chất liệu giấy và màu mềm, đường nét ấm, biểu cảm rõ”; giữ các yêu cầu nhận diện và bảng màu.
+
+Ở hậu kết của cả ba người bạn, Cuội có thể bấm vào nhân vật để đi tới trò chuyện, hoặc đến gần rồi nhấn E. Mỗi bạn có hai câu ngắn: cảm ơn Cuội ghé trò chuyện và gợi nhìn dấu hiệu bên phải. Hội thoại có thể nghe lại, giữ dấu hiệu hiện trên nền, tạm dừng đi lại khi nói và không đổi tiến trình hay phần thưởng. Có đầy đủ tiếng Việt và tiếng Anh.
+
+Focus trong vùng game được giữ khi chuyển từ hội thoại sang thử thách, nhận ảnh hoặc hậu kết, kể cả khi phần tử đang focus bị gỡ, vô hiệu hóa hoặc nằm trong vùng `inert`. Việc khôi phục dùng chung cho ba màn, chọn nút thoại, canvas đi lại hoặc điều khiển đang hiển thị. Không giành focus từ ô nhập, sách hay phần khác của trang; bấm ra ngoài, Tab sang sách hoặc chuyển cửa sổ sẽ nhả quyền điều khiển game. Nút quay lại trò chơi trong sách dùng cùng cách chọn đích focus.
