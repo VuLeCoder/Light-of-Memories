@@ -83,8 +83,9 @@ export class PreviewScene extends Phaser.Scene {
     this.releaseControls();
     if (replayingEnding && this.cuoi && (this.options.scene !== 'lap-lanh' || this.options.sparkleEnding)) {
       const sparkle = this.options.scene === 'lap-lanh';
-      const x = sparkle ? 340 : surveyorEncounter.x - 80;
-      this.cuoi.setPosition(x, sparkle ? 431 : surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
+      const tai = this.options.scene === 'tai-thinh';
+      const x = tai ? (this.options.encounterStarted ? 430 : 140) : sparkle ? 340 : surveyorEncounter.x - 80;
+      this.cuoi.setPosition(x, sparkle || tai ? 431 : surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
       this.setCuoiFrame('rest');
       this.digShadow?.setVisible(false);
       this.exitTriggered = false;
@@ -140,7 +141,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   private get interactionX() { if (this.options.scene === 'tai-thinh') return 520; if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { return this.options.scene === 'tai-thinh' ? true : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  private get canInteract() { return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
   setSparkleEnding(value: boolean) {
     const entering = value && !this.options.sparkleEnding;
     this.options.sparkleEnding = value;
@@ -148,6 +149,43 @@ export class PreviewScene extends Phaser.Scene {
       this.releaseControls();
       this.cuoi.setPosition(340, 431).setScale(.62).setFlipX(false);
     }
+  }
+  private taiGiftTime = 0;
+  private taiGiftLight?: Phaser.GameObjects.Graphics;
+  setTaiEnding(value: PreviewOptions['taiEnding'], stars = 0) {
+    const entering = value && value !== 'none' && (!this.options.taiEnding || this.options.taiEnding === 'none');
+    if (value !== this.options.taiEnding) this.taiGiftTime = 0;
+    this.options.taiEnding = value;
+    this.options.taiStars = stars;
+    if (entering && this.cuoi) {
+      this.releaseControls();
+      this.cuoi.setPosition(430, 431).setScale(.62).setFlipX(false).setDepth(10);
+      this.setCuoiFrame('rest');
+    }
+    this.drawTaiLight();
+    this.syncLanternGrip();
+  }
+  private drawTaiLight() {
+    if (this.options.scene !== 'tai-thinh' || !this.earnedLight) return;
+    const g = this.earnedLight.clear();
+    const count = this.options.taiStars ?? 0;
+    for (let i = 0; i < count; i++) {
+      const at = (n: number, r: number) => ({ x: Math.cos(-Math.PI / 2 + n * Math.PI / 5) * r, y: Math.sin(-Math.PI / 2 + n * Math.PI / 5) * r });
+      const tip = at(i * 2, 21), before = at(i * 2 - 1, 9), after = at(i * 2 + 1, 9);
+      g.fillStyle(0xffe6a2).fillTriangle(0, 0, before.x, before.y, tip.x, tip.y).fillTriangle(0, 0, tip.x, tip.y, after.x, after.y);
+    }
+  }
+  private updateTaiGift(delta: number) {
+    if (this.options.scene !== 'tai-thinh' || !this.taiGiftLight) return;
+    const g = this.taiGiftLight.clear();
+    if (this.options.taiEnding !== 'gifting' || !this.lantern) return;
+    if (this.moonMode !== 'paused') this.taiGiftTime += Math.min(delta, 50);
+    const t = Math.min(1, this.taiGiftTime / 1400);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const x = reduced ? this.lantern.x : Phaser.Math.Linear(taiThinhLayout.pse.x, this.lantern.x, t);
+    const y = reduced ? this.lantern.y : Phaser.Math.Linear(taiThinhLayout.pse.y - 69, this.lantern.y, t) - Math.sin(t * Math.PI) * 45;
+    g.fillStyle(0xffdf91, .12).fillCircle(x, y, 17).fillStyle(0xffe6a2, .95).fillCircle(x, y, 4).setDepth(12);
+    if (t >= 1) { g.clear(); this.options.onTaiGift?.(); }
   }
   private trailDecor?: Phaser.GameObjects.Graphics;
   private trailTarget?: { x: number; y: number };
@@ -275,6 +313,11 @@ export class PreviewScene extends Phaser.Scene {
   }
   private sparkleSprite?: Phaser.GameObjects.Image;
   setEncounterStarted(value: boolean) {
+    if (this.options.scene === 'tai-thinh' && !value && this.options.encounterStarted && this.cuoi) {
+      this.releaseControls();
+      this.cuoi.setPosition(140, 431).setScale(.62).setFlipX(false).setDepth(10);
+      this.setCuoiFrame('rest');
+    }
     this.options.encounterStarted = value;
     this.sparkleSprite?.setVisible(value);
     if (value && !this.options.sparkleTrail && this.cuoi && this.cuoi.x >= 900) {
@@ -423,6 +466,10 @@ export class PreviewScene extends Phaser.Scene {
         this.earnedLight.fillTriangle(0, 0, points[1].x, points[1].y, points[2].x, points[2].y);
         this.earnedLight.fillTriangle(0, 0, points[2].x, points[2].y, points[3].x, points[3].y);
       }
+      if (this.options.scene === 'tai-thinh') {
+        this.taiGiftLight = this.add.graphics();
+        this.drawTaiLight();
+      }
       this.syncLanternGrip();
       // Follow the final animated pose and position, including direction changes.
       this.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncLanternGrip, this);
@@ -472,6 +519,7 @@ export class PreviewScene extends Phaser.Scene {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.rippleTime += Math.min(delta, 50);
       drawTaiThinhRipple(this.ripple, this.rippleTime);
     }
+    this.updateTaiGift(delta);
     if (this.options.sparkleTrail) { this.updateTrail(delta); return; }
     if (this.options.excavation || (this.options.freeRoam && this.options.scene === 'surveyor')) { this.updateExcavation(_time, delta); return; }
     this.interactionHint?.setVisible((this.options.scene !== 'lap-lanh' || this.options.encounterStarted) && this.moonMode === 'free' && this.canInteract && Math.abs(this.cuoi.x - this.interactionX) <= 90);
@@ -507,7 +555,7 @@ export class PreviewScene extends Phaser.Scene {
   private syncLanternGrip() {
     const c = this.cuoi, lantern = this.lantern;
     if (!c || !lantern) return;
-    if (this.options.scene === 'tai-thinh' || (this.options.scene === 'lap-lanh' && !this.options.freeRoam)) {
+    if ((this.options.scene === 'tai-thinh' && (!this.options.taiEnding || this.options.taiEnding === 'none')) || (this.options.scene === 'lap-lanh' && !this.options.freeRoam)) {
       lantern.setVisible(false);
       this.earnedLight?.setVisible(false);
       return;
@@ -528,7 +576,7 @@ export class PreviewScene extends Phaser.Scene {
       .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
       .setDepth(c.depth - .1)
       .setVisible(this.options.scene === 'surveyor' ? !!this.options.freeRoam : ['lantern', 'trail', 'complete'].includes(this.options.quest));
-    this.earnedLight?.setVisible(!!this.options.freeRoam)
+    this.earnedLight?.setVisible(this.options.scene === 'tai-thinh' || !!this.options.freeRoam)
       .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
   }
 

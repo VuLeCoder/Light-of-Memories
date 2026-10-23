@@ -42,12 +42,13 @@ export function readTaiThinh(value: unknown): TaiThinhProgress {
   if (!rhythmCorrect && after('rhythm')) phase = 'rhythm';
   if (!keepsakes.includes('magnetometer') && after('photoC')) phase = 'photoC';
   const lines = taiThinhScript[phase as keyof typeof taiThinhScript];
-  const maxTurn = phase === 'afterRhythm' || phase === 'afterPhotoC' ? 0 : lines ? lines.length - 1 : 0;
+  const maxTurn = phase === 'afterRhythm' || phase === 'afterPhotoC' ? 0 : phase === 'gift' ? 1 : phase === 'farewell' ? 4 : lines ? lines.length - 1 : 0;
   const p: TaiThinhProgress = { phase, turn: phase === d.phase && Number.isInteger(d.turn) ? Math.max(0, Math.min(maxTurn, d.turn as number)) : 0,
     identified, matches: identified ? matches : [], graphCorrect, durationCorrect, rhythmCorrect, keepsakes,
     recallIndex: Number.isInteger(d.recallIndex) ? Math.max(0, Math.min(2, d.recallIndex as number)) : 0,
     // Historical completion survives a new run. Never infer it from a phase alone.
     completedOnce: d.completedOnce === true && keepsakes.length === 3 };
+  if (p.phase === 'gift' && !p.completedOnce) p.turn = 0;
   if (p.phase === 'finished' && !p.completedOnce) p.phase = 'gift';
   if (p.completedOnce && d.replayCheckpoint && typeof d.replayCheckpoint === 'object') {
     const checkpoint = readTaiThinh({ ...d.replayCheckpoint, replayCheckpoint: undefined, completedOnce: false });
@@ -63,7 +64,13 @@ export function taiThinhPageIds(p: TaiThinhProgress): string[] {
     ...(taiThinhPhases.indexOf(p.phase) >= taiThinhPhases.indexOf('identify') || p.keepsakes.length > 0 ? ['tai-book-devices'] : []),
     ...(p.keepsakes.includes('pse') ? ['tai-photo-pse', 'tai-book-sensor', 'tai-book-sources', 'tai-book-noise'] : []),
     ...(p.keepsakes.includes('station') ? ['tai-photo-station', 'tai-book-impact', 'tai-book-ringing'] : []),
-    ...(p.durationCorrect ? ['tai-book-rhythm'] : []),
+    ...(p.durationCorrect || p.completedOnce ? ['tai-book-rhythm'] : []),
     ...(p.keepsakes.includes('magnetometer') ? ['tai-photo-magnetometer'] : []),
+    ...(p.completedOnce || taiThinhPhases.indexOf(p.phase) >= taiThinhPhases.indexOf('farewell') ? ['tai-book-legacy'] : []),
   ];
+}
+
+/** A replay resets this run while retaining the archive and its single reward. */
+export function replayTaiThinh(p: TaiThinhProgress): TaiThinhProgress {
+  return { ...freshTaiThinh(), keepsakes: p.keepsakes, completedOnce: p.completedOnce };
 }

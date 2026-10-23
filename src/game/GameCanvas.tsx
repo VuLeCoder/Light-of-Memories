@@ -14,8 +14,9 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, onReady, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
   onReady?: () => void;
+  taiEnding?: PreviewOptions['taiEnding']; taiStars?: number; onTaiGift?: () => void;
   sparkleEnding?: boolean; sparkleDust?: boolean; freeRoam?: boolean; sparkleTrail?: boolean; onTrailHole?: PreviewOptions['onTrailHole'];
   excavation?: PreviewOptions['excavation']; onDigNear?: PreviewOptions['onDigNear'];
   initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
@@ -26,8 +27,8 @@ export function GameCanvas({ initiallyAwake, onReady, sparkleEnding = false, spa
   readyRef.current = onReady;
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
-  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
+  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
+  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -53,6 +54,9 @@ export function GameCanvas({ initiallyAwake, onReady, sparkleEnding = false, spa
       if (cancelled) return;
       const previewScene = new PreviewScene({
         initiallyAwake: awakeRef.current,
+        taiEnding: progressRef.current.taiEnding,
+        taiStars: progressRef.current.taiStars,
+        onTaiGift: () => { if (!cancelled) progressRef.current.onTaiGift?.(); },
         sparkleEnding: progressRef.current.sparkleEnding,
         sparkleDust: progressRef.current.sparkleDust,
         sparkleTrail: progressRef.current.sparkleTrail,
@@ -122,6 +126,7 @@ export function GameCanvas({ initiallyAwake, onReady, sparkleEnding = false, spa
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.setTaiEnding(taiEnding, taiStars); }, [taiEnding, taiStars]);
   useEffect(() => { phaserScene.current?.setSparkleEnding(sparkleEnding); }, [sparkleEnding]);
   useEffect(() => { phaserScene.current?.setSparkleDust(sparkleDust); }, [sparkleDust]);
   useEffect(() => { phaserScene.current?.setSparkleTrail(sparkleTrail); }, [sparkleTrail]);

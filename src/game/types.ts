@@ -4,6 +4,9 @@ import type { Language } from '../content/i18n';
 export type MoonQuest = 'bench' | 'tree' | 'lantern' | 'trail' | 'complete';
 export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh' | 'tai-thinh';
 export interface PreviewOptions {
+  taiEnding?: 'none' | 'thanks' | 'gifting' | 'lit' | 'free';
+  taiStars?: number;
+  onTaiGift?: () => void;
   freeRoam?: boolean;
   sparkleTrail?: boolean;
   sparkleEnding?: boolean;

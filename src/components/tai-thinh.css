@@ -141,3 +141,26 @@
   .tai-phase-rhythm .tai-rhythms { position:relative; inset:auto; font-size:16px; border-radius:0; }
   .tai-phase-photoC .tai-memory-photo { position:relative; inset:auto; border-radius:0; }
 }
+
+/* Recollections use the shared full-frame archive layout; the lantern stays in Phaser. */
+.tai-recollection { position:absolute; inset:0; pointer-events:auto; }
+.tai-thinh-level .tai-ending-scene > .dialogue { inset:12% 2.5% auto; width:95%; padding:12px 16px; }
+.tai-ending-scene .dialogue-text { font-size:clamp(14px,1.9cqw,18px); }
+.tai-ending-scene .dialogue-next { min-height:42px; }
+.tai-gift-status { position:absolute; top:13%; left:2.5%; width:70%; margin:0; padding:16px; border:1px solid #c3a96e80; border-radius:10px; background:#142831f5; color:#edd9ac; font-size:clamp(14px,1.9cqw,18px); }
+.tai-thinh-level .tai-ending-scene.is-exploring .ending-farewell { inset:13% auto auto 2.5%; width:32%; }
+.tai-thinh-level .tai-ending-scene.is-exploring .ending-actions button { font-size:clamp(14px,1.7cqw,17px); min-height:44px; }
+@container tai-scene (max-width:860px) {
+  .game-stage:has(.tai-recollection) { aspect-ratio:auto; }
+  .game-stage:has(.tai-recollection) > .story-canvas { aspect-ratio:16/9; }
+  .tai-thinh-level:has(.tai-recollection),.tai-thinh-level > .tai-recollection { position:relative; inset:auto; }
+  .game-stage .tai-recollection .surveyor-ending { grid-template-columns:1fr; }
+  .game-stage .tai-recollection .ending-photo img { height:240px; }
+  .tai-recollection .ending-speech { font-size:16px; }
+}
+@media(max-width:800px) {
+  .tai-thinh-level .tai-ending-scene { position:relative; inset:auto; background:#142831; }
+  .tai-thinh-level .tai-ending-scene > .dialogue { position:relative; inset:auto; width:auto; border-radius:0; }
+  .tai-thinh-level .tai-ending-scene.is-exploring .ending-farewell,.tai-gift-status { position:relative; inset:auto; width:auto; border-radius:0; }
+  .tai-thinh-level .tai-ending-scene.is-exploring .ending-actions button { font-size:16px; }
+}
