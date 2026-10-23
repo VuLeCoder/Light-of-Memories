@@ -924,4 +924,10 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .classic-friend-scene .surveyor-level .surveyor-footer { flex-wrap: wrap; }
   .game-stage.classic-friend-scene .journal-submit { flex-direction: column; align-items: stretch; }
   .game-stage.classic-friend-scene .journal-submit button { width: 100%; min-width: 0; }
+  .game-stage.classic-friend-scene:has(.sparkle-recollection) { aspect-ratio: auto; }
+  .classic-friend-scene:has(.sparkle-recollection) > .story-canvas { display: none; }
+  .classic-friend-scene .sparkle-level:has(.sparkle-recollection),
+  .classic-friend-scene .sparkle-recollection { position: relative; inset: auto; overflow: visible; }
+  .game-stage .sparkle-recollection .surveyor-ending { grid-template-columns: 1fr; }
+  .game-stage .sparkle-recollection .ending-photo img { height: 220px; }
 }
