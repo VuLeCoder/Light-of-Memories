@@ -118,7 +118,7 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
     lastBookRequest.current = bookRequest;
     const target = activeLevel === 'lap-lanh'
       ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
-      : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : null
+      : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : ['graph', 'duration'].includes(taiThinhProgress.phase) ? 'tai-book-ringing' : taiThinhProgress.phase === 'rhythm' ? 'tai-book-rhythm' : null
       : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);

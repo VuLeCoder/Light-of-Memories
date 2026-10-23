@@ -82,3 +82,62 @@
   .tai-inspection,.tai-task-panel { font-size:16px; }
   .tai-device-choice span { font-size:14px; }
 }
+
+/* Shared time axes and unhurried, visual-only rhythm matching. */
+.tai-tremors,.tai-rhythms { display:flex; flex-direction:column; gap:8px; }
+.tai-rhythms { padding:12px; gap:6px; }
+.tai-tremors h3,.tai-rhythms h3,.tai-tremors p,.tai-rhythms p { margin:0; }
+.tai-task-context,.tai-graph-saved { font-size:.9em; line-height:1.4; }
+.tai-graph-options { display:grid; grid-template-columns:1fr 1fr; gap:14px; flex:1; align-items:center; }
+.tai-graph-options button,.tai-duration-options button,.tai-rhythms button { min-height:42px; padding:8px 10px; border:1px solid #a9957080; border-radius:8px; background:#293e46; color:#eee5d1; font:inherit; }
+.tai-graph-options button { text-align:left; }
+.tai-graph-options button:hover,.tai-duration-options button:hover { border-color:#ead4a4; background:#354b52; }
+.tai-long-trace { display:block; width:100%; color:#e1c68a; }
+.tai-tremors > .tai-long-trace { max-height:140px; flex:1; min-height:0; }
+.tai-duration-options { display:flex; gap:10px; }
+.tai-duration-options button { flex:1; }
+.tai-tremors .tai-feedback,.tai-rhythms .tai-feedback { min-height:1.5em; }
+.tai-trace-sweep { animation:tai-trace-sweep 5s linear infinite; }
+@keyframes tai-trace-sweep { to { transform:translateX(360px); } }
+.tai-rhythm-sample { display:grid; grid-template-columns:auto 1fr 1fr; align-items:center; gap:12px; }
+.tai-beat-marks { display:block; width:100%; max-height:64px; color:#dfc18a; }
+.tai-beat circle { fill:#66736c; stroke:#dfc18a; stroke-width:1.5; }
+.tai-beat.is-lit circle { fill:#ffedb0; stroke:#fff9e1; stroke-width:4; }
+.tai-rhythm-sample p,.tai-rhythms .tai-feedback { font-size:.9em; line-height:1.35; }
+.tai-rhythms .tai-record-note { line-height:1.25; }
+.tai-rhythm-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; flex:1; }
+.tai-rhythm-stone { display:flex; flex-direction:column; gap:7px; padding:10px; border:1px solid #9b9e8780; border-radius:16px 12px 8px 8px; background:#344349; }
+.tai-rhythm-stone.is-playing { border-color:#ead4a4; }
+.tai-rhythm-stone h4 { margin:0; color:#edd9ac; font:inherit; }
+.tai-rhythm-stone p { flex:1; font-size:.9em; line-height:1.4; }
+.tai-rhythm-stone button { font-size:.9em; }
+.tai-door { display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; }
+.tai-door svg { width:260px; max-height:220px; }
+@media(prefers-reduced-motion:reduce) {
+  .tai-trace-sweep { display:none; animation:none; }
+  .tai-door-leaf { display:none; }
+  .tai-beat-marks > path:last-child:not(:first-child) { display:none; }
+  .tai-door svg path { opacity:1; }
+}
+@media(max-width:800px) {
+  .tai-graph-options,.tai-rhythm-options { grid-template-columns:1fr; }
+  .tai-rhythm-sample { grid-template-columns:1fr; gap:6px; }
+  .tai-rhythm-sample .tai-beat-marks { max-height:76px; }
+  .tai-graph-options .tai-long-trace { max-height:160px; }
+  .tai-tremors > .tai-long-trace { max-height:170px; flex:none; }
+  .tai-duration-options { flex-direction:column; }
+  .tai-rhythm-stone { gap:10px; padding:14px; }
+  .tai-rhythm-stone button,.tai-rhythm-stone p { font-size:16px; }
+  .tai-rhythm-stone .tai-beat-marks { max-height:76px; }
+  .tai-rhythm-sample p,.tai-rhythms .tai-feedback { font-size:16px; line-height:1.45; }
+}
+/* React to actual game width, including a fitted or side-by-side workspace. */
+.game-panel:has(.tai-thinh-level) { container:tai-scene / inline-size; }
+@container tai-scene (max-width:860px) {
+  .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC) { aspect-ratio:auto; }
+  .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC) > .story-canvas { aspect-ratio:16/9; }
+  .tai-phase-rhythm,.tai-phase-photoC { position:relative; }
+  .tai-phase-rhythm .surveyor-scene-hud,.tai-phase-photoC .surveyor-scene-hud { position:relative; inset:auto; padding:8px; background:#142831; }
+  .tai-phase-rhythm .tai-rhythms { position:relative; inset:auto; font-size:16px; border-radius:0; }
+  .tai-phase-photoC .tai-memory-photo { position:relative; inset:auto; border-radius:0; }
+}

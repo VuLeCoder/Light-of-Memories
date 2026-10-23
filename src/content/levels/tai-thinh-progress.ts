@@ -62,6 +62,8 @@ export function taiThinhPageIds(p: TaiThinhProgress): string[] {
   return ['tai-thinh',
     ...(taiThinhPhases.indexOf(p.phase) >= taiThinhPhases.indexOf('identify') || p.keepsakes.length > 0 ? ['tai-book-devices'] : []),
     ...(p.keepsakes.includes('pse') ? ['tai-photo-pse', 'tai-book-sensor', 'tai-book-sources', 'tai-book-noise'] : []),
-    ...(p.keepsakes.includes('station') ? ['tai-photo-station'] : []),
+    ...(p.keepsakes.includes('station') ? ['tai-photo-station', 'tai-book-impact', 'tai-book-ringing'] : []),
+    ...(p.durationCorrect ? ['tai-book-rhythm'] : []),
+    ...(p.keepsakes.includes('magnetometer') ? ['tai-photo-magnetometer'] : []),
   ];
 }
