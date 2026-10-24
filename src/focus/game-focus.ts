@@ -5,6 +5,7 @@ export function focusGame(stage: HTMLElement | null) {
     '.dialogue .dialogue-next',
     '.story-canvas .game-host',
     '[data-tai-primary]',
+    '[data-banh-primary]',
     '.journey-view h2[tabindex]',
     'button, input, select, [tabindex="0"]',
   ];

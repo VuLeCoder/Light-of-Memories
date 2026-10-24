@@ -1,5 +1,8 @@
-import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
+import { banhLuoiPageIds, type BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
 import { banBanhLuoiBook } from '../content/levels/ban-banh-luoi-content';
+import { BanhLuoiRouteMap } from './BanhLuoiRouteMap';
+import { BanhLuoiPhotoView } from './BanhLuoiPhoto';
+import { banBanhLuoiMemories } from '../content/levels/ban-banh-luoi-memories';
 import { TaiThinhArchiveImage } from './TaiThinhPhoto';
 import { focusGame } from '../focus/game-focus';
 import { taiThinhPageIds, type TaiThinhProgress } from '../content/levels/tai-thinh-progress';
@@ -109,6 +112,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     ];
     if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkleProgress) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkleProgress) ? ['sparkle-ranging-clue'] : [])];
     if (id === 'tai-thinh') return taiThinhPageIds(taiThinhProgress);
+    if (id === 'ban-banh-luoi') return banhLuoiPageIds(banhLuoiProgress);
     return id ? [id] : [];
   })];
   // Keep the selected page's identity when new photos or clues are inserted.
@@ -127,7 +131,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     if (lastBookRequest.current === bookRequest) return;
     lastBookRequest.current = bookRequest;
-    const target = activeLevel === 'lap-lanh'
+    const target = activeLevel === 'ban-banh-luoi' ? ['routeIntro', 'routePuzzle', 'cameraIntro'].includes(banhLuoiProgress.phase) ? banhLuoiProgress.routeHint === 2 ? 'ban-book-walkback' : 'ban-book-route' : 'ban-book-wheels' : activeLevel === 'lap-lanh'
       ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
       : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : ['graph', 'duration'].includes(taiThinhProgress.phase) ? 'tai-book-ringing' : taiThinhProgress.phase === 'rhythm' ? 'tai-book-rhythm' : null
       : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
@@ -139,7 +143,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     if (!bookFocusRequest) return;
     const frame = requestAnimationFrame(() => {
-      const heading = document.getElementById(activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
+      const heading = document.getElementById(activeLevel === 'ban-banh-luoi' ? 'banh-luoi-book-title' : activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
       heading?.focus({ preventScroll: true });
       heading?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
     });
@@ -162,16 +166,21 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
   </>;
-  if (pages[page] === 'ban-banh-luoi') {
-    const intro = banBanhLuoiBook['ban-banh-luoi'];
+  const banPageId = pages[page];
+  if (banPageId && banPageId in banBanhLuoiBook) {
+    const entry = banBanhLuoiBook[banPageId as keyof typeof banBanhLuoiBook];
+    const photo = banBanhLuoiMemories.find(item => banPageId === `ban-photo-${item.id}`);
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className="book-sheet journey-book">
+      <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className={`book-sheet journey-book${banPageId === 'ban-banh-luoi' ? '' : ' ban-book-study'}`}>
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
-        <h2 id="banh-luoi-book-title" tabIndex={-1}>{intro.title[language]}</h2>
-        <img className="book-friend" src={level!.portrait} alt=""/>
-        {intro.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
-        <a className="sparkle-book-source" href="https://apollojournals.org/alsj/a17/a17.clsout3.html#1701948" target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 17 ↗</a>
+        <h2 id="banh-luoi-book-title" tabIndex={-1}>{entry.title[language]}</h2>
+        {banPageId === 'ban-banh-luoi' && <img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/>}
+        {['ban-book-route', 'ban-book-walkback'].includes(banPageId) && <BanhLuoiRouteMap language={language} showSafe={banPageId === 'ban-book-walkback' && banhLuoiProgress.routeHint === 2}/>}
+        {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
+        {(photo || banPageId === 'ban-book-wheels') && <BanhLuoiPhotoView key={banPageId} photo={photo ?? banBanhLuoiMemories[0]} language={language}/>}
+        {photo && <><p>{photo.caption[language]}</p><small>{photo.credit} · {photo.code}</small></>}
+        <a className="sparkle-book-source" href={banPageId === 'ban-book-walkback' ? 'https://apollojournals.org/alsj/a11/a11.clsout.html' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'ALSJ' : 'Apollo 17'} ↗</a>
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
     </>;

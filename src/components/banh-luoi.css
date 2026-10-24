@@ -29,3 +29,87 @@
   .banh-luoi-scene .dialogue-text { font-size: 18px; }
   .banh-luoi-checkpoint { position: relative; inset: auto; max-width: none; margin: 0; border-radius: 0; font-size: 16px; }
 }
+.ban-panel { position: absolute; top: 70px; left: 20px; right: 20px; margin: auto; padding: 18px 22px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35fa; color: #eee5d1; pointer-events: auto; }
+.ban-panel h2 { font: 600 24px Lora, Georgia, serif; margin: 0 0 10px; }
+.ban-panel p { margin: 8px 0; line-height: 1.5; }
+.ban-wheel-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.ban-wheel-options button { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.ban-wheel-options button[aria-pressed="true"] { border-color: #ead4a4; background: #435b60; box-shadow: inset 0 0 0 2px #dfc18a; }
+.ban-wheel-options svg { width: 120px; max-width: 100%; height: 86px; }
+.ban-wheel-options span { font-size: 16px; }
+.ban-wheel-detail, .ban-feedback { min-height: 1.5em; }
+.ban-feedback { color: #ead4a4; }
+.banh-luoi-scene .ban-primary { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
+.ban-receipt { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ban-photo-view figure { margin: 0 0 8px; }
+.ban-photo-view img { display: block; width: 100%; height: 230px; object-fit: contain; background: #10212a; }
+.ban-photo-view button, .ban-photo-error button { min-height: 42px; padding: 8px 12px; border: 1px solid #a9957080; border-radius: 8px; background: #293e46; color: #eee5d1; font: inherit; cursor: pointer; }
+.ban-photo-view button:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
+.ban-receipt small { display: block; line-height: 1.4; }
+.ban-receipt a { display: block; color: #dfc18a; margin: 10px 0; }
+.book-sheet .ban-photo-view img { height: 160px; }
+.book-sheet .ban-photo-view button { font-size: 14px; }
+@container (max-width: 720px) {
+  .ban-panel { position: relative; inset: auto; padding: 16px; border-radius: 0; }
+  .ban-receipt { grid-template-columns: 1fr; }
+  .ban-wheel-options { gap: 6px; }
+  .ban-wheel-options button { padding: 6px; }
+  .ban-wheel-options span { font-size: 14px; }
+  .ban-panel h2 { font-size: 22px; }
+}
+.book-panel .book-sheet.ban-book-study { padding-block: 18px; }
+.book-panel .book-sheet.ban-book-study h2 { font-size: 28px; line-height: 1.2; margin: 6px 0; }
+.book-panel .book-sheet.ban-book-study p { font-size: 17px; line-height: 1.4; margin: 6px 0; }
+.book-panel .book-sheet.ban-book-study .sparkle-book-source { font-size: 14px; margin: 5px 0; }
+.book-panel .book-sheet.ban-book-study small { font-size: 12px; line-height: 1.4; }
+.book-panel .book-sheet.ban-book-study .ban-photo-view { flex-shrink: 0; }
+@container companion-book (max-height: 550px) {
+  .book-panel .book-sheet.ban-book-study { padding-block: 10px; }
+  .book-panel .book-sheet.ban-book-study .ban-photo-view img { height: 120px; }
+}
+@media (max-width: 1000px) {
+  .book-panel .book-sheet.ban-book-study .ban-photo-view img { height: 110px; }
+}
+/* The route workspace grows with feedback; it never scrolls inside the scene. */
+.game-stage:has(.ban-route-panel) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-route-panel) { position: relative; background: #182c35; }
+.banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
+.ban-route-panel { position: relative; inset: auto; margin: 0; border: 0; border-radius: 0; padding: 12px 20px 20px; }
+.ban-route-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(230px, 1fr); gap: 20px; }
+.ban-route-map { position: relative; display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 4px; width: 100%; aspect-ratio: 1; isolation: isolate; }
+.ban-route-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.banh-luoi-scene .ban-route-cell, .ban-route-cell { position: relative; display: grid; place-items: center; min-width: 0; min-height: 0; padding: 0; border: 1px solid #8c9f9b; border-radius: 4px; background: #344b51; color: #eee5d1; font: 600 17px sans-serif; }
+.ban-route-cell > span { position: relative; z-index: 3; padding: 2px; background: #344b51; border-radius: 3px; }
+.ban-route-cell.is-crater, .ban-route-cell.is-crater > span { background: #10212a; color: #9ba5a0; }
+.ban-route-cell.is-safe { outline: 2px dotted #dfc18a; outline-offset: -5px; }
+.ban-route-cell.is-visited { border-color: #ead4a4; }
+.ban-route-cell.is-violation { border: 2px dashed #f2b094; }
+.ban-route-cell b, .ban-route-cell em { position: absolute; z-index: 3; top: 0; right: 2px; font-size: 13px; font-style: normal; color: #ffe0a0; }
+.ban-route-cell em { top: auto; bottom: 0; color: #ffc1a5; }
+.ban-panel .ban-route-legend { font-size: 13px; line-height: 1.5; margin-top: 8px; }
+.ban-panel .ban-route-rule { margin-bottom: 14px; }
+.ban-route-controls { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.ban-route-meters { border-left: 3px solid #dfc18a; padding-left: 10px; }
+.ban-route-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.banh-luoi-scene button:disabled { opacity: .45; cursor: default; }
+.ban-route-feedback { color: #f3c9ae; }
+.ban-route-hints { padding: 8px 12px; border: 1px dotted #bca779; border-radius: 6px; }
+.ban-route-controls small { color: #bdcecb; line-height: 1.4; }
+.ban-route-map-static { width: 145px; height: 145px; flex-shrink: 0; margin: 6px auto; }
+.ban-route-map-static .ban-route-cell { font-size: 12px; }
+.ban-route-map-static .ban-route-cell b { font-size: 9px; }
+@container (max-width: 720px) {
+  .ban-route-layout { grid-template-columns: minmax(0,1fr); }
+  .ban-route-map:not(.ban-route-map-static) { max-width: 370px; margin-inline: auto; }
+  .ban-route-controls { gap: 6px; }
+  .ban-route-panel { padding: 14px; }
+}
+.ban-route-map:not(.ban-route-map-static) { width: calc(100% - 18px); margin-top: 18px; margin-left: 18px; }
+.ban-map-columns, .ban-map-rows { position: absolute; display: grid; color: #bdcecb; font-size: 11px; pointer-events: none; }
+.ban-map-columns { top: -18px; left: 0; right: 0; grid-template-columns: repeat(6,1fr); text-align: center; }
+.ban-map-rows { left: -18px; top: 0; bottom: 0; width: 14px; grid-template-rows: repeat(6,1fr); align-items: center; }
+@media (max-width: 1000px) {
+  .book-sheet .ban-route-map-static { width: 115px; height: 115px; }
+}
+.ban-route-map-static .ban-route-cell > span { font-size: 10px; line-height: 1; padding: 0; }
+.ban-route-map-static .ban-route-cell b { display: none; }

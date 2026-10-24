@@ -1,7 +1,7 @@
 import type { Language } from '../i18n';
 import type { StoryLine } from '../earth-dialogue';
 
-// Canonical chapter copy. M1 integrates the introduction; later tasks remain authored.
+// Canonical chapter copy. M1–M3 integrate the introduction, wheels and route; later tasks remain authored.
 // Sources and design contract: docs/plan/ban-banh-luoi-m0/README.md.
 const text = (vi: string, en: string) => ({ vi, en });
 type LocalizedText = ReturnType<typeof text>;
@@ -114,6 +114,7 @@ export const banBanhLuoiCopy = {
   "route.correct": text("Ghé đủ hai trạm rồi về nhà! Xe đủ pin, và mọi chặng đều có đường đi bộ trong giới hạn.", "Both stops visited and safely home! The rover has enough battery, and every step stays within walking range."),
   "route.hint1": text("Nếu xe dừng ở đây, đường đi bộ về tàu có còn gần không? Nhìn riêng cả hai chỉ báo nhé.", "If the rover stopped here, would the walk home still be short? Check both indicators separately."),
   "route.hint2": text("Vùng có viền chấm gồm những ô đi bộ về LM trong 4 bước. Đi vào dốc tốn 2 pin; ô khác tốn 1.", "Cells with dotted borders are within 4 walking steps of LM. Entering a slope costs 2 battery units; other cells cost 1."),
+  "route.firstViolation": text("Bước đầu cần xem lại: bước {index}, cột {x}, hàng {y}. Xem lý do cạnh hai chỉ báo nhé.", "First step to review: step {index}, column {x}, row {y}. Check the reason beside the two indicators."),
   "route.noViolation": text("Các bước đã vẽ vẫn trong hai giới hạn. Nhớ ghé cả A, B và trở về LM nhé.", "Your steps are within both limits. Remember to visit A and B and return to LM."),
   "route.resetStatus": text("Đã xóa đường nháp. Xe trở lại LM; pin đã dùng là 0.", "Draft route cleared. The rover is back at LM with 0 battery units used."),
   "route.undoStatus": text("Đã lùi một bước. Hai chỉ báo đã được tính lại.", "One step undone. Both indicators have been recalculated."),
@@ -353,22 +354,22 @@ export const banBanhLuoiBook = {
   "ban-book-wheels": {
     title: text("Bánh xe không cần bơm hơi", "Wheels that need no air"),
     paragraphs: [
-      text("Bánh LRV có nhiều sợi kim loại đan thành lưới. Lớp lưới có thể hơi uốn; các dải gân giúp bánh bám trên đất Mặt Trăng.", "LRV wheels have metal wires woven into a mesh. The mesh can flex a little, and tread strips help it grip lunar soil."),
-      text("Bánh thật không phải lốp cao su bơm hơi hoặc bánh đá đặc. Ảnh chi tiết cho thấy những gân hình chữ V.", "The real wheels are not air-filled rubber tyres or solid stone wheels. The close-up shows V-shaped tread strips.")
+      text("Bánh LRV đan từ các sợi kim loại. Lớp lưới hơi uốn, các dải gân giúp bánh bám đất.", "LRV wheels are woven from metal wires. The mesh flexes a little, and tread strips help it grip the soil."),
+      text("Ảnh chi tiết cho thấy ô lưới và gân chữ V. Bánh không cần bơm hơi.", "The close-up shows mesh openings and V-shaped treads. These wheels need no air.")
     ]
   },
   "ban-book-route": {
     title: text("Một chuyến đi, hai trạm", "One trip, two stops"),
     paragraphs: [
-      text("Trong bản đồ mô phỏng, xe bắt đầu ở LM, ghé A và B theo bất kỳ thứ tự nào rồi về LM. Xe chỉ đi qua ô chung cạnh, tránh các hố.", "In the model map, the rover starts at LM, visits A and B in either order, then returns to LM. It moves through cells that share a side and avoids craters."),
-      text("Mỗi lần vào đất bằng tốn 1 pin, vào dốc tốn 2 pin. Cả tuyến được dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Each entry into flat ground costs 1 battery unit; a slope costs 2. The whole route may use at most 12 units, and revisiting a cell still adds to the cost.")
+      text("Từ LM, xe ghé A và B theo thứ tự bất kỳ rồi về LM. Xe đi qua ô chung cạnh, tránh hố.", "From LM, visit A and B in either order, then return. Follow cells that share a side and avoid craters."),
+      text("Vào đất bằng tốn 1 pin, dốc tốn 2. Cả tuyến dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Entering flat ground costs 1 battery unit; a slope costs 2. Use at most 12. Revisiting a cell still adds to the cost.")
     ]
   },
   "ban-book-walkback": {
-    title: text("Nếu cần đi bộ về thì sao?", "What if they need to walk home?"),
+    title: text("Nếu cần đi bộ về thì sao?", "Walking home safely"),
     paragraphs: [
-      text("Khi khảo sát bằng xe, phi hành gia cần có phương án đi bộ về tàu nếu xe hỏng. Oxy và nước làm mát cho người không phải pin của xe.", "When exploring by rover, astronauts needed a plan to walk back if it failed. Their oxygen and cooling water were separate from the rover’s battery."),
-      text("Trong bài này, mọi ô trên tuyến phải có đường đi bộ về LM trong 4 bước, tránh hố. Dốc cũng là 1 bước đi bộ. Các số 4 và 12 chỉ là quy ước trò chơi.", "In this puzzle, every cell on the route must have a walk back to LM within 4 steps, avoiding craters. A slope is also 1 walking step. The numbers 4 and 12 are game rules only.")
+      text("Nếu xe hỏng, phi hành gia cần đi bộ về tàu. Oxy và nước làm mát cho người khác với pin của xe.", "If the rover failed, astronauts needed to walk home. Their oxygen and cooling water were separate from its battery."),
+      text("Mọi ô trên tuyến cần đường về LM trong 4 bước, tránh hố. Dốc cũng tính 1 bước. Các số 4 và 12 chỉ là luật mô phỏng.", "Every route cell needs a walk home within 4 steps, avoiding craters. Slopes also count as 1 step. The numbers 4 and 12 are model rules only.")
     ]
   },
   "ban-book-camera": {
