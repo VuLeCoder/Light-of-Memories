@@ -17,7 +17,7 @@ export function BanhLuoiLaunch({language,paused,onNext}: {language:Language;paus
   const fraction=reduced?1:Math.min(1,elapsed/duration), stage=model.ascentStageStart;
   const y=stage.bottom+(model.required.top-stage.top)*fraction;
   return <section className="ban-panel ban-launch-panel" aria-labelledby="ban-launch-title">
-    <h2 id="ban-launch-title">{copy['objective.launch'][language]}</h2>
+    <h2 id="ban-launch-title" tabIndex={-1} data-banh-wait={fraction < 1 ? '' : undefined}>{copy['objective.launch'][language]}</h2>
     <svg viewBox="480 0 240 310" role="img" aria-label={language==='vi' ? 'Tầng bay lên rời tầng dưới Challenger; xe và tầng dưới ở lại Mặt Trăng.' : 'Challenger’s ascent stage leaves its descent stage; the rover and descent stage stay on the Moon.'}>
       <rect x="480" width="240" height="310" fill="#10212a"/>
       <g transform="translate(0 285) scale(1 -1)">

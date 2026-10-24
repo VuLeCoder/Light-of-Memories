@@ -3,7 +3,8 @@ import { dialogueReducer, type StoryLine } from '../content/earth-dialogue';
 import { portraits } from '../content/assets';
 import { copy, type Language } from '../content/i18n';
 
-export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0 }: {
+export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0, managedFocus = false }: {
+  managedFocus?: boolean;
   initialIndex?: number; finalLabel?: string;
   language: Language; finalAction: 'earth' | 'moon' | 'lantern';
   paused: boolean; onComplete: () => void; onTurn: (index: number) => void;
@@ -26,8 +27,9 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
     }
   }, [language]);
   useEffect(() => {
-    if (!paused) nextButton.current?.focus({ preventScroll: true });
-  }, [paused]);
+    // App restores focus only while the game owns it; legacy scenes keep their default.
+    if (!paused && !managedFocus) nextButton.current?.focus({ preventScroll: true });
+  }, [paused, managedFocus]);
   useEffect(() => {
     if (paused || full || state.finished) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
