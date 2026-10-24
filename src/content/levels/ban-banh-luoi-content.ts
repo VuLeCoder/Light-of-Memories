@@ -336,8 +336,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-taiThinhConnector-02",
       speaker: "taiThinh",
-      vi: "Nhìn phía phải kìa: có những vệt song song trên đất. Không biết ai đã đi qua nhỉ?",
-      en: "Look to the right: there are parallel marks on the ground. I wonder who passed this way?"
+      vi: "Cuội nhìn phía bên phải kìa! Hai vệt song song ấy giống dấu bánh xe đấy. Biết đâu một người bạn thích khám phá đang chờ? Bạn theo dấu vết xem nhé, rồi ghé kể mình nghe nha!",
+      en: "Look to the right, Cuội! Those two parallel marks look like wheel tracks. Perhaps a friend who loves exploring is waiting? Follow the tracks, then come back and tell me!"
     }
   ]
 } as const satisfies Record<string, readonly AuthoredLine[]>;

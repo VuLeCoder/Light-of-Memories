@@ -29,11 +29,11 @@ export const endingChatLines = {
   'tai-thinh': {
     vi: [
       { id: 'keen-ears-chat-thanks', speaker: 'taiThinh', text: 'Cảm ơn Cuội đã đến trò chuyện với mình! Được nghe bạn kể và cùng bạn tìm hiểu bao điều, mình vui lắm.' },
-      { id: 'keen-ears-chat-trail', speaker: 'taiThinh', text: 'Cuội ơi, nhìn về phía bên phải nhé! Có một vệt sáng bí ẩn ở cuối đường. Không biết ai đang chờ nhỉ? Bạn thử đến xem, rồi ghé kể mình nghe nha!' },
+      { id: 'keen-ears-chat-trail', speaker: 'taiThinh', text: 'Cuội nhìn phía bên phải kìa! Hai vệt song song ấy giống dấu bánh xe đấy. Biết đâu một người bạn thích khám phá đang chờ? Bạn theo dấu vết xem nhé, rồi ghé kể mình nghe nha!' },
     ],
     en: [
       { id: 'keen-ears-chat-thanks', speaker: 'taiThinh', text: 'Thank you for coming to chat with me, Cuội! Listening to you and discovering things together makes me happy.' },
-      { id: 'keen-ears-chat-trail', speaker: 'taiThinh', text: 'Cuội, look to the right! There is a mysterious glow at the end of the path. I wonder who is waiting? Go and see, then come back and tell me!' },
+      { id: 'keen-ears-chat-trail', speaker: 'taiThinh', text: 'Look to the right, Cuội! Those two parallel marks look like wheel tracks. Perhaps a friend who loves exploring is waiting? Follow the tracks, then come back and tell me!' },
     ],
   },
 } as const satisfies Record<LevelId, Record<Language, readonly StoryLine[]>>;

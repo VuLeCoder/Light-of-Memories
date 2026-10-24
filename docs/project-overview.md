@@ -22,7 +22,7 @@ Ba màn đã triển khai: Mắt Tròn → Lấp Lánh → Tai Thính. Mỗi mà
 
 Lộ trình có năm điểm; hai điểm cuối còn bí ẩn. Chọn điểm nào thì nhãn Cuội theo điểm đó. Nút vào điểm chưa có nội dung ẩn nhưng vẫn dành chỗ, thông báo giữ chiều cao để bố cục không giật.
 
-Hậu kết cả ba màn cho Cuội đi lại và trò chuyện với bạn. Bạn cảm ơn, gợi dấu hiệu phía phải; đi tới đó về lộ trình. Mắt Tròn có điểm sáng, Lấp Lánh có vòng gợn, Tai Thính tạm dùng vệt sáng bí ẩn. Có nút xem lại kết/chơi lại/về lộ trình.
+Hậu kết cả ba màn cho Cuội đi lại và trò chuyện với bạn. Bạn cảm ơn, gợi dấu hiệu phía phải; đi tới đó về lộ trình. Mắt Tròn có điểm sáng, Lấp Lánh có vòng gợn, Tai Thính có hai vệt bánh xe gợi Bánh Lưới. Có nút xem lại kết/chơi lại/về lộ trình.
 
 Sách có nội dung theo tiến trình, nhóm theo người bạn, ảnh và nguồn; văn ngôi thứ ba như Mắt Tròn. Game và sách có đủ Việt/Anh. Công tắc âm thanh hiện lưu lựa chọn; các bài Tai Thính không phụ thuộc âm thanh.
 

@@ -110,7 +110,7 @@ Bản WebP tối đa 1280 px, chất lượng 90, giữ toàn khung; không sinh
 
 Hồi tưởng **A → B → C** có Trang trước/Trang tiếp. Sau C mới kể cú va chạm ngày hôm sau; trở lại bên Tai Thính mới kể năm 1977. Bạn cảm ơn Cuội đã lắng nghe; ánh sáng từ PSE đến đèn khoảng 1,4 giây, tới nơi mới lưu hoàn thành và thắp **cánh thứ ba**, giữ hai cánh trước. Giảm chuyển động bỏ đường bay, menu tạm dừng hiệu ứng. [TaiThinhEnding.tsx](../../src/components/TaiThinhEnding.tsx)
 
-Hậu kết có **Xem lại đoạn kết / Chơi lại / Về lộ trình** và cho Cuội đi ngang. Bấm bạn hoặc đến gần nhấn E để nghe lời cảm ơn, gợi nhìn **vệt sáng bí ẩn ở rìa phải**. Đi tới vệt sáng về lộ trình, không tự vào màn 4. Đây là dấu hiệu tạm đã chốt, danh tính người bạn tiếp theo chưa được chọn. Trò chuyện nghe lại không đổi sao/ảnh. [ending-chat.ts](../../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../../src/components/EndingTrail.tsx)
+Hậu kết có **Xem lại đoạn kết / Chơi lại / Về lộ trình** và cho Cuội đi ngang. Bấm bạn hoặc đến gần nhấn E để nghe lời cảm ơn, gợi nhìn **hai vệt bánh xe song song ở rìa phải**. Đi theo dấu bánh xe về lộ trình, không tự vào màn 4. Dấu vết là gợi ý trong câu chuyện dẫn tới Bánh Lưới ở Taurus–Littrow, không khẳng định xe Apollo 17 từng chạy ở bãi đáp Apollo 12. Trò chuyện nghe lại không đổi sao/ảnh. [ending-chat.ts](../../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../../src/components/EndingTrail.tsx)
 
 Thông điệp: những phép đo nhỏ có thể giúp con người tìm hiểu một thế giới xa; công việc đã khép lại vẫn để lại dữ liệu và câu chuyện đáng nhớ.
 

@@ -27,7 +27,7 @@ Website đang kết hợp ba cách thể hiện có chủ đích:
 
 Ánh trăng thiên lạnh; đèn ông sao và cửa sổ thiên vàng ấm. Giữ vùng phát sáng cục bộ, không phủ bloom mạnh toàn cảnh. Mái ngói, áo nâu, tre, cây đa, hiên nhà và ghế đá là các dấu hiệu nhận diện quan trọng.
 
-Hậu kết mỗi người bạn có dấu hiệu ở rìa phải để Cuội đi tới và trở về lộ trình: Mắt Tròn có ánh sáng gợi Lấp Lánh; Lấp Lánh có vòng gợn trên mặt đất gợi Tai Thính; Tai Thính tạm có vệt sáng bí ẩn, chờ chốt người bạn thứ tư. Hiệu ứng nhẹ, không che nhân vật; chế độ giảm chuyển động giữ dấu hiệu tĩnh.
+Hậu kết mỗi người bạn có dấu hiệu ở rìa phải để Cuội đi tới và trở về lộ trình: Mắt Tròn có ánh sáng gợi Lấp Lánh; Lấp Lánh có vòng gợn trên mặt đất gợi Tai Thính; Tai Thính có hai vệt bánh xe song song trên bụi trăng, gợi cuộc gặp Bánh Lưới. Hiệu ứng nhẹ, không che nhân vật; chế độ giảm chuyển động giữ dấu hiệu tĩnh.
 
 ## Chữ và UI
 
