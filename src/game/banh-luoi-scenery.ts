@@ -4,7 +4,9 @@ export const banhLuoiLayout = {
   groundY: 431,
   rover: { x: 665, y: 431, width: 290, height: 170 },
   interaction: { x: 510, y: 252, width: 310, height: 184 },
-  approachX: 440,
+  approachX: 490,
+  interactionMargin: 40,
+  interactionHint: { x: 665, y: 220 },
 } as const;
 
 /** Compressed side view of Taurus–Littrow, not a surveyed site map. */
