@@ -10,7 +10,19 @@ export const banhLuoiLayout = {
 /** Compressed side view of Taurus–Littrow, not a surveyed site map. */
 export function banhLuoiScenery(scene: Phaser.Scene) {
   const g = scene.add.graphics();
-  g.fillStyle(0x080e17).fillRect(0, 0, 960, 540);
+  // Sunlit lunar day: NASA SVS 4302. The nearly airless sky stays dark
+  // (NASA Glenn, beginners-guide-to-aeronautics/moon/). This framing is illustrative.
+  g.fillStyle(0x0d141c).fillRect(0, 0, 960, 540);
+  // Same circular, translucent glow language as drawEarth. The enlarged disc
+  // is an illustrative composition, not an angularly accurate view of the Sun.
+  // Glow is an artistic glare cue, not atmospheric scattering or a solar corona.
+  // Draw before terrain: the sloping ridge hides about a third of the disc.
+  const sunX = 720, sunY = 164;
+  g.fillStyle(0xe3d4af, .035).fillCircle(sunX, sunY, 64);
+  g.fillStyle(0xf0dfb9, .05).fillCircle(sunX, sunY, 46);
+  g.fillStyle(0xffedc8, .08).fillCircle(sunX, sunY, 30);
+  g.fillStyle(0xf4ebd2).fillCircle(sunX, sunY, 22);
+  g.fillStyle(0xfffbed).fillCircle(sunX, sunY, 21);
   const mountains = [{ x: 0, y: 145 }, { x: 85, y: 97 }, { x: 187, y: 168 },
     { x: 320, y: 222 }, { x: 484, y: 239 }, { x: 639, y: 211 }, { x: 822, y: 119 }, { x: 960, y: 156 }];
   g.fillStyle(0x7b8181).fillPoints([...mountains, { x: 960, y: 540 }, { x: 0, y: 540 }], true);

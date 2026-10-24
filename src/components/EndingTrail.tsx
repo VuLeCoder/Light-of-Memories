@@ -6,15 +6,16 @@ export function EndingTrail({ language, ripple = false, tracks = false }: { lang
   if (tracks) return <div className="ending-trail ending-trail-tracks" role="img" aria-label={vi
     ? 'Hai vệt bánh xe song song trên bụi trăng, dẫn về phía bên phải'
     : 'Two parallel wheel tracks in the lunar dust, leading to the right'}>
-    <svg viewBox="0 0 240 100" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="none" strokeLinecap="square">
-        {[0, 23].map(offset => <g key={offset} transform={`translate(0 ${offset})`}>
-          <path d="M8 65 Q110 59 240 17" stroke="#34464d" strokeWidth="11" opacity=".65" />
-          <path d="M8 71 Q110 65 240 23" stroke="#c6c5ac" strokeWidth="1.5" opacity=".65" />
-          {Array.from({ length: 17 }, (_, i) => {
-            const x = 10 + i * 14;
-            const y = 65 - .06 * x - .00058 * x * x;
-            return <path key={i} d={`M${x - 3} ${y - 4}l5 3 -3 5`} stroke="#d7c697" strokeWidth="2" opacity=".85" />;
+    <svg viewBox="0 0 132 48" preserveAspectRatio="none" shapeRendering="crispEdges" aria-hidden="true">
+      <g>
+        {[0, 20].map(offset => <g key={offset} transform={`translate(0 ${offset})`}>
+          {Array.from({ length: 9 }, (_, i) => {
+            const x = 5 + i * 15;
+            const y = 17 - Math.floor(i / 3);
+            return <g key={i}>
+              <path d={`M${x} ${y}h4v-3h4v-2h3v4h-3v2h-4v2h-4z`} fill="#43565c" opacity=".85" />
+              <path d={`M${x + 1} ${y + 5}h4v-1h4v-1h3`} fill="none" stroke="#b0b29f" strokeWidth="1" opacity=".65" />
+            </g>;
           })}
         </g>)}
       </g>
