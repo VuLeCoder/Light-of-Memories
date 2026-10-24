@@ -18,7 +18,8 @@ export function BanhLuoiPhotoView({ photo, language }: { photo: Photo; language:
   const [detail, setDetail] = useState(false);
   return <div className="ban-photo-view">
     <figure><BanhLuoiArchiveImage key={String(detail)} photo={photo} language={language} detail={detail}/></figure>
-    <button aria-pressed={detail} onClick={() => setDetail(v => !v)}>{copy[detail ? 'button.closeZoom' : 'button.wheelDetail'][language]}</button>
+    {photo.id === 'orbit' && detail && <p className="ban-photo-detail-caption">{copy['photoB.detailCaption'][language]}</p>}
+    <button aria-pressed={detail} onClick={() => setDetail(v => !v)}>{detail ? copy['button.closeZoom'][language] : photo.id === 'vip' ? copy['button.wheelDetail'][language] : (language === 'vi' ? 'Xem vị trí xe' : 'Inspect the rover location')}</button>
   </div>;
 }
 
@@ -27,7 +28,7 @@ export function BanhLuoiPhoto({ photo, language, onKeep }: { photo: Photo; langu
     <BanhLuoiPhotoView photo={photo} language={language}/>
     <div><span className="memory-eyebrow">{language === 'vi' ? 'Nhận bức ảnh' : 'Picture received'}</span>
       <h2 id="ban-photo-title">{photo.title[language]}</h2>
-      <p>{copy['wheels.correct'][language]}</p><p>{photo.caption[language]}</p>
+      {photo.id === 'vip' && <p>{copy['wheels.correct'][language]}</p>}<p>{photo.caption[language]}</p>
       <small>{photo.credit} · {photo.code}</small>
       <a href={photo.source} target="_blank" rel="noreferrer">{copy['button.source'][language]} ↗</a>
       <button className="ban-primary" data-banh-primary onClick={onKeep}>{copy['button.keep'][language]} →</button>

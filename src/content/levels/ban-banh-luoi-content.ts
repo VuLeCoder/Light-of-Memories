@@ -1,7 +1,7 @@
 import type { Language } from '../i18n';
 import type { StoryLine } from '../earth-dialogue';
 
-// Canonical chapter copy. M1–M3 integrate the introduction, wheels and route; later tasks remain authored.
+// Canonical chapter copy. M1–M4 integrate the introduction, wheels, route, camera and photos; the ending remains authored.
 // Sources and design contract: docs/plan/ban-banh-luoi-m0/README.md.
 const text = (vi: string, en: string) => ({ vi, en });
 type LocalizedText = ReturnType<typeof text>;
@@ -142,6 +142,7 @@ export const banBanhLuoiCopy = {
   "photoB.caption": text("Ảnh LROC tháng 8/2011 cho thấy tầng dưới Challenger, vị trí xe và những đường đi. Bản có nhãn được NASA đăng ngày 8/9/2011.", "An August 2011 LROC image shows Challenger’s descent stage, the rover’s position and trails. NASA published this labelled version on 8 September 2011."),
   "photoB.alt": text("Ảnh nhìn từ trên cao của bãi đáp Apollo 17; nhãn và mũi tên chỉ tầng dưới Challenger, xe LRV và khu thí nghiệm ALSEP.", "Overhead view of the Apollo 17 landing site, with labels and arrows marking Challenger’s descent stage, the LRV and the ALSEP experiments."),
   "photoB.credit": text("NASA / GSFC / Arizona State University / LRO · LROC NAC M168000580LR", "NASA / GSFC / Arizona State University / LRO · LROC NAC M168000580LR"),
+  "photoB.detailCaption": text("Xe là dấu nhỏ cạnh bóng đổ.", "Rover beside its shadow."),
   "photoB.zoomAlt": text("Vùng phóng vị trí xe ở bên phải ảnh quỹ đạo; xe là một dấu nhỏ cạnh bóng đổ.", "Enlarged rover location at the right of the orbital image; the rover is a small mark beside its shadow."),
   "photoB.lmCallout": text("Tầng dưới Challenger", "Challenger’s descent stage"),
   "photoB.roverCallout": text("Vị trí xe Bánh Lưới", "Mesh Wheels’ location"),
@@ -375,8 +376,8 @@ export const banBanhLuoiBook = {
   "ban-book-camera": {
     title: text("Một chỗ đứng để nhìn theo", "A place to watch from"),
     paragraphs: [
-      text("Ở cuối chuyến khảo sát, Cernan đỗ xe tại VIP Site, phía đông Challenger. Camera trên xe được điều khiển từ Trái Đất để ghi lại cuộc cất cánh.", "At the end of the exploring trip, Cernan parked the rover at the VIP Site, east of Challenger. Its camera was controlled from Earth to record the liftoff."),
-      text("Trong mô hình, đá có thể che camera, còn đỗ quá gần làm khung không chứa đủ cảnh. Chọn chỗ thoáng rồi chỉnh góc để giữ cả vùng trời cần nhìn trong khung.", "In the model, a rock can block the camera, and parking too close keeps the frame from holding enough of the scene. Choose a clear spot and adjust the angle to include the required sky region.")
+      text("Cernan đỗ xe ở VIP Site, phía đông Challenger. Người ở Trái Đất điều khiển camera quay tàu cất cánh.", "Cernan parked at the VIP Site, east of Challenger. People on Earth controlled the camera to film liftoff."),
+      text("Trong mô hình, tránh đá và đừng đỗ quá gần. Chỉnh góc để vùng viền chấm nằm trọn trong khung.", "In the model, avoid the rock and do not park too close. Aim to fit the dotted region inside the frame.")
     ]
   },
   "ban-book-legacy": {

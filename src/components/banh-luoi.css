@@ -113,3 +113,21 @@
 }
 .ban-route-map-static .ban-route-cell > span { font-size: 10px; line-height: 1; padding: 0; }
 .ban-route-map-static .ban-route-cell b { display: none; }
+/* Camera and launch workspaces expand with their content, including when paused. */
+.game-stage:has(.ban-camera-panel, .ban-launch-panel) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-camera-panel, .ban-launch-panel) { position: relative; background: #182c35; }
+.banh-luoi-scene:has(.ban-camera-panel, .ban-launch-panel) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
+.ban-camera-panel, .ban-launch-panel { position: relative; inset: auto; margin: 0; border: 0; border-radius: 0; }
+.ban-camera-layout { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(220px,1fr); gap: 18px; }
+.ban-camera-diagram { min-width: 0; }
+.ban-camera-diagram svg { display: block; width: 100%; height: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
+.ban-camera-diagram > span { display: block; margin: 10px 0 6px; font-size: 14px; }
+.ban-camera-diagram .ban-camera-preview { width: 160px; max-width: 100%; overflow: hidden; border: 2px solid #dfc18a; margin-inline: auto; }
+.ban-camera-controls { display: flex; flex-direction: column; gap: 10px; }
+.ban-camera-controls input { width: 100%; min-height: 44px; accent-color: #dfc18a; pointer-events: auto; }
+.ban-camera-controls button[aria-pressed="true"] { outline: 2px solid #dfc18a; outline-offset: -4px; }
+.ban-camera-controls small { line-height: 1.5; color: #bdcecb; }
+.ban-launch-panel > svg { display: block; width: 200px; height: 260px; max-width: 100%; margin: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
+.book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
+.ban-photo-detail-caption { font-size: 14px; }
+@container (max-width: 720px) { .ban-camera-layout { grid-template-columns: minmax(0,1fr); } }

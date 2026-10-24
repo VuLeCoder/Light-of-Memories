@@ -14,7 +14,7 @@ export const banBanhLuoiMemories = [
     detailAlt: banBanhLuoiCopy['photoA.zoomAlt'],
   },
   {
-    id: 'orbit', code: "LROC NAC M168000580LR (label printed on published product)", date: '2011-08', datePrecision: 'month',
+    id: 'orbit', code: "LROC NAC M168000580LR", date: '2011-08', datePrecision: 'month',
     credit: "NASA / GSFC / Arizona State University / Lunar Reconnaissance Orbiter", source: "https://science.nasa.gov/image-article/apod-2011-september-8-apollo-17-site-a-sharper-view/",
     src: banBanhLuoiPhotos.orbit, detailSrc: banBanhLuoiPhotos.orbitDetail, receiveAfter: 'launch',
     title: banBanhLuoiCopy['photoB.title'],
