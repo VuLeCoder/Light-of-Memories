@@ -35,10 +35,10 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
     onHint();
   };
   return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} aria-label={copy['identity.name'][language]}>
-    <div className="banh-luoi-hud">
-      <span>{copy[`objective.${phase}`][language]}</span>{ending && <strong role="status">★ {stars}/5</strong>}
+    {(!ending || preview) && <div className={`banh-luoi-hud${ending ? ' ban-preview-toolbar' : ''}`}>
+      {!ending && <span>{copy[`objective.${phase}`][language]}</span>}
       <div>{['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={preview ? () => togglePreview(false) : onBack}>{preview ? copy['button.toGame'][language] : copy['button.back'][language]}</button></div>
-    </div>
+    </div>}
     {talking && <EarthDialogue key={phase} language={language} paused={paused} title={copy['identity.name'][language]}
       lines={banBanhLuoiDialogue(language, phase)} initialIndex={progress.turn} onTurn={onTurn} finalAction="moon"
       finalLabel={phase === 'memoriesIntro' ? (language === 'vi' ? 'Đọc hai bức ảnh' : 'Read the two photos') : phase === 'route' ? copy['identity.invitation'][language] : phase === 'cameraIntro' ? (language === 'vi' ? 'Cùng tìm góc nhìn' : 'Find the view') : phase === 'routeIntro' ? (language === 'vi' ? 'Cùng vẽ đường đi' : 'Plan the route') : language === 'vi' ? 'Cùng tìm hiểu bánh xe' : 'Discover the wheels'}

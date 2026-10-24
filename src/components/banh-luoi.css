@@ -132,20 +132,34 @@
 .book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
 .ban-photo-detail-caption { font-size: 14px; }
 @container (max-width: 720px) { .ban-camera-layout { grid-template-columns: minmax(0,1fr); } }
-/* Recollections grow with their text; farewell dialogue stays above the rover. */
+/* Use the shared ending panels while allowing the memories to grow with their text. */
 .game-stage:has(.ban-recollection) > .story-canvas { position: absolute; inset: 0; }
-.banh-luoi-scene:has(.ban-recollection) { position: relative; background: #182c35; }
+.banh-luoi-scene:has(.ban-recollection) { position: relative; }
 .banh-luoi-scene:has(.ban-recollection) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
-.ban-recollection { position: relative; inset: auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; border: 0; border-radius: 0; }
-.ban-recollection small, .ban-recollection a { display: block; margin-top: 8px; line-height: 1.5; overflow-wrap: anywhere; }
-.ban-recollection a { color: #dfc18a; pointer-events: auto; }
-.ban-recollection .ban-route-actions { margin-top: 20px; }
-.ban-ending-actions, .ban-gift-status { position: absolute; top: 66px; left: 18px; max-width: 430px; padding: 12px 16px; color: #eee5d1; background: #182c35ed; border-radius: 8px; }
-.ban-ending-actions p { margin: 0 0 10px; }
+.game-stage .ban-recollection { position: relative; inset: auto; overflow: visible; pointer-events: auto; }
+.ban-recollection .ban-recall-caption { margin: 8px 0 0; color: #c5d2cf; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.ban-recollection a { color: #dfc18a; }
+.banh-luoi-scene .journey-primary { background: #e2c58d; color: #25313b; font-weight: 600; }
+.banh-luoi-scene .ban-ending-scene > .dialogue { inset: 12% 2.5% auto; width: 95%; padding: 12px 16px; background: linear-gradient(120deg,#21343bf5,#152831f5); }
+.ban-ending-scene .dialogue-text { font-size: clamp(14px,1.9cqw,18px); }
+.banh-luoi-scene .ban-ending-scene.is-exploring .ending-farewell { inset: 13% auto auto 2.5%; width: 32%; }
+.ban-ending-scene.is-exploring .ending-actions button { font-size: clamp(14px,1.7cqw,17px); }
+.ban-gift-status { position: absolute; top: 13%; left: 2.5%; width: 70%; margin: 0; padding: 16px; border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #edd9ac; font-size: clamp(14px,1.9cqw,18px); }
+.banh-luoi-scene .ban-preview-toolbar { z-index: 25; left: auto; right: 90px; justify-content: flex-end; }
+.banh-luoi-scene:has(.ban-recollection) .ban-preview-toolbar { padding-block: 8px; }
 .has-ending-chat .ban-ending-actions, .has-ending-chat .banh-luoi-hud { display: none; }
+.game-panel:has(.ban-ending) .game-instructions { height: auto; min-height: 96px; overflow: visible; }
 @container (max-width: 720px) {
-  .ban-recollection { grid-template-columns: minmax(0,1fr); }
-  .ban-ending-actions, .ban-gift-status { position: relative; inset: auto; max-width: none; margin: 0; border-radius: 0; }
+  .game-stage .ban-recollection .surveyor-ending { grid-template-columns: minmax(0,1fr); }
+  .game-stage .ban-recollection .ending-photo img { height: 240px; }
+  .banh-luoi-scene .ban-ending-scene { position: relative; inset: auto; background: #142831; }
+  .ban-ending-scene .surveyor-scene-hud { position: relative; inset: auto; padding: 8px 10px; font-size: 15px; }
+  .ban-ending-scene .surveyor-scene-hud > span { font-size: inherit; }
+  .banh-luoi-scene .ban-ending-scene > .dialogue,
+  .banh-luoi-scene .ban-ending-scene.is-exploring .ending-farewell,
+  .ban-gift-status { position: relative; inset: auto; width: auto; border-radius: 0; }
+  .ban-ending-scene .dialogue-text { font-size: 18px; }
+  .ban-ending-scene.is-exploring .ending-actions button { font-size: 16px; }
 }
 .game-stage:has(.ban-ending) .ending-chat > .dialogue { inset: 64px 18px auto; width: auto; max-height: none; overflow: visible; }
 @container (max-width: 720px) {
