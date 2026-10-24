@@ -50,7 +50,9 @@ export function GameCanvas({ initiallyAwake, onReady, taiEnding = 'none', taiSta
     setStatus({ kind: 'loading' });
 
     // Import after mount; cancellation prevents duplicate instances in StrictMode.
-    void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
+    // Canvas text keeps its rasterized fallback unless the font loads before creation.
+    const textFont = document.fonts.load('400 22px "Be Vietnam Pro"', 'Đến gần để trò chuyện').catch(() => []);
+    void Promise.all([import('phaser'), import('./PreviewScene'), textFont]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
         initiallyAwake: awakeRef.current,

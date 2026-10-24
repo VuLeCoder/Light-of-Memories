@@ -437,12 +437,12 @@ export class PreviewScene extends Phaser.Scene {
           this.trailHighlight.lineStyle(1, 0x786c53, .7).lineBetween(x + 4, y, x + 4, y + 4);
         }
         this.trailHint = this.add.text(780, 353, copy[this.options.language].trailMarker, {
-          fontFamily: 'Arial', fontSize: '22px', color: '#ffe3a1',
+          fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '22px', color: '#ffe3a1',
           backgroundColor: '#15232b', padding: { x: 12, y: 8 },
         }).setOrigin(0.5).setDepth(20);
         this.treeGlow = this.add.graphics().fillStyle(0xe4c987, 0.11).fillCircle(205, 300, 130).setVisible(false);
       }
-      this.interactionHint = this.add.text(this.options.scene === 'tai-thinh' ? 520 : this.options.scene === 'lap-lanh' ? 480 : this.options.scene === 'surveyor' ? 705 : 520, this.options.scene === 'surveyor' ? 146 : 310, this.interactionLabel(), { fontFamily: 'Arial', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
+      this.interactionHint = this.add.text(this.options.scene === 'tai-thinh' ? 520 : this.options.scene === 'lap-lanh' ? 480 : this.options.scene === 'surveyor' ? 705 : 520, this.options.scene === 'surveyor' ? 146 : 310, this.interactionLabel(), { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '22px', color: '#f5e4b6', backgroundColor: '#15232b', padding: { x: 12, y: 8 } }).setOrigin(0.5).setDepth(20).setVisible(false);
       this.setSparkleDust(!!this.options.sparkleDust);
       this.addMoonCuoi();
       if (this.options.scene === 'lap-lanh') this.createTrailRoute();

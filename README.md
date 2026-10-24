@@ -76,6 +76,8 @@ Giao diện dùng **React 19 + TypeScript + CSS**, game dùng **Phaser 3**, côn
 
 Ảnh mới đặt trong `public/images/` và khai báo qua `src/content/assets.ts`. Khi thay sprite sheet, cần cập nhật tọa độ cắt frame và điểm đặt chân để hoạt ảnh không lệch vị trí. Khi thêm nội dung, bổ sung cả bản tiếng Việt và tiếng Anh.
 
+Font **Lora** và **Be Vietnam Pro** được đóng gói trong `public/fonts/`, khai báo tại `src/fonts.css`, không cần cài font trên máy hay truy cập dịch vụ font bên ngoài. Các file WOFF2 giữ nguyên bộ ký tự của font gốc, gồm tiếng Việt và dấu tổ hợp. Giấy phép OFL và nguồn tải nằm trong thư mục font. Khi triển khai, cần đưa cả thư mục `dist/fonts/` lên hosting.
+
 ### Điều khiển và lưu hành trình
 
 - Bấm vào game để dùng bàn phím. Game giữ focus qua hội thoại/thử thách và nhả khi chuyển sang sách hoặc bấm ra ngoài.
@@ -91,7 +93,6 @@ Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `loca
 - Người bạn thứ tư/thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có ba cánh sao qua ba màn đã triển khai.
 - Chưa có phần thưởng kỹ năng hoặc thẻ bạn.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
-- Font sử dụng bộ có sẵn trên máy và font dự phòng, nên có thể khác nhau giữa thiết bị.
 - Bản build còn cảnh báo kích thước gói Phaser; các giới hạn đã biết được ghi trong tài liệu từng màn.
 
 ### Tài liệu tham khảo
