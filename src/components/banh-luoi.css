@@ -35,18 +35,24 @@
 .ban-wheel-detail, .ban-feedback { min-height: 1.5em; }
 .ban-feedback { color: #ead4a4; }
 .banh-luoi-scene .ban-primary { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
-.ban-receipt { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .ban-photo-view figure { margin: 0 0 8px; }
 .ban-photo-view img { display: block; width: 100%; height: 230px; object-fit: contain; background: #10212a; }
 .ban-photo-view button, .ban-photo-error button { min-height: 42px; padding: 8px 12px; border: 1px solid #a9957080; border-radius: 8px; background: #293e46; color: #eee5d1; font: inherit; cursor: pointer; }
 .ban-photo-view button:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
-.ban-receipt small { display: block; line-height: 1.4; }
-.ban-receipt a { display: block; color: #dfc18a; margin: 10px 0; }
+.game-stage:has(.ban-memory-photo) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-memory-photo) { position: relative; }
+.banh-luoi-scene:has(.ban-memory-photo) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
+.game-stage .ban-memory-photo { position: relative; inset: auto; margin: 0 16px 16px; overflow: visible; border-color: #c3a96e80; background: #142831f5; }
+.ban-memory-photo > .ban-photo-view { min-width: 0; }
+.ban-memory-photo .ban-photo-view figure { margin-bottom: 12px; }
+.ban-memory-photo a { color: #dfc18a; pointer-events: auto; font-size: 14px; }
+.ban-memory-photo small { overflow-wrap: anywhere; }
+.banh-luoi-scene .ban-memory-photo .journey-primary { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
 .book-sheet .ban-photo-view img { height: 160px; }
 .book-sheet .ban-photo-view button { font-size: 14px; }
 @container (max-width: 720px) {
   .ban-panel { position: relative; inset: auto; padding: 16px; border-radius: 0; }
-  .ban-receipt { grid-template-columns: 1fr; }
+  .game-stage .ban-memory-photo { margin: 0; border-radius: 0; grid-template-columns: minmax(0,1fr); }
   .ban-wheel-options { gap: 6px; }
   .ban-wheel-options button { padding: 6px; }
   .ban-wheel-options span { font-size: 14px; }
