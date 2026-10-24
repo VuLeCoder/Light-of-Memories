@@ -3,7 +3,7 @@
 Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md), [Game1](done/Game1_Surveyor_3.md), [Game2](done/Game2_Apollo_11.md) và [Game3](done/Game3_Apollo_12.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
 
 - `branding/`: logo website.
-- `portraits/`: chân dung hội thoại, gồm nhân vật mở đầu và ba người bạn.
+- `portraits/`: chân dung hội thoại, gồm nhân vật mở đầu, ba người bạn hoàn chỉnh và Bánh Lưới đang phát triển.
 - `sprites/`: ba sheet An/bà/Cuội và sprite nghỉ Lấp Lánh.
 - `memories/<id>/`: ảnh tư liệu của Lấp Lánh/Tai Thính, có mã nhiệm vụ/ảnh trong tên file.
 - `public/assets/`: ba ảnh ký ức JPG của Mắt Tròn vẫn đang dùng; không tự di chuyển khi chỉ dọn tài liệu.
@@ -39,3 +39,11 @@ Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md
 - Các ảnh Tai Thính đã dùng trong game chính, nhận sau T01/T02/T04 và được lưu vào sách. `/design/tai-thinh.html` chỉ là bản xem dev, không ghi tiến trình.
 - Lấp Lánh dùng `portraits/lap-lanh.webp`, `sprites/lap-lanh-idle.webp` và hai ảnh Apollo 11 AS11-40-5952/5945. Chi tiết nguồn và thứ tự kể xem [Game2](done/Game2_Apollo_11.md).
 - Không xóa hoặc sửa ảnh trong lần hợp nhất tài liệu. File ảnh tham khảo bổ sung chỉ được đưa vào gameplay sau khi kiểm tra chủ thể, nguồn và vai trò.
+
+## Bánh Lưới M1 (24/10/2026)
+
+- [portraits/ban-banh-luoi.webp](../public/images/portraits/ban-banh-luoi.webp): chân dung mới tạo bằng `image_gen` tích hợp, 1254 × 1254 RGBA, WebP chất lượng 92, giữ alpha. Đây là minh họa, không phải ảnh NASA. Tham chiếu phong cách chân dung Tai Thính và thiết bị trong ảnh AS17-143-21933; không sửa ảnh tư liệu.
+- Nền VIP Site và xe nghỉ vẽ trực tiếp bằng [banh-luoi-scenery.ts](../src/game/banh-luoi-scenery.ts), tách khỏi chân dung. Xe có bốn bánh lưới, hai ghế trống, chảo ăng-ten và camera, không thêm mắt/miệng/tay chân. Nền dùng cache/khôi phục WebGL chung. Khoảng cách và phối cảnh là minh họa.
+- Prompt đã dùng (built-in tool, hai ảnh tham chiếu chỉ dùng cho phong cách và phần cứng):
+
+> Use case: illustration-story. Asset type: transparent character portrait for a children's illustrated lunar game. Generate a NEW portrait of the Apollo 17 lunar roving vehicle, named Mesh Wheels. Image 1 is ONLY a watercolor/gouache style reference; image 2 is ONLY a historical hardware reference, do not edit the archive photo. Isolated complete vehicle three-quarter front view, two empty seats, four wire-mesh wheels with chevron metal treads, thin open silver chassis, gold foil equipment, large dish antenna and TV camera. Soft hand-painted watercolor paper texture and muted cream, blue-grey and antique gold as image 1. Friendly through gentle warm light, NO anthropomorphic eyes, mouth, limbs or people. Entire vehicle including antenna and wheels visible with generous padding, square composition, no scenery, no text, no insignia, no watermark, genuinely transparent background. No inflated rubber tyres, no temporary map fender repair.

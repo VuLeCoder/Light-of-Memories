@@ -1,12 +1,11 @@
 import type { Language } from '../i18n';
 import type { StoryLine } from '../earth-dialogue';
 
-// M0 authored content, not registered as a playable chapter yet.
+// Canonical chapter copy. M1 integrates the introduction; later tasks remain authored.
 // Sources and design contract: docs/plan/ban-banh-luoi-m0/README.md.
 const text = (vi: string, en: string) => ({ vi, en });
 type LocalizedText = ReturnType<typeof text>;
-// Keep the new speaker local until chapter registration; existing chapters stay unchanged.
-export type BanBanhLuoiSpeaker = StoryLine['speaker'] | 'banhLuoi';
+export type BanBanhLuoiSpeaker = StoryLine['speaker'];
 type AuthoredLine = LocalizedText & { id: string; speaker: BanBanhLuoiSpeaker };
 
 export const banBanhLuoiIdentity = {

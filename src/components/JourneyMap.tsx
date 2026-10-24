@@ -1,3 +1,5 @@
+import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
+import { banBanhLuoiBook } from '../content/levels/ban-banh-luoi-content';
 import { TaiThinhArchiveImage } from './TaiThinhPhoto';
 import { focusGame } from '../focus/game-focus';
 import { taiThinhPageIds, type TaiThinhProgress } from '../content/levels/tai-thinh-progress';
@@ -35,9 +37,9 @@ export const journeyCopy = {
   },
 };
 
-export function JourneyMap({ taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce };
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const level = status(activeLevel) === 'locked' ? undefined : getLevel(activeLevel);
   const detail = level?.text[language];
@@ -88,12 +90,12 @@ export function JourneyMap({ taiThinhProgress, sparkleProgress, language, active
   </section>;
 }
 
-export function JourneyBook({ taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  return <JourneyBookPages taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
+export function JourneyBook({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce };
+function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
   const fieldUnlocked = surveyorProgress.matched.length === 2;
@@ -160,6 +162,20 @@ function JourneyBookPages({ taiThinhProgress, sparkleProgress, language, activeL
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
   </>;
+  if (pages[page] === 'ban-banh-luoi') {
+    const intro = banBanhLuoiBook['ban-banh-luoi'];
+    return <>
+      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className="book-sheet journey-book">
+        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
+        <h2 id="banh-luoi-book-title" tabIndex={-1}>{intro.title[language]}</h2>
+        <img className="book-friend" src={level!.portrait} alt=""/>
+        {intro.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
+        <a className="sparkle-book-source" href="https://apollojournals.org/alsj/a17/a17.clsout3.html#1701948" target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 17 ↗</a>
+        {activeLevel && <BackToGame language={language}/>}
+      </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
+    </>;
+  }
   const taiPage = taiThinhBook.find(entry => pages[page] === `tai-book-${entry.id}` || entry.id === 'intro' && pages[page] === 'tai-thinh');
   const taiPhoto = taiThinhMemories.find(photo => pages[page] === `tai-photo-${photo.id}`);
   if (taiPage || taiPhoto) {

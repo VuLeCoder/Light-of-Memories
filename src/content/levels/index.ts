@@ -1,14 +1,15 @@
+import { banBanhLuoi } from './ban-banh-luoi';
 import { taiThinh } from './tai-thinh';
 import { lapLanh } from './lap-lanh';
 import { surveyor } from './surveyor';
 import type { LevelDefinition } from './types';
 
 // Add implemented levels here. IDs are persisted: keep them stable.
-export const levels = [surveyor, lapLanh, taiThinh] as const satisfies readonly LevelDefinition[];
+export const levels = [surveyor, lapLanh, taiThinh, banBanhLuoi] as const satisfies readonly LevelDefinition[];
 export type LevelId = (typeof levels)[number]['id'];
 
 // Empty slots remain mystery stops until their content is implemented.
-export const journeyStops: readonly (LevelId | null)[] = ['surveyor', 'lap-lanh', 'tai-thinh', null, null];
+export const journeyStops: readonly (LevelId | null)[] = ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi', null];
 
 export function journeyStatus(id: LevelId | null, completed: Record<LevelId, boolean>): 'locked' | 'unfinished' | 'completed' {
   if (!id) return 'locked';

@@ -4,7 +4,7 @@ import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
 
-const canvasLabel = (scene: GameSceneId, language: Language) => scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
+const canvasLabel = (scene: GameSceneId, language: Language) => scene === 'ban-banh-luoi' ? (language === 'vi' ? 'Cuội cạnh xe Apollo 17 đỗ yên giữa thung lũng Taurus–Littrow.' : 'Cuội beside the parked Apollo 17 rover in the Taurus–Littrow valley.') : scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
   ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
 
 function containGameKey(event: KeyboardEvent<HTMLDivElement>) {

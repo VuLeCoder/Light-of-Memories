@@ -1,0 +1,31 @@
+.banh-luoi-scene { position: absolute; inset: 0; pointer-events: none; }
+.banh-luoi-scene[hidden] { display: none; }
+.banh-luoi-hud { position: absolute; top: 12px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #eee5d1; }
+.banh-luoi-hud span { padding: 5px 10px; border-radius: 6px; background: #182c35ed; }
+.banh-luoi-scene button { pointer-events: auto; min-height: 42px; border: 1px solid #a9957080; border-radius: 8px; background: #293e46; color: #eee5d1; padding: 8px 13px; font: inherit; cursor: pointer; }
+.banh-luoi-scene button:hover { background: #3a5058; }
+.banh-luoi-scene button:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
+.banh-luoi-scene .dialogue { position: absolute; top: 64px; left: 18px; right: 18px; padding: 14px 18px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35f5; pointer-events: auto; }
+.banh-luoi-scene .dialogue-portrait img { object-fit: contain; }
+.banh-luoi-scene .dialogue-text { font-size: 18px; line-height: 1.55; }
+.game-stage:not(:has(.game-host[data-ready="true"])) .banh-luoi-scene { visibility: hidden; }
+.banh-luoi-scene .dialogue-next { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
+.banh-luoi-checkpoint { position: absolute; top: 70px; left: 24px; right: 24px; max-width: 610px; margin: auto; padding: 16px 22px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35f5; color: #eee5d1; pointer-events: auto; }
+.banh-luoi-checkpoint h3 { margin: 0 0 8px; font-family: Lora, Georgia, serif; }
+.banh-luoi-checkpoint p { margin: 0 0 12px; line-height: 1.5; }
+@container (max-width: 640px) {
+  .banh-luoi-hud { top: 8px; left: 10px; right: 10px; font-size: 14px; }
+  .banh-luoi-hud span { max-width: 55%; }
+  .banh-luoi-scene .dialogue { top: 62px; }
+  .banh-luoi-checkpoint { left: 12px; right: 12px; padding: 12px 16px; font-size: 15px; }
+}
+/* Let the text grow below the scene when the actual game column is narrow. */
+.game-stage:has(.banh-luoi-scene) { aspect-ratio: auto; }
+.game-stage:has(.banh-luoi-scene) > .story-canvas { aspect-ratio: 16 / 9; }
+@container (max-width: 720px) {
+  .banh-luoi-scene { position: relative; }
+  .banh-luoi-hud { position: relative; inset: auto; padding: 8px 10px; background: #182c35; font-size: 15px; }
+  .banh-luoi-scene .dialogue { position: relative; inset: auto; border-radius: 0; }
+  .banh-luoi-scene .dialogue-text { font-size: 18px; }
+  .banh-luoi-checkpoint { position: relative; inset: auto; max-width: none; margin: 0; border-radius: 0; font-size: 16px; }
+}
