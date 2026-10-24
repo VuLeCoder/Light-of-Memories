@@ -326,7 +326,7 @@ export function App() {
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
-          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
+          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle || inBanhLuoi ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
             onFocusCapture={() => { gameOwnsFocus.current = true; }}
             onPointerDownCapture={() => { gameOwnsFocus.current = true; }}
             onBlurCapture={(event) => {

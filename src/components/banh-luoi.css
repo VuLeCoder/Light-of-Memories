@@ -1,15 +1,12 @@
 .banh-luoi-scene { position: absolute; inset: 0; pointer-events: none; }
 .banh-luoi-scene[hidden] { display: none; }
-.banh-luoi-hud { position: absolute; top: 12px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #eee5d1; }
-.banh-luoi-hud span { padding: 5px 10px; border-radius: 6px; background: #182c35ed; }
-.banh-luoi-scene button { pointer-events: auto; min-height: 42px; border: 1px solid #a9957080; border-radius: 8px; background: #293e46; color: #eee5d1; padding: 8px 13px; font: inherit; cursor: pointer; }
-.banh-luoi-scene button:hover { background: #3a5058; }
-.banh-luoi-scene button:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
-.banh-luoi-scene .dialogue { position: absolute; top: 64px; left: 18px; right: 18px; padding: 14px 18px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35f5; pointer-events: auto; }
+.banh-luoi-scene button { pointer-events: auto; cursor: pointer; }
+.banh-luoi-hud > span { min-width: 0; }
+.banh-luoi-scene .dialogue { position: absolute; top: 12%; left: 2.5%; right: 2.5%; padding: 12px 16px; border: 1px solid #a9957080; border-radius: 10px; background: #142831f5; pointer-events: auto; }
 .banh-luoi-scene .dialogue-portrait img { object-fit: contain; }
-.banh-luoi-scene .dialogue-text { font-size: 18px; line-height: 1.55; }
+.banh-luoi-scene .dialogue-text { font-size: clamp(14px,1.9cqw,18px); line-height: 1.55; }
+.banh-luoi-scene .dialogue-portrait { width: 55px; height: 68px; }
 .game-stage:not(:has(.game-host[data-ready="true"])) .banh-luoi-scene { visibility: hidden; }
-.banh-luoi-scene .dialogue-next { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
 @container (max-width: 640px) {
   .banh-luoi-hud { top: 8px; left: 10px; right: 10px; font-size: 14px; }
   .banh-luoi-hud span { max-width: 55%; }
@@ -20,26 +17,24 @@
 .game-stage:has(.banh-luoi-scene) > .story-canvas { aspect-ratio: 16 / 9; }
 @container (max-width: 720px) {
   .banh-luoi-scene { position: relative; }
-  .banh-luoi-hud { position: relative; inset: auto; padding: 8px 10px; background: #182c35; font-size: 15px; }
+  .banh-luoi-scene > .banh-luoi-hud { position: relative; inset: auto; padding: 8px 10px; background: #142831; font-size: 15px; }
   .banh-luoi-scene .dialogue { position: relative; inset: auto; border-radius: 0; }
   .banh-luoi-scene .dialogue-text { font-size: 18px; }
 }
-.ban-panel { position: absolute; top: 70px; left: 20px; right: 20px; margin: auto; padding: 18px 22px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35fa; color: #eee5d1; pointer-events: auto; }
-.ban-panel h2 { font: 600 24px Lora, Georgia, serif; margin: 0 0 10px; }
+.ban-panel { position: absolute; top: 13%; left: 2.5%; right: 2.5%; margin: auto; padding: clamp(12px,2cqw,20px); border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #eee5d1; font-size: clamp(13px,1.7cqw,17px); pointer-events: auto; }
+.ban-panel h2 { font-family: inherit; font-size: inherit; font-weight: 600; line-height: 1.4; color: #f0d49a; margin: 0 0 10px; }
 .ban-panel p { margin: 8px 0; line-height: 1.5; }
 .ban-wheel-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .ban-wheel-options button { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.ban-wheel-options button[aria-pressed="true"] { border-color: #ead4a4; background: #435b60; box-shadow: inset 0 0 0 2px #dfc18a; }
 .ban-wheel-options svg { width: 120px; max-width: 100%; height: 86px; }
 .ban-wheel-options span { font-size: 16px; }
 .ban-wheel-detail, .ban-feedback { min-height: 1.5em; }
 .ban-feedback { color: #ead4a4; }
-.banh-luoi-scene .ban-primary { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
 .ban-photo-view figure { margin: 0 0 8px; }
 .ban-photo-view img { display: block; width: 100%; height: 230px; object-fit: contain; background: #10212a; }
 .ban-photo-view button, .ban-photo-error button { min-height: 42px; padding: 8px 12px; border: 1px solid #a9957080; border-radius: 8px; background: #293e46; color: #eee5d1; font: inherit; cursor: pointer; }
 .ban-photo-view button:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
-.game-stage:has(.ban-memory-photo) > .story-canvas { position: absolute; inset: 0; }
+.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-memory-photo)) > .story-canvas { position: absolute; inset: 0; }
 .banh-luoi-scene:has(.ban-memory-photo) { position: relative; }
 .banh-luoi-scene:has(.ban-memory-photo) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
 .game-stage .ban-memory-photo { position: relative; inset: auto; margin: 0 16px 16px; overflow: visible; border-color: #c3a96e80; background: #142831f5; }
@@ -56,7 +51,8 @@
   .ban-wheel-options { gap: 6px; }
   .ban-wheel-options button { padding: 6px; }
   .ban-wheel-options span { font-size: 14px; }
-  .ban-panel h2 { font-size: 22px; }
+  .ban-panel { font-size: 16px; }
+  .ban-panel h2 { font-size: 16px; }
 }
 .book-panel .book-sheet.ban-book-study { padding-block: 18px; }
 .book-panel .book-sheet.ban-book-study h2 { font-size: 28px; line-height: 1.2; margin: 6px 0; }
@@ -72,10 +68,10 @@
   .book-panel .book-sheet.ban-book-study .ban-photo-view img { height: 110px; }
 }
 /* The route workspace grows with feedback; it never scrolls inside the scene. */
-.game-stage:has(.ban-route-panel) > .story-canvas { position: absolute; inset: 0; }
-.banh-luoi-scene:has(.ban-route-panel) { position: relative; background: #182c35; }
+.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-route-panel)) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-route-panel) { position: relative; background: #142831; }
 .banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
-.ban-route-panel { position: relative; inset: auto; margin: 0; border: 0; border-radius: 0; padding: 12px 20px 20px; }
+.ban-route-panel { position: relative; inset: auto; margin: 0 2.5% 16px; padding: clamp(12px,2cqw,20px); }
 .ban-route-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(230px, 1fr); gap: 20px; }
 .ban-route-map { position: relative; display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 4px; width: 100%; aspect-ratio: 1; isolation: isolate; }
 .ban-route-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
@@ -115,10 +111,10 @@
 .ban-route-map-static .ban-route-cell > span { font-size: 10px; line-height: 1; padding: 0; }
 .ban-route-map-static .ban-route-cell b { display: none; }
 /* Camera and launch workspaces expand with their content, including when paused. */
-.game-stage:has(.ban-camera-panel, .ban-launch-panel) > .story-canvas { position: absolute; inset: 0; }
-.banh-luoi-scene:has(.ban-camera-panel, .ban-launch-panel) { position: relative; background: #182c35; }
+.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-camera-panel, .ban-launch-panel)) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-camera-panel, .ban-launch-panel) { position: relative; background: #142831; }
 .banh-luoi-scene:has(.ban-camera-panel, .ban-launch-panel) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
-.ban-camera-panel, .ban-launch-panel { position: relative; inset: auto; margin: 0; border: 0; border-radius: 0; }
+.ban-camera-panel, .ban-launch-panel { position: relative; inset: auto; margin: 0 2.5% 16px; }
 .ban-camera-layout { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(220px,1fr); gap: 18px; }
 .ban-camera-diagram { min-width: 0; }
 .ban-camera-diagram svg { display: block; width: 100%; height: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
@@ -126,14 +122,13 @@
 .ban-camera-diagram .ban-camera-preview { width: 160px; max-width: 100%; overflow: hidden; border: 2px solid #dfc18a; margin-inline: auto; }
 .ban-camera-controls { display: flex; flex-direction: column; gap: 10px; }
 .ban-camera-controls input { width: 100%; min-height: 44px; accent-color: #dfc18a; pointer-events: auto; }
-.ban-camera-controls button[aria-pressed="true"] { outline: 2px solid #dfc18a; outline-offset: -4px; }
 .ban-camera-controls small { line-height: 1.5; color: #bdcecb; }
 .ban-launch-panel > svg { display: block; width: 200px; height: 260px; max-width: 100%; margin: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
 .book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
 .ban-photo-detail-caption { font-size: 14px; }
 @container (max-width: 720px) { .ban-camera-layout { grid-template-columns: minmax(0,1fr); } }
 /* Use the shared ending panels while allowing the memories to grow with their text. */
-.game-stage:has(.ban-recollection) > .story-canvas { position: absolute; inset: 0; }
+.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-recollection)) > .story-canvas { position: absolute; inset: 0; }
 .banh-luoi-scene:has(.ban-recollection) { position: relative; }
 .banh-luoi-scene:has(.ban-recollection) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
 .game-stage .ban-recollection { position: relative; inset: auto; overflow: visible; pointer-events: auto; }
@@ -164,4 +159,13 @@
   .game-stage:has(.ban-ending) .ending-chat { position: relative; inset: auto; }
   .game-stage:has(.ban-ending) .ending-chat > .dialogue { position: relative; inset: auto; width: auto; max-height: none; overflow: visible; padding: 14px 18px; }
   .game-stage:has(.ban-ending) .ending-chat .dialogue-text { font-size: 18px; }
+}
+
+/* Compact controls retain the same reading size as the earlier friends. */
+@container (max-width: 720px) {
+  .banh-luoi-hud { flex-wrap: wrap; }
+  .banh-luoi-scene > .banh-luoi-hud > span { flex: 1 0 100%; max-width: none; font-size: 14px; }
+  .banh-luoi-hud > button { flex: 1; }
+  .game-stage.classic-friend-scene .banh-luoi-scene button:not(.ban-route-cell) { min-height: 44px; font-size: 16px; }
+  .ban-route-panel, .ban-camera-panel, .ban-launch-panel { margin: 0; }
 }

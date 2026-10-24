@@ -879,9 +879,9 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .book-panel .journey-memories small { font-size: 13px; line-height: 1.3; margin-top: 2px; }
 }
 
-/* Earlier friends use the same quiet controls as Keen Ears. Interactive pictures
+/* Friends use the same quiet controls as Keen Ears. Interactive pictures
    keep their own hit areas, selection borders and wiping surfaces. */
-.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell])) {
+.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell)) {
   min-height: 42px;
   padding: 8px 12px;
   border: 1px solid #a9957080;
@@ -892,13 +892,13 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   font-size: clamp(13px, 1.7cqw, 17px);
   line-height: 1.4;
 }
-.game-stage.classic-friend-scene :is(button.journey-primary, .dialogue-next.is-ready, .surveyor-labels button[aria-pressed=true]) {
+.game-stage.classic-friend-scene :is(button.journey-primary, .dialogue-next.is-ready, .surveyor-labels button[aria-pressed=true], .ban-wheel-options button[aria-pressed=true], .ban-camera-controls button[aria-pressed=true]) {
   border-color: #ead4a4;
   border-radius: 7px;
   background: #dfc18a;
   color: #20313a;
 }
-.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell])):hover:not(:disabled) {
+.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell)):hover:not(:disabled) {
   border-color: #ead4a4;
   background: #354b52;
 }

@@ -24,6 +24,6 @@ export function BanhLuoiWheels({ language, selected, onSelect, onSuccess }: {
     <div className="ban-wheel-options">{wheelChoices.map(kind => <button key={kind} aria-pressed={selected === kind} onClick={() => { onSelect(kind); setFeedback(null); }}><Wheel kind={kind}/><span>{copy[`wheels.${kind}`][language]}</span></button>)}</div>
     <p className="ban-wheel-detail">{selected ? copy[`wheels.${selected}Detail`][language] : copy['wheels.empty'][language]}</p>
     <p className="ban-feedback" role="status">{feedback ? copy[`wheels.${feedback}`][language] : '\u00a0'}</p>
-    <button className="ban-primary" data-banh-primary onClick={() => selected === 'mesh' ? onSuccess() : setFeedback(!selected ? 'empty' : selected === 'rubber' ? 'wrongRubber' : 'wrongStone')}>{copy['button.confirm'][language]}</button>
+    <button className="journey-primary" data-banh-primary onClick={() => selected === 'mesh' ? onSuccess() : setFeedback(!selected ? 'empty' : selected === 'rubber' ? 'wrongRubber' : 'wrongStone')}>{copy['button.confirm'][language]}</button>
   </section>;
 }

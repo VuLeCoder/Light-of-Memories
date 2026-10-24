@@ -49,7 +49,7 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint }: {
       <div className="ban-route-actions"><button disabled={cells.length === 1} onClick={() => change(cells.slice(0,-1), { key: 'route.undoStatus' })}>{copy['button.undo'][language]}</button><button disabled={cells.length === 1} onClick={() => change([model.lm], { key: 'route.resetStatus' })}>{copy['button.reset'][language]}</button></div>
       <div className="ban-route-feedback" role="status">{message && <p>{routeMessage(message,language)}</p>}{violations.map(v => <p key={v.key}>{routeMessage(v,language)}</p>)}</div>
       {routeHint > 0 && <div className="ban-route-hints"><p>{copy[routeHint === 1 ? 'route.hint1' : 'route.hint2'][language]}</p>{routeHint === 2 && <p>{firstBad ? routeMessage({ key: 'route.firstViolation', values: { index: firstBad.index, x: firstBad.cell[0], y: firstBad.cell[1] } },language) : copy['route.noViolation'][language]}</p>}{routeHint === 1 && <button onClick={onHint}>{copy['button.hintMore'][language]}</button>}</div>}
-      <button className="ban-primary" data-banh-primary onClick={submit}>{copy['button.routeSubmit'][language]}</button>
+      <button className="journey-primary" data-banh-primary onClick={submit}>{copy['button.routeSubmit'][language]}</button>
       <small>{copy['route.model'][language]}</small>
     </div></div>
   </section>;

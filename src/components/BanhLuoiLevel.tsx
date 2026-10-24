@@ -34,10 +34,10 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
     if (['cameraIntro','camera','launch','photoB','memoriesIntro'].includes(phase)) onChange({ ...progress, cameraHint: Math.min(2, progress.cameraHint + 1) as 1 | 2 });
     onHint();
   };
-  return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} aria-label={copy['identity.name'][language]}>
-    {!ending && <div className="banh-luoi-hud">
+  return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} lang={language} aria-label={copy['identity.name'][language]}>
+    {!ending && <div className="surveyor-scene-hud banh-luoi-hud">
       <span>{copy[`objective.${phase}`][language]}</span>
-      <div>{['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={onBack}>{copy['button.back'][language]}</button></div>
+      {['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={onBack}>{copy['button.back'][language]}</button>
     </div>}
     {talking && <EarthDialogue key={phase} language={language} paused={paused} title={copy['identity.name'][language]}
       lines={banBanhLuoiDialogue(language, phase)} initialIndex={progress.turn} onTurn={onTurn} finalAction="moon"

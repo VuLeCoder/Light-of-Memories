@@ -20,7 +20,7 @@ export function BanhLuoiCamera({language,progress,onChange,onHint}: {language: L
         <div className="ban-route-actions"><button aria-label={copy['button.decreaseAngle'][language]} disabled={angle===model.minAngle} onClick={()=>changeAngle(angle-1)}>−</button><button aria-label={copy['button.increaseAngle'][language]} disabled={angle===model.maxAngle} onClick={()=>changeAngle(angle+1)}>+</button></div>
         <p role="status" className="ban-feedback">{feedback ? copy[`camera.${feedback}`][language] : !spot ? copy['camera.none'][language] : language==='vi' ? 'Quan sát sơ đồ và khung camera rồi thử góc nhìn nhé.' : 'Look at the diagram and camera frame, then try your view.'}</p>
         {progress.cameraHint>0 && <div className="ban-route-hints"><p>{copy[progress.cameraHint === 2 ? 'camera.hint2' : 'camera.hint1'][language]}</p>{progress.cameraHint===1 && <button onClick={onHint}>{copy['button.hintMore'][language]}</button>}</div>}
-        <button className="ban-primary" data-banh-primary onClick={()=>{const result=analyseCamera(spot,angle); if(result==='correct')onChange({...progress,phase:'launch',turn:0});else setFeedback(result);}}>{copy['button.cameraSubmit'][language]}</button>
+        <button className="journey-primary" data-banh-primary onClick={()=>{const result=analyseCamera(spot,angle); if(result==='correct')onChange({...progress,phase:'launch',turn:0});else setFeedback(result);}}>{copy['button.cameraSubmit'][language]}</button>
         <small>{copy['camera.model'][language]}</small>
       </div>
     </div>

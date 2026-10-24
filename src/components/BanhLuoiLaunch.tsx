@@ -29,6 +29,6 @@ export function BanhLuoiLaunch({language,paused,onNext}: {language:Language;paus
     </svg>
     <p>{language==='vi' ? 'Tầng bay lên đưa các nhà du hành rời Mặt Trăng. Tầng dưới và chiếc xe ở lại; camera trên xe được điều khiển từ Trái Đất.' : 'The ascent stage carries the astronauts away from the Moon. The descent stage and rover stay behind; people on Earth control the rover’s camera.'}</p>
     <p role="status">{fraction===1 ? (language==='vi' ? 'Challenger đã bay lên. Những dấu vết vẫn ở lại.' : 'Challenger has lifted off. The tracks remain.') : (language==='vi' ? 'Challenger đang bay lên…' : 'Challenger is lifting off…')}</p>
-    <button className="ban-primary" data-banh-primary disabled={fraction<1 || paused} onClick={onNext}>{copy['button.next'][language]} →</button>
+    <button className="journey-primary" data-banh-primary disabled={fraction<1 || paused} onClick={onNext}>{copy['button.next'][language]} →</button>
   </section>;
 }
