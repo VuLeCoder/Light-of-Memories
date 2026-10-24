@@ -37,7 +37,7 @@ export function BanhLuoiEnding({ language, progress: p, onChange, onBack, paused
       </div>
     </section>;
   }
-  const gifting = p.phase === 'gift' && !p.completedOnce;
+  const gifting = p.phase === 'gift' && (preview ? p.turn === 0 : !p.completedOnce);
   const afterGift = p.phase === 'gift';
   return <section className={`ending-scene ban-ending-scene${p.phase === 'finished' ? ' is-exploring' : ''}`} aria-label={title} lang={language}>
     <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {stars}/5</strong></div>

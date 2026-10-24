@@ -70,7 +70,6 @@ export const banBanhLuoiCopy = {
   "button.next": text("Tiếp theo", "Next"),
   "button.previousPage": text("Trang trước", "Previous page"),
   "button.nextPage": text("Trang tiếp", "Next page"),
-  "button.toGame": text("Trở lại game", "Back to the game"),
   "button.back": text("Về lộ trình", "Back to the route"),
   "button.replayEnding": text("Xem lại đoạn kết", "Replay the ending"),
   "button.replay": text("Chơi lại", "Play again"),

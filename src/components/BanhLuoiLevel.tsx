@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import type { Language } from '../content/i18n';
 import { banBanhLuoiCopy as copy, banBanhLuoiDialogue } from '../content/levels/ban-banh-luoi-content';
 import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
@@ -12,16 +12,16 @@ import { BanhLuoiPhoto } from './BanhLuoiPhoto';
 import { banBanhLuoiMemories } from '../content/levels/ban-banh-luoi-memories';
 import './banh-luoi.css';
 
-export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, paused, stars, onPreview, preview }: {
+export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, paused, stars, onPreview, preview, previewProgress, onPreviewChange }: {
   language: Language; progress: BanhLuoiProgress; onChange: (p: BanhLuoiProgress) => void;
+  previewProgress: BanhLuoiProgress; onPreviewChange: (p: BanhLuoiProgress) => void;
   stars: number; preview: boolean; onPreview: (value: boolean) => void; onBack: () => void; onHint: () => void; paused: boolean;
 }) {
-  const [previewProgress, setPreviewProgress] = useState(progress);
   const displayed = preview ? previewProgress : progress;
   const { phase } = displayed;
   const ending = ['recallA', 'recallB', 'farewell', 'gift', 'finished'].includes(phase);
   const togglePreview = (value: boolean) => {
-    if (value) setPreviewProgress({ ...progress, phase: 'recallA', turn: 0 });
+    if (value) onPreviewChange({ ...progress, phase: 'recallA', turn: 0 });
     onPreview(value);
   };
   const talking = phase === 'route' || phase === 'meeting' || phase === 'routeIntro' || phase === 'cameraIntro' || phase === 'memoriesIntro';
@@ -35,9 +35,9 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
     onHint();
   };
   return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} aria-label={copy['identity.name'][language]}>
-    {(!ending || preview) && <div className={`banh-luoi-hud${ending ? ' ban-preview-toolbar' : ''}`}>
-      {!ending && <span>{copy[`objective.${phase}`][language]}</span>}
-      <div>{['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={preview ? () => togglePreview(false) : onBack}>{preview ? copy['button.toGame'][language] : copy['button.back'][language]}</button></div>
+    {!ending && <div className="banh-luoi-hud">
+      <span>{copy[`objective.${phase}`][language]}</span>
+      <div>{['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={onBack}>{copy['button.back'][language]}</button></div>
     </div>}
     {talking && <EarthDialogue key={phase} language={language} paused={paused} title={copy['identity.name'][language]}
       lines={banBanhLuoiDialogue(language, phase)} initialIndex={progress.turn} onTurn={onTurn} finalAction="moon"
@@ -49,7 +49,7 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
     {phase === 'camera' && <BanhLuoiCamera language={language} progress={progress} onChange={onChange} onHint={hint}/>}
     {phase === 'launch' && <BanhLuoiLaunch language={language} paused={paused} onNext={() => onChange({ ...progress, phase: 'photoB', turn: 0 })}/>}
     {phase === 'photoB' && (progress.turn === 0 ? <EarthDialogue language={language} paused={paused} title={copy['identity.name'][language]} lines={banBanhLuoiDialogue(language,'photoBIntro')} onTurn={() => {}} finalAction="moon" finalLabel={language==='vi' ? 'Xem bức ảnh' : 'See the photo'} onComplete={() => onChange({...progress,turn:1})}/> : <BanhLuoiPhoto photo={banBanhLuoiMemories[1]} language={language} onKeep={() => onChange({...progress,phase:'memoriesIntro',turn:0,keepsakes:['vip','orbit']})}/>)}
-    {ending && <BanhLuoiEnding language={language} progress={displayed} onChange={preview ? setPreviewProgress : onChange} onBack={onBack} paused={paused} stars={stars} preview={preview} onPreview={togglePreview}/>}
+    {ending && <BanhLuoiEnding language={language} progress={displayed} onChange={preview ? onPreviewChange : onChange} onBack={onBack} paused={paused} stars={stars} preview={preview} onPreview={togglePreview}/>}
 
   </section>;
 }

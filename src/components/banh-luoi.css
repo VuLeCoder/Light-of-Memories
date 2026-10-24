@@ -145,8 +145,6 @@
 .banh-luoi-scene .ban-ending-scene.is-exploring .ending-farewell { inset: 13% auto auto 2.5%; width: 32%; }
 .ban-ending-scene.is-exploring .ending-actions button { font-size: clamp(14px,1.7cqw,17px); }
 .ban-gift-status { position: absolute; top: 13%; left: 2.5%; width: 70%; margin: 0; padding: 16px; border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #edd9ac; font-size: clamp(14px,1.9cqw,18px); }
-.banh-luoi-scene .ban-preview-toolbar { z-index: 25; left: auto; right: 90px; justify-content: flex-end; }
-.banh-luoi-scene:has(.ban-recollection) .ban-preview-toolbar { padding-block: 8px; }
 .has-ending-chat .ban-ending-actions, .has-ending-chat .banh-luoi-hud { display: none; }
 .game-panel:has(.ban-ending) .game-instructions { height: auto; min-height: 96px; overflow: visible; }
 @container (max-width: 720px) {
