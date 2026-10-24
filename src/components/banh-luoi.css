@@ -10,14 +10,10 @@
 .banh-luoi-scene .dialogue-text { font-size: 18px; line-height: 1.55; }
 .game-stage:not(:has(.game-host[data-ready="true"])) .banh-luoi-scene { visibility: hidden; }
 .banh-luoi-scene .dialogue-next { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
-.banh-luoi-checkpoint { position: absolute; top: 70px; left: 24px; right: 24px; max-width: 610px; margin: auto; padding: 16px 22px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35f5; color: #eee5d1; pointer-events: auto; }
-.banh-luoi-checkpoint h3 { margin: 0 0 8px; font-family: Lora, Georgia, serif; }
-.banh-luoi-checkpoint p { margin: 0 0 12px; line-height: 1.5; }
 @container (max-width: 640px) {
   .banh-luoi-hud { top: 8px; left: 10px; right: 10px; font-size: 14px; }
   .banh-luoi-hud span { max-width: 55%; }
   .banh-luoi-scene .dialogue { top: 62px; }
-  .banh-luoi-checkpoint { left: 12px; right: 12px; padding: 12px 16px; font-size: 15px; }
 }
 /* Let the text grow below the scene when the actual game column is narrow. */
 .game-stage:has(.banh-luoi-scene) { aspect-ratio: auto; }
@@ -27,7 +23,6 @@
   .banh-luoi-hud { position: relative; inset: auto; padding: 8px 10px; background: #182c35; font-size: 15px; }
   .banh-luoi-scene .dialogue { position: relative; inset: auto; border-radius: 0; }
   .banh-luoi-scene .dialogue-text { font-size: 18px; }
-  .banh-luoi-checkpoint { position: relative; inset: auto; max-width: none; margin: 0; border-radius: 0; font-size: 16px; }
 }
 .ban-panel { position: absolute; top: 70px; left: 20px; right: 20px; margin: auto; padding: 18px 22px; border: 1px solid #a9957080; border-radius: 10px; background: #182c35fa; color: #eee5d1; pointer-events: auto; }
 .ban-panel h2 { font: 600 24px Lora, Georgia, serif; margin: 0 0 10px; }
@@ -131,3 +126,24 @@
 .book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
 .ban-photo-detail-caption { font-size: 14px; }
 @container (max-width: 720px) { .ban-camera-layout { grid-template-columns: minmax(0,1fr); } }
+/* Recollections grow with their text; farewell dialogue stays above the rover. */
+.game-stage:has(.ban-recollection) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-recollection) { position: relative; background: #182c35; }
+.banh-luoi-scene:has(.ban-recollection) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
+.ban-recollection { position: relative; inset: auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; border: 0; border-radius: 0; }
+.ban-recollection small, .ban-recollection a { display: block; margin-top: 8px; line-height: 1.5; overflow-wrap: anywhere; }
+.ban-recollection a { color: #dfc18a; pointer-events: auto; }
+.ban-recollection .ban-route-actions { margin-top: 20px; }
+.ban-ending-actions, .ban-gift-status { position: absolute; top: 66px; left: 18px; max-width: 430px; padding: 12px 16px; color: #eee5d1; background: #182c35ed; border-radius: 8px; }
+.ban-ending-actions p { margin: 0 0 10px; }
+.has-ending-chat .ban-ending-actions, .has-ending-chat .banh-luoi-hud { display: none; }
+@container (max-width: 720px) {
+  .ban-recollection { grid-template-columns: minmax(0,1fr); }
+  .ban-ending-actions, .ban-gift-status { position: relative; inset: auto; max-width: none; margin: 0; border-radius: 0; }
+}
+.game-stage:has(.ban-ending) .ending-chat > .dialogue { inset: 64px 18px auto; width: auto; max-height: none; overflow: visible; }
+@container (max-width: 720px) {
+  .game-stage:has(.ban-ending) .ending-chat { position: relative; inset: auto; }
+  .game-stage:has(.ban-ending) .ending-chat > .dialogue { position: relative; inset: auto; width: auto; max-height: none; overflow: visible; padding: 14px 18px; }
+  .game-stage:has(.ban-ending) .ending-chat .dialogue-text { font-size: 18px; }
+}
