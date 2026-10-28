@@ -130,12 +130,8 @@
 .book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
 .ban-photo-detail-caption { font-size: 14px; }
 @container (max-width: 720px) { .ban-camera-layout { grid-template-columns: minmax(0,1fr); } }
-/* Use the shared ending panels while allowing the memories to grow with their text. */
-.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-recollection)) > .story-canvas { position: absolute; inset: 0; }
-.banh-luoi-scene:has(.ban-recollection) { position: relative; }
-.banh-luoi-scene:has(.ban-recollection) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
-.game-stage .ban-recollection { position: relative; inset: auto; overflow: visible; pointer-events: auto; }
-.ban-recollection .ban-recall-caption { margin: 8px 0 0; color: #c5d2cf; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+/* Match Tai Thinh's full-frame journal and responsive archive layout. */
+.ban-recollection { position: absolute; inset: 0; pointer-events: auto; }
 .ban-recollection a { color: #dfc18a; }
 .banh-luoi-scene .journey-primary { background: #e2c58d; color: #25313b; font-weight: 600; }
 .banh-luoi-scene .ban-ending-scene > .dialogue { inset: 12% 2.5% auto; width: 95%; padding: 12px 16px; background: linear-gradient(120deg,#21343bf5,#152831f5); }
@@ -145,9 +141,13 @@
 .ban-gift-status { position: absolute; top: 13%; left: 2.5%; width: 70%; margin: 0; padding: 16px; border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #edd9ac; font-size: clamp(14px,1.9cqw,18px); }
 .has-ending-chat .ban-ending-actions, .has-ending-chat .banh-luoi-hud { display: none; }
 .game-panel:has(.ban-ending) .game-instructions { height: auto; min-height: 96px; overflow: visible; }
-@container (max-width: 720px) {
+@container (max-width: 860px) {
+  .banh-luoi-scene:has(.ban-recollection), .banh-luoi-scene > .ban-recollection { position: relative; inset: auto; }
   .game-stage .ban-recollection .surveyor-ending { grid-template-columns: minmax(0,1fr); }
-  .game-stage .ban-recollection .ending-photo img { height: 240px; }
+  .game-stage .ban-recollection.ending-recollection .ending-photo img { height: 240px; }
+  .ban-recollection .ending-speech { font-size: 16px; }
+}
+@container (max-width: 720px) {
   .banh-luoi-scene .ban-ending-scene { position: relative; inset: auto; background: #142831; }
   .ban-ending-scene .surveyor-scene-hud { position: relative; inset: auto; padding: 8px 10px; font-size: 15px; }
   .ban-ending-scene .surveyor-scene-hud > span { font-size: inherit; }

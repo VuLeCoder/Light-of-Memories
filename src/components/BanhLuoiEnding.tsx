@@ -2,7 +2,7 @@ import type { Language } from '../content/i18n';
 import { banBanhLuoiCopy as copy, banBanhLuoiDialogue } from '../content/levels/ban-banh-luoi-content';
 import { banBanhLuoiMemories } from '../content/levels/ban-banh-luoi-memories';
 import { replayBanhLuoi, type BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
-import { BanhLuoiPhotoView } from './BanhLuoiPhoto';
+import { BanhLuoiArchiveImage } from './BanhLuoiPhoto';
 import { EarthDialogue } from './EarthDialogue';
 
 export function BanhLuoiEnding({ language, progress: p, onChange, onBack, paused, stars, preview, onPreview }: {
@@ -19,17 +19,17 @@ export function BanhLuoiEnding({ language, progress: p, onChange, onBack, paused
     return <section className="journey-view ending-recollection ban-recollection" aria-labelledby="ban-recall-title" lang={language}>
       <header><span>{page + 1}/2 · {page === 0 ? '12/1972' : '8/2011'}</span><h2 id="ban-recall-title">{title}</h2></header>
       <div className="surveyor-ending">
-        <div className="ending-photo"><BanhLuoiPhotoView key={photo.id} photo={photo} language={language}/>
-          <p className="ban-recall-caption">{photo.caption[language]}<br/>{photo.credit} · {photo.code}<br/><a href={photo.source} target="_blank" rel="noreferrer">{copy['button.source'][language]} ↗</a></p></div>
+        <figure className="ending-photo"><BanhLuoiArchiveImage key={photo.id} photo={photo} language={language}/>
+          <figcaption>{photo.caption[language]}<br/>{photo.credit} · {photo.code}<br/><a href={photo.source} target="_blank" rel="noreferrer">{copy['button.source'][language]} ↗</a></figcaption></figure>
         <div className="ending-story-copy">
           <div className="ending-steps" aria-label={`${page + 1}/2`}>{[0, 1].map(i => <span key={i} className={i === page ? 'is-active' : ''}/>)}</div>
           <h3>{copy[`${key}.title`][language]}</h3>
           <p className="ending-speech"><b>{copy['identity.name'][language]}:</b> {copy[`${key}.body`][language]}</p>
-          <p className="ending-note">{vi ? 'Hai bức ảnh đã được lưu trong sổ tay của Cuội.' : 'Both photographs are now in Cuội’s notebook.'}</p>
           <nav className="ending-actions" aria-label={vi ? 'Trang hồi tưởng' : 'Memory pages'}>
             <button disabled={page === 0} onClick={() => go('recallA')}>← {copy['button.previousPage'][language]}</button>
             <button data-banh-primary className="journey-primary" onClick={() => go(page === 0 ? 'recallB' : 'farewell')}>{page === 0 ? copy['button.nextPage'][language] : vi ? 'Trở lại bên Bánh Lưới' : 'Return to Mesh Wheels'} →</button>
           </nav>
+          <small className="ending-fiction">{vi ? 'Cuội, lời nói của thiết bị và cánh cửa ký ức thuộc câu chuyện tưởng tượng.' : 'Cuội, the equipment’s voice and the memory doorway belong to an imagined story.'}</small>
         </div>
       </div>
     </section>;

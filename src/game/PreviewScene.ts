@@ -138,7 +138,7 @@ export class PreviewScene extends Phaser.Scene {
     this.options.quest = quest;
     this.options.treeSpeaking = treeSpeaking;
     this.treeGlow?.setVisible(treeSpeaking);
-    this.lantern?.setVisible(this.options.scene !== 'surveyor' && this.options.scene !== 'lap-lanh' && ['lantern', 'trail', 'complete'].includes(quest));
+    this.syncLanternGrip();
     const showTrail = quest === 'lantern' || quest === 'trail';
     this.trailHighlight?.setVisible(showTrail);
     this.trailHint?.setVisible(showTrail);
@@ -606,7 +606,7 @@ export class PreviewScene extends Phaser.Scene {
   private syncLanternGrip() {
     const c = this.cuoi, lantern = this.lantern;
     if (!c || !lantern) return;
-    if ((this.options.scene === 'tai-thinh' && (!this.options.taiEnding || this.options.taiEnding === 'none')) || (this.options.scene === 'lap-lanh' && !this.options.freeRoam)) {
+    if ((['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene) && (!this.options.taiEnding || this.options.taiEnding === 'none')) || (this.options.scene === 'lap-lanh' && !this.options.freeRoam)) {
       lantern.setVisible(false);
       this.earnedLight?.setVisible(false);
       return;

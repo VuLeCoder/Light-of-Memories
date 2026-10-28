@@ -20,7 +20,7 @@
 #main-scene .tai-task-panel { overflow: auto; }
 
 /* Full-page activities start with their controls, rather than a canvas-sized gap. */
-#main-scene .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC, .tai-recollection) > .story-canvas {
+#main-scene .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC, .tai-recollection, .ban-recollection) > .story-canvas {
   display: none;
 }
 
