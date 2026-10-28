@@ -181,6 +181,10 @@ export function App() {
     const timer = window.setTimeout(() => setRevealing(false), 1800);
     return () => window.clearTimeout(timer);
   }, [revealing, menuOpen]);
+  // A new scene starts at the top of the shared scroll viewport.
+  useLayoutEffect(() => {
+    gameStage.current?.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [chapter, quest, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, displayedBan.phase, banPreview, menuOpen]);
   // Keep focus on a persistent element while the canvas is inert or dialogue unmounts.
   useLayoutEffect(() => {
     if (menuOpen || !gameOwnsFocus.current) return;

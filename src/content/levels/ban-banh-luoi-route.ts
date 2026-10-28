@@ -2,8 +2,8 @@ import { banBanhLuoiRoute as model } from './ban-banh-luoi-models';
 
 export type RouteCell = readonly [number, number];
 export const sameCell = (a: RouteCell, b: RouteCell) => a[0] === b[0] && a[1] === b[1];
-export const routeCells: RouteCell[] = Array.from({ length: model.size ** 2 }, (_, i) => [i % model.size + 1, Math.floor(i / model.size) + 1]);
-export const isRouteCell = (v: unknown): v is RouteCell => Array.isArray(v) && v.length === 2 && v.every(n => Number.isInteger(n) && n >= 1 && n <= model.size);
+export const routeCells: RouteCell[] = Array.from({ length: model.columns * model.rows }, (_, i) => [i % model.columns + 1, Math.floor(i / model.columns) + 1]);
+export const isRouteCell = (v: unknown): v is RouteCell => Array.isArray(v) && v.length === 2 && v.every((n, axis) => Number.isInteger(n) && n >= 1 && n <= (axis === 0 ? model.columns : model.rows));
 export const isCrater = (cell: RouteCell) => model.craters.some(c => sameCell(c, cell));
 export const isSlope = (cell: RouteCell) => model.slopes.some(c => sameCell(c, cell));
 export const entryCost = (cell: RouteCell) => isSlope(cell) ? 2 : 1;

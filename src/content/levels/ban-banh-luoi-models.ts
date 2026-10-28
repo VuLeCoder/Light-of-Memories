@@ -2,7 +2,8 @@
 // Design contract and verification cases: docs/done/Game4_Apollo_17.md.
 
 export const banBanhLuoiRoute = {
-  size: 6,
+  columns: 8,
+  rows: 6,
   lm: [1, 1],
   stops: {
     A: [2, 3],

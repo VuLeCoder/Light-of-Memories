@@ -1,0 +1,32 @@
+/* One viewport for every chapter. Content, hints and menus cannot resize it. */
+.game-panel { container-type: inline-size; }
+#main-scene .game-stage {
+  height: clamp(480px, 56.25cqw, 720px);
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+#main-scene .game-instructions {
+  height: 96px;
+  min-height: 0;
+  align-items: safe center;
+  overflow: auto;
+}
+
+/* Absolute task panels need their own scroll area for their bottom controls. */
+#main-scene .tai-task-panel { overflow: auto; }
+
+/* Full-page activities start with their controls, rather than a canvas-sized gap. */
+#main-scene .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC, .tai-recollection) > .story-canvas {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  #main-scene .game-stage { height: clamp(480px, 68svh, 600px); }
+  #main-scene .game-stage:has(.sparkle-card, .tai-task-panel, .tai-memory-photo, .tai-identify, .ban-panel, .ban-memory-photo, .ban-recollection) > .story-canvas {
+    display: none;
+  }
+}

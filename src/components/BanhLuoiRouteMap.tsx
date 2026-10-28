@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent } from 'react';
+import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import type { Language } from '../content/i18n';
 import { banBanhLuoiCopy as copy } from '../content/levels/ban-banh-luoi-content';
 import { banBanhLuoiRoute as model } from '../content/levels/ban-banh-luoi-models';
@@ -12,16 +12,16 @@ export function BanhLuoiRouteMap({ language, cells = [model.lm], showSafe = fals
   const result = analyseRoute(cells);
   const end = cells[cells.length - 1];
   function move(event: KeyboardEvent<HTMLButtonElement>, i: number) {
-    const delta: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -model.size, ArrowDown: model.size };
+    const delta: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -model.columns, ArrowDown: model.columns };
     if (!(event.key in delta)) return;
     event.preventDefault();
     const next = i + delta[event.key];
-    if (next < 0 || next >= routeCells.length || (event.key === 'ArrowLeft' && i % model.size === 0) || (event.key === 'ArrowRight' && i % model.size === model.size - 1)) return;
+    if (next < 0 || next >= routeCells.length || (event.key === 'ArrowLeft' && i % model.columns === 0) || (event.key === 'ArrowRight' && i % model.columns === model.columns - 1)) return;
     grid.current?.querySelectorAll('button')[next]?.focus();
   }
-  return <div className={`ban-route-map${onAdd ? '' : ' ban-route-map-static'}`} ref={grid} role={onAdd ? 'group' : 'img'} aria-label={onAdd ? copy['route.model'][language] : `${copy['route.model'][language]}. LM (1,1); A (2,3); B (3,3). ${copy['route.crater'][language]}: ${model.craters.map(c => `(${c.join(',')})`).join('; ')}. ${copy['route.slope'][language]}: ${model.slopes.map(c => `(${c.join(',')})`).join('; ')}.${showSafe ? ` ${copy['route.hint2'][language]}` : ''}`}>
-    {onAdd && <><span className="ban-map-columns" aria-hidden="true">{Array.from({length:model.size},(_,i) => <span key={i}>{i+1}</span>)}</span><span className="ban-map-rows" aria-hidden="true">{Array.from({length:model.size},(_,i) => <span key={i}>{i+1}</span>)}</span></>}
-    <svg viewBox="0 0 600 600" preserveAspectRatio="none" aria-hidden="true"><polyline points={cells.map(([x,y]) => `${(x-.5)*100},${(y-.5)*100}`).join(' ')} fill="none" stroke="#ead4a4" strokeWidth="9" strokeLinejoin="round"/>
+  return <div style={{ '--map-columns': model.columns, '--map-rows': model.rows } as CSSProperties} className={`ban-route-map${onAdd ? '' : ' ban-route-map-static'}`} ref={grid} role={onAdd ? 'group' : 'img'} aria-label={onAdd ? copy['route.model'][language] : `${copy['route.model'][language]}. LM (1,1); A (2,3); B (3,3). ${copy['route.crater'][language]}: ${model.craters.map(c => `(${c.join(',')})`).join('; ')}. ${copy['route.slope'][language]}: ${model.slopes.map(c => `(${c.join(',')})`).join('; ')}.${showSafe ? ` ${copy['route.hint2'][language]}` : ''}`}>
+    {onAdd && <><span className="ban-map-columns" aria-hidden="true">{Array.from({length:model.columns},(_,i) => <span key={i}>{i+1}</span>)}</span><span className="ban-map-rows" aria-hidden="true">{Array.from({length:model.rows},(_,i) => <span key={i}>{i+1}</span>)}</span></>}
+    <svg viewBox={`0 0 ${model.columns * 100} ${model.rows * 100}`} preserveAspectRatio="none" aria-hidden="true"><polyline points={cells.map(([x,y]) => `${(x-.5)*100},${(y-.5)*100}`).join(' ')} fill="none" stroke="#ead4a4" strokeWidth="9" strokeLinejoin="round"/>
       {result.steps.filter(s => s.overWalk || s.overBattery).map(s => <circle key={s.index} cx={(s.cell[0]-.5)*100} cy={(s.cell[1]-.5)*100} r="28" fill="none" stroke="#f2b094" strokeWidth="7" strokeDasharray="9 5"/>)}</svg>
     {routeCells.map((cell, i) => {
       const crater = isCrater(cell), slope = isSlope(cell), safe = !crater && walkDistance(cell) <= model.walkLimit;
