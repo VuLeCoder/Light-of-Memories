@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import type { Language } from '../content/i18n';
 import { banBanhLuoiCopy as copy, banBanhLuoiDialogue } from '../content/levels/ban-banh-luoi-content';
 import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
@@ -17,6 +17,7 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
   previewProgress: BanhLuoiProgress; onPreviewChange: (p: BanhLuoiProgress) => void;
   stars: number; preview: boolean; onPreview: (value: boolean) => void; onBack: () => void; onHint: () => void; paused: boolean;
 }) {
+  const [hintRequest, setHintRequest] = useState(0);
   const displayed = preview ? previewProgress : progress;
   const { phase } = displayed;
   const ending = ['recallA', 'recallB', 'farewell', 'gift', 'finished'].includes(phase);
@@ -30,13 +31,14 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
   }, [progress, onChange]);
   const routeStage = ['routeIntro', 'routePuzzle'].includes(phase);
   const hint = () => {
+    setHintRequest(value => value + 1);
     if (routeStage) onChange({ ...progress, routeHint: Math.min(2, progress.routeHint + 1) as 1 | 2 });
     if (['cameraIntro','camera','launch','photoB','memoriesIntro'].includes(phase)) onChange({ ...progress, cameraHint: Math.min(2, progress.cameraHint + 1) as 1 | 2 });
     onHint();
   };
   return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} lang={language} aria-label={copy['identity.name'][language]}>
     {!ending && <div className="surveyor-scene-hud banh-luoi-hud">
-      <span>{copy[`objective.${phase}`][language]}</span>
+      <span>{phase === 'routePuzzle' ? (language === 'vi' ? 'T02 · Vẽ đường đi' : 'T02 · Plan the route') : copy[`objective.${phase}`][language]}</span>
       {['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={onBack}>{copy['button.back'][language]}</button>
     </div>}
     {talking && <EarthDialogue managedFocus key={phase} language={language} paused={paused} title={copy['identity.name'][language]}
@@ -45,7 +47,7 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
       onComplete={() => onChange({ ...progress, phase: phase === 'memoriesIntro' ? 'recallA' : phase === 'route' ? 'approach' : phase === 'routeIntro' ? 'routePuzzle' : phase === 'cameraIntro' ? 'camera' : 'wheels', turn: 0 })} />}
     {phase === 'wheels' && <BanhLuoiWheels language={language} selected={progress.wheelChoice} onSelect={wheelChoice => onChange({ ...progress, wheelChoice })} onSuccess={() => onChange({ ...progress, phase: 'photoA', turn: 0 })}/>}
     {phase === 'photoA' && <BanhLuoiPhoto photo={banBanhLuoiMemories[0]} language={language} onKeep={() => onChange({ ...progress, phase: 'routeIntro', turn: 0, keepsakes: progress.keepsakes.includes('orbit') ? ['vip', 'orbit'] : ['vip'] })}/>}
-    {phase === 'routePuzzle' && <BanhLuoiRoute language={language} progress={progress} onChange={onChange} onHint={hint}/>}
+    {phase === 'routePuzzle' && <BanhLuoiRoute hintRequest={hintRequest} language={language} progress={progress} onChange={onChange} onHint={hint}/>}
     {phase === 'camera' && <BanhLuoiCamera language={language} progress={progress} onChange={onChange} onHint={hint}/>}
     {phase === 'launch' && <BanhLuoiLaunch language={language} paused={paused} onNext={() => onChange({ ...progress, phase: 'photoB', turn: 0 })}/>}
     {phase === 'photoB' && (progress.turn === 0 ? <EarthDialogue managedFocus language={language} paused={paused} title={copy['identity.name'][language]} lines={banBanhLuoiDialogue(language,'photoBIntro')} onTurn={() => {}} finalAction="moon" finalLabel={language==='vi' ? 'Xem bức ảnh' : 'See the photo'} onComplete={() => onChange({...progress,turn:1})}/> : <BanhLuoiPhoto photo={banBanhLuoiMemories[1]} language={language} onKeep={() => onChange({...progress,phase:'memoriesIntro',turn:0,keepsakes:['vip','orbit']})}/>)}
