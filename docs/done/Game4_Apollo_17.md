@@ -54,7 +54,7 @@ Chọn cao su, lưới kim loại hoặc đá; xem mô tả rồi xác nhận. C
 
 ### T02 — Đi xa, nhớ đường về
 
-Một lưới chữ nhật 8 cột × 6 hàng, tọa độ (cột, hàng) từ 1. LM (1,1), A (2,3), B (3,3); hố (2,2), (4,2), (4,3); dốc (3,2), (3,4). Đi bốn hướng, ghé đủ A/B theo thứ tự tùy ý, trở về LM. Ô thường tốn 1 pin, dốc 2; xuất phát không tốn. Ngân sách **12 pin**. Tại mọi bước, đường đi bộ ngắn nhất tránh hố về LM không quá **4 bước**; dốc vẫn tính 1 bước đi bộ.
+Một lưới chữ nhật 6 cột × 5 hàng, tọa độ (cột, hàng) từ 1. LM (1,1), A (2,3), B (3,3); hố (2,2), (4,2), (4,3); dốc (3,2), (3,4). Đi bốn hướng, ghé đủ A/B theo thứ tự tùy ý, trở về LM. Ô thường tốn 1 pin, dốc 2; xuất phát không tốn. Ngân sách **12 pin**. Tại mọi bước, đường đi bộ ngắn nhất tránh hố về LM không quá **4 bước**; dốc vẫn tính 1 bước đi bộ.
 
 Hai giới hạn kiểm tra độc lập. Đường nháp vượt giới hạn vẫn được giữ để sửa; bước vào hố/nhảy ô bị từ chối. Có hoàn tác, vẽ lại và nộp; không đồng hồ hoặc tự vẽ đáp án. Mũi tên chọn ô, Enter/Space thêm bước. Gợi ý cấp 1 nhắc xem hai chỉ báo, cấp 2 hiện vùng đi bộ hợp lệ và bước vi phạm đầu tiên. Sơ đồ sách dùng cùng component/dữ liệu.
 

@@ -68,8 +68,9 @@
   .book-panel .book-sheet.ban-book-study .ban-photo-view img { height: 110px; }
 }
 /* Route content scrolls within the shared fixed-height stage. */
-.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-route-panel)) > .story-canvas { position: absolute; inset: 0; }
-.banh-luoi-scene:has(.ban-route-panel) { position: relative; background: #142831; }
+.game-stage:has(.banh-luoi-scene:not([hidden]) .ban-route-panel) > .story-canvas { display: none; }
+.banh-luoi-scene:has(.ban-route-panel) { position: relative; min-height: 100%; display: flow-root; background: #142831; }
+.banh-luoi-scene[hidden]:has(.ban-route-panel) { display: none; }
 .banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
 .ban-route-panel { position: relative; inset: auto; margin: 0 2.5% 16px; padding: clamp(12px,2cqw,20px); }
 .ban-route-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(230px, 1fr); gap: 20px; }
@@ -85,7 +86,7 @@
 .ban-route-cell em { top: auto; bottom: 0; color: #ffc1a5; }
 .ban-panel .ban-route-legend { font-size: 13px; line-height: 1.5; margin-top: 8px; }
 .ban-panel .ban-route-rule { margin-bottom: 14px; }
-.ban-route-controls { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.ban-route-controls { display: flex; flex-direction: column; min-width: 0; gap: 8px; align-items: stretch; overflow-wrap: anywhere; }
 .ban-route-meters { border-left: 3px solid #dfc18a; padding-left: 10px; }
 .ban-route-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .banh-luoi-scene button:disabled { opacity: .45; cursor: default; }
@@ -95,9 +96,6 @@
 .ban-route-map-static { width: 145px; height: auto; flex-shrink: 0; margin: 6px auto; }
 .ban-route-map-static .ban-route-cell { font-size: 12px; }
 .ban-route-map-static .ban-route-cell b { font-size: 9px; }
-@container (min-width: 721px) {
-  .ban-route-map:not(.ban-route-map-static) { aspect-ratio: 2; }
-}
 @container (max-width: 720px) {
   .ban-route-layout { grid-template-columns: minmax(0,1fr); }
   .ban-route-map:not(.ban-route-map-static) { max-width: 370px; margin-inline: auto; }
