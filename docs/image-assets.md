@@ -1,11 +1,11 @@
 # Tài nguyên hình ảnh
 
-Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md), [Game1](done/Game1_Surveyor_3.md), [Game2](done/Game2_Apollo_11.md) và [Game3](done/Game3_Apollo_12.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
+Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md), [Game1](done/Game1_Surveyor_3.md), [Game2](done/Game2_Apollo_11.md), [Game3](done/Game3_Apollo_12.md) và [Game4](done/Game4_Apollo_17.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
 
 - `branding/`: logo website.
-- `portraits/`: chân dung hội thoại, gồm nhân vật mở đầu, ba người bạn hoàn chỉnh và Bánh Lưới đang phát triển.
+- `portraits/`: chân dung hội thoại, gồm nhân vật mở đầu, bốn người bạn đã triển khai.
 - `sprites/`: ba sheet An/bà/Cuội và sprite nghỉ Lấp Lánh.
-- `memories/<id>/`: ảnh tư liệu của Lấp Lánh/Tai Thính, có mã nhiệm vụ/ảnh trong tên file.
+- `memories/<id>/`: ảnh tư liệu của Lấp Lánh/Tai Thính/Bánh Lưới, có mã nhiệm vụ/ảnh trong tên file.
 - `public/assets/`: ba ảnh ký ức JPG của Mắt Tròn vẫn đang dùng; không tự di chuyển khi chỉ dọn tài liệu.
 - Tên file dùng chữ thường, tiếng Việt không dấu và dấu gạch ngang.
 
@@ -40,9 +40,10 @@ Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md
 - Lấp Lánh dùng `portraits/lap-lanh.webp`, `sprites/lap-lanh-idle.webp` và hai ảnh Apollo 11 AS11-40-5952/5945. Chi tiết nguồn và thứ tự kể xem [Game2](done/Game2_Apollo_11.md).
 - Không xóa hoặc sửa ảnh trong lần hợp nhất tài liệu. File ảnh tham khảo bổ sung chỉ được đưa vào gameplay sau khi kiểm tra chủ thể, nguồn và vai trò.
 
-## Bánh Lưới M1 (24/10/2026)
+## Bánh Lưới — bản đầu M0–M7 (28/10/2026)
 
 - [portraits/ban-banh-luoi.webp](../public/images/portraits/ban-banh-luoi.webp): chân dung mới tạo bằng `image_gen` tích hợp, 1254 × 1254 RGBA, WebP chất lượng 92, giữ alpha. Đây là minh họa, không phải ảnh NASA. Tham chiếu phong cách chân dung Tai Thính và thiết bị trong ảnh AS17-143-21933; không sửa ảnh tư liệu.
+- Hai ảnh kỷ niệm và hai phần cắt chi tiết nằm trong `memories/ban-banh-luoi/`. Mã ảnh, nguồn, độ chính xác ngày chụp, tọa độ cắt và hash ảnh gốc được hợp nhất ở [hồ sơ Game4](done/Game4_Apollo_17.md#6-nguồn-và-hồ-sơ-tài-nguyên).
 - Nền VIP Site và xe nghỉ vẽ trực tiếp bằng [banh-luoi-scenery.ts](../src/game/banh-luoi-scenery.ts), tách khỏi chân dung. Xe có bốn bánh lưới, hai ghế trống, chảo ăng-ten và camera, không thêm mắt/miệng/tay chân. Nền dùng cache/khôi phục WebGL chung. Khoảng cách và phối cảnh là minh họa.
 - Prompt đã dùng (built-in tool, hai ảnh tham chiếu chỉ dùng cho phong cách và phần cứng):
 

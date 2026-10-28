@@ -2,7 +2,7 @@ import { banBanhLuoiPhotos } from '../assets';
 import { banBanhLuoiCopy } from './ban-banh-luoi-content';
 
 // Source provenance, precision notes, original hashes and crop bounds live in
-// docs/plan/ban-banh-luoi-m0/photos.md. Dates retain month precision.
+// docs/done/Game4_Apollo_17.md. Dates retain month precision.
 export const banBanhLuoiMemories = [
   {
     id: 'vip', code: "AS17-143-21933", date: '1972-12', datePrecision: 'month',

@@ -19,7 +19,7 @@ Dự án được phát triển theo challenge **Abandoned but not Forgotten: St
 
 Đã dựng phần mở đầu: hội thoại An và bà, chuyển cảnh lên Mặt Trăng, Cuội thức dậy, di chuyển, quan sát ghế đá, trò chuyện với Cây Đa và nhận đèn trước khi lên đường. Website có menu, chọn tiếng Việt / tiếng Anh và lưu tiến trình theo mốc trên trình duyệt.
 
-Ba màn đã hoàn thiện: **Surveyor 3 — Mắt Tròn**, **Apollo 11 — Lấp Lánh**, **Apollo 12 — Tai Thính**, gồm thử thách, ảnh tư liệu, sách và đoạn kết. Mỗi người bạn thắp một cánh đèn; hai người bạn cuối còn bí ẩn.
+Bốn màn đã triển khai: **Surveyor 3 — Mắt Tròn**, **Apollo 11 — Lấp Lánh**, **Apollo 12 — Tai Thính**, **Apollo 17 — Bánh Lưới**, gồm thử thách, ảnh tư liệu, sách và đoạn kết. Mỗi người bạn thắp một cánh đèn; người bạn thứ năm còn bí ẩn.
 
 Game nằm bên trái, sách đồng hành bên phải; phần giới thiệu nằm bên dưới. Trên màn hình nhỏ, sách và panel chuyển xuống dưới game. Sách mở nội dung theo tiến trình, có gợi ý và nguồn ảnh.
 
@@ -86,11 +86,11 @@ Font **Lora** và **Be Vietnam Pro** được đóng gói trong `public/fonts/`,
 - **E** khi đứng gần vật hoặc người bạn để tương tác; có thể bấm trực tiếp. Các chặng đào đất/đi có chiều sâu có hướng dẫn riêng ở footer.
 - Mở menu sẽ tạm dừng tương tác trong game.
 
-Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v5 lưu riêng từng màn và đọc được bản v1–v4; lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
+Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v10 lưu riêng từng màn và đọc được bản v1–v10; lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
 
 ### Những phần đang phát triển
 
-- Người bạn thứ tư/thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có ba cánh sao qua ba màn đã triển khai.
+- Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có tối đa bốn cánh sao. Bánh Lưới có ba bài: chọn bánh, lập đường đi và chỉnh camera; chơi lại giữ ảnh, sách và dấu hoàn thành.
 - Chưa có phần thưởng kỹ năng hoặc thẻ bạn.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
 - Bản build còn cảnh báo kích thước gói Phaser; các giới hạn đã biết được ghi trong tài liệu từng màn.
@@ -101,6 +101,7 @@ Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `loca
 - [Game1 — Mắt Tròn](docs/done/Game1_Surveyor_3.md)
 - [Game2 — Lấp Lánh](docs/done/Game2_Apollo_11.md)
 - [Game3 — Tai Thính](docs/done/Game3_Apollo_12.md)
+- [Game4 — Bánh Lưới và bàn giao M7](docs/done/Game4_Apollo_17.md)
 - [Hướng dẫn AI thiết kế màn chơi mới](docs/Huong-dan-AI-thiet-ke-man-choi-moi.md)
 - [Phong cách hình ảnh và hướng dẫn sinh ảnh cho AI](docs/visual-style.md)
 - [Quy ước thư mục ảnh](docs/image-assets.md)

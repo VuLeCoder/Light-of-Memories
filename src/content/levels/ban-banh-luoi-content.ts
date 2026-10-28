@@ -1,8 +1,8 @@
 import type { Language } from '../i18n';
 import type { StoryLine } from '../earth-dialogue';
 
-// Canonical chapter copy. M1–M4 integrate the introduction, wheels, route, camera and photos; the ending remains authored.
-// Sources and design contract: docs/plan/ban-banh-luoi-m0/README.md.
+// Canonical Vietnamese/English copy for the complete fourth chapter.
+// Sources and handover: docs/done/Game4_Apollo_17.md.
 const text = (vi: string, en: string) => ({ vi, en });
 type LocalizedText = ReturnType<typeof text>;
 export type BanBanhLuoiSpeaker = StoryLine['speaker'];
@@ -430,7 +430,7 @@ export const banBanhLuoiDialogue = (language: Language, group: BanBanhLuoiScript
 
 // Shared authored data for the storyboard and migration verification.
 export const banBanhLuoiContent = {
-  status: 'M0-authored-not-integrated',
+  status: 'integrated',
   identity: banBanhLuoiIdentity,
   copy: banBanhLuoiCopy,
   dialogue: banBanhLuoiScript,

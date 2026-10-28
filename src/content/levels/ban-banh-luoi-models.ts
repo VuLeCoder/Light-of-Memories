@@ -1,5 +1,5 @@
 // Fixed educational models, not Apollo engineering limits.
-// Design contract and independent verification: docs/plan/ban-banh-luoi-m0/.
+// Design contract and verification cases: docs/done/Game4_Apollo_17.md.
 
 export const banBanhLuoiRoute = {
   size: 6,
