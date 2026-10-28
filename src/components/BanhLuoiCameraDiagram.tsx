@@ -27,13 +27,13 @@ export function BanhLuoiCameraDiagram({language, spot = null, angle = m.initialA
       </g>
       <g fill="#eee5d1" fontSize="30" textAnchor="middle">{cameraSpots.map(s=><text key={s} x={m.positions[s][0]} y="331">{s}{spot===s ? ' ◆' : ''}</text>)}<text x="607" y="331">LM</text></g>
     </svg>
-    {preview && <><span>{copy['camera.frame'][language]} · {m.fovDegrees}°</span><svg className="ban-camera-preview" viewBox="0 0 160 100" role="img" aria-label={language === 'vi' ? 'Khung nhìn: vùng viền chấm phải nằm trọn giữa mép trên và dưới, không bị đá che.' : 'Camera frame: the dotted region must fit between the top and bottom edges without a rock blocking it.'}>
+    {preview && <div className="ban-camera-frame"><span>{copy['camera.frame'][language]} · {m.fovDegrees}°</span><svg className="ban-camera-preview" viewBox="0 0 160 100" role="img" aria-label={language === 'vi' ? 'Khung nhìn: vùng viền chấm phải nằm trọn giữa mép trên và dưới, không bị đá che.' : 'Camera frame: the dotted region must fit between the top and bottom edges without a rock blocking it.'}>
       <rect width="160" height="100" fill="#10212a"/>
       {bounds && origin && <>
         <rect x="65" y={projectedY(bounds.high)} width="30" height={projectedY(bounds.low)-projectedY(bounds.high)} fill="none" stroke="#eee5d1" strokeDasharray="3 3"/>
         <rect x="65" y={projectedY(angularBounds(origin,m.ascentStageStart).high)} width="30" height={projectedY(angularBounds(origin,m.ascentStageStart).low)-projectedY(angularBounds(origin,m.ascentStageStart).high)} fill="#dfc18a"/>
         {blocked && rockBounds && <rect x="40" y={projectedY(rockBounds.high)} width="80" height={projectedY(rockBounds.low)-projectedY(rockBounds.high)} fill="#6d7d80"/>}
       </>}
-    </svg></>}
+    </svg></div>}
   </div>;
 }

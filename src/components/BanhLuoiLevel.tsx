@@ -38,7 +38,7 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
   };
   return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} lang={language} aria-label={copy['identity.name'][language]}>
     {!ending && <div className="surveyor-scene-hud banh-luoi-hud">
-      <span>{phase === 'routePuzzle' ? (language === 'vi' ? 'T02 · Vẽ đường đi' : 'T02 · Plan the route') : copy[`objective.${phase}`][language]}</span>
+      <span>{phase === 'routePuzzle' ? (language === 'vi' ? 'T02 · Vẽ đường đi' : 'T02 · Plan the route') : phase === 'camera' ? (language === 'vi' ? 'T03 · Góc camera' : 'T03 · Camera') : copy[`objective.${phase}`][language]}</span>
       {['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={onBack}>{copy['button.back'][language]}</button>
     </div>}
     {talking && <EarthDialogue managedFocus key={phase} language={language} paused={paused} title={copy['identity.name'][language]}
@@ -48,7 +48,7 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
     {phase === 'wheels' && <BanhLuoiWheels language={language} selected={progress.wheelChoice} onSelect={wheelChoice => onChange({ ...progress, wheelChoice })} onSuccess={() => onChange({ ...progress, phase: 'photoA', turn: 0 })}/>}
     {phase === 'photoA' && <BanhLuoiPhoto photo={banBanhLuoiMemories[0]} language={language} onKeep={() => onChange({ ...progress, phase: 'routeIntro', turn: 0, keepsakes: progress.keepsakes.includes('orbit') ? ['vip', 'orbit'] : ['vip'] })}/>}
     {phase === 'routePuzzle' && <BanhLuoiRoute hintRequest={hintRequest} language={language} progress={progress} onChange={onChange} onHint={hint}/>}
-    {phase === 'camera' && <BanhLuoiCamera language={language} progress={progress} onChange={onChange} onHint={hint}/>}
+    {phase === 'camera' && <BanhLuoiCamera hintRequest={hintRequest} language={language} progress={progress} onChange={onChange} onHint={hint}/>}
     {phase === 'launch' && <BanhLuoiLaunch language={language} paused={paused} onNext={() => onChange({ ...progress, phase: 'photoB', turn: 0 })}/>}
     {phase === 'photoB' && (progress.turn === 0 ? <EarthDialogue managedFocus language={language} paused={paused} title={copy['identity.name'][language]} lines={banBanhLuoiDialogue(language,'photoBIntro')} onTurn={() => {}} finalAction="moon" finalLabel={language==='vi' ? 'Xem bức ảnh' : 'See the photo'} onComplete={() => onChange({...progress,turn:1})}/> : <BanhLuoiPhoto photo={banBanhLuoiMemories[1]} language={language} onKeep={() => onChange({...progress,phase:'memoriesIntro',turn:0,keepsakes:['vip','orbit']})}/>)}
     {ending && <BanhLuoiEnding language={language} progress={displayed} onChange={preview ? onPreviewChange : onChange} onBack={onBack} paused={paused} stars={stars} preview={preview} onPreview={togglePreview}/>}

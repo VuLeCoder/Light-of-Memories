@@ -209,3 +209,40 @@
   .ban-route-rule-short { display: inline; }
   .ban-route-panel .ban-route-map { max-width: 270px; }
 }
+
+/* T03: keep the live diagram, angle controls and submit inside the stage. */
+.game-stage:has(.banh-luoi-scene:not([hidden]) .ban-camera-panel) > .story-canvas { display: none; }
+.banh-luoi-scene:has(.ban-camera-panel) { min-height: 100%; display: flow-root; }
+.banh-luoi-scene[hidden]:has(.ban-camera-panel) { display: none; }
+.banh-luoi-scene:has(.ban-camera-panel) .banh-luoi-hud { padding: 8px 12px; gap: 8px; }
+.banh-luoi-scene .ban-camera-panel { margin: 0 12px 12px; padding: 12px; font-size: 16px; }
+.ban-camera-panel h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.ban-camera-panel .ban-camera-rule { margin: 0 0 8px; line-height: 1.4; }
+.ban-camera-panel .ban-camera-layout { grid-template-columns: minmax(0,1.3fr) minmax(0,1fr); gap: 16px; }
+.ban-camera-panel .ban-camera-diagram > svg { max-height: 160px; }
+.ban-camera-frame { margin-top: 8px; text-align: center; }
+.ban-camera-frame > span { display: block; font-size: 14px; line-height: 1.3; margin-bottom: 4px; }
+.ban-camera-panel .ban-camera-preview { width: 128px; }
+.ban-camera-panel .ban-camera-controls { min-width: 0; gap: 8px; }
+.ban-camera-controls > .ban-route-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; }
+.ban-camera-angle-control label { display: block; line-height: 1.4; }
+.ban-camera-angle-row { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; gap: 8px; align-items: center; }
+.ban-camera-angle-row input { min-width: 0; margin: 0; }
+.game-stage.classic-friend-scene .ban-camera-panel button { min-height: 44px; font-size: 16px; padding: 6px 8px; }
+.ban-camera-controls small { font-size: 14px; }
+@container (max-width: 540px) {
+  .banh-luoi-scene:has(.ban-camera-panel) .banh-luoi-hud { flex-wrap: nowrap; padding: 6px 8px; gap: 4px; align-items: center; }
+  .banh-luoi-scene:has(.ban-camera-panel) .banh-luoi-hud > span { flex: 1; font-size: 16px; padding: 4px; border: 0; background: none; }
+  .banh-luoi-scene:has(.ban-camera-panel) .banh-luoi-hud > button { flex: 0 0 auto; }
+  .banh-luoi-scene .ban-camera-panel { margin: 0 8px 8px; padding: 8px; }
+  .ban-camera-panel .ban-camera-layout { grid-template-columns: minmax(0,1fr); gap: 8px; }
+  .ban-camera-panel .ban-camera-diagram { display: grid; grid-template-columns: minmax(0,1fr) 100px; gap: 8px; align-items: end; }
+  .ban-camera-panel .ban-camera-diagram > svg { height: 100px; }
+  .ban-camera-panel .ban-camera-frame { margin: 0; }
+  .ban-camera-panel .ban-camera-preview { width: 96px; }
+  .ban-camera-panel .ban-camera-controls { gap: 6px; }
+}
+@container (max-width: 540px) {
+  /* The full model note remains available through the hint messages. */
+  .ban-camera-controls > small { display: none; }
+}
