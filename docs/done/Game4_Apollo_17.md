@@ -60,7 +60,7 @@ T01 dùng bảng nền kín trong chiều cao game chung, ba thẻ cùng hàng c
 
 ### T02 — Cùng vạch đường đi
 
-Một lưới chữ nhật 6 cột × 5 hàng, tọa độ (cột, hàng) từ 1. LM (1,1), A (2,3), B (3,3); hố (2,2), (4,2), (4,3); dốc (3,2), (3,4). Đi bốn hướng, ghé đủ A/B theo thứ tự tùy ý, trở về LM. Ô thường tốn 1 pin, dốc 2; xuất phát không tốn. Ngân sách **12 pin**. Tại mọi bước, đường đi bộ ngắn nhất tránh hố về LM không quá **4 bước**; dốc vẫn tính 1 bước đi bộ.
+Một lưới chữ nhật 6 cột × 5 hàng, tọa độ (cột, hàng) từ 1. LM (1,1), A (1,3), B (3,1); hố (2,2), (4,2), (4,4); dốc (3,2), (2,4). Đi bốn hướng, ghé đủ A/B theo thứ tự tùy ý, trở về LM. Ô thường tốn 1 pin, dốc 2; xuất phát không tốn. Ngân sách **12 pin**. Tại mọi bước, đường đi bộ ngắn nhất tránh hố về LM không quá **4 bước**; dốc vẫn tính 1 bước đi bộ.
 
 Hai giới hạn kiểm tra độc lập. Đường nháp vượt giới hạn vẫn được giữ để sửa; bước vào hố/nhảy ô bị từ chối. Có hoàn tác, vẽ lại và nộp; không đồng hồ hoặc tự vẽ đáp án. Mũi tên chọn ô, Enter/Space thêm bước. Gợi ý cấp 1 nhắc xem hai chỉ báo, cấp 2 hiện vùng đi bộ hợp lệ và bước vi phạm đầu tiên. Sơ đồ sách dùng cùng component/dữ liệu.
 
@@ -161,3 +161,19 @@ Kiểm tra bổ sung: TypeScript và Vite build đạt. Chưa kiểm tra lại t
 M3 hoàn thành với tuyến đã xác nhận độc lập và save v11, chuẩn bị dữ liệu cho Cuội dẫn đường ở M4. Chromium/Playwright kiểm tra 69 trường hợp mô hình/bản lưu và 134 lượt đo bố cục Việt/Anh, gồm stage 480px tại rộng game 320–1000px, nhiều lỗi phân trang và viewport thực 360/390/1440px: không tràn, ô bấm ≥44px, chữ nội dung/điều khiển ≥16px, không lỗi JavaScript. Đã kiểm tra tự vẽ tuyến lặp, xác nhận/tải lại, hai thứ tự A/B, đổi tuyến, gợi ý, menu/sách và bàn phím/chạm giả lập. Build/TypeScript và diff đạt; cảnh báo chunk Phaser lớn còn như trước.
 
 Bàn giao chi tiết: [M3](../plan/Thiet_ke_lai_Banh_Luoi_M3.md). Bằng chứng tạm ở `/tmp/cuoi-m3.cjs`, `/tmp/cuoi-m3-results.json` và ảnh `/tmp/cuoi-m3-*.png`; không thêm test vào repo. Chưa kiểm Safari/thiết bị cảm ứng thật. T03 camera vẫn hoạt động đến M4; kiểm thử dẫn đường và hồi quy toàn chương/ba bạn trước thuộc M4/M5.
+
+
+### T02 — Đa dạng đường đi và địa hình trực quan (lần trước)
+
+Mở ô (2,2) thành dốc để thêm nhánh giữa; chuyển hố sang (4,4), ngoài vùng đi bộ hợp lệ. Ô (3,4) trở thành đất bằng. Giữ LM/A/B và các giới hạn 12 pin, 4 bước để bảo toàn tuyến đã xác nhận trước đây. Các tuyến 8 bước gồm đất bằng đi lại đường cũ (8 pin), vòng ngoài (9 pin), vòng qua hai dốc ở giữa (10 pin); có thể đảo thứ tự A/B. Có thêm vòng đất bằng 10 bước, 10 pin, không bắt buộc đi dài hơn để hoàn thành.
+
+Hố có vành sáng/lòng tối; dốc có các tầng đất và biểu tượng pin kèm số 2; LM và trạm có tàu/cờ pixel. Hai vệt bánh xe nối đường đã chọn, mũi tên đánh dấu hướng bước cuối. Vào dốc hiện −2 và chuyển động leo chậm; chạm hố sáng viền và hiện lời nhắc. Hiệu ứng không chặn thao tác; chế độ giảm chuyển động bỏ chuyển động xe. Sách dùng cùng hình vẽ với bản đồ chơi.
+
+Kiểm chứng bổ sung: 280 kiểm tra mô hình/bản lưu, bao gồm duyệt 27 tuyến 8 bước (8–11 pin) và toàn bộ 196 tuyến hợp lệ của bản cũ; 134 lượt đo bố cục Việt/Anh, ô tương tác tối thiểu 44px, không tràn khung ở các kích thước đã kiểm tra. Đã thử chuột, bàn phím, chạm mô phỏng, hiệu ứng −2, lưu/tải lại, thông báo nhiều trang; không có lỗi trình duyệt. `npm run build` và `git diff --check` đạt. Script kiểm tra tạm: `/tmp/cuoi-route-visual.cjs`; chưa kiểm tra trên thiết bị cảm ứng thật.
+
+
+### T02 — Tách hai trạm và thêm hố chắn giữa
+
+A chuyển tới (1,3), B tới (3,1), cách nhau 4 bước. Hố (2,2) chặn lối giữa; có thể vòng theo (2,3) → (3,3) → (3,2), hoặc quay qua ngã rẽ LM. Giữ lưới 6 × 5, 12 pin, giới hạn đi bộ 4 bước và hình vẽ địa hình hiện có. Cập nhật gợi ý Việt/Anh; sách tự dùng cùng mô hình.
+
+Kiểm chứng mô hình mới: 4 tuyến hoàn thành trong 8 bước, hai thứ tự A/B, mức 8 hoặc 9 pin; tuyến đất bằng dài hơn 10 bước/10 pin cũng đạt. Các mẫu chỉ vượt pin/chỉ vượt khoảng cách đi bộ vẫn cho đúng lỗi; xác nhận/lưu/đọc lại các tuyến mẫu đạt. Bản nháp cũ gặp hố mới được cắt ở bước hợp lệ cuối theo cơ chế phục hồi hiện có; tuyến xác nhận không còn hợp lệ sẽ yêu cầu vẽ lại T02, giữ ảnh đã nhận. Không khẳng định bảo toàn mọi tuyến cũ như lần chỉnh trước. `npm run build` đạt; không thay đổi kích thước bố cục.

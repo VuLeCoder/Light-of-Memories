@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
 import { banBanhLuoiCopy as copy } from '../content/levels/ban-banh-luoi-content';
 import { banBanhLuoiRoute as model } from '../content/levels/ban-banh-luoi-models';
-import { analyseRoute, checkRouteStep, confirmRoute, sameCell, type RouteCell } from '../content/levels/ban-banh-luoi-route';
+import { analyseRoute, checkRouteStep, confirmRoute, isSlope, sameCell, type RouteCell } from '../content/levels/ban-banh-luoi-route';
 import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
 import { BanhLuoiRouteMap } from './BanhLuoiRouteMap';
 
@@ -17,6 +17,7 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint, hintReques
 }) {
   const [noticeRequest, setNoticeRequest] = useState(0);
   const [message, setMessage] = useState<Message | null>(null);
+  const [feedback, setFeedback] = useState<{ cell: RouteCell; id: number; kind: 'slope' | 'blocked' }>();
   const board = useRef<HTMLDivElement>(null);
   const { routeCells: cells, routeHint } = progress;
   const result = analyseRoute(cells);
@@ -27,12 +28,13 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint, hintReques
   ];
   const firstBad = result.steps.find(s => s.overWalk || s.overBattery);
   function change(routeCells: RouteCell[], nextMessage: Message | null = null) {
-    onChange({ ...progress, routeCells }); setMessage(nextMessage);
+    onChange({ ...progress, routeCells }); setMessage(nextMessage); setFeedback(undefined);
   }
   function add(cell: RouteCell) {
     const error = checkRouteStep(cells[cells.length - 1], cell);
-    if (error) { setNoticeRequest(value => value + 1); setMessage({ key: `route.${error}` }); return; }
+    if (error) { if (error === 'blocked') setFeedback({ cell, id: performance.now(), kind: 'blocked' }); setNoticeRequest(value => value + 1); setMessage({ key: `route.${error}` }); return; }
     change([...cells, cell]);
+    if (isSlope(cell)) setFeedback({ cell, id: performance.now(), kind: 'slope' });
   }
   function submit() {
     setNoticeRequest(value => value + 1);
@@ -47,8 +49,8 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint, hintReques
       : !result.home ? { key: 'route.notHome' } : null);
   }
   const legend = language === 'vi'
-    ? 'LM: tàu; A/B: trạm. ● Hố: không đi qua; ▱ Dốc: 2 pin. ◆ Xe hiện tại; ! Bước vượt giới hạn.'
-    : 'LM: home; A/B: stops. ● Crater: blocked; ▱ Slope: 2 battery. ◆ Rover now; ! Step beyond a limit.';
+    ? 'LM: tàu; A/B: trạm. Hố: không đi qua; Dốc: 2 pin. ▰ Xe hiện tại; ! Bước vượt giới hạn.'
+    : 'LM: home; A/B: stops. Crater: blocked; Slope: 2 battery. ▰ Rover now; ! Step beyond a limit.';
   const notices = [
     ...(message ? [routeMessage(message, language)] : []),
     ...violations.map(v => routeMessage(v, language)),
@@ -64,8 +66,8 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint, hintReques
     <h2 id="ban-route-title">{copy['route.title'][language]}</h2>
     <p className="ban-route-rule"><span className="ban-route-rule-full">{copy['route.rule'][language]}</span><span className="ban-route-rule-short">{copy['route.shortRule'][language]}</span></p>
     <div className="ban-route-layout"><div className="ban-route-board" ref={board}>
-      <BanhLuoiRouteMap language={language} cells={cells} showSafe={routeHint === 2} onAdd={add}/>
-      <p className="ban-route-legend">LM · {language === 'vi' ? 'Tàu' : 'Home'} · A/B · {language === 'vi' ? 'Trạm' : 'Stops'}<br/>● {copy['route.crater'][language]} · ▱ {copy['route.slope'][language]}<br/>◆ {language === 'vi' ? 'Xe hiện tại' : 'Rover now'} · ! {language === 'vi' ? 'Bước vượt giới hạn' : 'Step beyond a limit'}</p>
+      <BanhLuoiRouteMap language={language} cells={cells} showSafe={routeHint === 2} onAdd={add} feedback={feedback}/>
+      <p className="ban-route-legend">LM · {language === 'vi' ? 'Tàu' : 'Home'} · A/B · {language === 'vi' ? 'Trạm' : 'Stops'}<br/>{copy['route.crater'][language]} · {copy['route.slope'][language]}<br/>▰ {language === 'vi' ? 'Xe hiện tại' : 'Rover now'} · ! {language === 'vi' ? 'Bước vượt giới hạn' : 'Step beyond a limit'}</p>
     </div><div className="ban-route-controls">
       <div className="ban-route-meters" aria-live="polite"><p className={result.overBattery ? 'ban-feedback' : ''}>{language === 'vi' ? 'Pin' : 'Battery'}: {result.battery}/{model.batteryLimit}</p><p className={current.overWalk ? 'ban-feedback' : ''}>{language === 'vi' ? 'Đi bộ về tàu' : 'Walk home'}: {current.walk}/{model.walkLimit}</p></div>
       <p className="ban-route-stop-status" role="status" aria-label={copy['route.visited'][language]}>{order.length ? `LM → ${order.join(' → ')}${result.home ? ' → LM' : ''}` : '○ A · ○ B · ○ LM'}<span>{routeMessage(goal, language)}</span></p>
