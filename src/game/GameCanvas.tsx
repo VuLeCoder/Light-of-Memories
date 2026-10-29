@@ -56,7 +56,7 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
     void Promise.all([import('phaser'), import('./PreviewScene'), textFont]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
-        banhLuoiGuide: progressRef.current.banhLuoiGuide ? { ...progressRef.current.banhLuoiGuide, onEvent: e => progressRef.current.banhLuoiGuide?.onEvent(e), onNear: target => progressRef.current.banhLuoiGuide?.onNear(target), onSlope: () => progressRef.current.banhLuoiGuide?.onSlope() } : undefined,
+        banhLuoiGuide: progressRef.current.banhLuoiGuide ? { ...progressRef.current.banhLuoiGuide, onEvent: e => progressRef.current.banhLuoiGuide?.onEvent(e) } : undefined,
         initiallyAwake: awakeRef.current,
         taiEnding: progressRef.current.taiEnding,
         taiStars: progressRef.current.taiStars,

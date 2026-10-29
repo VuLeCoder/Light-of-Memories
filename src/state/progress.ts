@@ -20,7 +20,7 @@ export function readProgress(): { progress: Progress; unavailable: boolean } {
   if (!raw) return { progress: fresh, unavailable: false };
   try {
     const data = JSON.parse(raw);
-    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].includes(data.version) || !milestones.includes(data.milestone)) return { progress: fresh, unavailable: false };
+    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(data.version) || !milestones.includes(data.milestone)) return { progress: fresh, unavailable: false };
     const milestone: Milestone = data.milestone;
     const sparkle = readSparkle(data.sparkle);
     const surveyor = data.version >= 3 && (milestone === 'complete' || milestone === 'surveyor') ? readSurveyorProgress(data.surveyor) : freshSurveyor();
@@ -43,7 +43,7 @@ export function saveProgress(chapter: Chapter, quest: MoonQuest, completed: bool
   const milestone: Milestone = completed ? 'complete' : chapter === 'earth' ? 'earth'
     : ['departing', 'arriving', 'moon-waking'].includes(chapter) ? 'moon'
     : chapter === 'moon-story' ? 'moon-story' : quest === 'bench' ? 'awake' : quest;
-  try { localStorage.setItem(key, JSON.stringify({ version: 12, milestone, surveyor, sparkle, taiThinh, banhLuoi, activeLevel: milestone === 'complete' ? activeLevel : null })); return true; }
+  try { localStorage.setItem(key, JSON.stringify({ version: 13, milestone, surveyor, sparkle, taiThinh, banhLuoi, activeLevel: milestone === 'complete' ? activeLevel : null })); return true; }
   catch { return false; }
 }
 

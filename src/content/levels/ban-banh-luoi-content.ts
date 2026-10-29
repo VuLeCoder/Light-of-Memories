@@ -35,7 +35,7 @@ export const banBanhLuoiCopy = {
   "objective.routeIntro": text("Nhớ về một chuyến khảo sát", "Remember an exploring trip"),
   "objective.routePuzzle": text("T02 · Ghé A, B rồi về tàu", "T02 · Visit A and B, then return"),
   "objective.guideIntro": text("Cùng lên đường", "Set off together"),
-  "objective.guiding": text("T03 · Cuội dẫn đường", "T03 · Cuội leads the way"),
+  "objective.guiding": text("T03 · Hành trình lấy mẫu", "T03 · Sample journey"),
   "objective.launch": text("Hồi tưởng 1972 · Minh họa 2D", "Remembering 1972 · 2D illustration"),
   "objective.photoB": text("Những dấu vết nhìn từ trên cao", "Tracks seen from above"),
   "objective.memoriesIntro": text("Hai bức ảnh, một câu chuyện", "Two photos, one story"),
@@ -45,7 +45,7 @@ export const banBanhLuoiCopy = {
   "objective.gift": text("Một ánh sao từ Bánh Lưới", "A star point from Mesh Wheels"),
   "objective.finished": text("Ngước nhìn phía trời bên phải", "Look up at the sky on the right"),
   "footer.dialogue": text("Space/Enter hoặc nút trong khung thoại để hiện hết câu và tiếp tục.", "Use Space/Enter or the dialogue button to reveal the full line and continue."),
-  "footer.guide": text("←/→ hoặc A/D để đi, E khi ở gần. Có thể chạm đất hoặc giữ nút mũi tên. Đi phải để tiếp tục từng đoạn; đi trái để quay lại trong đoạn.", "Use ←/→ or A/D to walk, E when close. You can tap the ground or hold the arrow buttons. Walk right to advance each leg; left to go back within it."),
+  "footer.guide": text("Xe tự đi theo lộ trình; A và B là hai điểm dừng. ▼ Cuội · ▰ Bánh Lưới. Mở sách hoặc menu để tạm dừng.", "The rover follows your route, stopping at A and B. ▼ Cuội · ▰ Mesh Wheels. Open the book or menu to pause."),
   "footer.walk": text("A/D, ←/→ hoặc chạm đất để đi. Đến gần xe nhấn E, hoặc chạm xe.", "Use A/D, ←/→ or touch the ground to walk. Press E near the rover, or touch it."),
   "footer.wheels": text("Chọn → Thử bánh → Chọn bánh này. Dùng chuột/chạm hoặc Tab và Enter/Space.", "Select → Try wheel → Choose this wheel. Use mouse/touch or Tab and Enter/Space."),
   "footer.route": text("Chọn ô kề để thêm bước. Mũi tên chọn ô, Enter/Space thêm; dùng nút để lùi hoặc vẽ lại.", "Choose a neighbouring cell to add a step. Arrow keys select a cell; Enter/Space adds it. Use the buttons to undo or reset."),
@@ -255,8 +255,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-guideIntro-02",
       speaker: "cuoi",
-      vi: "Mình sẽ đi trước nhìn lối ở A, rồi tìm chỗ bằng để bạn nghỉ ở B nhé.",
-      en: "I will look ahead at A, then find a level place for you to rest at B."
+      vi: "Mình cùng lấy mẫu đá ở A và khám phá đất cam ở B, rồi mang mẫu về tàu nhé.",
+      en: "Let’s collect a rock at A and explore orange soil at B, then bring the samples home."
     },
     {
       id: "banh-luoi-guideIntro-03",

@@ -23,7 +23,7 @@ export interface BanhLuoiProgress {
 export const freshBanhLuoi = (): BanhLuoiProgress => ({ phase: 'route', turn: 0, wheelChoice: null, keepsakes: [], routeCells: [banBanhLuoiRoute.lm], confirmedRoute: null, routeHint: 0, guideCheckpoint: null, guideHint: 0, guideLegacyPassed: false, completedOnce: false });
 
 /** A damaged fourth chapter never resets the three earlier friends. */
-export function readBanhLuoi(value: unknown, version = 12): BanhLuoiProgress {
+export function readBanhLuoi(value: unknown, version = 13): BanhLuoiProgress {
   if (!value || typeof value !== 'object') return freshBanhLuoi();
   const d = value as Record<string, unknown>;
   const keepsakes = (['vip', 'orbit'] as const).filter(id => Array.isArray(d.keepsakes) && d.keepsakes.includes(id));
@@ -46,9 +46,10 @@ export function readBanhLuoi(value: unknown, version = 12): BanhLuoiProgress {
   const confirmedRoute = version <= 10 && afterRoute.includes(phase)
     ? readConfirmedRoute({ modelVersion: 1, cells: d.routeCells })
     : readConfirmedRoute(d.confirmedRoute);
-  const guideLegacyPassed = (version <= 11 ? afterGuide.includes(String(sourcePhase)) && wheelChoice === 'mesh' && !!kept : d.guideLegacyPassed === true);
-  let guideCheckpoint = version >= 12 ? readGuide(d.guideCheckpoint, confirmedRoute) : null;
+  const guideLegacyPassed = (version <= 12 ? afterGuide.includes(String(sourcePhase)) && wheelChoice === 'mesh' && !!kept : d.guideLegacyPassed === true);
+  let guideCheckpoint = version >= 13 ? readGuide(d.guideCheckpoint, confirmedRoute) : null;
   if (afterRoute.includes(phase) && !confirmedRoute && !(guideLegacyPassed && afterGuide.includes(phase))) phase = 'routePuzzle';
+  if (version <= 12 && ['guideIntro', 'guiding'].includes(phase)) phase = 'guideIntro';
   if (phase === 'guiding' && (!guideCheckpoint || guideCheckpoint.stage === 'done')) { phase = 'guideIntro'; guideCheckpoint = null; }
   if (afterGuide.includes(phase) && !guideLegacyPassed && guideCheckpoint?.stage !== 'done') { phase = confirmedRoute ? 'guideIntro' : 'routePuzzle'; guideCheckpoint = null; }
   if (phase === 'guideIntro' || phase === 'routePuzzle' && guideCheckpoint?.stage === 'done') guideCheckpoint = null;
@@ -57,7 +58,7 @@ export function readBanhLuoi(value: unknown, version = 12): BanhLuoiProgress {
   const orbit = keepsakes.includes('orbit');
   if (ending.includes(phase) && !orbit) phase = 'photoB';
   if (phase === 'finished' && !completedOnce) phase = 'gift';
-  const resetGuide = migratedPhase !== phase && phase === 'guideIntro' || version <= 11 && ['cameraIntro','camera'].includes(String(sourcePhase));
+  const resetGuide = migratedPhase !== phase && phase === 'guideIntro' || version <= 12 && ['cameraIntro', 'camera', 'guideIntro', 'guiding'].includes(String(sourcePhase));
   const maxTurn = phase === 'route' || phase === 'meeting' || phase === 'routeIntro' || phase === 'guideIntro' || phase === 'memoriesIntro' || phase === 'farewell' ? banBanhLuoiScript[phase].length - 1 : phase === 'photoB' ? 1 : phase === 'gift' && completedOnce ? banBanhLuoiScript.giftAfter.length : 0;
   return { phase, turn: phase === 'gift' && completedOnce ? Math.max(1, Math.min(maxTurn, Number.isInteger(d.turn) ? d.turn as number : 1)) : !resetGuide && Number.isInteger(d.turn) ? Math.max(0, Math.min(maxTurn, d.turn as number)) : 0,
     wheelChoice, keepsakes, routeCells, confirmedRoute, routeHint: d.routeHint === 1 || d.routeHint === 2 ? d.routeHint : 0,
