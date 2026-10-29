@@ -1,6 +1,6 @@
 # Câu chuyện Apollo 17 — Bánh Lưới (màn 4)
 
-Bản bàn giao M0–M7 và cập nhật thiết kế lại T01/T02, cập nhật **29/10/2026**. Tài liệu mô tả bản đang chạy; đây là nguồn tổng hợp chính thay cho kế hoạch và bàn giao tạm trong `docs/plan/`. Lời thoại Việt/Anh lấy từ [module nội dung](../../src/content/levels/ban-banh-luoi-content.ts), không duy trì một bản thoại thứ hai trong tài liệu.
+Bản bàn giao M0–M7 và cập nhật thiết kế lại T01/T02/T03, cập nhật **29/10/2026**. Tài liệu mô tả bản đang chạy; đây là nguồn tổng hợp chính thay cho kế hoạch và bàn giao tạm trong `docs/plan/`. Lời thoại Việt/Anh lấy từ [module nội dung](../../src/content/levels/ban-banh-luoi-content.ts), không duy trì một bản thoại thứ hai trong tài liệu.
 
 ## 1. Thông tin thật
 
@@ -10,21 +10,21 @@ LRV dùng bánh lưới kim loại linh hoạt, khung trong và các dải gai h
 
 Cernan đỗ xe tại **VIP Site** để camera truyền hình quan sát cuộc cất cánh. NASA ghi khoảng 158 m từ tàu; chú thích ảnh ALSJ nói khoảng 100 m phía đông. Game không dùng một trong hai số này làm tỉ lệ cho sơ đồ bài chơi. Ảnh cuối cho thấy tấm chắn bùn sửa tạm đã được tháo. [NASA — Apollo 17 Lands at Taurus-Littrow](https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/), [ALSJ — AS17-143-21933](https://apollojournals.org/alsj/a17/images17.html#21933).
 
-Cuội, xe biết nói, ảnh ký ức và ánh sáng trao vào đèn là hư cấu. Xe thật đứng yên trong cảnh; chỉ câu chuyện theo Cuội. Bản đồ pin/đi bộ và hình học camera là mô hình giáo dục, không phải quy trình bay hoặc giới hạn kỹ thuật Apollo.
+Cuội, xe biết nói, ảnh ký ức và ánh sáng trao vào đèn là hư cấu. Xe đi theo Cuội ở T03 thuộc chuyến đi tưởng tượng được nói rõ trước khi chơi. Bản đồ pin/đi bộ và các mốc A/B là mô hình giáo dục, không phải quy trình bay hoặc giới hạn kỹ thuật Apollo.
 
 ## 2. Bối cảnh và phong cách
 
 Sau Tai Thính, hai vệt bánh xe ngắn gợi cuộc gặp mới. Cuội về lộ trình để chọn Bánh Lưới; lời dẫn kể chuyến đi kỳ ảo tới một thung lũng xa, không coi hai địa điểm Apollo 12/17 nằm cạnh nhau.
 
-Cảnh 960 × 540 có núi, bụi, dấu bánh và xe đỗ cố định. Xe không có mắt/miệng/tay chân; chân dung màu vẽ dùng trong sách/thoại, cảnh dùng hình pixel vẽ bằng mã. Cuội tới gần nhấn E hoặc bấm xe; nhãn trò chuyện nằm trên xe và chỉ xuất hiện trong vùng tương tác.
+Cảnh 960 × 540 có núi, bụi và dấu bánh. Xe đỗ ở cảnh gặp/hậu kết; riêng chuyến đi tưởng tượng T03 cho xe đi cùng Cuội. Xe không có mắt/miệng/tay chân; chân dung màu vẽ dùng trong sách/thoại, cảnh dùng hình pixel vẽ bằng mã. Cuội tới gần nhấn E hoặc bấm xe; nhãn trò chuyện nằm trên xe và chỉ xuất hiện trong vùng tương tác.
 
 Mặt Trời màu kem có quầng sáng cùng phong cách Trái Đất ở các cảnh trước, khuất một phần sau núi; kích thước được phóng đại để kể chuyện, không mô phỏng kích thước góc hay vị trí Mặt Trời ở thời điểm chụp VIP. Bầu trời giữ tối. Không coi quầng sáng trang trí là tán xạ khí quyển. Tham chiếu thiết kế: [NASA SVS](https://svs.gsfc.nasa.gov/4302/), [NASA Glenn — Moon](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/moon/).
 
-Khung thoại, nút, ảnh nhận và hồi tưởng dùng phong cách các bạn trước. Panel dài tự tăng chiều cao; màn hẹp xếp nội dung xuống dưới. Menu không làm co khung game và sách. Cài đặt cụ thể: [cảnh](../../src/game/banh-luoi-scenery.ts), [CSS](../../src/components/banh-luoi.css).
+Khung thoại, nút, ảnh nhận và hồi tưởng dùng phong cách các bạn trước. Ba thử thách dùng chiều cao game chung; T03 chia hàng cho bản đồ, cảnh pixel, lời nhắc và điều khiển, giữ tỷ lệ canvas. Menu không làm co khung game và sách. Cài đặt cụ thể: [cảnh](../../src/game/banh-luoi-scenery.ts), [CSS](../../src/components/banh-luoi.css).
 
 ## 3. Sách và ảnh kỷ niệm
 
-Sách nhóm theo người bạn, chọn theo **ID trang** để thêm ảnh/chuyển bài/đổi ngôn ngữ không làm nhảy trang. Vào màn chọn trang giới thiệu; chỉ bấm Gợi ý mới tự chuyển tới trang cần và focus tiêu đề. Màn hẹp có nút quay về game.
+Gợi ý T03 hiện ngay trong khung chơi theo hoạt động hiện tại, không tự hoàn thành; sách vẫn đọc độc lập. Sách nhóm theo người bạn, chọn theo **ID trang** để thêm ảnh/chuyển bài/đổi ngôn ngữ không làm nhảy trang. Vào màn chọn trang giới thiệu; chỉ bấm Gợi ý mới tự chuyển tới trang cần và focus tiêu đề. Màn hẹp có nút quay về game.
 
 | ID | Mở khi | Vai trò |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ Sách nhóm theo người bạn, chọn theo **ID trang** để thêm ảnh/chuy
 | `ban-photo-vip` | Cất ảnh A | Ảnh xe tại nơi đỗ cuối |
 | `ban-book-route` | Cất ảnh A, trước T02 | Đường đi, pin và hai trạm |
 | `ban-book-walkback` | Cùng trang đường đi | Điều kiện đi bộ về, lớp vùng an toàn khi dùng gợi ý cấp 2 |
-| `ban-book-camera` | Trước T03 | Chỗ đỗ và góc nhìn, cùng mô hình với bài |
+| `ban-book-camera` | Sau T03, vào hồi tưởng cất cánh | Camera lịch sử và minh họa xe ở lại, không có bài chỉnh góc |
 | `ban-photo-orbit` | Cất ảnh B | Dấu vết nhìn từ quỹ đạo |
 | `ban-book-legacy` | Cất ảnh B | Những gì còn ở lại |
 
@@ -66,15 +66,23 @@ Hai giới hạn kiểm tra độc lập. Đường nháp vượt giới hạn v
 
 T02 chuẩn bị chuyến đi tưởng tượng cùng Cuội. Chỉ báo ghi thứ tự ghé A/B lần đầu và việc cần làm tiếp; nét đường giữ mọi đoạn lặp. Lưới hẹp 264×220px, mỗi ô 44×44px; tọa độ nằm trong nhãn truy cập. Khung phản hồi phân trang để đọc hết nhiều lỗi mà không nối dài cảnh; đóng trả focus về ô bản đồ.
 
-Nộp tuyến đúng mới lưu `confirmedRoute: { modelVersion: 1, cells }`, là bản sao độc lập của toàn bộ nháp theo đúng thứ tự. Đi lặp, quay lại LM giữa đường và hai thứ tự A/B đều được giữ. Sửa nháp, nộp sai, mở sách/menu hoặc gợi ý không thay tuyến đã xác nhận. Nộp tuyến khác xóa cấu hình camera trước; nộp lại cùng tuyến giữ cấu hình. M3 bàn giao snapshot cho M4; đến khi M4 thay T03 bằng Cuội dẫn đường, tuyến đúng vẫn nối vào camera đang chạy. Checkpoint dẫn đường và nút sửa/tiếp tục từ T03 thuộc M4.
+Nộp tuyến đúng mới lưu `confirmedRoute: { modelVersion: 1, cells }`, là bản sao độc lập của toàn bộ nháp theo đúng thứ tự. Đi lặp, quay lại LM giữa đường và hai thứ tự A/B đều được giữ. Sửa nháp, nộp sai, mở sách/menu hoặc gợi ý không thay tuyến đã xác nhận. Nộp tuyến khác reset riêng checkpoint/gợi ý T03; nộp lại cùng tuyến tiếp tục checkpoint. Trong T03, nút **Bản đồ** mở lại T02; nút **Tiếp tục** dùng tuyến đã xác nhận ngay cả khi nháp đang sửa chưa hợp lệ.
 
 Tuyến kiểm chứng: `(1,1) → (1,2) → (1,3) → (2,3) → (3,3) → (3,2) → (3,1) → (2,1) → (1,1)` có 8 bước, 9 pin, xa nhất 4 bước đi bộ; tuyến ngược cũng đạt. Không đòi tuyến tối ưu. Các mẫu chỉ vượt pin/chỉ vượt đi bộ nằm trong `cases` của [mô hình](../../src/content/levels/ban-banh-luoi-models.ts). [Thuật toán BFS và xác nhận](../../src/content/levels/ban-banh-luoi-route.ts).
 
-### T03 — Chỗ đỗ cuối cùng
+### T03 — Cuội dẫn đường
 
-Chọn chỗ đỗ A/B/C, chỉnh camera 0–80° bằng thanh trượt hoặc nút ±1°, rồi thử. Khung nhìn 40°; vật cản và vùng bay được kiểm tra hình học, không chỉ so ID đáp án. A bị đá che, B quá gần; C đạt ở góc nguyên **14–24°**, 13° thấp, 25° cao (dung sai mép 0,1°). Sai góc giữ chỗ đỗ để sửa. Đây là đơn vị minh họa, không phải mét hoặc thông số camera Apollo. [Hình học](../../src/content/levels/ban-banh-luoi-camera.ts), [sơ đồ](../../src/components/BanhLuoiCameraDiagram.tsx).
+Lời dẫn phân biệt chuyến đi tưởng tượng với chiếc LRV thật do phi hành gia lái. Mỗi cạnh của tuyến T02 thành một đoạn ngang, giữ nguyên thứ tự và đoạn đi lặp. Bản đồ nhỏ báo đoạn hiện tại, hướng trên lưới và hai trạm đã hoàn thành. Đi phải để tiếp tục; đi trái quay lại trong đoạn, không xóa trạm đã làm.
 
-Đúng mở minh họa 5 giây: tầng bay lên rời tầng dưới, nhãn “Hồi tưởng 1972 · Minh họa 2D”. Menu dừng thời gian; giảm chuyển động dùng hình tĩnh và nút tiếp tục. Sau đó nhận ảnh B và đọc hai ảnh theo lịch sử. Xe không tự chạy để tìm vị trí mới trong cảnh hiện tại.
+- **A — Nhìn lối khuất:** xe chờ, Cuội đi tới cờ cạnh tảng đá và quan sát. Nét chỉ lối hiện ra. Cuội trở về bên xe, báo lối rồi mới ghi A hoàn thành.
+- **B — Nền bằng:** Cuội phân biệt hai mốc có mặt đất nghiêng/bằng. Chọn nền nghiêng nhắc nhẹ, không mất tiến độ. Đứng cạnh nền bằng và gọi bạn; xe chạy tới cạnh Cuội rồi mới ghi B hoàn thành.
+- **Về tàu:** ghé lại A/B không làm lại nhiệm vụ. Chỉ khi cả hai tới cuối đoạn cuối, đủ hai trạm, mới mở hồi tưởng cất cánh; đi qua LM giữa tuyến không kết thúc sớm.
+
+←/→ hoặc A/D di chuyển, E tương tác gần mục tiêu; giữ E không bỏ qua nhiều bước. Có chạm đất để chọn đích, nút giữ trái/phải và nút tương tác. Sprite Cuội dùng frame/neo chân/tốc độ hiện có; xe giữ khoảng cách khi đi và quay đầu. Đá trang trí nằm ngoài làn đi. Menu, gợi ý, mất focus/chuyển sang sách/ẩn tab nhả phím và tạm dừng. Không tính giờ hoặc phạt khi chọn sai.
+
+React lưu checkpoint đầu đoạn, quan sát/báo lối A, gọi/đón xe B; Phaser chỉ giữ tọa độ và đầu vào tạm. Reload giữa đoạn trở về mốc đầu đoạn; reload giữa hoạt động giữ phần đã làm. Sự kiện mang khóa tuyến/cạnh/stage để bỏ callback cũ hoặc trùng. [Mô hình](../../src/content/levels/ban-banh-luoi-guide.ts), [giao diện](../../src/components/BanhLuoiGuide.tsx), [cảnh](../../src/game/banh-luoi-guide.ts).
+
+Hoàn thành mở minh họa 5 giây “Hồi tưởng 1972 · Minh họa 2D”: tầng bay lên rời tầng dưới. Menu dừng thời gian; giảm chuyển động dùng hình tĩnh và nút tiếp tục. Sau đó nhận ảnh B và đọc hai ảnh theo lịch sử. Camera chỉ còn trong hồi tưởng và sách; giao diện/luật chỉnh góc đã được bỏ.
 
 ## 5. Kết, phần thưởng và chơi lại
 
@@ -83,7 +91,7 @@ Hồi tưởng A (1972) → B (2011) → trở lại bên xe → cảm ơn → �
 Hậu kết cho đi ngang, trò chuyện lại khoảng hai lượt, hoặc đi tới vệt sáng mặt đất phía phải để về lộ trình. Ánh sáng trên cao gợi người bạn tiếp theo; danh tính vẫn chưa chốt. Điểm thứ năm khóa, không tự vào màn chưa làm.
 
 - **Xem lại đoạn kết:** từ ảnh A, gồm chiếu lại phần thắp cánh thứ tư; dùng trạng thái tạm, không ghi đè lượt chơi hoặc trao thêm sao. Hết đoạn trở về hậu kết; không có nút “trở lại game” trong phần xem kết. Tải lại trở về tiến trình chính.
-- **Chơi lại:** reset lời dẫn, đáp án/đường/góc/gợi ý và vị trí/hướng/scale/tư thế/đích đi Cuội; giữ ảnh, trang kiến thức và dấu hoàn thành. Cất lại ảnh không tạo bản sao.
+- **Chơi lại:** reset lời dẫn, đáp án/đường/checkpoint/gợi ý và vị trí/hướng/scale/tư thế/đích đi Cuội; giữ ảnh, trang kiến thức và dấu hoàn thành. Cất lại ảnh không tạo bản sao.
 - **Về lộ trình:** giữ tiến trình. Không thêm kỹ năng hoặc thẻ bạn làm phần thưởng.
 
 ## 6. Nguồn và hồ sơ tài nguyên
@@ -116,12 +124,12 @@ Level ID `ban-banh-luoi`, tên Anh **Mesh Wheels**, người bạn 04/cảnh web
 
 ```text
 route → approach → meeting → wheels → photoA
-→ routeIntro → routePuzzle → cameraIntro → camera
+→ routeIntro → routePuzzle → guideIntro → guiding
 → launch → photoB → memoriesIntro → recallA → recallB
 → farewell → gift → finished
 ```
 
-[Tiến trình màn](../../src/content/levels/ban-banh-luoi-progress.ts) kiểm tra prerequisite bánh/ảnh/tuyến/camera và phục hồi về mốc hợp lệ. Đường nháp vượt giới hạn vẫn là dữ liệu hợp lệ. [Bộ lưu chung](../../src/state/progress.ts) ghi v11, đọc v1–v11; v1–v5 thêm màn mới, v6–v10 đã qua T02 tạo snapshot từ nguyên tuyến hợp lệ đã lưu. Tuyến chưa nộp không tự được xác nhận. Snapshot v11 được kiểm tra riêng với nháp; nếu snapshot hỏng ở chặng sau T02 thì về T02 trong chương, giữ ảnh đã cất và dấu hoàn thành, kể cả qua lần tải tiếp theo. Không tự thay bằng tuyến mẫu. Dữ liệu hỏng của màn không reset cả hành trình. Lượt thoại, góc, tuyến và cấp gợi ý được lưu; không lưu tọa độ, focus hoặc đồng hồ hiệu ứng. Storage bị chặn vẫn chơi trong phiên.
+[Tiến trình màn](../../src/content/levels/ban-banh-luoi-progress.ts) kiểm tra bánh/ảnh/tuyến/checkpoint và phục hồi riêng chương. [Bộ lưu chung](../../src/state/progress.ts) ghi v12, đọc v1–v12. Save camera v6–v11 có tuyến hợp lệ chuyển sang `guideIntro`; tuyến hỏng về T02. Save cũ từ `launch` trở đi, có bánh lưới và ảnh A, giữ chặng qua quyền tương thích `guideLegacyPassed`, không cần đáp án camera và không ép làm T03. Quyền này reset khi chơi lại/nộp tuyến mới. Checkpoint v12 hỏng trở về lời dẫn T03; snapshot hỏng trở về T02. Giữ ảnh/sao hợp lệ, không reset các bạn trước hoặc chép tuyến mẫu. Không lưu tọa độ/focus/đồng hồ mỗi frame.
 
 Focus đi theo chặng khi game đang giữ bàn phím, bỏ qua hidden/inert/disabled; không lấy lại từ sách khi trao sao xong. Menu dừng chữ, cất cánh và ánh sáng; tiếp tục bỏ phím/đích cũ. Chuyển ngôn ngữ không reset bài/vị trí. [App](../../src/App.tsx), [focus](../../src/focus/game-focus.ts), [cảnh Phaser](../../src/game/PreviewScene.ts).
 
@@ -160,7 +168,7 @@ Kiểm tra bổ sung: TypeScript và Vite build đạt. Chưa kiểm tra lại t
 
 M3 hoàn thành với tuyến đã xác nhận độc lập và save v11, chuẩn bị dữ liệu cho Cuội dẫn đường ở M4. Chromium/Playwright kiểm tra 69 trường hợp mô hình/bản lưu và 134 lượt đo bố cục Việt/Anh, gồm stage 480px tại rộng game 320–1000px, nhiều lỗi phân trang và viewport thực 360/390/1440px: không tràn, ô bấm ≥44px, chữ nội dung/điều khiển ≥16px, không lỗi JavaScript. Đã kiểm tra tự vẽ tuyến lặp, xác nhận/tải lại, hai thứ tự A/B, đổi tuyến, gợi ý, menu/sách và bàn phím/chạm giả lập. Build/TypeScript và diff đạt; cảnh báo chunk Phaser lớn còn như trước.
 
-Bàn giao chi tiết: [M3](../plan/Thiet_ke_lai_Banh_Luoi_M3.md). Bằng chứng tạm ở `/tmp/cuoi-m3.cjs`, `/tmp/cuoi-m3-results.json` và ảnh `/tmp/cuoi-m3-*.png`; không thêm test vào repo. Chưa kiểm Safari/thiết bị cảm ứng thật. T03 camera vẫn hoạt động đến M4; kiểm thử dẫn đường và hồi quy toàn chương/ba bạn trước thuộc M4/M5.
+Bàn giao chi tiết: [M3](../plan/Thiet_ke_lai_Banh_Luoi_M3.md). Bằng chứng tạm ở `/tmp/cuoi-m3.cjs`, `/tmp/cuoi-m3-results.json` và ảnh `/tmp/cuoi-m3-*.png`; không thêm test vào repo. Chưa kiểm Safari/thiết bị cảm ứng thật. Đây là bằng chứng lịch sử của M3, trước khi thay T03 ở M4; không dùng làm kết quả kiểm thử cho dẫn đường mới.
 
 
 ### T02 — Đa dạng đường đi và địa hình trực quan (lần trước)
@@ -177,3 +185,7 @@ Kiểm chứng bổ sung: 280 kiểm tra mô hình/bản lưu, bao gồm duyệt
 A chuyển tới (1,3), B tới (3,1), cách nhau 4 bước. Hố (2,2) chặn lối giữa; có thể vòng theo (2,3) → (3,3) → (3,2), hoặc quay qua ngã rẽ LM. Giữ lưới 6 × 5, 12 pin, giới hạn đi bộ 4 bước và hình vẽ địa hình hiện có. Cập nhật gợi ý Việt/Anh; sách tự dùng cùng mô hình.
 
 Kiểm chứng mô hình mới: 4 tuyến hoàn thành trong 8 bước, hai thứ tự A/B, mức 8 hoặc 9 pin; tuyến đất bằng dài hơn 10 bước/10 pin cũng đạt. Các mẫu chỉ vượt pin/chỉ vượt khoảng cách đi bộ vẫn cho đúng lỗi; xác nhận/lưu/đọc lại các tuyến mẫu đạt. Bản nháp cũ gặp hố mới được cắt ở bước hợp lệ cuối theo cơ chế phục hồi hiện có; tuyến xác nhận không còn hợp lệ sẽ yêu cầu vẽ lại T02, giữ ảnh đã nhận. Không khẳng định bảo toàn mọi tuyến cũ như lần chỉnh trước. `npm run build` đạt; không thay đổi kích thước bố cục.
+
+## 10. Thiết kế lại — M4/T03 ngày 29/10/2026
+
+M4 hoàn thành với Cuội dẫn đường, hai hoạt động A/B, snapshot nguyên tuyến và save v12. Đã chơi hai thứ tự trạm và tuyến lặp; kiểm tra chuyển từ T01 tới T03 rồi tiếp tục tới ảnh B/nhật ký/trao sao. 519 kiểm tra mô hình/bản lưu và 38 trạng thái bố cục Việt/Anh đạt; menu/sách/gợi ý dừng điều khiển, thao tác chạm và phục hồi checkpoint đạt. Không lỗi JavaScript hoặc tràn ở các khung đo. Build và diff đạt. [Bàn giao M4](../plan/Thiet_ke_lai_Banh_Luoi_M4.md) ghi phạm vi và bằng chứng tạm. Chưa kiểm Safari/thiết bị cảm ứng thật; kiểm duyệt nội dung và hồi quy toàn bộ thuộc M5.

@@ -41,8 +41,8 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint, hintReques
     const confirmedRoute = confirmRoute(cells);
     if (confirmedRoute) {
       const unchanged = JSON.stringify(progress.confirmedRoute) === JSON.stringify(confirmedRoute);
-      onChange({ ...progress, confirmedRoute, phase: 'cameraIntro', turn: 0,
-        ...(!unchanged ? { cameraSpot: null, cameraAngle: 0, cameraHint: 0 } : {}) });
+      onChange({ ...progress, confirmedRoute, phase: unchanged && progress.guideCheckpoint ? 'guiding' : 'guideIntro', turn: 0,
+        ...(!unchanged ? { guideCheckpoint: null, guideHint: 0, guideLegacyPassed: false } : {}) });
       return;
     }
     setMessage(result.missing.length ? { key: 'route.missing', values: { stops: result.missing.join(', ') } }
@@ -72,7 +72,8 @@ export function BanhLuoiRoute({ language, progress, onChange, onHint, hintReques
       <div className="ban-route-meters" aria-live="polite"><p className={result.overBattery ? 'ban-feedback' : ''}>{language === 'vi' ? 'Pin' : 'Battery'}: {result.battery}/{model.batteryLimit}</p><p className={current.overWalk ? 'ban-feedback' : ''}>{language === 'vi' ? 'Đi bộ về tàu' : 'Walk home'}: {current.walk}/{model.walkLimit}</p></div>
       <p className="ban-route-stop-status" role="status" aria-label={copy['route.visited'][language]}>{order.length ? `LM → ${order.join(' → ')}${result.home ? ' → LM' : ''}` : '○ A · ○ B · ○ LM'}<span>{routeMessage(goal, language)}</span></p>
       <div className="ban-route-actions"><button aria-label={copy['button.undo'][language]} disabled={cells.length === 1} onClick={() => change(cells.slice(0,-1))}>{copy['route.undoShort'][language]}</button><button aria-label={copy['button.reset'][language]} disabled={cells.length === 1} onClick={() => change([model.lm])}>{copy['route.resetShort'][language]}</button></div>
-      <button className="journey-primary" data-banh-primary onClick={submit}>{copy['button.routeSubmit'][language]}</button>
+      <div className={`ban-route-submit${progress.confirmedRoute ? ' has-resume' : ''}`}><button className="journey-primary" data-banh-primary aria-label={copy['button.routeSubmit'][language]} onClick={submit}>{progress.confirmedRoute ? (language === 'vi' ? 'Thử' : 'Try') : copy['button.routeSubmit'][language]}</button>
+      {progress.confirmedRoute && <button className="ban-route-resume" aria-label={language === 'vi' ? 'Tiếp tục chuyến đi đã xác nhận' : 'Resume the confirmed trip'} onClick={() => onChange({ ...progress, phase: progress.guideCheckpoint ? 'guiding' : 'guideIntro', turn: 0 })}>{language === 'vi' ? 'Tiếp tục' : 'Resume'}</button>}</div>
       <small>{copy['route.model'][language]}</small>
     </div></div>
     {notices.length > 0 && <RouteNotices key={JSON.stringify([notices, hintRequest, noticeRequest])} language={language} notices={notices} onHint={routeHint === 1 ? onHint : undefined} onClose={() => board.current?.querySelector<HTMLButtonElement>('button[tabindex="0"]')?.focus()}/>}

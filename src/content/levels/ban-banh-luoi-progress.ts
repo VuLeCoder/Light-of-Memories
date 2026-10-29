@@ -1,9 +1,9 @@
-import { analyseCamera, cameraSpots, readCameraAngle, type CameraSpot } from './ban-banh-luoi-camera';
+import { readGuide, type GuideCheckpoint } from './ban-banh-luoi-guide';
 import { readConfirmedRoute, readRouteCells, type ConfirmedBanhLuoiRoute, type RouteCell } from './ban-banh-luoi-route';
 import { banBanhLuoiRoute } from './ban-banh-luoi-models';
 import { banBanhLuoiScript } from './ban-banh-luoi-content';
 
-export const banhLuoiPhases = ['route', 'approach', 'meeting', 'wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro', 'recallA', 'recallB', 'farewell', 'gift', 'finished'] as const;
+export const banhLuoiPhases = ['route', 'approach', 'meeting', 'wheels', 'photoA', 'routeIntro', 'routePuzzle', 'guideIntro', 'guiding', 'launch', 'photoB', 'memoriesIntro', 'recallA', 'recallB', 'farewell', 'gift', 'finished'] as const;
 export type BanhLuoiPhase = typeof banhLuoiPhases[number];
 export const wheelChoices = ['rubber', 'mesh', 'stone'] as const;
 export type WheelChoice = typeof wheelChoices[number];
@@ -12,30 +12,33 @@ export interface BanhLuoiProgress {
   turn: number;
   wheelChoice: WheelChoice | null;
   keepsakes: ('vip' | 'orbit')[];
-  cameraSpot: CameraSpot | null;
-  cameraAngle: number;
-  cameraHint: 0 | 1 | 2;
+  guideCheckpoint: GuideCheckpoint | null;
+  guideHint: 0 | 1 | 2;
+  guideLegacyPassed: boolean;
   routeCells: RouteCell[];
   confirmedRoute: ConfirmedBanhLuoiRoute | null;
   routeHint: 0 | 1 | 2;
   completedOnce: boolean;
 }
-export const freshBanhLuoi = (): BanhLuoiProgress => ({ phase: 'route', turn: 0, wheelChoice: null, keepsakes: [], routeCells: [banBanhLuoiRoute.lm], confirmedRoute: null, routeHint: 0, cameraSpot: null, cameraAngle: 0, cameraHint: 0, completedOnce: false });
+export const freshBanhLuoi = (): BanhLuoiProgress => ({ phase: 'route', turn: 0, wheelChoice: null, keepsakes: [], routeCells: [banBanhLuoiRoute.lm], confirmedRoute: null, routeHint: 0, guideCheckpoint: null, guideHint: 0, guideLegacyPassed: false, completedOnce: false });
 
 /** A damaged fourth chapter never resets the three earlier friends. */
-export function readBanhLuoi(value: unknown, version = 11): BanhLuoiProgress {
+export function readBanhLuoi(value: unknown, version = 12): BanhLuoiProgress {
   if (!value || typeof value !== 'object') return freshBanhLuoi();
   const d = value as Record<string, unknown>;
-  if (!banhLuoiPhases.includes(d.phase as BanhLuoiPhase)) return freshBanhLuoi();
-  let phase = d.phase as BanhLuoiPhase;
+  const keepsakes = (['vip', 'orbit'] as const).filter(id => Array.isArray(d.keepsakes) && d.keepsakes.includes(id));
+  const sourcePhase = d.phase;
+  const migratedPhase = version <= 11 && ['cameraIntro', 'camera'].includes(String(sourcePhase)) ? 'guideIntro' : sourcePhase;
+  if (!banhLuoiPhases.includes(migratedPhase as BanhLuoiPhase)) return { ...freshBanhLuoi(), completedOnce: d.completedOnce === true, keepsakes };
+  let phase = migratedPhase as BanhLuoiPhase;
   const wheelChoice = wheelChoices.includes(d.wheelChoice as WheelChoice) ? d.wheelChoice as WheelChoice : null;
   const ending = ['memoriesIntro', 'recallA', 'recallB', 'farewell', 'gift', 'finished'];
   const completedOnce = d.completedOnce === true;
-  const afterPhotoA = ['routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', ...ending];
-  const afterRoute = ['cameraIntro', 'camera', 'launch', 'photoB', ...ending];
-  const afterCamera = ['launch', 'photoB', ...ending];
+  const afterPhotoA = ['routeIntro', 'routePuzzle', 'guideIntro', 'guiding', 'launch', 'photoB', ...ending];
+  const afterRoute = ['guideIntro', 'guiding', 'launch', 'photoB', ...ending];
+  const afterGuide = ['launch', 'photoB', ...ending];
   if (['photoA', ...afterPhotoA].includes(phase) && wheelChoice !== 'mesh') phase = 'wheels';
-  const kept = Array.isArray(d.keepsakes) && d.keepsakes.includes('vip') && (completedOnce || wheelChoice === 'mesh' && afterPhotoA.includes(phase));
+  const kept = keepsakes.includes('vip');
   if (afterPhotoA.includes(phase) && !kept) phase = 'photoA';
   const routeCells = readRouteCells(d.routeCells);
   // Older saves had only a draft. Migrate it only after the player passed T02,
@@ -43,25 +46,28 @@ export function readBanhLuoi(value: unknown, version = 11): BanhLuoiProgress {
   const confirmedRoute = version <= 10 && afterRoute.includes(phase)
     ? readConfirmedRoute({ modelVersion: 1, cells: d.routeCells })
     : readConfirmedRoute(d.confirmedRoute);
-  if (afterRoute.includes(phase) && !confirmedRoute) phase = 'routePuzzle';
-  const cameraSpot = cameraSpots.includes(d.cameraSpot as CameraSpot) ? d.cameraSpot as CameraSpot : null;
-  const cameraAngle = readCameraAngle(d.cameraAngle);
-  if (afterCamera.includes(phase) && analyseCamera(cameraSpot,cameraAngle) !== 'correct') phase = 'camera';
+  const guideLegacyPassed = (version <= 11 ? afterGuide.includes(String(sourcePhase)) && wheelChoice === 'mesh' && !!kept : d.guideLegacyPassed === true);
+  let guideCheckpoint = version >= 12 ? readGuide(d.guideCheckpoint, confirmedRoute) : null;
+  if (afterRoute.includes(phase) && !confirmedRoute && !(guideLegacyPassed && afterGuide.includes(phase))) phase = 'routePuzzle';
+  if (phase === 'guiding' && (!guideCheckpoint || guideCheckpoint.stage === 'done')) { phase = 'guideIntro'; guideCheckpoint = null; }
+  if (afterGuide.includes(phase) && !guideLegacyPassed && guideCheckpoint?.stage !== 'done') { phase = confirmedRoute ? 'guideIntro' : 'routePuzzle'; guideCheckpoint = null; }
+  if (phase === 'guideIntro' || phase === 'routePuzzle' && guideCheckpoint?.stage === 'done') guideCheckpoint = null;
   // Collected photos survive route recovery, including its subsequent reloads.
-  // They never bypass the route/camera prerequisites or award completion.
-  const orbit = kept && Array.isArray(d.keepsakes) && d.keepsakes.includes('orbit');
+  // They never bypass this run’s route/guide prerequisites or award completion.
+  const orbit = keepsakes.includes('orbit');
   if (ending.includes(phase) && !orbit) phase = 'photoB';
   if (phase === 'finished' && !completedOnce) phase = 'gift';
-  const maxTurn = phase === 'route' || phase === 'meeting' || phase === 'routeIntro' || phase === 'cameraIntro' || phase === 'memoriesIntro' || phase === 'farewell' ? banBanhLuoiScript[phase].length - 1 : phase === 'photoB' ? 1 : phase === 'gift' && completedOnce ? banBanhLuoiScript.giftAfter.length : 0;
-  return { phase, turn: phase === 'gift' && completedOnce ? Math.max(1, Math.min(maxTurn, Number.isInteger(d.turn) ? d.turn as number : 1)) : Number.isInteger(d.turn) ? Math.max(0, Math.min(maxTurn, d.turn as number)) : 0,
-    wheelChoice, keepsakes: kept ? orbit ? ['vip','orbit'] : ['vip'] : [], routeCells, confirmedRoute, routeHint: d.routeHint === 1 || d.routeHint === 2 ? d.routeHint : 0,
-    cameraSpot, cameraAngle, cameraHint: d.cameraHint === 1 || d.cameraHint === 2 ? d.cameraHint : 0, completedOnce };
+  const resetGuide = migratedPhase !== phase && phase === 'guideIntro' || version <= 11 && ['cameraIntro','camera'].includes(String(sourcePhase));
+  const maxTurn = phase === 'route' || phase === 'meeting' || phase === 'routeIntro' || phase === 'guideIntro' || phase === 'memoriesIntro' || phase === 'farewell' ? banBanhLuoiScript[phase].length - 1 : phase === 'photoB' ? 1 : phase === 'gift' && completedOnce ? banBanhLuoiScript.giftAfter.length : 0;
+  return { phase, turn: phase === 'gift' && completedOnce ? Math.max(1, Math.min(maxTurn, Number.isInteger(d.turn) ? d.turn as number : 1)) : !resetGuide && Number.isInteger(d.turn) ? Math.max(0, Math.min(maxTurn, d.turn as number)) : 0,
+    wheelChoice, keepsakes, routeCells, confirmedRoute, routeHint: d.routeHint === 1 || d.routeHint === 2 ? d.routeHint : 0,
+    guideCheckpoint, guideLegacyPassed, guideHint: !resetGuide && (d.guideHint === 1 || d.guideHint === 2) ? d.guideHint : 0, completedOnce };
 }
 
 export function banhLuoiPageIds(progress: BanhLuoiProgress): string[] {
-  return ['ban-banh-luoi', ...((progress.completedOnce || progress.keepsakes.includes('vip') || ['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(progress.phase)) ? ['ban-book-wheels'] : []),
+  return ['ban-banh-luoi', ...((progress.completedOnce || progress.keepsakes.includes('vip') || ['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'guideIntro', 'guiding', 'launch', 'photoB', 'memoriesIntro'].includes(progress.phase)) ? ['ban-book-wheels'] : []),
     ...(progress.keepsakes.includes('vip') ? ['ban-photo-vip', 'ban-book-route', 'ban-book-walkback'] : []),
-    ...((progress.completedOnce || progress.keepsakes.includes('orbit') || ['cameraIntro','camera','launch','photoB','memoriesIntro'].includes(progress.phase)) ? ['ban-book-camera'] : []),
+    ...((progress.completedOnce || progress.keepsakes.includes('orbit') || ['launch','photoB','memoriesIntro'].includes(progress.phase)) ? ['ban-book-camera'] : []),
     ...(progress.keepsakes.includes('orbit') ? ['ban-photo-orbit', 'ban-book-legacy'] : [])];
 }
 

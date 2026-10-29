@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Language } from '../content/i18n';
-import { banBanhLuoiCamera as model } from '../content/levels/ban-banh-luoi-models';
+import { banBanhLuoiLaunch as model } from '../content/levels/ban-banh-luoi-models';
 import { banBanhLuoiCopy as copy } from '../content/levels/ban-banh-luoi-content';
 
 export function BanhLuoiLaunch({language,paused,onNext}: {language:Language;paused:boolean;onNext:()=>void}) {

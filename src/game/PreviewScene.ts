@@ -1,3 +1,4 @@
+import { BanhLuoiGuideScene } from './banh-luoi-guide';
 import { banhLuoiScenery, drawBanhLuoi, banhLuoiLayout } from './banh-luoi-scenery';
 import { taiThinhScenery, taiThinhLayout, drawTaiThinhDevice, drawTaiThinhRipple } from './tai-thinh-scenery';
 import { digSites } from '../content/levels/surveyor-dig';
@@ -13,6 +14,11 @@ import { copy, type Language } from '../content/i18n';
 
 export class PreviewScene extends Phaser.Scene {
   private options: PreviewOptions;
+  private guide?: BanhLuoiGuideScene;
+  setBanhLuoiGuide(value: PreviewOptions['banhLuoiGuide']) {
+    this.options.banhLuoiGuide = value;
+    if (value) this.guide?.set(value);
+  }
   private interactionRegion = new Phaser.Geom.Rectangle(444, 350, 153, 88);
   private failedAssets: string[] = [];
   private cuoi?: Phaser.GameObjects.Sprite;
@@ -362,6 +368,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   releaseControls() {
+    this.guide?.release();
     this.trailTarget = undefined;
     this.walkTarget = undefined;
     this.digTarget = undefined;
@@ -414,6 +421,13 @@ export class PreviewScene extends Phaser.Scene {
         cuoiWakeFrames.forEach((frame, index) => this.textures.get(source.key).add(`wake-${index}`, 0, frame.x, frame.y, frame.width, frame.height));
         cuoiWalkFrames.forEach((frame, index) => this.textures.get(source.key).add(`walk-${index}`, 0, frame.x, frame.y, frame.width, frame.height));
       }
+    }
+    if (this.options.banhLuoiGuide) {
+      this.addMoonCuoi();
+      if (this.cuoi && this.keys) this.guide = new BanhLuoiGuideScene(this, this.cuoi, this.keys, this.options.banhLuoiGuide);
+      if (this.failedAssets.length) this.options.onError(this.failedAssets);
+      else this.options.onReady();
+      return;
     }
     if (this.options.scene === 'earth') {
       cacheScenery(this, earthScenery);
@@ -553,6 +567,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number) {
+    if (this.guide) { this.guide.update(delta); return; }
     if (!this.cuoi || !this.keys) return;
     if (this.ripple && this.moonMode !== 'paused') {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.rippleTime += Math.min(delta, 50);
@@ -645,7 +660,7 @@ export class PreviewScene extends Phaser.Scene {
     this.keys = this.input.keyboard?.addKeys({ left: 'LEFT', right: 'RIGHT', a: 'A', d: 'D', up: 'UP', down: 'DOWN', w: 'W', s: 'S' }, false) as typeof this.keys;
     const onInteractKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      if (!event.repeat && !target?.closest('input, select, textarea')) this.interactNearby();
+      if (!event.repeat && !target?.closest('input, select, textarea')) { if (this.guide) this.guide.interact(); else this.interactNearby(); }
     };
     this.input.keyboard?.on('keydown-E', onInteractKey);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.keyboard?.off('keydown-E', onInteractKey));

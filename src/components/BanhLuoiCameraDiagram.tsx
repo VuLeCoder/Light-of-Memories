@@ -1,39 +1,15 @@
-import { useId } from 'react';
 import type { Language } from '../content/i18n';
-import { banBanhLuoiCamera as m } from '../content/levels/ban-banh-luoi-models';
-import { angularBounds, cameraSpots, sightBlocked, type CameraSpot } from '../content/levels/ban-banh-luoi-camera';
-import { banBanhLuoiCopy as copy } from '../content/levels/ban-banh-luoi-content';
 
-/** All rectangles, rays and the preview use the same coordinates as validation. */
-export function BanhLuoiCameraDiagram({language, spot = null, angle = m.initialAngle, preview = false}: {language: Language; spot?: CameraSpot | null; angle?: number; preview?: boolean}) {
-  const id = useId();
-  const origin = spot ? m.positions[spot] : null;
-  const ray = (a: number) => `${origin![0]+900*Math.cos(a*Math.PI/180)},${origin![1]+900*Math.sin(a*Math.PI/180)}`;
-  const bounds = origin ? angularBounds(origin,m.required) : null;
-  const projectedY = (a: number) => 100-(a-(angle-m.fovDegrees/2))/m.fovDegrees*100;
-  const blocked = origin ? sightBlocked(origin,m.required,m.rock) : false;
-  const rockBounds = origin ? angularBounds(origin,m.rock) : null;
-  return <div className="ban-camera-diagram">
-    <svg viewBox="0 0 760 345" role="img" aria-label={language === 'vi' ? `Sơ đồ: đá giữa A và Challenger, B gần tàu hơn C.${spot ? ` Camera ở ${spot}, góc ${angle} độ.` : ''} Vùng viền chấm là vùng cần nhìn.` : `Diagram: rock between A and Challenger; B is closer than C.${spot ? ` Camera at ${spot}, angle ${angle} degrees.` : ''} The dotted region must be visible.`}>
-      <defs><clipPath id={id}><rect width="760" height="300"/></clipPath></defs>
-      <rect width="760" height="345" fill="#10212a"/>
-      <g clipPath={`url(#${id})`} transform="translate(0 300) scale(1 -1)">
-        {origin && <path d={`M${origin}L${ray(angle-m.fovDegrees/2)}L${ray(angle+m.fovDegrees/2)}Z`} fill="#dfc18a" fillOpacity=".18" stroke="#dfc18a" strokeWidth="2"/>}
-        <rect x={m.rock.left} y={m.rock.bottom} width={m.rock.right-m.rock.left} height={m.rock.top-m.rock.bottom} fill="#6d7d80"/>
-        <rect x={m.descentStage.left} y={m.descentStage.bottom} width={m.descentStage.right-m.descentStage.left} height={m.descentStage.top-m.descentStage.bottom} fill="#a99570"/>
-        <rect x={m.required.left} y={m.required.bottom} width={m.required.right-m.required.left} height={m.required.top-m.required.bottom} fill="none" stroke="#eee5d1" strokeDasharray="6 5" strokeWidth="3"/>
-        <rect x={m.ascentStageStart.left} y={m.ascentStageStart.bottom} width={m.ascentStageStart.right-m.ascentStageStart.left} height={m.ascentStageStart.top-m.ascentStageStart.bottom} fill="#dfc18a"/>
-        {cameraSpots.map(s => <circle key={s} cx={m.positions[s][0]} cy={m.positions[s][1]} r={spot===s ? 10 : 7} fill={spot===s ? '#dfc18a' : '#bdcecb'} stroke="#eee5d1" strokeWidth="2"/>)}
-      </g>
-      <g fill="#eee5d1" fontSize="30" textAnchor="middle">{cameraSpots.map(s=><text key={s} x={m.positions[s][0]} y="331">{s}{spot===s ? ' ◆' : ''}</text>)}<text x="607" y="331">LM</text></g>
-    </svg>
-    {preview && <div className="ban-camera-frame"><span>{copy['camera.frame'][language]} · {m.fovDegrees}°</span><svg className="ban-camera-preview" viewBox="0 0 160 100" role="img" aria-label={language === 'vi' ? 'Khung nhìn: vùng viền chấm phải nằm trọn giữa mép trên và dưới, không bị đá che.' : 'Camera frame: the dotted region must fit between the top and bottom edges without a rock blocking it.'}>
-      <rect width="160" height="100" fill="#10212a"/>
-      {bounds && origin && <>
-        <rect x="65" y={projectedY(bounds.high)} width="30" height={projectedY(bounds.low)-projectedY(bounds.high)} fill="none" stroke="#eee5d1" strokeDasharray="3 3"/>
-        <rect x="65" y={projectedY(angularBounds(origin,m.ascentStageStart).high)} width="30" height={projectedY(angularBounds(origin,m.ascentStageStart).low)-projectedY(angularBounds(origin,m.ascentStageStart).high)} fill="#dfc18a"/>
-        {blocked && rockBounds && <rect x="40" y={projectedY(rockBounds.high)} width="80" height={projectedY(rockBounds.low)-projectedY(rockBounds.high)} fill="#6d7d80"/>}
-      </>}
-    </svg></div>}
-  </div>;
+/** Historical illustration only; there is no camera puzzle or angle validation. */
+export function BanhLuoiCameraDiagram({ language }: { language: Language }) {
+  return <div className="ban-camera-diagram"><svg viewBox="0 0 760 280" role="img" aria-label={language === 'vi' ? 'Minh họa camera trên xe nhìn theo tầng bay lên của Challenger. Xe và tầng dưới ở lại Mặt Trăng.' : 'Illustration of the rover camera watching Challenger’s ascent stage. The rover and descent stage remain on the Moon.'}>
+    <rect width="760" height="280" fill="#10212a"/>
+    <path d="M0 230H760" stroke="#8c9f9b" strokeWidth="4"/>
+    <path d="M180 180L555 70L555 205Z" fill="#dfc18a" opacity=".14"/>
+    <g fill="#b7c0ac" stroke="#ddd4b5" strokeWidth="3"><rect x="100" y="192" width="120" height="12"/><circle cx="120" cy="214" r="15"/><circle cx="200" cy="214" r="15"/><path d="M170 192V164"/><rect x="164" y="154" width="28" height="16"/></g>
+    <g fill="#a99570"><rect x="520" y="190" width="90" height="35"/><path d="M530 210L500 230H515L540 210M600 210L630 230H615L590 210"/></g>
+    <rect x="535" y="65" width="60" height="40" fill="#dfc18a"/>
+    <path d="M565 170V120M555 135L565 120L575 135" fill="none" stroke="#eee5d1" strokeWidth="3"/>
+    <g fill="#eee5d1" fontSize="24" textAnchor="middle"><text x="160" y="264">{language === 'vi' ? 'Camera trên xe' : 'Rover camera'}</text><text x="565" y="264">Challenger</text></g>
+  </svg></div>;
 }

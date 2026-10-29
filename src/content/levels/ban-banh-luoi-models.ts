@@ -26,91 +26,10 @@ export const banBanhLuoiRoute = {
   }
 } as const;
 
-export const banBanhLuoiCamera = {
-  coordinateSystem: "x right, y up; educational units, not metres; angle from positive x",
-  positions: {
-    A: [120, 30],
-    B: [520, 30],
-    C: [260, 30]
-  },
-  rock: {
-    left: 180,
-    right: 220,
-    bottom: 0,
-    top: 190
-  },
-  descentStage: {
-    left: 570,
-    right: 630,
-    bottom: 0,
-    top: 60
-  },
-  required: {
-    left: 580,
-    right: 620,
-    bottom: 60,
-    top: 240
-  },
-  ascentStageStart: {
-    left: 580,
-    right: 620,
-    bottom: 60,
-    top: 110
-  },
-  fovDegrees: 40,
-  minAngle: 0,
-  maxAngle: 80,
-  angleStep: 1,
-  initialAngle: 0,
-  edgeToleranceDegrees: 0.1,
+/** Coordinates for the historical liftoff illustration, not a challenge. */
+export const banBanhLuoiLaunch = {
+  descentStage: { left: 570, right: 630, bottom: 0, top: 60 },
+  required: { left: 580, right: 620, bottom: 60, top: 240 },
+  ascentStageStart: { left: 580, right: 620, bottom: 60, top: 110 },
   previewDurationSeconds: 5,
-  cases: [
-    {
-      spot: "A",
-      angle: 20,
-      expected: "blocked"
-    },
-    {
-      spot: "B",
-      angle: 40,
-      expected: "tooClose"
-    },
-    {
-      spot: "C",
-      angle: 0,
-      expected: "low"
-    },
-    {
-      spot: "C",
-      angle: 13,
-      expected: "low"
-    },
-    {
-      spot: "C",
-      angle: 14,
-      expected: "correct"
-    },
-    {
-      spot: "C",
-      angle: 20,
-      expected: "correct"
-    },
-    {
-      spot: "C",
-      angle: 24,
-      expected: "correct"
-    },
-    {
-      spot: "C",
-      angle: 25,
-      expected: "high"
-    },
-    {
-      spot: "C",
-      angle: 80,
-      expected: "high"
-    }
-  ]
 } as const;
-
-export const banBanhLuoiModels = { route: banBanhLuoiRoute, camera: banBanhLuoiCamera } as const;

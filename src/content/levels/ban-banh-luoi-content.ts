@@ -34,8 +34,8 @@ export const banBanhLuoiCopy = {
   "objective.photoA": text("Một bức ảnh ở nơi đỗ cuối", "A photo at the final parking spot"),
   "objective.routeIntro": text("Nhớ về một chuyến khảo sát", "Remember an exploring trip"),
   "objective.routePuzzle": text("T02 · Ghé A, B rồi về tàu", "T02 · Visit A and B, then return"),
-  "objective.cameraIntro": text("Chuẩn bị góc nhìn cuối cùng", "Prepare the final view"),
-  "objective.camera": text("T03 · Chọn chỗ đỗ và góc camera", "T03 · Choose a parking spot and camera angle"),
+  "objective.guideIntro": text("Cùng lên đường", "Set off together"),
+  "objective.guiding": text("T03 · Cuội dẫn đường", "T03 · Cuội leads the way"),
   "objective.launch": text("Hồi tưởng 1972 · Minh họa 2D", "Remembering 1972 · 2D illustration"),
   "objective.photoB": text("Những dấu vết nhìn từ trên cao", "Tracks seen from above"),
   "objective.memoriesIntro": text("Hai bức ảnh, một câu chuyện", "Two photos, one story"),
@@ -45,10 +45,10 @@ export const banBanhLuoiCopy = {
   "objective.gift": text("Một ánh sao từ Bánh Lưới", "A star point from Mesh Wheels"),
   "objective.finished": text("Ngước nhìn phía trời bên phải", "Look up at the sky on the right"),
   "footer.dialogue": text("Space/Enter hoặc nút trong khung thoại để hiện hết câu và tiếp tục.", "Use Space/Enter or the dialogue button to reveal the full line and continue."),
+  "footer.guide": text("←/→ hoặc A/D để đi, E khi ở gần. Có thể chạm đất hoặc giữ nút mũi tên. Đi phải để tiếp tục từng đoạn; đi trái để quay lại trong đoạn.", "Use ←/→ or A/D to walk, E when close. You can tap the ground or hold the arrow buttons. Walk right to advance each leg; left to go back within it."),
   "footer.walk": text("A/D, ←/→ hoặc chạm đất để đi. Đến gần xe nhấn E, hoặc chạm xe.", "Use A/D, ←/→ or touch the ground to walk. Press E near the rover, or touch it."),
   "footer.wheels": text("Chọn → Thử bánh → Chọn bánh này. Dùng chuột/chạm hoặc Tab và Enter/Space.", "Select → Try wheel → Choose this wheel. Use mouse/touch or Tab and Enter/Space."),
   "footer.route": text("Chọn ô kề để thêm bước. Mũi tên chọn ô, Enter/Space thêm; dùng nút để lùi hoặc vẽ lại.", "Choose a neighbouring cell to add a step. Arrow keys select a cell; Enter/Space adds it. Use the buttons to undo or reset."),
-  "footer.camera": text("Chọn A/B/C rồi chỉnh góc bằng thanh trượt hoặc nút −/+. Bấm Thử góc nhìn.", "Choose A/B/C, then adjust the angle with the slider or −/+ buttons. Select Try this view."),
   "footer.photo": text("Cất ảnh để thêm vào sách và tiếp tục. Có thể mở ảnh lớn để xem chi tiết.", "Keep the photo to add it to the book and continue. Open a larger view to inspect it."),
   "footer.recall": text("Dùng Trang trước/Trang tiếp để đọc theo thời gian.", "Use Previous page/Next page to read in time order."),
   "footer.launch": text("Xem minh họa rồi tiếp tục. Menu tạm dừng; giảm chuyển động dùng hình tĩnh.", "Watch the illustration, then continue. Menu pauses it; reduced motion uses a still image."),
@@ -61,7 +61,6 @@ export const banBanhLuoiCopy = {
   "button.undo": text("Lùi một bước", "Undo one step"),
   "button.reset": text("Vẽ lại", "Reset route"),
   "button.routeSubmit": text("Thử lộ trình", "Try this route"),
-  "button.cameraSubmit": text("Thử góc nhìn", "Try this view"),
   "button.keep": text("Cất ảnh và tiếp tục", "Keep the photo and continue"),
   "button.zoom": text("Xem ảnh lớn", "View larger photo"),
   "button.wheelDetail": text("Xem chi tiết bánh", "Inspect the wheel"),
@@ -76,8 +75,6 @@ export const banBanhLuoiCopy = {
   "button.replay": text("Chơi lại", "Play again"),
   "button.talk": text("Trò chuyện với Bánh Lưới", "Talk to Mesh Wheels"),
   "button.lookUp": text("Ngước nhìn", "Look up"),
-  "button.decreaseAngle": text("Hạ góc camera một độ", "Lower the camera by one degree"),
-  "button.increaseAngle": text("Nâng góc camera một độ", "Raise the camera by one degree"),
   "wheels.rubber": text("A · Lốp cao su bơm hơi", "A · Air-filled rubber tyre"),
   "wheels.mesh": text("B · Bánh lưới kim loại", "B · Wire-mesh wheel"),
   "wheels.stone": text("C · Bánh kim loại cứng", "C · Rigid metal wheel"),
@@ -143,21 +140,6 @@ export const banBanhLuoiCopy = {
   "route.noViolation": text("Các bước đã vẽ vẫn trong hai giới hạn. Nhớ ghé cả A, B và trở về LM nhé.", "Your steps are within both limits. Remember to visit A and B and return to LM."),
   "route.resetStatus": text("Đã xóa đường nháp. Xe trở lại LM; pin đã dùng là 0.", "Draft route cleared. The rover is back at LM with 0 battery units used."),
   "route.undoStatus": text("Đã lùi một bước. Hai chỉ báo đã được tính lại.", "One step undone. Both indicators have been recalculated."),
-  "camera.rule": text("Giữ tầng bay lên và vùng trời có viền chấm trong khung, không bị đá che.", "Keep the ascent stage and dotted sky region in the frame, without a rock blocking the view."),
-  "camera.model": text("Mô hình góc nhìn · Không phải thông số camera Apollo", "View model · Not Apollo camera specifications"),
-  "camera.parking": text("Chỗ đỗ {spot}", "Parking spot {spot}"),
-  "camera.angle": text("Góc camera: {angle}°", "Camera angle: {angle}°"),
-  "camera.frame": text("Khung camera hiện tại", "Current camera frame"),
-  "camera.required": text("Vùng cần nhìn thấy", "Region to keep in view"),
-  "camera.rock": text("Đá che tầm nhìn", "Rock blocking the view"),
-  "camera.none": text("Chọn một chỗ đỗ để xem khung camera nhé.", "Choose a parking spot to see the camera frame."),
-  "camera.blocked": text("Tảng đá nằm giữa camera và tàu. Đổi chỗ đỗ để nhìn thoáng hơn nhé.", "The rock is between the camera and the module. Try a spot with a clear view."),
-  "camera.tooClose": text("Chỗ này gần quá: khung không chứa đủ tàu và khoảng trời phía trên. Thử lùi xa hơn nhé.", "This spot is too close: the frame cannot hold both the stage and the sky above it. Try farther away."),
-  "camera.low": text("Chỗ đỗ đã thoáng rồi. Thử nâng góc để thấy cả vùng trời có viền chấm nhé.", "The parking spot has a clear view. Try raising the camera to include the dotted sky region."),
-  "camera.high": text("Camera đang nhìn cao quá, mất phần dưới của vùng cần nhìn. Thử hạ góc một chút nhé.", "The camera is looking too high and misses the bottom of the required region. Try lowering it a little."),
-  "camera.correct": text("Góc nhìn đã đủ rồi! Mình cùng nhớ lại lúc Challenger rời Mặt Trăng nhé.", "The view is ready! Let us remember Challenger leaving the Moon."),
-  "camera.hint1": text("Đừng chỉ nhìn gần: xem cả khoảng trời phía trên chiếc tàu nữa.", "Do not just look nearby: include the sky above the module, too."),
-  "camera.hint2": text("Tìm chỗ không bị đá chắn và đủ xa để vùng có viền chấm nằm trọn trong khung. Sau đó chỉnh góc.", "Find a clear spot far enough away to fit the dotted region in the frame. Then adjust the angle."),
   "photoA.title": text("Bánh Lưới ở nơi đỗ cuối", "Mesh Wheels at the final parking spot"),
   "photoA.caption": text("Eugene Cernan chụp xe Apollo 17 tại VIP Site, tháng 12/1972. Các gân hình chữ V hiện rõ trên bánh.", "Eugene Cernan photographed the Apollo 17 rover at the VIP Site in December 1972. V-shaped treads show clearly on its wheels."),
   "photoA.alt": text("Ảnh đen trắng xe Apollo 17 có bánh lưới với gân chữ V; tàu đổ bộ và núi ở phía sau.", "Black-and-white photo of the Apollo 17 rover with V-shaped mesh-wheel treads; the lunar module and mountains are behind it."),
@@ -263,24 +245,24 @@ export const banBanhLuoiScript = {
       en: "We need a way to walk home, too! The rover’s battery and the astronauts’ life-support supplies are different things."
     }
   ],
-  cameraIntro: [
+  guideIntro: [
     {
-      id: "banh-luoi-cameraIntro-01",
+      id: "banh-luoi-guideIntro-01",
       speaker: "banhLuoi",
-      vi: "Có đường về rồi! Mình còn một công việc cuối: đứng ở nơi camera nhìn rõ chiếc tàu.",
-      en: "We have a way home! I had one last job: to stand where my camera could see the module clearly."
+      vi: "Có bản đồ rồi! Trong chuyến đi tưởng tượng này, mình sẽ lăn theo Cuội. Bạn dẫn mình ghé hai trạm rồi cùng về tàu nhé.",
+      en: "We have a map! In this imaginary trip, I will roll along with you. Lead me to both stops, then back to the module."
     },
     {
-      id: "banh-luoi-cameraIntro-02",
+      id: "banh-luoi-guideIntro-02",
       speaker: "cuoi",
-      vi: "Bạn ở lại để nhìn theo các nhà du hành sao?",
-      en: "You stayed behind to watch the astronauts leave?"
+      vi: "Mình sẽ đi trước nhìn lối ở A, rồi tìm chỗ bằng để bạn nghỉ ở B nhé.",
+      en: "I will look ahead at A, then find a level place for you to rest at B."
     },
     {
-      id: "banh-luoi-cameraIntro-03",
+      id: "banh-luoi-guideIntro-03",
       speaker: "banhLuoi",
-      vi: "Ừ. Người ở Trái Đất điều khiển camera. Mình cùng thử tìm chỗ đỗ và góc nhìn trong mô hình này nhé.",
-      en: "Yes. People on Earth controlled the camera. Let us try a parking spot and viewing angle in this model."
+      vi: "Ừ, cứ theo thứ tự trên bản đồ của mình. Về tới tàu, mình sẽ kể Cuội nghe lần nhìn theo Challenger bay lên.",
+      en: "Yes, in the order on our map. Back at the module, I will tell you about watching Challenger lift off."
     }
   ],
   photoBIntro: [
@@ -387,7 +369,7 @@ export const banBanhLuoiBook = {
   "ban-book-route": {
     title: text("Một chuyến đi, hai trạm", "One trip, two stops"),
     paragraphs: [
-      text("Cuội và Bánh Lưới chuẩn bị một chuyến đi tưởng tượng. Tuyến từ LM ghé A, B theo thứ tự bất kỳ rồi về tàu, qua các ô chung cạnh và tránh hố.", "Cuội and Mesh Wheels plan an imaginary trip. Their route starts at LM, visits A and B in either order, then returns home, along shared cell edges and around craters."),
+      text("Cuội và Bánh Lưới chuẩn bị một chuyến đi tưởng tượng. LM là tàu đổ bộ. Tuyến từ tàu ghé A, B theo thứ tự bất kỳ rồi về tàu, qua các ô chung cạnh và tránh hố.", "Cuội and Mesh Wheels plan an imaginary trip. LM means lunar module. Their route starts there, visits A and B in either order, then returns home, along shared cell edges and around craters."),
       text("Vào đất bằng tốn 1 pin, dốc tốn 2. Cả tuyến dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Entering flat ground costs 1 battery unit; a slope costs 2. Use at most 12. Revisiting a cell still adds to the cost.")
     ]
   },
@@ -402,7 +384,7 @@ export const banBanhLuoiBook = {
     title: text("Một chỗ đứng để nhìn theo", "A place to watch from"),
     paragraphs: [
       text("Cernan đỗ xe ở VIP Site, phía đông Challenger. Người ở Trái Đất điều khiển camera quay tàu cất cánh.", "Cernan parked at the VIP Site, east of Challenger. People on Earth controlled the camera to film liftoff."),
-      text("Trong mô hình, tránh đá và đừng đỗ quá gần. Chỉnh góc để vùng viền chấm nằm trọn trong khung.", "In the model, avoid the rock and do not park too close. Aim to fit the dotted region inside the frame.")
+      text("Tầng bay lên đưa các phi hành gia rời Mặt Trăng; tầng dưới của tàu và chiếc xe ở lại.", "The ascent stage carried the astronauts away; the descent stage and rover stayed on the Moon.")
     ]
   },
   "ban-book-legacy": {
@@ -432,13 +414,13 @@ export const banBanhLuoiFooterByPhase = {
   route: "footer.dialogue",
   meeting: "footer.dialogue",
   routeIntro: "footer.dialogue",
-  cameraIntro: "footer.dialogue",
+  guideIntro: "footer.dialogue",
   memoriesIntro: "footer.dialogue",
   farewell: "footer.dialogue",
   approach: "footer.walk",
   wheels: "footer.wheels",
   routePuzzle: "footer.route",
-  camera: "footer.camera",
+  guiding: "footer.guide",
   launch: "footer.launch",
   photoA: "footer.photo",
   photoB: "footer.photo",

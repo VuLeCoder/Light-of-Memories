@@ -3,13 +3,12 @@ export function focusGame(stage: HTMLElement | null) {
   if (!stage) return;
   const selectors = [
     '.dialogue .dialogue-next',
+    '.ban-guide .game-host',
     '.story-canvas .game-host',
     '[data-tai-primary]',
     '.ban-route-map button[tabindex="0"]',
     '.ban-wheel-options button[aria-pressed="true"]',
     '.ban-wheel-options button',
-    '.ban-camera-controls button[aria-pressed="true"]',
-    '.ban-camera-controls button[data-spot]',
     '[data-banh-primary]',
     '[data-banh-wait]',
     '.journey-view h2[tabindex]',
