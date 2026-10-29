@@ -132,7 +132,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     if (lastBookRequest.current === bookRequest) return;
     lastBookRequest.current = bookRequest;
-    const target = activeLevel === 'ban-banh-luoi' ? ['launch','photoB','memoriesIntro'].includes(banhLuoiProgress.phase) ? 'ban-book-camera' : ['routeIntro', 'routePuzzle', 'guideIntro', 'guiding'].includes(banhLuoiProgress.phase) ? banhLuoiProgress.routeHint === 2 ? 'ban-book-walkback' : 'ban-book-route' : 'ban-book-wheels' : activeLevel === 'lap-lanh'
+    const target = activeLevel === 'ban-banh-luoi' ? ['photoB','memoriesIntro'].includes(banhLuoiProgress.phase) ? 'ban-book-camera' : ['routeIntro', 'routePuzzle', 'guideIntro', 'guiding'].includes(banhLuoiProgress.phase) ? banhLuoiProgress.routeHint === 2 ? 'ban-book-walkback' : 'ban-book-route' : 'ban-book-wheels' : activeLevel === 'lap-lanh'
       ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
       : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : ['graph', 'duration'].includes(taiThinhProgress.phase) ? 'tai-book-ringing' : taiThinhProgress.phase === 'rhythm' ? 'tai-book-rhythm' : null
       : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;

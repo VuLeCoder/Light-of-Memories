@@ -36,7 +36,6 @@ export const banBanhLuoiCopy = {
   "objective.routePuzzle": text("T02 · Ghé A, B rồi về tàu", "T02 · Visit A and B, then return"),
   "objective.guideIntro": text("Cùng lên đường", "Set off together"),
   "objective.guiding": text("T03 · Hành trình lấy mẫu", "T03 · Sample journey"),
-  "objective.launch": text("Hồi tưởng 1972 · Minh họa 2D", "Remembering 1972 · 2D illustration"),
   "objective.photoB": text("Những dấu vết nhìn từ trên cao", "Tracks seen from above"),
   "objective.memoriesIntro": text("Hai bức ảnh, một câu chuyện", "Two photos, one story"),
   "objective.recallA": text("1/2 · Nơi đỗ cuối, năm 1972", "1/2 · The final parking spot, 1972"),
@@ -51,7 +50,6 @@ export const banBanhLuoiCopy = {
   "footer.route": text("Chọn ô kề để thêm bước. Mũi tên chọn ô, Enter/Space thêm; dùng nút để lùi hoặc vẽ lại.", "Choose a neighbouring cell to add a step. Arrow keys select a cell; Enter/Space adds it. Use the buttons to undo or reset."),
   "footer.photo": text("Cất ảnh để thêm vào sách và tiếp tục. Có thể mở ảnh lớn để xem chi tiết.", "Keep the photo to add it to the book and continue. Open a larger view to inspect it."),
   "footer.recall": text("Dùng Trang trước/Trang tiếp để đọc theo thời gian.", "Use Previous page/Next page to read in time order."),
-  "footer.launch": text("Xem minh họa rồi tiếp tục. Menu tạm dừng; giảm chuyển động dùng hình tĩnh.", "Watch the illustration, then continue. Menu pauses it; reduced motion uses a still image."),
   "footer.gift": text("Ánh sáng đang tới chiếc đèn. Menu có thể tạm dừng.", "The light is reaching the lantern. Menu can pause it."),
   "footer.finished": text("Đi lại hoặc trò chuyện với xe. Tới vệt sáng mặt đất bên phải để về lộ trình.", "Walk or talk to the rover. Reach the ground glow on the right to return to the route."),
   "button.confirm": text("Chọn bánh này", "Choose this wheel"),
@@ -261,16 +259,16 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-guideIntro-03",
       speaker: "banhLuoi",
-      vi: "Ừ, cứ theo thứ tự trên bản đồ của mình. Về tới tàu, mình sẽ kể Cuội nghe lần nhìn theo Challenger bay lên.",
-      en: "Yes, in the order on our map. Back at the module, I will tell you about watching Challenger lift off."
+      vi: "Ừ, cứ theo thứ tự trên bản đồ của mình. Về tới tàu, mình sẽ cho Cuội xem những đường đi được chụp từ trên cao.",
+      en: "Yes, in the order on our map. Back at the module, I will show you our tracks photographed from above."
     }
   ],
   photoBIntro: [
     {
       id: "banh-luoi-photoBIntro-01",
       speaker: "banhLuoi",
-      vi: "Mình đã ở lại, nhưng những chuyến đi không biến mất. Có cả một bức ảnh nhìn từ trên cao nữa!",
-      en: "I stayed behind, but the journeys did not disappear. There is even a picture from high above!"
+      vi: "Mình đã về tới tàu và mang đủ mẫu rồi! Nhiều năm sau chuyến đi của các nhà du hành, những đường xe đi vẫn còn đó. Cuội xem bức ảnh chụp từ trên cao này nhé!",
+      en: "We are back at the module with both samples! Years after the astronauts’ journey, the rover tracks were still there. Take a look at this picture from above, Cuội!"
     }
   ],
   memoriesIntro: [
@@ -422,7 +420,6 @@ export const banBanhLuoiFooterByPhase = {
   wheels: "footer.wheels",
   routePuzzle: "footer.route",
   guiding: "footer.guide",
-  launch: "footer.launch",
   photoA: "footer.photo",
   photoB: "footer.photo",
   recallA: "footer.recall",

@@ -25,11 +25,3 @@ export const banBanhLuoiRoute = {
     batteryOnlyFailure: [[1,1], [2,1], [1,1], [2,1], [1,1], [1,2], [1,3], [2,3], [3,3], [3,2], [3,1], [2,1], [1,1]]
   }
 } as const;
-
-/** Coordinates for the historical liftoff illustration, not a challenge. */
-export const banBanhLuoiLaunch = {
-  descentStage: { left: 570, right: 630, bottom: 0, top: 60 },
-  required: { left: 580, right: 620, bottom: 60, top: 240 },
-  ascentStageStart: { left: 580, right: 620, bottom: 60, top: 110 },
-  previewDurationSeconds: 5,
-} as const;

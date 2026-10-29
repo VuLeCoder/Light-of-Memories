@@ -145,12 +145,10 @@
 }
 .ban-route-map-static .ban-route-cell > span { font-size: 10px; line-height: 1; padding: 0; }
 .ban-route-map-static .ban-route-cell b { display: none; }
-/* Historical camera diagram and liftoff illustration. */
-.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-launch-panel)) > .story-canvas { position: absolute; inset: 0; }
+/* Historical camera diagram. */
 .ban-camera-diagram { min-width: 0; }
 .ban-camera-diagram svg { display: block; width: 100%; height: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
 .ban-camera-diagram > span { display: block; margin: 10px 0 6px; font-size: 14px; }
-.ban-launch-panel > svg { display: block; width: 200px; height: 260px; max-width: 100%; margin: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
 .book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
 .ban-photo-detail-caption { font-size: 14px; }
 /* Match Tai Thinh's full-frame journal and responsive archive layout. */
@@ -193,7 +191,7 @@
   .banh-luoi-scene > .banh-luoi-hud > span { flex: 1 0 100%; max-width: none; font-size: 14px; }
   .banh-luoi-hud > button { flex: 1; }
   .game-stage.classic-friend-scene .banh-luoi-scene button:not(.ban-route-cell) { min-height: 44px; font-size: 16px; }
-  .ban-route-panel, .ban-launch-panel { margin: 0; }
+  .ban-route-panel { margin: 0; }
 }
 
 /* T02 keeps 44px cells and all controls within the shared 480px stage. */

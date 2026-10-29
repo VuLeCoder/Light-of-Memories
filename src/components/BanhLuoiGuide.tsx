@@ -133,7 +133,7 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
             onChange(p => {
               if (p.phase !== 'guiding' || !p.confirmedRoute || !p.guideCheckpoint) return p;
               const updated = advanceGuide(p.confirmedRoute, p.guideCheckpoint, event);
-              return updated === p.guideCheckpoint ? p : { ...p, guideCheckpoint: updated, phase: updated.stage === 'done' ? 'launch' : 'guiding', turn: 0 };
+              return updated === p.guideCheckpoint ? p : { ...p, guideCheckpoint: updated, phase: updated.stage === 'done' ? 'photoB' : 'guiding', turn: 0 };
             });
           } }}/>
       </div>
