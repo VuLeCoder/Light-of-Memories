@@ -114,6 +114,7 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
             {home ? <g fill="#e3d5af" stroke="#25383d" strokeWidth="1.5"><path d="M-6 3 L-4 -5 H4 L6 3Z M-4 3 L-8 8 M4 3 L8 8" /><rect x="-3" y="-10" width="6" height="5" /></g>
               : stop ? <g><path d="M0 7 V-10" stroke="#efda9f" strokeWidth="2" /><path d="M1 -10 H12 L9 -5 H1Z" fill={stored && index <= checkpoint.nodeIndex ? '#b9ccb1' : '#dec68e'} /><text x="-6" y="-7" textAnchor="end" fill="#f5e8c9" fontSize="14" fontWeight="bold">{stop}</text></g>
               : <circle r="2" fill={index <= checkpoint.nodeIndex ? '#efd397' : '#a4afa3'} />}
+            {stop && stored && index <= checkpoint.nodeIndex && <path d="M-4 13 l3 3 6 -6" fill="none" stroke="#f5e8c9" strokeWidth="2" />}
           </g>;
         })}
         <g transform={`translate(${current.x} ${current.y})`}>
@@ -141,12 +142,12 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
       </div>}
       {isB && feedback.holding && <div className="ban-soil-progress" role="status">{say('Đang quan sát…', 'Looking closely…')}<progress max={.7 / 1.6} value={feedback.force} /></div>}
       </div>
-      <p className="ban-guide-message" role="status">{isA ? rockMessage : isB ? soilMessage : atStop ? copy.waiting[language] : copy[checkpoint.stage][language]}</p>
+      <p className="ban-guide-message" role="status">{isA ? rockMessage : isB ? soilMessage : copy[checkpoint.stage][language]}</p>
       <div className="ban-trip-controls">{atStop ? <div className="ban-rock-buttons">
         <button aria-label={say('Đi trái', 'Walk left')} {...touch(-1)}>←</button>
         <button aria-label={say('Đi phải', 'Walk right')} {...touch(1)}>→</button>
         <button {...touch(null)} aria-disabled={!feedback.near}>{actionLabel}</button>
-      </div> : <span>{atStop ? copy[checkpoint.stage][language] : `${copy.step[language]} ${checkpoint.nodeIndex}/${route.cells.length - 1}`}</span>}
+      </div> : <span>{`${copy.step[language]} ${checkpoint.nodeIndex}/${route.cells.length - 1}`}</span>}
         <button onClick={() => onChange(p => ({ ...p, phase: 'routePuzzle', turn: 0 }))}>{copy.edit[language]}</button>
       </div>
     </div>

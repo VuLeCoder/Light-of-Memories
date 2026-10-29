@@ -249,8 +249,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-guideIntro-01",
       speaker: "banhLuoi",
-      vi: "Có bản đồ rồi! Trong chuyến đi tưởng tượng này, mình sẽ lăn theo Cuội. Bạn dẫn mình ghé hai trạm rồi cùng về tàu nhé.",
-      en: "We have a map! In this imaginary trip, I will roll along with you. Lead me to both stops, then back to the module."
+      vi: "Có bản đồ rồi! Trong chuyến đi tưởng tượng này, mình sẽ lăn theo Cuội. Mình sẽ theo tuyến đã chọn, ghé hai trạm rồi cùng về tàu nhé.",
+      en: "We have a map! In this imaginary trip, I will roll along with you. We’ll follow that route to both stops, then return to the module."
     },
     {
       id: "banh-luoi-guideIntro-02",
@@ -370,7 +370,8 @@ export const banBanhLuoiBook = {
     title: text("Một chuyến đi, hai trạm", "One trip, two stops"),
     paragraphs: [
       text("Cuội và Bánh Lưới chuẩn bị một chuyến đi tưởng tượng. LM là tàu đổ bộ. Tuyến từ tàu ghé A, B theo thứ tự bất kỳ rồi về tàu, qua các ô chung cạnh và tránh hố.", "Cuội and Mesh Wheels plan an imaginary trip. LM means lunar module. Their route starts there, visits A and B in either order, then returns home, along shared cell edges and around craters."),
-      text("Vào đất bằng tốn 1 pin, dốc tốn 2. Cả tuyến dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Entering flat ground costs 1 battery unit; a slope costs 2. Use at most 12. Revisiting a cell still adds to the cost.")
+      text("Vào đất bằng tốn 1 pin, dốc tốn 2. Cả tuyến dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Entering flat ground costs 1 battery unit; a slope costs 2. Use at most 12. Revisiting a cell still adds to the cost."),
+      text("Tới A, Cuội lấy mẫu bên tảng đá; tới B, Cuội quan sát các mảng đất để tìm mẫu đất cam. Mỗi mẫu cần mang về xe trước khi đi tiếp. Hai hoạt động và vị trí A/B được giản lược cho câu chuyện.", "At A, Cuội collects a rock sample; at B, he examines soil patches to find orange soil. Each sample must be brought back to the rover before moving on. These activities and the A/B locations are simplified for the story.")
     ]
   },
   "ban-book-walkback": {

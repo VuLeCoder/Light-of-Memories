@@ -4,7 +4,6 @@ export const guideCopy = {
   atA: text('A · Lấy mẫu bên tảng đá', 'A · Collect a rock sample'),
   atB: text('B · Khám phá đất cam', 'B · Explore orange soil'),
   done: text('Đã về tàu cùng hai mẫu.', 'Back at the lander with both samples.'),
-  waiting: text('Hoạt động tại trạm đang được xây dựng.', 'This stop’s activity is under construction.'),
   edit: text('Bản đồ', 'Map'),
   step: text('Bước', 'Step'),
   soilHints: [

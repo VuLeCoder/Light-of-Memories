@@ -70,9 +70,9 @@ Nộp tuyến đúng mới lưu `confirmedRoute: { modelVersion: 1, cells }`, l�
 
 Tuyến kiểm chứng: `(1,1) → (1,2) → (1,3) → (2,3) → (3,3) → (3,2) → (3,1) → (2,1) → (1,1)` có 8 bước, 9 pin, xa nhất 4 bước đi bộ; tuyến ngược cũng đạt. Không đòi tuyến tối ưu. Các mẫu chỉ vượt pin/chỉ vượt đi bộ nằm trong `cases` của [mô hình](../../src/content/levels/ban-banh-luoi-models.ts). [Thuật toán BFS và xác nhận](../../src/content/levels/ban-banh-luoi-route.ts).
 
-### T03 — Hành trình lấy mẫu (đợt hai điểm dừng, M4)
+### T03 — Hành trình lấy mẫu (đợt hai điểm dừng, M5)
 
-**M1–M4 đã triển khai:** bản đồ hành trình trải ngang, lấy mẫu đá tại A và quan sát đất tại B có nền riêng. Nghiệm thu toàn hành trình và hồi quy toàn chương thuộc M5.
+**M1–M5 đã triển khai:** bản đồ hành trình trải ngang, lấy mẫu đá tại A và quan sát đất tại B có nền riêng. M5 đã kiểm thử tích hợp từ T02 tới hậu kết ở cả hai thứ tự trạm; kiểm duyệt toàn chương trong kế hoạch bộ ba là phạm vi riêng.
 
 Snapshot T02 được duỗi thành thanh ngang, mỗi lần ghé ô là một node riêng. Giữ ô lặp, A/B lặp và LM trung gian; Cuội ở trên thanh, xe ở dưới. Xe tự chuyển tiếp khoảng 160ms/cạnh, dừng tại trạm đầu tiên chưa làm theo đúng tuyến (A→B hoặc B→A). Giảm chuyển động bỏ hoạt ảnh; menu, sách, mất focus và ẩn tab tạm dừng.
 
@@ -82,7 +82,7 @@ Snapshot T02 được duỗi thành thanh ngang, mỗi lần ghé ô là một n
 
 React lưu node đã đến, trạng thái từng mẫu và gợi ý từng trạm; Phaser giữ thời gian/chuyển động tạm. Reducer từ chối sự kiện cũ/lặp/sai thứ tự; reader kiểm tra checkpoint có thể đạt được trên tuyến. Đổi bản nháp hoặc xác nhận cùng tuyến giữ checkpoint; xác nhận tuyến khác reset riêng T03. [Mô hình](../../src/content/levels/ban-banh-luoi-guide.ts), [giao diện](../../src/components/BanhLuoiGuide.tsx), [cảnh](../../src/game/banh-luoi-guide.ts).
 
-Chuỗi hồi tưởng cất cánh → ảnh B → nhật ký → sao giữ nguyên. Người có bản lưu kết cũ vẫn tiếp tục được. Hai thứ tự trạm đã nối tới LM và `launch`; nghiệm thu luồng mới tới hết phần thưởng vẫn thuộc M5.
+Chuỗi hồi tưởng cất cánh → ảnh B → nhật ký → sao giữ nguyên. Người có bản lưu kết cũ vẫn tiếp tục được. Hai thứ tự trạm đã được chơi từ T02 tới LM, toàn đoạn kết và phần thưởng; xem lại không thay bản lưu thật, tải lại/chơi lại giữ ảnh và quyền hoàn thành.
 
 ## 5. Kết, phần thưởng và chơi lại
 
@@ -189,3 +189,12 @@ Kiểm chứng mô hình mới: 4 tuyến hoàn thành trong 8 bước, hai th�
 ## 10. Thiết kế lại — M4/T03 ngày 29/10/2026
 
 **Bằng chứng cho thiết kế cũ, đã được thay ở mục T03/M2 bên trên.** M4 hoàn thành với Cuội dẫn đường, hai hoạt động A/B, snapshot nguyên tuyến và save v12. Đã chơi hai thứ tự trạm và tuyến lặp; kiểm tra chuyển từ T01 tới T03 rồi tiếp tục tới ảnh B/nhật ký/trao sao. 519 kiểm tra mô hình/bản lưu và 38 trạng thái bố cục Việt/Anh đạt; menu/sách/gợi ý dừng điều khiển, thao tác chạm và phục hồi checkpoint đạt. Không lỗi JavaScript hoặc tràn ở các khung đo. Build và diff đạt. [Bàn giao M4](../plan/Thiet_ke_lai_Banh_Luoi_M4.md) ghi phạm vi và bằng chứng tạm. Chưa kiểm Safari/thiết bị cảm ứng thật; kiểm duyệt nội dung và hồi quy toàn bộ thuộc M5.
+
+
+## 11. T03 hai điểm dừng — M5 ngày 30/10/2026
+
+Đã tích hợp và nghiệm thu cả A→B và B→A từ thao tác vẽ T02 tới hậu kết, xem lại kết, tải lại và chơi lại. 707 assertions mô hình/save đạt (gồm tuyến lặp và LM trung gian, save v6–v12, checkpoint hỏng); 30 checkpoint qua giao diện phục hồi đúng trạng thái mẫu. Menu/rời focus hủy giữ, mở lại/xác nhận cùng tuyến giữ mẫu, đổi tuyến reset đúng. Tám bố cục chọn nhầm đất VI/EN × rộng 360/480/640/960 px ở game cao 480 px không tràn; kiểm thử layout được tách chạy lại sau timeout chờ canvas của script tích hợp.
+
+Focus sách/đổi ngôn ngữ trực tiếp hủy thao tác giữ; hồi quy canvas/menu ở Mắt Tròn, Lấp Lánh, Tai Thính đạt, mở menu không đổi chiều cao. Không lỗi JavaScript trong các lượt kiểm tra hoàn chỉnh.
+
+M5 thêm dấu ✓ tại trạm hoàn thành; dọn thông báo đang xây dựng; sửa mô tả tọa độ bản đồ tĩnh cho trình đọc màn hình bằng dữ liệu thật; đồng bộ sách và lời dẫn với vòng lấy mẫu/mang về xe. Không đổi lịch sử, luật T02 hoặc save v13. Build/TypeScript và diff đạt, cảnh báo chunk Phaser giữ nguyên. Script nằm ngoài repo. Chi tiết và giới hạn: [bàn giao M5](../plan/T03_Banh_Luoi_M5_Tich_hop_Ban_giao.md). Chưa kiểm Safari/cảm ứng thật, chưa chơi lại toàn T01 hoặc toàn bộ trò của ba bạn trước trong đợt này.
