@@ -48,9 +48,15 @@ Xem ảnh trong sách gợi ý không nhận thưởng. Ảnh nhận có tên, a
 
 ## 4. Ba thử thách
 
-### T01 — Bánh xe nào?
+### T01 — Giúp bánh xe sẵn sàng
 
-Chọn cao su, lưới kim loại hoặc đá; xem mô tả rồi xác nhận. Chưa chọn hoặc sai đều được sửa, không phạt. Bánh lưới là đáp án; đúng mở ảnh A, cất mới ghi `vip` và mở T02. [Component](../../src/components/BanhLuoiWheels.tsx).
+Chọn cao su, lưới kim loại hoặc đá → **Thử bánh** → **Chọn bánh này**. Bánh đã chọn lăn trên một dải đất trong minh họa 1,2 giây, kèm phản hồi về hình dạng; kết quả đọc được ngay, không cần đợi hoạt ảnh. Mỗi lựa chọn giữ đúng hình dạng của nó, không tự đổi sang bánh lưới. Đây là minh họa quan sát, không đo tốc độ/độ bền và không kết luận lốp cao su không thể dùng trên Mặt Trăng. NASA Glenn mô tả cả lốp cao su của xe kéo MET Apollo 14 và bánh lưới của LRV, nên phản hồi chỉ giúp nhận ra bánh của **chiếc LRV này**.
+
+Khi bánh dừng, hiện mẫu bề mặt phóng to riêng: cao su có rãnh và van hơi; lưới có sợi đan, ô hở và gân chữ V; đá có vân và đốm trên khối đặc. Phản hồi sau thử chỉ mô tả quan sát, không báo ngay đáp án đúng; người chơi tự đối chiếu hình rồi xác nhận. Đổi bánh bỏ mẫu cũ, thử lại phát lại hoạt ảnh. Chế độ giảm chuyển động hiện cận cảnh ngay.
+
+Chưa chọn/chưa thử hoặc chọn sai đều có lời nhắc để sửa, không phạt. Đổi bánh xóa kết quả thử trước; tải lại giữ lựa chọn đã lưu nhưng cần thử lại. Trạng thái thử nằm cục bộ React, không đổi schema v10. Giảm chuyển động dùng hình kết quả tĩnh; mở menu hoặc đưa focus ra ngoài bài dừng hoạt ảnh trang trí. Bánh lưới đã thử là đáp án; xác nhận chỉ chuyển một lần sang ảnh A. Cất ảnh mới ghi `vip` đồng thời chuyển `routeIntro`, rồi đọc lời dẫn để mở T02. [Component](../../src/components/BanhLuoiWheels.tsx).
+
+T01 dùng bảng nền kín trong chiều cao game chung, ba thẻ cùng hàng có tên ngắn và tên truy cập đầy đủ, nút/chữ chính 16px trở lên; thẻ đang chọn giữ tương phản khi hover/focus. Bản hẹp xếp đường thử và phản hồi dưới thẻ; nội dung gợi ý Việt/Anh nằm trong cùng nguồn sách/thoại, không thêm tài nguyên JSON.
 
 ### T02 — Đi xa, nhớ đường về
 
@@ -140,3 +146,8 @@ Các lệnh kiểm chứng đã chạy: `node /tmp/ban-m7-route-model.cjs`, `nod
 **Giới hạn bàn giao:** Chưa chơi xuyên toàn bộ ba màn cũ; hồi quy dùng các checkpoint đại diện nêu trên. Chưa xác nhận trên thiết bị cảm ứng thật, Safari/Firefox, trình đọc màn hình hoặc với học sinh. Chưa đo thời lượng thực để xác nhận mục tiêu 10–15 phút/độ tuổi 7–11. Chưa kiểm tra thủ công việc đổi cửa sổ hệ điều hành và mọi trường hợp mất/khôi phục WebGL. Ca ảnh lỗi đã xác nhận tiếp tục được, chưa xác nhận phục hồi mạng rồi tải lại thành công trong đợt M7. Đây là các giới hạn kiểm chứng, không phải tính năng đã được chứng nhận.
 
 Bản đầu giữ ba bài, một bản đồ cố định, hai ảnh và cánh sao thứ tư. Vá chắn bùn, âm thanh, bản đồ bổ sung và người bạn thứ năm thuộc công việc sau nếu được giao. Không triển khai hosting hay tự commit trong mốc này.
+
+T01 bổ sung minh họa vượt cùng một viên đá: cao su đàn hồi, lưới biến dạng nhiều hơn, bánh kim loại cứng nâng trục rõ hơn. Đây là minh họa định tính, không phải kết quả đo hoặc mô phỏng động lực học. Lựa chọn bánh đá được đổi thành bánh kim loại cứng; giữ khóa lưu cũ `stone` để đọc tiến trình đã lưu. Phản hồi nêu cả lợi ích và hạn chế: lốp hơi có thể xẹp nếu thủng; lưới có thể đứt sợi khi gặp vật sắc; bánh cứng ít ôm địa hình. Không cho bánh tự nổ hay mặc định hỏng khi vượt đá. Giảm chuyển động vẫn được hỗ trợ.
+
+Cơ sở: NASA Glenn https://www3.nasa.gov/specials/wheels/ ; NASA LRV Apollo 17 mục 4.2 https://www.nasa.gov/wp-content/uploads/static/history/alsj/LRVSysHndbkA17.pdf ; NASA/JPL https://scienceandtechnology.jpl.nasa.gov/sites/default/files/documents/JPL_2016-2017_Technology_Highlights.pdf .
+Kiểm tra bổ sung: TypeScript và Vite build đạt. Chưa kiểm tra lại trực quan trình duyệt cho hoạt cảnh vượt đá.

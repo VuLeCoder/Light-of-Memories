@@ -173,7 +173,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     const photo = banBanhLuoiMemories.find(item => banPageId === `ban-photo-${item.id}`);
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className={`book-sheet journey-book${banPageId === 'ban-banh-luoi' ? '' : ' ban-book-study'}`}>
+      <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className={`book-sheet journey-book${banPageId === 'ban-banh-luoi' ? '' : ' ban-book-study'}${banPageId === 'ban-book-wheels' ? ' ban-book-wheels' : ''}`}>
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
         <h2 id="banh-luoi-book-title" tabIndex={-1}>{entry.title[language]}</h2>
         {banPageId === 'ban-banh-luoi' && <img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/>}

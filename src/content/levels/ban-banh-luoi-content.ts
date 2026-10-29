@@ -30,7 +30,7 @@ export const banBanhLuoiCopy = {
   "objective.route": text("Theo ánh đèn tới thung lũng xa", "Follow the lantern to a distant valley"),
   "objective.approach": text("Đến gần chiếc xe", "Approach the rover"),
   "objective.meeting": text("Lắng nghe Bánh Lưới", "Listen to Mesh Wheels"),
-  "objective.wheels": text("T01 · Tìm bánh xe của Bánh Lưới", "T01 · Find Mesh Wheels’ wheels"),
+  "objective.wheels": text("T01 · Thử bánh xe", "T01 · Try the wheels"),
   "objective.photoA": text("Một bức ảnh ở nơi đỗ cuối", "A photo at the final parking spot"),
   "objective.routeIntro": text("Nhớ về một chuyến khảo sát", "Remember an exploring trip"),
   "objective.routePuzzle": text("T02 · Ghé A, B rồi về tàu", "T02 · Visit A and B, then return"),
@@ -46,7 +46,7 @@ export const banBanhLuoiCopy = {
   "objective.finished": text("Ngước nhìn phía trời bên phải", "Look up at the sky on the right"),
   "footer.dialogue": text("Space/Enter hoặc nút trong khung thoại để hiện hết câu và tiếp tục.", "Use Space/Enter or the dialogue button to reveal the full line and continue."),
   "footer.walk": text("A/D, ←/→ hoặc chạm đất để đi. Đến gần xe nhấn E, hoặc chạm xe.", "Use A/D, ←/→ or touch the ground to walk. Press E near the rover, or touch it."),
-  "footer.wheels": text("Chọn bánh để xem, rồi xác nhận. Dùng chuột/chạm hoặc Tab và Enter/Space.", "Choose a wheel to inspect, then confirm. Use mouse/touch or Tab and Enter/Space."),
+  "footer.wheels": text("Chọn → Thử bánh → Chọn bánh này. Dùng chuột/chạm hoặc Tab và Enter/Space.", "Select → Try wheel → Choose this wheel. Use mouse/touch or Tab and Enter/Space."),
   "footer.route": text("Chọn ô kề để thêm bước. Mũi tên chọn ô, Enter/Space thêm; dùng nút để lùi hoặc vẽ lại.", "Choose a neighbouring cell to add a step. Arrow keys select a cell; Enter/Space adds it. Use the buttons to undo or reset."),
   "footer.camera": text("Chọn A/B/C rồi chỉnh góc bằng thanh trượt hoặc nút −/+. Bấm Thử góc nhìn.", "Choose A/B/C, then adjust the angle with the slider or −/+ buttons. Select Try this view."),
   "footer.photo": text("Cất ảnh để thêm vào sách và tiếp tục. Có thể mở ảnh lớn để xem chi tiết.", "Keep the photo to add it to the book and continue. Open a larger view to inspect it."),
@@ -55,6 +55,7 @@ export const banBanhLuoiCopy = {
   "footer.gift": text("Ánh sáng đang tới chiếc đèn. Menu có thể tạm dừng.", "The light is reaching the lantern. Menu can pause it."),
   "footer.finished": text("Đi lại hoặc trò chuyện với xe. Tới vệt sáng mặt đất bên phải để về lộ trình.", "Walk or talk to the rover. Reach the ground glow on the right to return to the route."),
   "button.confirm": text("Chọn bánh này", "Choose this wheel"),
+  "button.tryWheel": text("Thử bánh", "Try wheel"),
   "button.hint": text("Gợi ý", "Hint"),
   "button.hintMore": text("Xem thêm gợi ý", "Show another hint"),
   "button.undo": text("Lùi một bước", "Undo one step"),
@@ -79,13 +80,27 @@ export const banBanhLuoiCopy = {
   "button.increaseAngle": text("Nâng góc camera một độ", "Raise the camera by one degree"),
   "wheels.rubber": text("A · Lốp cao su bơm hơi", "A · Air-filled rubber tyre"),
   "wheels.mesh": text("B · Bánh lưới kim loại", "B · Wire-mesh wheel"),
-  "wheels.stone": text("C · Bánh đá đặc", "C · Solid stone wheel"),
-  "wheels.rubberDetail": text("Mặt lốp kín, có van để bơm hơi.", "A closed tyre with a valve for adding air."),
+  "wheels.stone": text("C · Bánh kim loại cứng", "C · Rigid metal wheel"),
+  "wheels.title": text("Giúp bánh xe sẵn sàng", "Get the wheels ready"),
+  "wheels.instruction": text("Thử bánh rồi tìm chiếc có ô lưới và gân chữ V nhé.", "Try a wheel, then find the mesh with V-shaped treads."),
+  "wheels.options": text("Ba lựa chọn bánh xe", "Three wheel choices"),
+  "wheels.rubberShort": text("Cao su", "Rubber"),
+  "wheels.meshShort": text("Lưới", "Mesh"),
+  "wheels.stoneShort": text("Cứng", "Rigid"),
+  "wheels.trialModel": text("Minh họa vượt đá", "Illustrated rock crossing"),
+  "wheels.flatExample": text("Nếu bị thủng…", "If punctured…"),
+  "wheels.closeup": text("Cận cảnh bề mặt", "Surface close-up"),
+  "wheels.ready": text("Chọn một bánh, rồi bấm Thử bánh để quan sát.", "Choose a wheel, then press Try wheel to observe it."),
+  "wheels.untried": text("Mình thử bánh vừa chọn trước nhé!", "Let us try this wheel first!"),
+  "wheels.rubberTrial": text("Êm nhờ hơi. Nếu thủng, khí thoát ra và lốp có thể xẹp.", "Air cushions bumps. If punctured, air escapes and the tyre can go flat."),
+  "wheels.meshTrial": text("Lưới uốn theo đá; vật sắc có thể đứt sợi.", "Mesh flexes over rocks; sharp edges can break wires."),
+  "wheels.stoneTrial": text("Giữ hình dạng; xóc hơn khi vượt đá.", "Keeps its shape; bumps more over rocks."),
+  "wheels.rubberDetail": text("Minh họa nếu bị thủng: khí thoát ra, vỏ lốp xẹp sát đất nhưng vành vẫn tròn.", "Conditional puncture example: air escapes and the tyre collapses against the ground while the rim stays round."),
   "wheels.meshDetail": text("Nhiều sợi kim loại đan thành lưới; các dải gân xếp hình chữ V.", "Metal wires form a mesh, with V-shaped tread strips."),
-  "wheels.stoneDetail": text("Một khối đá kín và nặng, không có ô lưới.", "A heavy, solid piece of stone with no mesh openings."),
+  "wheels.stoneDetail": text("Vành kim loại cứng, không uốn ôm viên đá.", "A rigid metal rim that does not flex around the rock."),
   "wheels.empty": text("Bạn chọn một bánh để mình cùng quan sát nhé.", "Choose a wheel so we can look at it together."),
-  "wheels.wrongRubber": text("Thử nhìn lại những ô lưới nhỏ trên bánh của mình. Có giống mặt lốp kín này không?", "Look again at the little mesh openings on my wheels. Do they look like this closed tyre?"),
-  "wheels.wrongStone": text("Bánh của mình có nhiều sợi đan và có thể hơi uốn. Mình cùng tìm lại nhé.", "My wheels have woven wires and can flex a little. Let us look again."),
+  "wheels.wrongRubber": text("Mặt lốp này kín. Bánh của mình có ô lưới; bạn thử bánh khác nhé.", "This tyre is closed. My wheels have mesh openings; try another wheel."),
+  "wheels.wrongStone": text("Bánh cứng không có sợi đan. Bạn thử tìm bánh có ô lưới nhé.", "The rigid wheel has no woven wires. Try the wheel with mesh openings."),
   "wheels.correct": text("Đúng rồi! Lưới kim loại có thể hơi uốn, còn các dải gân giúp bánh bám đất.", "That is right! The metal mesh can flex a little, and the tread strips help it grip the ground."),
   "wheels.hint1": text("Những đường nhỏ trên bánh là ô lưới hay mặt lốp kín nhỉ?", "Are those little lines mesh openings or a closed tyre?"),
   "wheels.hint2": text("Nhìn ảnh phóng to: các sợi kim loại đan nhau, bên ngoài có những gân hình chữ V.", "Look at the close-up: metal wires cross each other, with V-shaped treads on the outside."),
@@ -205,8 +220,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-meeting-04",
       speaker: "banhLuoi",
-      vi: "Cuội thử nhìn bốn chiếc bánh nhé. Bánh của mình có gì đặc biệt?",
-      en: "Take a look at my four wheels, Cuội. What is special about them?"
+      vi: "Cuội thử lăn những bánh minh họa này nhé. Chiếc nào có ô lưới giống bánh của mình?",
+      en: "Try rolling these illustrated wheels, Cuội. Which one has mesh openings like mine?"
     }
   ],
   photoAIntro: [
@@ -354,8 +369,8 @@ export const banBanhLuoiBook = {
   "ban-book-wheels": {
     title: text("Bánh xe không cần bơm hơi", "Wheels that need no air"),
     paragraphs: [
-      text("Bánh LRV đan từ các sợi kim loại. Lớp lưới hơi uốn, các dải gân giúp bánh bám đất.", "LRV wheels are woven from metal wires. The mesh flexes a little, and tread strips help it grip the soil."),
-      text("Ảnh chi tiết cho thấy ô lưới và gân chữ V. Bánh không cần bơm hơi.", "The close-up shows mesh openings and V-shaped treads. These wheels need no air.")
+      text("Bánh LRV đan bằng dây kim loại, có gân chữ V và không cần bơm hơi.", "LRV wheels use wire mesh and V-shaped treads. They need no air."),
+      text("Lưới có thể uốn nhưng vật sắc vẫn có thể làm đứt sợi. Minh họa chuyển động được giản lược.", "Mesh can flex, but sharp objects can break wires. Motion is simplified.")
     ]
   },
   "ban-book-route": {
