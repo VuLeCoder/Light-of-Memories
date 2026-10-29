@@ -1,6 +1,6 @@
 # Câu chuyện Apollo 17 — Bánh Lưới (màn 4)
 
-Bản bàn giao M0–M7, cập nhật **28/10/2026**. Tài liệu mô tả bản đang chạy; đây là nguồn tổng hợp chính thay cho kế hoạch và bàn giao tạm trong `docs/plan/`. Lời thoại Việt/Anh lấy từ [module nội dung](../../src/content/levels/ban-banh-luoi-content.ts), không duy trì một bản thoại thứ hai trong tài liệu.
+Bản bàn giao M0–M7 và cập nhật thiết kế lại T01/T02, cập nhật **29/10/2026**. Tài liệu mô tả bản đang chạy; đây là nguồn tổng hợp chính thay cho kế hoạch và bàn giao tạm trong `docs/plan/`. Lời thoại Việt/Anh lấy từ [module nội dung](../../src/content/levels/ban-banh-luoi-content.ts), không duy trì một bản thoại thứ hai trong tài liệu.
 
 ## 1. Thông tin thật
 
@@ -54,15 +54,19 @@ Chọn cao su, lưới kim loại hoặc đá → **Thử bánh** → **Chọn b
 
 Khi bánh dừng, hiện mẫu bề mặt phóng to riêng: cao su có rãnh và van hơi; lưới có sợi đan, ô hở và gân chữ V; đá có vân và đốm trên khối đặc. Phản hồi sau thử chỉ mô tả quan sát, không báo ngay đáp án đúng; người chơi tự đối chiếu hình rồi xác nhận. Đổi bánh bỏ mẫu cũ, thử lại phát lại hoạt ảnh. Chế độ giảm chuyển động hiện cận cảnh ngay.
 
-Chưa chọn/chưa thử hoặc chọn sai đều có lời nhắc để sửa, không phạt. Đổi bánh xóa kết quả thử trước; tải lại giữ lựa chọn đã lưu nhưng cần thử lại. Trạng thái thử nằm cục bộ React, không đổi schema v10. Giảm chuyển động dùng hình kết quả tĩnh; mở menu hoặc đưa focus ra ngoài bài dừng hoạt ảnh trang trí. Bánh lưới đã thử là đáp án; xác nhận chỉ chuyển một lần sang ảnh A. Cất ảnh mới ghi `vip` đồng thời chuyển `routeIntro`, rồi đọc lời dẫn để mở T02. [Component](../../src/components/BanhLuoiWheels.tsx).
+Chưa chọn/chưa thử hoặc chọn sai đều có lời nhắc để sửa, không phạt. Đổi bánh xóa kết quả thử trước; tải lại giữ lựa chọn đã lưu nhưng cần thử lại. Trạng thái thử nằm cục bộ React, không thêm trường thử bánh vào bản lưu. Giảm chuyển động dùng hình kết quả tĩnh; mở menu hoặc đưa focus ra ngoài bài dừng hoạt ảnh trang trí. Bánh lưới đã thử là đáp án; xác nhận chỉ chuyển một lần sang ảnh A. Cất ảnh mới ghi `vip` đồng thời chuyển `routeIntro`, rồi đọc lời dẫn để mở T02. [Component](../../src/components/BanhLuoiWheels.tsx).
 
 T01 dùng bảng nền kín trong chiều cao game chung, ba thẻ cùng hàng có tên ngắn và tên truy cập đầy đủ, nút/chữ chính 16px trở lên; thẻ đang chọn giữ tương phản khi hover/focus. Bản hẹp xếp đường thử và phản hồi dưới thẻ; nội dung gợi ý Việt/Anh nằm trong cùng nguồn sách/thoại, không thêm tài nguyên JSON.
 
-### T02 — Đi xa, nhớ đường về
+### T02 — Cùng vạch đường đi
 
 Một lưới chữ nhật 6 cột × 5 hàng, tọa độ (cột, hàng) từ 1. LM (1,1), A (2,3), B (3,3); hố (2,2), (4,2), (4,3); dốc (3,2), (3,4). Đi bốn hướng, ghé đủ A/B theo thứ tự tùy ý, trở về LM. Ô thường tốn 1 pin, dốc 2; xuất phát không tốn. Ngân sách **12 pin**. Tại mọi bước, đường đi bộ ngắn nhất tránh hố về LM không quá **4 bước**; dốc vẫn tính 1 bước đi bộ.
 
 Hai giới hạn kiểm tra độc lập. Đường nháp vượt giới hạn vẫn được giữ để sửa; bước vào hố/nhảy ô bị từ chối. Có hoàn tác, vẽ lại và nộp; không đồng hồ hoặc tự vẽ đáp án. Mũi tên chọn ô, Enter/Space thêm bước. Gợi ý cấp 1 nhắc xem hai chỉ báo, cấp 2 hiện vùng đi bộ hợp lệ và bước vi phạm đầu tiên. Sơ đồ sách dùng cùng component/dữ liệu.
+
+T02 chuẩn bị chuyến đi tưởng tượng cùng Cuội. Chỉ báo ghi thứ tự ghé A/B lần đầu và việc cần làm tiếp; nét đường giữ mọi đoạn lặp. Lưới hẹp 264×220px, mỗi ô 44×44px; tọa độ nằm trong nhãn truy cập. Khung phản hồi phân trang để đọc hết nhiều lỗi mà không nối dài cảnh; đóng trả focus về ô bản đồ.
+
+Nộp tuyến đúng mới lưu `confirmedRoute: { modelVersion: 1, cells }`, là bản sao độc lập của toàn bộ nháp theo đúng thứ tự. Đi lặp, quay lại LM giữa đường và hai thứ tự A/B đều được giữ. Sửa nháp, nộp sai, mở sách/menu hoặc gợi ý không thay tuyến đã xác nhận. Nộp tuyến khác xóa cấu hình camera trước; nộp lại cùng tuyến giữ cấu hình. M3 bàn giao snapshot cho M4; đến khi M4 thay T03 bằng Cuội dẫn đường, tuyến đúng vẫn nối vào camera đang chạy. Checkpoint dẫn đường và nút sửa/tiếp tục từ T03 thuộc M4.
 
 Tuyến kiểm chứng: `(1,1) → (1,2) → (1,3) → (2,3) → (3,3) → (3,2) → (3,1) → (2,1) → (1,1)` có 8 bước, 9 pin, xa nhất 4 bước đi bộ; tuyến ngược cũng đạt. Không đòi tuyến tối ưu. Các mẫu chỉ vượt pin/chỉ vượt đi bộ nằm trong `cases` của [mô hình](../../src/content/levels/ban-banh-luoi-models.ts). [Thuật toán BFS và xác nhận](../../src/content/levels/ban-banh-luoi-route.ts).
 
@@ -117,7 +121,7 @@ route → approach → meeting → wheels → photoA
 → farewell → gift → finished
 ```
 
-[Tiến trình màn](../../src/content/levels/ban-banh-luoi-progress.ts) kiểm tra prerequisite bánh/ảnh/tuyến/camera và phục hồi về mốc hợp lệ. Đường nháp vượt giới hạn vẫn là dữ liệu hợp lệ. [Bộ lưu chung](../../src/state/progress.ts) ghi v10, đọc v1–v10; v1–v5 thêm màn mới, v6–v9 bổ sung trường còn thiếu. Dữ liệu hỏng của màn không reset cả hành trình. Lượt thoại, góc, tuyến và cấp gợi ý được lưu; không lưu tọa độ, focus hoặc đồng hồ hiệu ứng. Storage bị chặn vẫn chơi trong phiên.
+[Tiến trình màn](../../src/content/levels/ban-banh-luoi-progress.ts) kiểm tra prerequisite bánh/ảnh/tuyến/camera và phục hồi về mốc hợp lệ. Đường nháp vượt giới hạn vẫn là dữ liệu hợp lệ. [Bộ lưu chung](../../src/state/progress.ts) ghi v11, đọc v1–v11; v1–v5 thêm màn mới, v6–v10 đã qua T02 tạo snapshot từ nguyên tuyến hợp lệ đã lưu. Tuyến chưa nộp không tự được xác nhận. Snapshot v11 được kiểm tra riêng với nháp; nếu snapshot hỏng ở chặng sau T02 thì về T02 trong chương, giữ ảnh đã cất và dấu hoàn thành, kể cả qua lần tải tiếp theo. Không tự thay bằng tuyến mẫu. Dữ liệu hỏng của màn không reset cả hành trình. Lượt thoại, góc, tuyến và cấp gợi ý được lưu; không lưu tọa độ, focus hoặc đồng hồ hiệu ứng. Storage bị chặn vẫn chơi trong phiên.
 
 Focus đi theo chặng khi game đang giữ bàn phím, bỏ qua hidden/inert/disabled; không lấy lại từ sách khi trao sao xong. Menu dừng chữ, cất cánh và ánh sáng; tiếp tục bỏ phím/đích cũ. Chuyển ngôn ngữ không reset bài/vị trí. [App](../../src/App.tsx), [focus](../../src/focus/game-focus.ts), [cảnh Phaser](../../src/game/PreviewScene.ts).
 
@@ -151,3 +155,9 @@ T01 bổ sung minh họa vượt cùng một viên đá: cao su đàn hồi, lư
 
 Cơ sở: NASA Glenn https://www3.nasa.gov/specials/wheels/ ; NASA LRV Apollo 17 mục 4.2 https://www.nasa.gov/wp-content/uploads/static/history/alsj/LRVSysHndbkA17.pdf ; NASA/JPL https://scienceandtechnology.jpl.nasa.gov/sites/default/files/documents/JPL_2016-2017_Technology_Highlights.pdf .
 Kiểm tra bổ sung: TypeScript và Vite build đạt. Chưa kiểm tra lại trực quan trình duyệt cho hoạt cảnh vượt đá.
+
+## 9. Thiết kế lại — M3/T02 ngày 29/10/2026
+
+M3 hoàn thành với tuyến đã xác nhận độc lập và save v11, chuẩn bị dữ liệu cho Cuội dẫn đường ở M4. Chromium/Playwright kiểm tra 69 trường hợp mô hình/bản lưu và 134 lượt đo bố cục Việt/Anh, gồm stage 480px tại rộng game 320–1000px, nhiều lỗi phân trang và viewport thực 360/390/1440px: không tràn, ô bấm ≥44px, chữ nội dung/điều khiển ≥16px, không lỗi JavaScript. Đã kiểm tra tự vẽ tuyến lặp, xác nhận/tải lại, hai thứ tự A/B, đổi tuyến, gợi ý, menu/sách và bàn phím/chạm giả lập. Build/TypeScript và diff đạt; cảnh báo chunk Phaser lớn còn như trước.
+
+Bàn giao chi tiết: [M3](../plan/Thiet_ke_lai_Banh_Luoi_M3.md). Bằng chứng tạm ở `/tmp/cuoi-m3.cjs`, `/tmp/cuoi-m3-results.json` và ảnh `/tmp/cuoi-m3-*.png`; không thêm test vào repo. Chưa kiểm Safari/thiết bị cảm ứng thật. T03 camera vẫn hoạt động đến M4; kiểm thử dẫn đường và hồi quy toàn chương/ba bạn trước thuộc M4/M5.

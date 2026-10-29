@@ -20,12 +20,12 @@ export function readProgress(): { progress: Progress; unavailable: boolean } {
   if (!raw) return { progress: fresh, unavailable: false };
   try {
     const data = JSON.parse(raw);
-    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(data.version) || !milestones.includes(data.milestone)) return { progress: fresh, unavailable: false };
+    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(data.version) || !milestones.includes(data.milestone)) return { progress: fresh, unavailable: false };
     const milestone: Milestone = data.milestone;
     const sparkle = readSparkle(data.sparkle);
     const surveyor = data.version >= 3 && (milestone === 'complete' || milestone === 'surveyor') ? readSurveyorProgress(data.surveyor) : freshSurveyor();
     const taiThinh = data.version >= 5 ? readTaiThinh(data.taiThinh) : freshTaiThinh();
-    const banhLuoi = data.version >= 6 ? readBanhLuoi(data.banhLuoi) : freshBanhLuoi();
+    const banhLuoi = data.version >= 6 ? readBanhLuoi(data.banhLuoi, data.version) : freshBanhLuoi();
     const activeAllowed = !['tai-thinh', 'ban-banh-luoi'].includes(data.activeLevel) || isLevelId(data.activeLevel) && journeyStatus(data.activeLevel, { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'tai-thinh': taiThinh.completedOnce, 'ban-banh-luoi': banhLuoi.completedOnce }) !== 'locked';
     return { unavailable: false, progress: {
       scene: milestone === 'earth' ? 'earth' : 'moon',
@@ -43,7 +43,7 @@ export function saveProgress(chapter: Chapter, quest: MoonQuest, completed: bool
   const milestone: Milestone = completed ? 'complete' : chapter === 'earth' ? 'earth'
     : ['departing', 'arriving', 'moon-waking'].includes(chapter) ? 'moon'
     : chapter === 'moon-story' ? 'moon-story' : quest === 'bench' ? 'awake' : quest;
-  try { localStorage.setItem(key, JSON.stringify({ version: 10, milestone, surveyor, sparkle, taiThinh, banhLuoi, activeLevel: milestone === 'complete' ? activeLevel : null })); return true; }
+  try { localStorage.setItem(key, JSON.stringify({ version: 11, milestone, surveyor, sparkle, taiThinh, banhLuoi, activeLevel: milestone === 'complete' ? activeLevel : null })); return true; }
   catch { return false; }
 }
 

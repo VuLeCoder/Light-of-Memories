@@ -1,6 +1,10 @@
 import { banBanhLuoiRoute as model } from './ban-banh-luoi-models';
 
 export type RouteCell = readonly [number, number];
+export interface ConfirmedBanhLuoiRoute {
+  modelVersion: 1;
+  cells: RouteCell[];
+}
 export const sameCell = (a: RouteCell, b: RouteCell) => a[0] === b[0] && a[1] === b[1];
 export const routeCells: RouteCell[] = Array.from({ length: model.columns * model.rows }, (_, i) => [i % model.columns + 1, Math.floor(i / model.columns) + 1]);
 export const isRouteCell = (v: unknown): v is RouteCell => Array.isArray(v) && v.length === 2 && v.every((n, axis) => Number.isInteger(n) && n >= 1 && n <= (axis === 0 ? model.columns : model.rows));
@@ -49,4 +53,17 @@ export function readRouteCells(value: unknown): RouteCell[] {
     result.push([cell[0], cell[1]]);
   }
   return result;
+}
+
+/** A confirmed trip is an exact, independent copy, never a repaired draft. */
+export function confirmRoute(cells: readonly RouteCell[]): ConfirmedBanhLuoiRoute | null {
+  if (!analyseRoute(cells).correct) return null;
+  return { modelVersion: 1, cells: cells.map(([x, y]) => [x, y]) };
+}
+
+export function readConfirmedRoute(value: unknown): ConfirmedBanhLuoiRoute | null {
+  if (!value || typeof value !== 'object') return null;
+  const route = value as Record<string, unknown>;
+  if (route.modelVersion !== 1 || !Array.isArray(route.cells) || !route.cells.every(isRouteCell)) return null;
+  return confirmRoute(route.cells);
 }

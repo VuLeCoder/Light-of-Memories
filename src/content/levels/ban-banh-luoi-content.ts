@@ -104,7 +104,18 @@ export const banBanhLuoiCopy = {
   "wheels.correct": text("Đúng rồi! Lưới kim loại có thể hơi uốn, còn các dải gân giúp bánh bám đất.", "That is right! The metal mesh can flex a little, and the tread strips help it grip the ground."),
   "wheels.hint1": text("Những đường nhỏ trên bánh là ô lưới hay mặt lốp kín nhỉ?", "Are those little lines mesh openings or a closed tyre?"),
   "wheels.hint2": text("Nhìn ảnh phóng to: các sợi kim loại đan nhau, bên ngoài có những gân hình chữ V.", "Look at the close-up: metal wires cross each other, with V-shaped treads on the outside."),
-  "route.rule": text("Ghé A và B rồi về LM. Dùng tối đa 12 pin; mọi ô phải cách LM không quá 4 bước đi bộ.", "Visit A and B, then return to LM. Use at most 12 battery units; every cell must be within 4 walking steps of LM."),
+  "route.hud": text("T02 · Cùng vạch đường đi", "T02 · Plan our trip"),
+  "route.title": text("Đi xa, nhớ đường về", "Explore and find the way home"),
+  "route.shortRule": text("Ghé A, B → LM · Pin ≤12 · Đi bộ về ≤4 bước.", "A, B → LM · Battery ≤12 · Walk home ≤4 steps."),
+  "route.visited": text("Trạm đã ghé và mục tiêu tiếp theo", "Visited stops and next goal"),
+  "route.nextStops": text("Còn ghé {stops}", "Still to visit: {stops}"),
+  "route.return": text("Trở về LM nhé", "Back to LM next"),
+  "route.ready": text("Thử lộ trình nhé", "Check our trip"),
+  "route.review": text("Xem lại giới hạn", "Check limits"),
+  "route.undoShort": text("Lùi", "Undo"),
+  "route.resetShort": text("Vẽ lại", "Reset"),
+  "route.messages": text("Lời nhắc về lộ trình", "Route feedback"),
+  "route.rule": text("Vạch đường cho Cuội và Bánh Lưới: ghé A, B rồi về LM. Tối đa 12 pin; mỗi ô cách tàu không quá 4 bước đi bộ.", "Plan a trip for Cuội and Mesh Wheels: visit A, B, then LM. At most 12 battery units; every cell within 4 walking steps of home."),
   "route.model": text("Bản đồ mô phỏng · Không theo tỉ lệ địa hình thật", "Model map · Not to the scale of real terrain"),
   "route.lm": text("LM · Tàu đổ bộ", "LM · Lunar module"),
   "route.stationA": text("A · Trạm lấy mẫu đá", "A · Rock sample stop"),
@@ -236,8 +247,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-routeIntro-01",
       speaker: "banhLuoi",
-      vi: "Ngày trước, mình thích những chuyến đi xa lắm! Cùng mình nhớ lại một chuyến khảo sát nhé.",
-      en: "I loved those long trips! Let us remember an exploring trip together."
+      vi: "Ngày trước, mình thích những chuyến đi xa lắm! Cuội cùng mình vạch đường cho một chuyến đi trong tưởng tượng nhé.",
+      en: "I loved those long trips! Cuội, let us plan an imaginary trip together."
     },
     {
       id: "banh-luoi-routeIntro-02",
@@ -376,7 +387,7 @@ export const banBanhLuoiBook = {
   "ban-book-route": {
     title: text("Một chuyến đi, hai trạm", "One trip, two stops"),
     paragraphs: [
-      text("Từ LM, xe ghé A và B theo thứ tự bất kỳ rồi về LM. Xe đi qua ô chung cạnh, tránh hố.", "From LM, visit A and B in either order, then return. Follow cells that share a side and avoid craters."),
+      text("Cuội và Bánh Lưới chuẩn bị một chuyến đi tưởng tượng. Tuyến từ LM ghé A, B theo thứ tự bất kỳ rồi về tàu, qua các ô chung cạnh và tránh hố.", "Cuội and Mesh Wheels plan an imaginary trip. Their route starts at LM, visits A and B in either order, then returns home, along shared cell edges and around craters."),
       text("Vào đất bằng tốn 1 pin, dốc tốn 2. Cả tuyến dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Entering flat ground costs 1 battery unit; a slope costs 2. Use at most 12. Revisiting a cell still adds to the cost.")
     ]
   },

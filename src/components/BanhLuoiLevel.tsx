@@ -38,7 +38,7 @@ export function BanhLuoiLevel({ language, progress, onChange, onBack, onHint, pa
   };
   return <section className={`banh-luoi-scene${ending ? ' ban-ending' : ''}`} hidden={paused} lang={language} aria-label={copy['identity.name'][language]}>
     {!ending && <div className="surveyor-scene-hud banh-luoi-hud">
-      <span>{phase === 'routePuzzle' ? (language === 'vi' ? 'T02 · Vẽ đường đi' : 'T02 · Plan the route') : phase === 'camera' ? (language === 'vi' ? 'T03 · Góc camera' : 'T03 · Camera') : copy[`objective.${phase}`][language]}</span>
+      <span>{phase === 'routePuzzle' ? copy['route.hud'][language] : phase === 'camera' ? (language === 'vi' ? 'T03 · Góc camera' : 'T03 · Camera') : copy[`objective.${phase}`][language]}</span>
       {['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'cameraIntro', 'camera', 'launch', 'photoB', 'memoriesIntro'].includes(phase) && <button onClick={hint}>{copy['button.hint'][language]}</button>} <button onClick={onBack}>{copy['button.back'][language]}</button>
     </div>}
     {talking && <EarthDialogue managedFocus key={phase} language={language} paused={paused} title={copy['identity.name'][language]}

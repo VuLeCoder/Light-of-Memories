@@ -1,5 +1,5 @@
 import { analyseCamera, cameraSpots, readCameraAngle, type CameraSpot } from './ban-banh-luoi-camera';
-import { analyseRoute, readRouteCells, type RouteCell } from './ban-banh-luoi-route';
+import { readConfirmedRoute, readRouteCells, type ConfirmedBanhLuoiRoute, type RouteCell } from './ban-banh-luoi-route';
 import { banBanhLuoiRoute } from './ban-banh-luoi-models';
 import { banBanhLuoiScript } from './ban-banh-luoi-content';
 
@@ -16,13 +16,14 @@ export interface BanhLuoiProgress {
   cameraAngle: number;
   cameraHint: 0 | 1 | 2;
   routeCells: RouteCell[];
+  confirmedRoute: ConfirmedBanhLuoiRoute | null;
   routeHint: 0 | 1 | 2;
   completedOnce: boolean;
 }
-export const freshBanhLuoi = (): BanhLuoiProgress => ({ phase: 'route', turn: 0, wheelChoice: null, keepsakes: [], routeCells: [banBanhLuoiRoute.lm], routeHint: 0, cameraSpot: null, cameraAngle: 0, cameraHint: 0, completedOnce: false });
+export const freshBanhLuoi = (): BanhLuoiProgress => ({ phase: 'route', turn: 0, wheelChoice: null, keepsakes: [], routeCells: [banBanhLuoiRoute.lm], confirmedRoute: null, routeHint: 0, cameraSpot: null, cameraAngle: 0, cameraHint: 0, completedOnce: false });
 
 /** A damaged fourth chapter never resets the three earlier friends. */
-export function readBanhLuoi(value: unknown): BanhLuoiProgress {
+export function readBanhLuoi(value: unknown, version = 11): BanhLuoiProgress {
   if (!value || typeof value !== 'object') return freshBanhLuoi();
   const d = value as Record<string, unknown>;
   if (!banhLuoiPhases.includes(d.phase as BanhLuoiPhase)) return freshBanhLuoi();
@@ -37,16 +38,23 @@ export function readBanhLuoi(value: unknown): BanhLuoiProgress {
   const kept = Array.isArray(d.keepsakes) && d.keepsakes.includes('vip') && (completedOnce || wheelChoice === 'mesh' && afterPhotoA.includes(phase));
   if (afterPhotoA.includes(phase) && !kept) phase = 'photoA';
   const routeCells = readRouteCells(d.routeCells);
-  if (afterRoute.includes(phase) && !analyseRoute(routeCells).correct) phase = 'routePuzzle';
+  // Older saves had only a draft. Migrate it only after the player passed T02,
+  // and validate the original array so a damaged suffix cannot confirm a trip.
+  const confirmedRoute = version <= 10 && afterRoute.includes(phase)
+    ? readConfirmedRoute({ modelVersion: 1, cells: d.routeCells })
+    : readConfirmedRoute(d.confirmedRoute);
+  if (afterRoute.includes(phase) && !confirmedRoute) phase = 'routePuzzle';
   const cameraSpot = cameraSpots.includes(d.cameraSpot as CameraSpot) ? d.cameraSpot as CameraSpot : null;
   const cameraAngle = readCameraAngle(d.cameraAngle);
   if (afterCamera.includes(phase) && analyseCamera(cameraSpot,cameraAngle) !== 'correct') phase = 'camera';
-  const orbit = (completedOnce || ending.includes(phase)) && kept && Array.isArray(d.keepsakes) && d.keepsakes.includes('orbit');
+  // Collected photos survive route recovery, including its subsequent reloads.
+  // They never bypass the route/camera prerequisites or award completion.
+  const orbit = kept && Array.isArray(d.keepsakes) && d.keepsakes.includes('orbit');
   if (ending.includes(phase) && !orbit) phase = 'photoB';
   if (phase === 'finished' && !completedOnce) phase = 'gift';
   const maxTurn = phase === 'route' || phase === 'meeting' || phase === 'routeIntro' || phase === 'cameraIntro' || phase === 'memoriesIntro' || phase === 'farewell' ? banBanhLuoiScript[phase].length - 1 : phase === 'photoB' ? 1 : phase === 'gift' && completedOnce ? banBanhLuoiScript.giftAfter.length : 0;
   return { phase, turn: phase === 'gift' && completedOnce ? Math.max(1, Math.min(maxTurn, Number.isInteger(d.turn) ? d.turn as number : 1)) : Number.isInteger(d.turn) ? Math.max(0, Math.min(maxTurn, d.turn as number)) : 0,
-    wheelChoice, keepsakes: kept ? orbit ? ['vip','orbit'] : ['vip'] : [], routeCells, routeHint: d.routeHint === 1 || d.routeHint === 2 ? d.routeHint : 0,
+    wheelChoice, keepsakes: kept ? orbit ? ['vip','orbit'] : ['vip'] : [], routeCells, confirmedRoute, routeHint: d.routeHint === 1 || d.routeHint === 2 ? d.routeHint : 0,
     cameraSpot, cameraAngle, cameraHint: d.cameraHint === 1 || d.cameraHint === 2 ? d.cameraHint : 0, completedOnce };
 }
 
