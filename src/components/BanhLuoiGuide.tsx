@@ -13,6 +13,10 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
 }) {
   const controls = useRef<RockControls>({ direction: 0, action: false, cancelled: false });
   const [feedback, setFeedback] = useState<RockFeedback>({ near: false, force: 0, holding: false, missed: false });
+  const [observation, setObservation] = useState<{ patch: number; key: string } | null>(null);
+  const [soilCard, setSoilCard] = useState(false);
+  const [wrongPatch, setWrongPatch] = useState(false);
+  const dialog = useRef<HTMLDivElement>(null);
   const [hint, setHint] = useState(false);
   const play = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
@@ -31,6 +35,7 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
   useEffect(() => {
     if (hintRequest === previousHint.current) return;
     previousHint.current = hintRequest;
+    setObservation(null); setWrongPatch(false);
     setHint(true);
     onChange(p => p.confirmedRoute && p.guideCheckpoint ? { ...p, guideCheckpoint: advanceGuide(p.confirmedRoute, p.guideCheckpoint, { key: guideKey(p.confirmedRoute, p.guideCheckpoint), action: 'hint' }) } : p);
   }, [hintRequest, onChange]);
@@ -41,16 +46,30 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
     document.addEventListener('visibilitychange', cancel);
     cancel();
     return () => { window.removeEventListener('blur', cancel); document.removeEventListener('visibilitychange', cancel); cancel(); };
-  }, [paused, hint, language]);
+  }, [paused, hint, language, observation, soilCard]);
+  useEffect(() => { if ((observation || soilCard) && !paused && !hint) dialog.current?.querySelector<HTMLButtonElement>('button')?.focus(); }, [observation, soilCard, paused, hint]);
   const isA = checkpoint.stage === 'atA';
+  const isB = checkpoint.stage === 'atB';
   const rock = checkpoint.rock;
   const say = (vi: string, en: string) => language === 'vi' ? vi : en;
-  const actionLabel = rock === 'carrying' ? say('Cất mẫu', 'Store') : rock === 'loose' ? say('Nhặt mẫu', 'Pick up') : say('Giữ / thả', 'Hold / release');
+  const actionLabel = isB ? checkpoint.soil === 'carrying' ? say('Cất mẫu', 'Store') : say('Giữ để xem', 'Hold to look') : rock === 'carrying' ? say('Cất mẫu', 'Store') : rock === 'loose' ? say('Nhặt mẫu', 'Pick up') : say('Giữ / thả', 'Hold / release');
   const rockMessage = feedback.missed ? say('Thử thả khi vạch ở vùng sáng nhé.', 'Release inside the marked zone. Try again.')
     : rock === 'carrying' ? say('Mang mẫu về xe bên trái · E để cất.', 'Bring the sample left to the rover · E to store.')
     : rock === 'loose' ? say('Mẫu đá đã rời ra · Đến gần, nhấn E để nhặt.', 'The sample is loose · Move close and press E to pick up.')
     : feedback.near ? say(`Giữ E, thả trong vùng sáng · ${rock === 'hitOnce' ? 1 : 0}/2 lần gõ.`, `Hold E, release in the marked zone · ${rock === 'hitOnce' ? 1 : 0}/2 hits.`)
     : say('← → / A D tới đá bên phải; hoặc chạm mặt đất.', '← → / A D to the rock on the right; or tap the ground.');
+  const soilMessage = checkpoint.soil === 'carrying'
+    ? say('Mang mẫu về xe bên trái · E để cất.', 'Bring the sample left to the rover · E to store.')
+    : feedback.near ? say('Giữ E để quan sát mảng đất bên cạnh.', 'Hold E to look closely at this patch.')
+    : say('← → / A D tới ba mảng đất; giữ E để xem.', '← → / A D to the patches; hold E to look.');
+  const dismissObservation = () => { setObservation(null); setSoilCard(false); setWrongPatch(false); requestAnimationFrame(focus); };
+  const collectSoil = () => {
+    if (!observation || observation.key !== guideKey(route, checkpoint)) { dismissObservation(); return; }
+    if (observation.patch !== 1) { setWrongPatch(true); return; }
+    const key = observation.key;
+    onChange(p => p.confirmedRoute && p.guideCheckpoint ? { ...p, guideCheckpoint: advanceGuide(p.confirmedRoute, p.guideCheckpoint, { key, action: 'collectSoil', patch: 'orange' }) } : p);
+    dismissObservation();
+  };
   const touch = (direction: number | null) => ({
     onPointerDown: (event: React.PointerEvent<HTMLButtonElement>) => {
       event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); focus();
@@ -62,7 +81,7 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
     onLostPointerCapture: () => { if (controls.current.action || controls.current.direction) { controls.current.cancelled = true; controls.current.action = false; controls.current.direction = 0; } },
     onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
       if (event.repeat || ![' ', 'Enter'].includes(event.key)) return;
-      event.preventDefault(); if (direction === null) controls.current.action = true; else controls.current.direction = direction;
+      event.preventDefault(); controls.current.cancelled = false; if (direction === null) controls.current.action = true; else controls.current.direction = direction;
     },
     onKeyUp: (event: React.KeyboardEvent<HTMLButtonElement>) => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); controls.current.action = false; controls.current.direction = 0; } },
     onBlur: () => { controls.current.cancelled = true; },
@@ -105,10 +124,11 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
         </g>
       </svg>
     </div>
-    <div className="ban-guide-play" ref={play} inert={hint}>
+    <div className="ban-guide-play" ref={play} inert={hint || !!observation || soilCard}>
       <div className="ban-guide-view"><div className="ban-guide-scene-box">
-        <GameCanvas initiallyAwake scene="ban-banh-luoi" encounterStarted moonMode={paused || hint ? 'paused' : 'free'} language={language} quest="complete" treeSpeaking={false} onInteract={() => {}} onExit={() => {}} onAwake={() => {}} onReady={() => { if (!paused && document.activeElement?.closest('.game-stage')) focus(); }}
-          banhLuoiGuide={{ route, checkpoint, controls: controls.current, onRockFeedback: setFeedback, enabled: !paused && !hint, onEvent: event => {
+        <GameCanvas initiallyAwake scene="ban-banh-luoi" encounterStarted moonMode={paused || hint || observation || soilCard ? 'paused' : 'free'} language={language} quest="complete" treeSpeaking={false} onInteract={() => {}} onExit={() => {}} onAwake={() => {}} onReady={() => { if (!paused && document.activeElement?.closest('.game-stage')) focus(); }}
+          banhLuoiGuide={{ route, checkpoint, controls: controls.current, onRockFeedback: setFeedback, onObserve: setObservation, enabled: !paused && !hint && !observation && !soilCard, onEvent: event => {
+            if (event.action === 'store' && checkpoint.stage === 'atB' && event.key === guideKey(route, checkpoint)) setSoilCard(true);
             onChange(p => {
               if (p.phase !== 'guiding' || !p.confirmedRoute || !p.guideCheckpoint) return p;
               const updated = advanceGuide(p.confirmedRoute, p.guideCheckpoint, event);
@@ -119,9 +139,10 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
       {isA && (rock === 'untouched' || rock === 'hitOnce') && <div className="ban-rock-meter" aria-label={say('Chỉ lực: thả trong vùng 35 đến 80 phần trăm', 'Force: release between 35 and 80 percent')}>
         <span>{say('Lực gõ', 'Force')}</span><div className="ban-rock-track"><i /><b style={{ left: `${feedback.force * 100}%` }} /></div>
       </div>}
+      {isB && feedback.holding && <div className="ban-soil-progress" role="status">{say('Đang quan sát…', 'Looking closely…')}<progress max={.7 / 1.6} value={feedback.force} /></div>}
       </div>
-      <p className="ban-guide-message" role="status">{isA ? rockMessage : atStop ? copy.waiting[language] : copy[checkpoint.stage][language]}</p>
-      <div className="ban-trip-controls">{isA ? <div className="ban-rock-buttons">
+      <p className="ban-guide-message" role="status">{isA ? rockMessage : isB ? soilMessage : atStop ? copy.waiting[language] : copy[checkpoint.stage][language]}</p>
+      <div className="ban-trip-controls">{atStop ? <div className="ban-rock-buttons">
         <button aria-label={say('Đi trái', 'Walk left')} {...touch(-1)}>←</button>
         <button aria-label={say('Đi phải', 'Walk right')} {...touch(1)}>→</button>
         <button {...touch(null)} aria-disabled={!feedback.near}>{actionLabel}</button>
@@ -129,8 +150,24 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
         <button onClick={() => onChange(p => ({ ...p, phase: 'routePuzzle', turn: 0 }))}>{copy.edit[language]}</button>
       </div>
     </div>
+    {(observation || soilCard) && <div ref={dialog} className="ban-soil-dialog" role="dialog" aria-modal="true" aria-label={say('Quan sát mẫu đất', 'Soil observation')} inert={hint || paused} onKeyDown={event => {
+      if (event.key === 'Escape') { event.stopPropagation(); dismissObservation(); }
+      if (event.key === 'Tab') { const buttons = [...event.currentTarget.querySelectorAll<HTMLButtonElement>('button')]; const index = buttons.indexOf(document.activeElement as HTMLButtonElement); event.preventDefault(); buttons[(index + (event.shiftKey ? buttons.length - 1 : 1)) % buttons.length]?.focus(); }
+    }}>
+      <strong>{soilCard ? say('Một câu chuyện núi lửa', 'A volcanic story') : say(`Mảng đất ${observation!.patch + 1}`, `Soil patch ${observation!.patch + 1}`)}</strong>
+      <svg className="ban-soil-grains" viewBox="0 0 320 130" role="img" aria-label={observation?.patch === 1 || soilCard ? say('Hạt tròn cam và đen xen mảnh vỡ', 'Round orange and black grains mixed with fragments') : say('Các mảnh đá xám có góc cạnh', 'Angular grey rock fragments')}>
+        <rect width="320" height="130" rx="16" fill="#26383c" />
+        {Array.from({ length: 28 }, (_, i) => { const x = 18 + i * 59 % 284, y = 18 + i * 37 % 94; const orange = observation?.patch === 1 || soilCard; return orange && i % 3 ? <circle key={i} cx={x} cy={y} r={5 + i % 4} fill={i % 2 ? '#dca566' : '#111e25'} stroke="#c6b695" strokeWidth="1" /> : <path key={i} d={`M${x - 7} ${y + 5} l3 -14 12 7 -4 9Z`} fill={orange ? '#b78252' : '#a9afa5'} stroke="#d2cfb6" />; })}
+      </svg>
+      <p role="status">{soilCard ? say('Những hạt thủy tinh cam và đen gợi câu chuyện về núi lửa rất lâu trước đây.', 'Orange and black glass grains tell a story of volcanic activity long ago.') : wrongPatch ? say('Đây là mảnh đá xám. Thử tìm hạt tròn cam và đen nhé.', 'These are grey rock fragments. Look for round orange and black grains.') : observation!.patch === 1 ? say('Hạt tròn cam, đen xen mảnh vỡ. Đúng dấu hiệu cần tìm!', 'Round orange and black grains, mixed with fragments. These match our clues!') : say('Những mảnh đá xám có góc cạnh.', 'Angular fragments of grey rock.')}</p>
+      <small>{say('Hình phóng đại minh họa · Không phải cách nhận biết thành phần ngay tại chỗ.', 'Illustrated close-up · Composition was studied, not identified on sight.')}</small>
+      <div className="ban-soil-choices">{soilCard ? <button onClick={dismissObservation}>{say('Tiếp tục', 'Continue')}</button> : <>
+        <button onClick={collectSoil}>{say('Lấy mẫu này', 'Collect this sample')}</button>
+        <button onClick={dismissObservation}>{say('Quan sát tiếp', 'Keep looking')}</button>
+      </>}</div>
+    </div>}
     {hint && <div className="ban-guide-hint" role="dialog" aria-modal="true" aria-label={language === 'vi' ? 'Gợi ý' : 'Hint'} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } if (event.key === 'Tab') { event.preventDefault(); closeHint.current?.focus(); } }}>
-      <p>{isA ? copy.rockHints[Math.max(0, checkpoint.hints.A - 1)][language] : copy.hints[checkpoint.stage][language]}</p>
+      <p>{isA ? copy.rockHints[Math.max(0, checkpoint.hints.A - 1)][language] : isB ? copy.soilHints[Math.max(0, checkpoint.hints.B - 1)][language] : copy.hints[checkpoint.stage][language]}</p>
       <button ref={closeHint} onClick={close}>{language === 'vi' ? 'Đã hiểu' : 'Got it'}</button>
     </div>}
   </section>;

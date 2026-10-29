@@ -1,6 +1,6 @@
 # Câu chuyện Apollo 17 — Bánh Lưới (màn 4)
 
-Bản bàn giao M0–M7 và cập nhật thiết kế lại T01/T02/T03, cập nhật **29/10/2026**. Tài liệu mô tả bản đang chạy; đây là nguồn tổng hợp chính thay cho kế hoạch và bàn giao tạm trong `docs/plan/`. Lời thoại Việt/Anh lấy từ [module nội dung](../../src/content/levels/ban-banh-luoi-content.ts), không duy trì một bản thoại thứ hai trong tài liệu.
+Bản bàn giao M0–M7 và cập nhật thiết kế lại T01/T02/T03, cập nhật **30/10/2026**. Tài liệu mô tả bản đang chạy; đây là nguồn tổng hợp chính thay cho kế hoạch và bàn giao tạm trong `docs/plan/`. Lời thoại Việt/Anh lấy từ [module nội dung](../../src/content/levels/ban-banh-luoi-content.ts), không duy trì một bản thoại thứ hai trong tài liệu.
 
 ## 1. Thông tin thật
 
@@ -70,19 +70,19 @@ Nộp tuyến đúng mới lưu `confirmedRoute: { modelVersion: 1, cells }`, l�
 
 Tuyến kiểm chứng: `(1,1) → (1,2) → (1,3) → (2,3) → (3,3) → (3,2) → (3,1) → (2,1) → (1,1)` có 8 bước, 9 pin, xa nhất 4 bước đi bộ; tuyến ngược cũng đạt. Không đòi tuyến tối ưu. Các mẫu chỉ vượt pin/chỉ vượt đi bộ nằm trong `cases` của [mô hình](../../src/content/levels/ban-banh-luoi-models.ts). [Thuật toán BFS và xác nhận](../../src/content/levels/ban-banh-luoi-route.ts).
 
-### T03 — Hành trình lấy mẫu (đợt hai điểm dừng, M2)
+### T03 — Hành trình lấy mẫu (đợt hai điểm dừng, M4)
 
-**Đang triển khai theo milestone:** M2 đã có điều phối và thanh hành trình; hoạt động lấy mẫu A/B cùng nền riêng thuộc M3/M4, chưa chơi được trong bản này. Khi tới trạm chưa làm, giao diện chờ và cho quay lại bản đồ; không có nút bỏ qua hay tự hoàn thành để mở kết.
+**M1–M4 đã triển khai:** bản đồ hành trình trải ngang, lấy mẫu đá tại A và quan sát đất tại B có nền riêng. Nghiệm thu toàn hành trình và hồi quy toàn chương thuộc M5.
 
 Snapshot T02 được duỗi thành thanh ngang, mỗi lần ghé ô là một node riêng. Giữ ô lặp, A/B lặp và LM trung gian; Cuội ở trên thanh, xe ở dưới. Xe tự chuyển tiếp khoảng 160ms/cạnh, dừng tại trạm đầu tiên chưa làm theo đúng tuyến (A→B hoặc B→A). Giảm chuyển động bỏ hoạt ảnh; menu, sách, mất focus và ẩn tab tạm dừng.
 
-- **A / T03.1 (M3):** dự kiến gõ lấy mẫu đá, nhặt, mang về xe và cất.
-- **B / T03.2 (M4):** dự kiến quan sát đất cam, chọn mẫu, mang về xe và cất.
+- **A / T03.1 (M3):** đi bằng phím trái/phải, A/D, nút hướng hoặc chạm đất. Gần đá, giữ E/nút hành động và thả trong vùng chỉ lực đánh dấu; hai lần đúng làm rời mẫu. Nhấn E/nút để nhặt, mang về gần xe và cất. Hụt không mất lượt đúng; checkpoint lưu từng lần gõ, nhặt và cất. Mất focus/gợi ý/menu hủy thao tác giữ.
+- **B / T03.2 (M4):** đi tới một trong ba mảng đất, giữ E/nút 0,7 giây để xem hình phóng đại. Mảng giữa có hạt tròn cam/đen xen mảnh vỡ; các mảng còn lại là mảnh đá xám. Có hình dạng, mô tả chữ và số vạch để nhận biết ngoài màu. Chọn nhầm chỉ nhắc nhẹ; chọn đúng lấy mẫu, mang về xe và nhấn E để cất. Thẻ ngắn giải thích nguồn gốc núi lửa; hình phóng đại là minh họa, không phải xác định thành phần ngay tại chỗ. Menu/mất focus hủy giữ; Escape đóng quan sát. Gợi ý đóng quan sát để tránh thao tác chồng. Tải lại giữ mẫu đang mang/đã cất, không bắt xem lại thẻ.
 - **Điểm nối kết đã có:** chỉ hai mẫu `stored` và đến LM cuối mới chuyển `launch` cùng cập nhật checkpoint. LM giữa tuyến và các lần ghé lại trạm không mở lại nhiệm vụ.
 
 React lưu node đã đến, trạng thái từng mẫu và gợi ý từng trạm; Phaser giữ thời gian/chuyển động tạm. Reducer từ chối sự kiện cũ/lặp/sai thứ tự; reader kiểm tra checkpoint có thể đạt được trên tuyến. Đổi bản nháp hoặc xác nhận cùng tuyến giữ checkpoint; xác nhận tuyến khác reset riêng T03. [Mô hình](../../src/content/levels/ban-banh-luoi-guide.ts), [giao diện](../../src/components/BanhLuoiGuide.tsx), [cảnh](../../src/game/banh-luoi-guide.ts).
 
-Chuỗi hồi tưởng cất cánh → ảnh B → nhật ký → sao giữ nguyên. Người có bản lưu kết cũ vẫn tiếp tục được. Luồng chơi mới trọn chương chờ M3/M4 và nghiệm thu M5.
+Chuỗi hồi tưởng cất cánh → ảnh B → nhật ký → sao giữ nguyên. Người có bản lưu kết cũ vẫn tiếp tục được. Hai thứ tự trạm đã nối tới LM và `launch`; nghiệm thu luồng mới tới hết phần thưởng vẫn thuộc M5.
 
 ## 5. Kết, phần thưởng và chơi lại
 

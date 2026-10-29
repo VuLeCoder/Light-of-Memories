@@ -323,3 +323,12 @@
   .game-stage.classic-friend-scene .ban-rock-buttons button { padding-inline: 5px; }
   .ban-trip-controls { gap: 4px; }
 }
+
+.ban-soil-dialog { position: absolute; inset: 60px 8px 8px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: #142831; border: 1px solid #b9aa7d; border-radius: 10px; text-align: center; }
+.ban-soil-dialog strong { font-size: 18px; }
+.ban-soil-grains { width: min(320px, 100%); flex: 1; min-height: 0; max-height: 130px; }
+.ban-soil-dialog p { margin: 0; max-width: 540px; line-height: 1.3; }
+.ban-soil-dialog small { font-size: 14px; max-width: 520px; line-height: 1.25; color: #c3c9bf; }
+.ban-soil-choices { display: flex; justify-content: center; gap: 8px; flex: none; }
+.ban-soil-progress { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); padding: 8px; border-radius: 8px; background: #142831ed; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.ban-soil-progress progress { width: 70px; accent-color: #dec68e; }

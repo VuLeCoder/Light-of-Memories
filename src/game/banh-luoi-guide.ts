@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { drawSoilStop } from './banh-luoi-soil';
 import { drawRockStop } from './banh-luoi-rock';
 import { banhLuoiScenery, drawBanhLuoi } from './banh-luoi-scenery';
 import { guideKey, guideStop, type GuideCheckpoint, type GuideEvent } from '../content/levels/ban-banh-luoi-guide';
@@ -7,6 +8,7 @@ import type { ConfirmedBanhLuoiRoute } from '../content/levels/ban-banh-luoi-rou
 export interface RockControls { direction: number; action: boolean; cancelled: boolean }
 export interface RockFeedback { near: boolean; force: number; holding: boolean; missed: boolean }
 export interface BanhLuoiGuideOptions {
+  onObserve?: (observation: { patch: number; key: string }) => void;
   controls?: RockControls;
   onRockFeedback?: (feedback: RockFeedback) => void;
   route: ConfirmedBanhLuoiRoute;
@@ -22,6 +24,7 @@ export class BanhLuoiGuideScene {
   private elapsed = 0;
   private sent = false;
   private rockBackground: Phaser.GameObjects.Graphics;
+  private soilBackground: Phaser.GameObjects.Graphics;
   private props: Phaser.GameObjects.Graphics;
   private holding = false;
   private force = 0;
@@ -33,10 +36,11 @@ export class BanhLuoiGuideScene {
     this.options = options;
     banhLuoiScenery(scene);
     this.rockBackground = drawRockStop(scene).setVisible(false);
+    this.soilBackground = drawSoilStop(scene).setVisible(false);
     this.props = scene.add.graphics().setDepth(11);
     const up = () => this.finishHold();
     scene.input.keyboard?.on('keyup-E', up);
-    const pointer = (p: Phaser.Input.Pointer) => { if (this.active() && this.options.checkpoint.stage === 'atA') this.target = Phaser.Math.Clamp(p.x, 100, 850); };
+    const pointer = (p: Phaser.Input.Pointer) => { if (this.active() && ['atA', 'atB'].includes(this.options.checkpoint.stage)) this.target = Phaser.Math.Clamp(p.x, 100, 850); };
     scene.input.on('pointerdown', pointer);
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { scene.input.keyboard?.off('keyup-E', up); scene.input.off('pointerdown', pointer); });
     this.rover = drawBanhLuoi(scene).setScale(.55).setDepth(5);
@@ -56,6 +60,7 @@ export class BanhLuoiGuideScene {
       if (first && options.checkpoint.stage === 'atA') this.cuoi.x = 655;
       this.cuoi.setScale(.62);
       this.rockBackground.setVisible(options.checkpoint.stage === 'atA');
+      this.soilBackground.setVisible(options.checkpoint.stage === 'atB');
       this.rover.setPosition(180, 431);
       this.release();
     }
@@ -74,9 +79,19 @@ export class BanhLuoiGuideScene {
   private active() {
     return this.options.enabled && !document.hidden && document.hasFocus() && !!document.activeElement?.closest('.ban-guide-play');
   }
-  private near() { return Math.abs(this.cuoi.x - (this.options.checkpoint.rock === 'carrying' ? 180 : 700)) <= 48; }
+  private patch() { return [460, 620, 780].findIndex(x => Math.abs(this.cuoi.x - x) <= 48); }
+  private near() {
+    if (this.options.checkpoint.stage === 'atB') return this.options.checkpoint.soil === 'carrying' ? Math.abs(this.cuoi.x - 180) <= 48 : this.patch() >= 0;
+    return Math.abs(this.cuoi.x - (this.options.checkpoint.rock === 'carrying' ? 180 : 700)) <= 48;
+  }
   interact() {
-    if (!this.active() || this.sent || this.options.checkpoint.stage !== 'atA' || !this.near()) return;
+    if (!this.active() || this.sent || !['atA', 'atB'].includes(this.options.checkpoint.stage) || !this.near()) return;
+    if (this.options.checkpoint.stage === 'atB') {
+      this.target = null;
+      if (this.options.checkpoint.soil === 'carrying') { this.sent = true; this.options.onEvent({ key: this.key, action: 'store' }); }
+      else if (!this.holding) { this.holding = true; this.force = 0; }
+      return;
+    }
     const rock = this.options.checkpoint.rock;
     this.target = null;
     if (rock === 'loose' || rock === 'carrying') {
@@ -86,6 +101,7 @@ export class BanhLuoiGuideScene {
   }
   private finishHold() {
     if (!this.holding) return;
+    if (this.options.checkpoint.stage === 'atB') { this.holding = false; this.force = 0; return; }
     const success = this.active() && !this.options.controls?.cancelled && this.near() && this.force >= .35 && this.force <= .8;
     this.holding = false;
     if (success && !this.sent) { this.sent = true; this.options.onEvent({ key: this.key, action: 'hit' }); }
@@ -107,10 +123,16 @@ export class BanhLuoiGuideScene {
       this.missed = false;
     } else { this.cuoi.anims.stop(); this.cuoi.setFrame('rest'); }
     if (this.holding) this.force = Math.min(1, this.force + delta / 1600);
-    const g = this.props.clear(), rock = this.options.checkpoint.rock;
+    const isB = this.options.checkpoint.stage === 'atB';
+    if (isB && this.holding && this.force >= .7 / 1.6) {
+      const patch = this.patch();
+      this.release();
+      if (patch >= 0) this.options.onObserve?.({ patch, key: this.key });
+    }
+    const g = this.props.clear(), rock = isB ? this.options.checkpoint.soil : this.options.checkpoint.rock;
     g.fillStyle(0x293e45, .6).fillEllipse(this.cuoi.x - 15, 435, 65, 10);
     // A hammer follows the hand; the sample bag replaces it once picked up.
-    if (this.holding) {
+    if (this.holding && !isB) {
       const x = this.cuoi.x + 23, y = 364 - this.force * 26;
       g.lineStyle(5, 0xbfa77a).lineBetween(x - 8, 393, x, y);
       g.fillStyle(0xc9ccbd).fillRect(x - 10, y - 5, 23, 10);
@@ -122,7 +144,7 @@ export class BanhLuoiGuideScene {
       g.lineStyle(2, 0x695e48).strokeRect(this.cuoi.x + 14, 388, 20, 25);
     }
     const near = this.near();
-    g.lineStyle(2, near ? 0xf1d494 : 0xadb7a5, .8).strokeEllipse(rock === 'carrying' ? 180 : 700, 443, 75, 12);
+    g.lineStyle(2, near ? 0xf1d494 : 0xadb7a5, .8).strokeEllipse(rock === 'carrying' ? 180 : isB ? [460, 620, 780][Math.max(0, this.patch())] : 700, 443, 75, 12);
     const feedback = { near, force: Math.round(this.force * 100) / 100, holding: this.holding, missed: this.missed };
     const key = JSON.stringify(feedback);
     if (key !== this.lastFeedback) { this.lastFeedback = key; this.options.onRockFeedback?.(feedback); }
@@ -132,7 +154,7 @@ export class BanhLuoiGuideScene {
       this.release();
       return;
     }
-    if (this.options.checkpoint.stage === 'atA') { this.rockUpdate(delta); return; }
+    if (['atA', 'atB'].includes(this.options.checkpoint.stage)) { this.rockUpdate(delta); return; }
     this.props.clear();
     if (this.sent || this.options.checkpoint.stage !== 'travel') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
