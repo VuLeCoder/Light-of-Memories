@@ -7,6 +7,10 @@ export const guideCopy = {
   waiting: text('Hoạt động tại trạm đang được xây dựng.', 'This stop’s activity is under construction.'),
   edit: text('Bản đồ', 'Map'),
   step: text('Bước', 'Step'),
+  rockHints: [
+    text('Đi tới tảng đá bên phải. Giữ E hoặc nút hành động, rồi thả trong vùng sáng. Hai lần gõ đúng sẽ làm rời một mẫu.', 'Walk to the rock on the right. Hold E or the action button, then release in the marked zone. Two good hits loosen a sample.'),
+    text('Đến vòng sáng dưới đá. Giữ khoảng một giây rồi thả; nhấn E để nhặt mẫu đã rời. Mang mẫu về xe bên trái và nhấn E để cất.', 'Reach the ring below the rock. Hold for about a second, then release; press E to pick up the loose sample. Carry it left to the rover and press E to store it.'),
+  ],
   hints: {
     travel: text('Xe tự đi theo bản đồ. Chỉ dừng làm nhiệm vụ tại A và B.', 'The rover follows your map automatically, stopping for activities only at A and B.'),
     atA: text('Tại đây, Cuội sẽ lấy mẫu đá rồi mang về xe. Bạn có thể quay lại xem lộ trình.', 'Here Cuội will collect a rock and bring it to the rover. You can return to your route.'),

@@ -5,11 +5,14 @@ import { advanceGuide, guideKey, guideStop } from '../content/levels/ban-banh-lu
 import { guideCopy as copy } from '../content/levels/ban-banh-luoi-guide-content';
 import { banBanhLuoiRoute as model } from '../content/levels/ban-banh-luoi-models';
 import { sameCell, isSlope } from '../content/levels/ban-banh-luoi-route';
+import type { RockControls, RockFeedback } from '../game/banh-luoi-guide';
 import { GameCanvas } from '../game/GameCanvas';
 
 export function BanhLuoiGuide({ progress, onChange, language, paused, hintRequest }: {
   progress: BanhLuoiProgress; onChange: Dispatch<SetStateAction<BanhLuoiProgress>>; language: Language; paused: boolean; hintRequest: number;
 }) {
+  const controls = useRef<RockControls>({ direction: 0, action: false, cancelled: false });
+  const [feedback, setFeedback] = useState<RockFeedback>({ near: false, force: 0, holding: false, missed: false });
   const [hint, setHint] = useState(false);
   const play = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
@@ -32,6 +35,38 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
     onChange(p => p.confirmedRoute && p.guideCheckpoint ? { ...p, guideCheckpoint: advanceGuide(p.confirmedRoute, p.guideCheckpoint, { key: guideKey(p.confirmedRoute, p.guideCheckpoint), action: 'hint' }) } : p);
   }, [hintRequest, onChange]);
   useEffect(() => { if (hint) closeHint.current?.focus(); }, [hint]);
+  useEffect(() => {
+    const cancel = () => { controls.current.direction = 0; controls.current.action = false; controls.current.cancelled = true; };
+    window.addEventListener('blur', cancel);
+    document.addEventListener('visibilitychange', cancel);
+    cancel();
+    return () => { window.removeEventListener('blur', cancel); document.removeEventListener('visibilitychange', cancel); cancel(); };
+  }, [paused, hint, language]);
+  const isA = checkpoint.stage === 'atA';
+  const rock = checkpoint.rock;
+  const say = (vi: string, en: string) => language === 'vi' ? vi : en;
+  const actionLabel = rock === 'carrying' ? say('Cất mẫu', 'Store') : rock === 'loose' ? say('Nhặt mẫu', 'Pick up') : say('Giữ / thả', 'Hold / release');
+  const rockMessage = feedback.missed ? say('Thử thả khi vạch ở vùng sáng nhé.', 'Release inside the marked zone. Try again.')
+    : rock === 'carrying' ? say('Mang mẫu về xe bên trái · E để cất.', 'Bring the sample left to the rover · E to store.')
+    : rock === 'loose' ? say('Mẫu đá đã rời ra · Đến gần, nhấn E để nhặt.', 'The sample is loose · Move close and press E to pick up.')
+    : feedback.near ? say(`Giữ E, thả trong vùng sáng · ${rock === 'hitOnce' ? 1 : 0}/2 lần gõ.`, `Hold E, release in the marked zone · ${rock === 'hitOnce' ? 1 : 0}/2 hits.`)
+    : say('← → / A D tới đá bên phải; hoặc chạm mặt đất.', '← → / A D to the rock on the right; or tap the ground.');
+  const touch = (direction: number | null) => ({
+    onPointerDown: (event: React.PointerEvent<HTMLButtonElement>) => {
+      event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); focus();
+      controls.current.cancelled = false;
+      if (direction === null) controls.current.action = true; else controls.current.direction = direction;
+    },
+    onPointerUp: () => { if (direction === null) controls.current.action = false; else controls.current.direction = 0; },
+    onPointerCancel: () => { controls.current.cancelled = true; controls.current.action = false; controls.current.direction = 0; },
+    onLostPointerCapture: () => { if (controls.current.action || controls.current.direction) { controls.current.cancelled = true; controls.current.action = false; controls.current.direction = 0; } },
+    onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (event.repeat || ![' ', 'Enter'].includes(event.key)) return;
+      event.preventDefault(); if (direction === null) controls.current.action = true; else controls.current.direction = direction;
+    },
+    onKeyUp: (event: React.KeyboardEvent<HTMLButtonElement>) => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); controls.current.action = false; controls.current.direction = 0; } },
+    onBlur: () => { controls.current.cancelled = true; },
+  });
   const atStop = checkpoint.stage === 'atA' || checkpoint.stage === 'atB';
   const location = guideStop(route, checkpoint.nodeIndex) ?? (sameCell(route.cells[checkpoint.nodeIndex], model.lm) ? 'LM' : `${checkpoint.nodeIndex}`);
   const timelineText = route.cells.map((cell, index) => guideStop(route, index) ?? (sameCell(cell, model.lm) ? 'LM' : isSlope(cell) ? (language === 'vi' ? 'dốc' : 'slope') : '·')).join(' → ');
@@ -73,21 +108,29 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
     <div className="ban-guide-play" ref={play} inert={hint}>
       <div className="ban-guide-view"><div className="ban-guide-scene-box">
         <GameCanvas initiallyAwake scene="ban-banh-luoi" encounterStarted moonMode={paused || hint ? 'paused' : 'free'} language={language} quest="complete" treeSpeaking={false} onInteract={() => {}} onExit={() => {}} onAwake={() => {}} onReady={() => { if (!paused && document.activeElement?.closest('.game-stage')) focus(); }}
-          banhLuoiGuide={{ route, checkpoint, enabled: !paused && !hint, onEvent: event => {
+          banhLuoiGuide={{ route, checkpoint, controls: controls.current, onRockFeedback: setFeedback, enabled: !paused && !hint, onEvent: event => {
             onChange(p => {
               if (p.phase !== 'guiding' || !p.confirmedRoute || !p.guideCheckpoint) return p;
               const updated = advanceGuide(p.confirmedRoute, p.guideCheckpoint, event);
               return updated === p.guideCheckpoint ? p : { ...p, guideCheckpoint: updated, phase: updated.stage === 'done' ? 'launch' : 'guiding', turn: 0 };
             });
           } }}/>
-      </div></div>
-      <p className="ban-guide-message" role="status">{atStop ? copy.waiting[language] : copy[checkpoint.stage][language]}</p>
-      <div className="ban-trip-controls"><span>{atStop ? copy[checkpoint.stage][language] : `${copy.step[language]} ${checkpoint.nodeIndex}/${route.cells.length - 1}`}</span>
+      </div>
+      {isA && (rock === 'untouched' || rock === 'hitOnce') && <div className="ban-rock-meter" aria-label={say('Chỉ lực: thả trong vùng 35 đến 80 phần trăm', 'Force: release between 35 and 80 percent')}>
+        <span>{say('Lực gõ', 'Force')}</span><div className="ban-rock-track"><i /><b style={{ left: `${feedback.force * 100}%` }} /></div>
+      </div>}
+      </div>
+      <p className="ban-guide-message" role="status">{isA ? rockMessage : atStop ? copy.waiting[language] : copy[checkpoint.stage][language]}</p>
+      <div className="ban-trip-controls">{isA ? <div className="ban-rock-buttons">
+        <button aria-label={say('Đi trái', 'Walk left')} {...touch(-1)}>←</button>
+        <button aria-label={say('Đi phải', 'Walk right')} {...touch(1)}>→</button>
+        <button {...touch(null)} aria-disabled={!feedback.near}>{actionLabel}</button>
+      </div> : <span>{atStop ? copy[checkpoint.stage][language] : `${copy.step[language]} ${checkpoint.nodeIndex}/${route.cells.length - 1}`}</span>}
         <button onClick={() => onChange(p => ({ ...p, phase: 'routePuzzle', turn: 0 }))}>{copy.edit[language]}</button>
       </div>
     </div>
     {hint && <div className="ban-guide-hint" role="dialog" aria-modal="true" aria-label={language === 'vi' ? 'Gợi ý' : 'Hint'} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } if (event.key === 'Tab') { event.preventDefault(); closeHint.current?.focus(); } }}>
-      <p>{copy.hints[checkpoint.stage][language]}</p>
+      <p>{isA ? copy.rockHints[Math.max(0, checkpoint.hints.A - 1)][language] : copy.hints[checkpoint.stage][language]}</p>
       <button ref={closeHint} onClick={close}>{language === 'vi' ? 'Đã hiểu' : 'Got it'}</button>
     </div>}
   </section>;

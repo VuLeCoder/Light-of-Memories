@@ -310,3 +310,16 @@
   .banh-luoi-scene:has(.ban-guide) > .banh-luoi-hud { display: grid; grid-template-columns: 1fr 2fr; gap: 4px; padding: 6px 8px; }
   .banh-luoi-scene:has(.ban-guide) .banh-luoi-hud > span { grid-column: 1 / -1; padding: 2px 0; }
 }
+
+.ban-rock-meter { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: min(280px, 90%); display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #142831ed; border-radius: 8px; font-size: 16px; }
+.ban-rock-meter > span { flex: none; }
+.ban-rock-track { position: relative; height: 18px; flex: 1; background: #677673; border: 1px solid #c7c4ab; }
+.ban-rock-track i { position: absolute; left: 35%; width: 45%; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, #dcca97 0 4px, #ab9866 4px 6px); border-inline: 2px solid #f5e4b6; }
+.ban-rock-track b { position: absolute; width: 3px; top: -4px; bottom: -4px; background: #fff9df; transform: translateX(-50%); }
+.ban-rock-buttons { display: flex; flex: 1; gap: 6px; min-width: 0; }
+.ban-rock-buttons button { min-width: 42px; }
+.ban-rock-buttons button[aria-disabled="true"] { opacity: .65; }
+@container (max-width: 400px) {
+  .game-stage.classic-friend-scene .ban-rock-buttons button { padding-inline: 5px; }
+  .ban-trip-controls { gap: 4px; }
+}
