@@ -56,7 +56,7 @@ export class BanhLuoiGuideScene {
       this.sent = false;
       this.elapsed = 0;
       const entering = first || previous.checkpoint.stage !== options.checkpoint.stage || previous.checkpoint.routeKey !== options.checkpoint.routeKey;
-      if (entering) this.cuoi.setPosition(310, 431);
+      if (entering) this.cuoi.setPosition(310, 431).setFlipX(false);
       if (first && options.checkpoint.stage === 'atA') this.cuoi.x = 655;
       this.cuoi.setScale(.62);
       this.rockBackground.setVisible(options.checkpoint.stage === 'atA');
@@ -130,18 +130,20 @@ export class BanhLuoiGuideScene {
       if (patch >= 0) this.options.onObserve?.({ patch, key: this.key });
     }
     const g = this.props.clear(), rock = isB ? this.options.checkpoint.soil : this.options.checkpoint.rock;
+    const facing = this.cuoi.flipX ? -1 : 1;
     g.fillStyle(0x293e45, .6).fillEllipse(this.cuoi.x - 15, 435, 65, 10);
     // A hammer follows the hand; the sample bag replaces it once picked up.
     if (this.holding && !isB) {
-      const x = this.cuoi.x + 23, y = 364 - this.force * 26;
-      g.lineStyle(5, 0xbfa77a).lineBetween(x - 8, 393, x, y);
-      g.fillStyle(0xc9ccbd).fillRect(x - 10, y - 5, 23, 10);
+      const x = this.cuoi.x + 23 * facing, y = 364 - this.force * 26;
+      g.lineStyle(5, 0xbfa77a).lineBetween(x - 8 * facing, 393, x, y);
+      g.fillStyle(0xc9ccbd).fillRect(x - (facing > 0 ? 10 : 13), y - 5, 23, 10);
     }
     if (rock === 'hitOnce' || rock === 'loose') g.lineStyle(3, 0x394e52).lineBetween(693, 399, 671, 413);
     if (rock === 'loose') g.fillStyle(0xe0d5b5).fillTriangle(680, 429, 691, 417, 702, 429);
     if (rock === 'carrying') {
-      g.fillStyle(0xd7c798).fillRect(this.cuoi.x + 14, 388, 20, 25);
-      g.lineStyle(2, 0x695e48).strokeRect(this.cuoi.x + 14, 388, 20, 25);
+      const x = this.cuoi.x + (facing > 0 ? 14 : -34);
+      g.fillStyle(0xd7c798).fillRect(x, 388, 20, 25);
+      g.lineStyle(2, 0x695e48).strokeRect(x, 388, 20, 25);
     }
     const near = this.near();
     g.lineStyle(2, near ? 0xf1d494 : 0xadb7a5, .8).strokeEllipse(rock === 'carrying' ? 180 : isB ? [460, 620, 780][Math.max(0, this.patch())] : 700, 443, 75, 12);
@@ -158,9 +160,9 @@ export class BanhLuoiGuideScene {
     this.props.clear();
     if (this.sent || this.options.checkpoint.stage !== 'travel') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Even the longest valid leg (<=12 edges) stays under two seconds.
+    // Give each route edge time to read, including the turn after storing a sample.
     this.elapsed += Math.min(delta, 50);
-    const fraction = reduced ? 1 : Math.min(1, this.elapsed / 160);
+    const fraction = reduced ? 1 : Math.min(1, this.elapsed / 400);
     const { route, checkpoint: p } = this.options;
     let start = 0, end = route.cells.length - 1;
     for (let i = 1; i <= p.nodeIndex; i++) if (guideStop(route, i)) start = i;
@@ -171,6 +173,8 @@ export class BanhLuoiGuideScene {
     const offset = 100 * (p.nodeIndex - start + fraction) / (end - start);
     this.rover.x = 180 + offset;
     this.cuoi.x = 310 + offset;
+    // The unfolded route always travels right, even after returning left to the rover.
+    this.cuoi.setFlipX(false);
     if (!reduced && !this.cuoi.anims.isPlaying) this.cuoi.play('cuoi-walk');
     if (fraction === 1) {
       this.sent = true;
