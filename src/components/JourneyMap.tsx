@@ -1,3 +1,5 @@
+import { BookParagraph } from './BookParagraph';
+import { introCopy } from '../content/book/intro-copy';
 import { BanhLuoiCameraDiagram } from './BanhLuoiCameraDiagram';
 import { banhLuoiPageIds, type BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
 import { banBanhLuoiBook } from '../content/levels/ban-banh-luoi-content';
@@ -22,24 +24,8 @@ import { SurveyorLevel, surveyorPlayCopy } from './SurveyorLevel';
 import type { SurveyorProgress } from '../content/levels/surveyor-progress';
 import { BookNavigation } from './BookNavigation';
 
-export const journeyCopy = {
-  vi: {
-    title: 'Lộ trình năm ánh sao', book: 'Hành trình của Cuội', reveal: 'Đèn ông sao đang soi đường…',
-    lead: 'Năm điểm sáng… Có ai ở đó biết chị Hằng đang ở đâu không nhỉ?',
-    guide: 'Cùng Cuội gặp năm người bạn trên Mặt Trăng và khám phá câu chuyện của họ.',
-    prerequisite: 'Hoàn thành câu chuyện của người bạn phía trước để mở khóa cuộc gặp này.', mystery: 'Người bạn bí ẩn', locked: 'Người bạn này sẽ xuất hiện trong phần tiếp theo. Hẹn Cuội sớm nhé!', back: 'Về lộ trình',
-    note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và thắp thêm một ánh sao trên chiếc đèn.',
-    waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', completed: 'Đã hoàn thành câu chuyện', replay: 'Chơi lại cùng bạn',
-  },
-  en: {
-    title: 'The five-star journey', book: 'Cuội’s journey', reveal: 'The star lantern lights the way…',
-    lead: 'Five lights… Could someone there know where Hằng is?',
-    guide: 'Join Cuội to meet five friends on the Moon and discover their stories.',
-    prerequisite: 'Finish the previous friend’s story to unlock this encounter.', mystery: 'A mystery friend', locked: 'This friend will appear in a future chapter. See you soon, Cuội!', back: 'Back to the route',
-    note: 'Each encounter will leave a memory and light another star on the lantern.',
-    waiting: 'Not yet discovered', ready: 'Your next destination', completed: 'Story completed', replay: 'Play again with a friend',
-  },
-};
+import { journeyCopy } from '../content/book/journey-copy';
+export { journeyCopy } from '../content/book/journey-copy';
 
 export function JourneyMap({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
@@ -179,7 +165,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
         {banPageId === 'ban-banh-luoi' && <img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/>}
         {['ban-book-route', 'ban-book-walkback'].includes(banPageId) && <BanhLuoiRouteMap language={language} showSafe={banPageId === 'ban-book-walkback' && banhLuoiProgress.routeHint === 2}/>}
         {banPageId === 'ban-book-camera' && <BanhLuoiCameraDiagram language={language}/>}
-        {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
+        {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}><BookParagraph pageId={banPageId} value={paragraph[language]} language={language}/></p>)}
         {(photo || banPageId === 'ban-book-wheels') && <BanhLuoiPhotoView key={banPageId} photo={photo ?? banBanhLuoiMemories[0]} language={language}/>}
         {photo && <><p>{photo.caption[language]}</p><small>{photo.credit} · {photo.code}</small></>}
         <a className="sparkle-book-source" href={['ban-book-camera', 'ban-book-samples'].includes(banPageId) ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://apollojournals.org/alsj/a11/a11.clsout.html' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'ALSJ' : 'Apollo 17'} ↗</a>
@@ -196,7 +182,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       <aside className="book-panel" lang={language} aria-labelledby="tai-book-title"><div tabIndex={0} className="book-sheet journey-book tai-book">
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
         <h2 id="tai-book-title" tabIndex={-1}>{taiPhoto ? taiPhoto.title[language] : taiPage!.id === 'intro' ? getLevel('tai-thinh')!.text[language].friend : taiPage!.title[language]}</h2>
-        {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/>}<p>{taiPage!.body[language]}</p></>}
+        {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/>}<p><BookParagraph pageId={taiPage!.id === 'intro' ? 'tai-thinh' : `tai-book-${taiPage!.id}`} value={taiPage!.body[language]} language={language}/></p></>}
         {source && <a className="sparkle-book-source" href={source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>}
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
@@ -247,8 +233,8 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? level.id === 'lap-lanh'
-        ? (language === 'vi' ? 'Lấp Lánh là bảng gương phản xạ laser của Apollo 11, được đặt ở Biển Yên Tĩnh năm 1969. Một trăm lăng kính nhỏ giúp bạn gửi ánh sáng trở về phía Trái Đất mà không cần pin. Nhờ đo thời gian ánh sáng đi và về, các nhà khoa học biết được khoảng cách đến Mặt Trăng.' : 'Sparkle is Apollo 11’s laser reflector, placed in the Sea of Tranquility in 1969. Its one hundred small prisms return light toward Earth without batteries. Timing the light’s round trip helps scientists measure the distance to the Moon.')
-        : (language === 'vi' ? 'Surveyor 3 là tàu robot NASA đến Mặt Trăng tháng 4/1967. Tàu chụp ảnh và dùng xẻng khảo sát đất. Tháng 11/1969, các phi hành gia Apollo 12 đến thăm và mang một số bộ phận về nghiên cứu.' : 'Surveyor 3 is a NASA robot that reached the Moon in April 1967. It took photos and studied soil with a scoop. In November 1969, Apollo 12 astronauts visited and returned some parts to Earth for study.')
+        ? (introCopy.sparkleIntro[language])
+        : (introCopy.surveyorIntro[language])
         : t.guide}</p>
       {b01 ? <><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><img className="book-friend" src={level.portrait} alt="" /><p>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <ol className="journey-memories">{journeyStops.map((id, index) => {
         const state = status(id);

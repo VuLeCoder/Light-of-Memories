@@ -1,0 +1,66 @@
+export const clueCopy = {
+  "kicker": {
+    "vi": "Manh mối của Lấp Lánh",
+    "en": "Sparkle’s clues"
+  },
+  "rangingTitle": {
+    "vi": "Một lời chào, hai lượt đi",
+    "en": "One greeting, two journeys"
+  },
+  "repairTitle": {
+    "vi": "Bí mật của góc gương",
+    "en": "The corner reflector’s secret"
+  },
+  "roundTrip": {
+    "vi": "Một trạm trên Trái Đất gửi tia laser đến Lấp Lánh. Bạn phản xạ ánh sáng về phía trạm. Đồng hồ đo thời gian của cả lượt đi lẫn lượt về.",
+    "en": "A station on Earth sends laser light to Sparkle. The reflector sends it back toward the station. A clock measures the time for both journeys."
+  },
+  "speedLabel": {
+    "vi": "Vận tốc làm tròn",
+    "en": "Light speed, rounded"
+  },
+  "speed": {
+    "vi": "300.000 km/s",
+    "en": "300,000 km/s"
+  },
+  "timeLabel": {
+    "vi": "Thời gian hai lượt",
+    "en": "Round-trip time"
+  },
+  "time": {
+    "vi": "2,56 s",
+    "en": "2.56 s"
+  },
+  "answer": {
+    "vi": "Khoảng cách = 300.000 × 2,56 ÷ 2 = 384.000 km.",
+    "en": "Distance = 300,000 × 2.56 ÷ 2 = 384,000 km."
+  },
+  "formula": {
+    "vi": "Lấy vận tốc ánh sáng nhân với thời gian sẽ được quãng đường của hai lượt. Chia đôi kết quả ấy sẽ được khoảng cách từ Trái Đất đến Mặt Trăng.",
+    "en": "Light speed multiplied by time gives the distance for both journeys. Half of that is the distance from Earth to the Moon."
+  },
+  "note": {
+    "vi": "Các số trong trò chơi đã được làm tròn. Khoảng cách thật thay đổi khi Mặt Trăng chuyển động quanh Trái Đất. Hình vẽ không theo tỉ lệ.",
+    "en": "The game uses rounded numbers. The real distance changes as the Moon travels around Earth. The drawing is not to scale."
+  },
+  "rangingSourceLabel": {
+    "vi": "NASA · Đo khoảng cách bằng laser ↗",
+    "en": "NASA · Lunar laser ranging ↗"
+  },
+  "model": {
+    "vi": "Trong mô hình, gương thứ nhất đứng yên, còn gương thứ hai có thể xoay. Khi hai gương tạo thành góc vuông 90°, tia sáng phản xạ qua cả hai gương rồi trở về khe nhận.",
+    "en": "In the model, the first mirror stays still and the second can turn. When they form a right angle of 90°, light bounces off both mirrors and returns to the receiving slit."
+  },
+  "reflection": {
+    "vi": "Ánh sáng gặp gương sẽ đổi hướng. Góc tới bằng góc phản xạ, cùng đo từ đường vuông góc với mặt gương. Sau hai lần phản xạ ở góc vuông, tia đi ra song song và ngược chiều tia đi vào, nhưng có thể lệch sang bên.",
+    "en": "Light changes direction when it meets a mirror. Its incoming and outgoing angles are equal, measured from a line perpendicular to the mirror. After two bounces in a right-angle corner, the ray travels parallel to the incoming ray in the opposite direction. It may be shifted to one side."
+  },
+  "prisms": {
+    "vi": "Hình vẽ là mô hình phẳng. Lấp Lánh thật có 100 lăng kính cố định. Mỗi lăng kính có ba mặt phản xạ vuông góc với nhau và làm việc không cần điện.",
+    "en": "The drawing is a flat model. The real Sparkle has 100 fixed prisms. Each has three reflecting faces at right angles to one another and works without electricity."
+  },
+  "repairSourceLabel": {
+    "vi": "NASA/JPL · Gương Apollo 11 ↗",
+    "en": "NASA/JPL · Apollo 11 reflector ↗"
+  }
+} as const;
