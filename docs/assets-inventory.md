@@ -1,5 +1,7 @@
 # Kiểm kê tài nguyên — Lượt 1
 
+Tài liệu này ghi nhận kiểm kê ban đầu, không phải danh sách đầy đủ của bản hiện tại. Xem [quy ước và tài nguyên hiện tại](image-assets.md) cùng hồ sơ từng màn trong `docs/done/`. Các mục “chưa dùng” và “còn thiếu” bên dưới là trạng thái của Lượt 1.
+
 Ảnh gốc nằm trong `public/images/`, cùng với logo trong `branding/`. Vite sao chép nguyên tên file sang `dist/images/`; URL được quản lý tại `src/content/assets.ts` và theo base path của website. Không chỉnh sửa, thu nhỏ hay xóa nền các PNG gốc.
 
 ## Ảnh đã có

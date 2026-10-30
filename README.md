@@ -86,11 +86,11 @@ Font **Lora** và **Be Vietnam Pro** được đóng gói trong `public/fonts/`,
 - **E** khi đứng gần vật hoặc người bạn để tương tác; có thể bấm trực tiếp. Các chặng đào đất/đi có chiều sâu có hướng dẫn riêng ở footer.
 - Mở menu sẽ tạm dừng tương tác trong game.
 
-Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v10 lưu riêng từng màn và đọc được bản v1–v10; lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
+Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v13 lưu riêng từng màn và đọc được bản v1–v13; lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
 
 ### Những phần đang phát triển
 
-- Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có tối đa bốn cánh sao. Bánh Lưới có ba bài: chọn bánh, lập đường đi và chỉnh camera; chơi lại giữ ảnh, sách và dấu hoàn thành.
+- Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có tối đa bốn cánh sao. Bánh Lưới có ba bài: thử bánh, lập đường đi và lấy mẫu đá/đất tại hai điểm A/B; chơi lại giữ ảnh, sách và dấu hoàn thành.
 - Chưa có phần thưởng kỹ năng hoặc thẻ bạn.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
 - Bản build còn cảnh báo kích thước gói Phaser; các giới hạn đã biết được ghi trong tài liệu từng màn.

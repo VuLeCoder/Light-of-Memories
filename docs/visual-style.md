@@ -31,7 +31,7 @@ Hậu kết mỗi người bạn có dấu hiệu ở rìa phải để Cuội �
 
 ## Chữ và UI
 
-CSS khai báo Lora/Georgia cho tiêu đề, Be Vietnam Pro/sans-serif cho phần đọc và điều khiển. Hiện chưa đóng gói hoặc tải hai font đầu; máy không có font sẽ dùng dự phòng. Vì vậy không coi font hiển thị là giống tuyệt đối trên mọi máy.
+CSS khai báo Lora/Georgia cho tiêu đề, Be Vietnam Pro/sans-serif cho phần đọc và điều khiển. Hai font được đóng gói tại `public/fonts/` và khai báo trong `src/fonts.css`, hỗ trợ tiếng Việt; font dự phòng dùng trong lúc tải hoặc khi tải lỗi.
 
 Nội dung thoại thường 20px, xuống 18px ở màn hình hẹp; nút chính khoảng 18px, phần hướng dẫn khoảng 16px. Một số nhãn trang trí nhỏ hơn. Ảnh sinh mới không nên chứa chữ giao diện: để React hiển thị chữ, dễ đổi Việt/Anh và giữ độ rõ. Bo góc nhẹ, viền mảnh, không dùng khung sci-fi hoặc nút neon.
 
@@ -66,6 +66,6 @@ Thay phần trong ngoặc vuông và gửi kèm ảnh nhân vật hoặc sprite 
 
 Với chân dung, thay yêu cầu pixel bằng “minh họa truyện thiếu nhi vẽ tay, chất liệu giấy và màu mềm, đường nét ấm, biểu cảm rõ”; giữ các yêu cầu nhận diện và bảng màu.
 
-Ở hậu kết của cả ba người bạn, Cuội có thể bấm vào nhân vật để đi tới trò chuyện, hoặc đến gần rồi nhấn E. Mỗi bạn có hai câu ngắn: cảm ơn Cuội ghé trò chuyện và gợi nhìn dấu hiệu bên phải. Hội thoại có thể nghe lại, giữ dấu hiệu hiện trên nền, tạm dừng đi lại khi nói và không đổi tiến trình hay phần thưởng. Có đầy đủ tiếng Việt và tiếng Anh.
+Ở hậu kết của cả bốn người bạn, Cuội có thể bấm vào nhân vật để đi tới trò chuyện, hoặc đến gần rồi nhấn E. Mỗi bạn có hai câu ngắn: cảm ơn Cuội ghé trò chuyện và gợi nhìn dấu hiệu bên phải. Hội thoại có thể nghe lại, giữ dấu hiệu hiện trên nền, tạm dừng đi lại khi nói và không đổi tiến trình hay phần thưởng. Có đầy đủ tiếng Việt và tiếng Anh.
 
-Focus trong vùng game được giữ khi chuyển từ hội thoại sang thử thách, nhận ảnh hoặc hậu kết, kể cả khi phần tử đang focus bị gỡ, vô hiệu hóa hoặc nằm trong vùng `inert`. Việc khôi phục dùng chung cho ba màn, chọn nút thoại, canvas đi lại hoặc điều khiển đang hiển thị. Không giành focus từ ô nhập, sách hay phần khác của trang; bấm ra ngoài, Tab sang sách hoặc chuyển cửa sổ sẽ nhả quyền điều khiển game. Nút quay lại trò chơi trong sách dùng cùng cách chọn đích focus.
+Focus trong vùng game được giữ khi chuyển từ hội thoại sang thử thách, nhận ảnh hoặc hậu kết, kể cả khi phần tử đang focus bị gỡ, vô hiệu hóa hoặc nằm trong vùng `inert`. Việc khôi phục dùng chung cho bốn màn, chọn nút thoại, canvas đi lại hoặc điều khiển đang hiển thị. Không giành focus từ ô nhập, sách hay phần khác của trang; bấm ra ngoài, Tab sang sách hoặc chuyển cửa sổ sẽ nhả quyền điều khiển game. Nút quay lại trò chơi trong sách dùng cùng cách chọn đích focus.

@@ -68,7 +68,7 @@ Lộ trình → lời dẫn chuyển vùng → khám phá/đến gần bạn
 | Ảnh | Ba | Hai | Ba |
 | Kết | Cánh thứ nhất | Cánh thứ hai | Cánh thứ ba |
 | Hậu kết | Đi có chiều sâu | Đi ngang | Đi ngang |
-| Dấu hiệu bên phải | Điểm sáng gợi Lấp Lánh | Vòng gợn gợi Tai Thính | Vệt sáng bí ẩn, tạm thời |
+| Dấu hiệu bên phải | Điểm sáng gợi Lấp Lánh | Vòng gợn gợi Tai Thính | Hai vệt bánh xe gợi Bánh Lưới |
 
 Không ấn định số bài/ảnh của màn mới bằng cách sao chép; cần mục đích rõ cho từng chặng. Tối thiểu ba ảnh là quyết định riêng của Tai Thính, không phải yêu cầu tự áp cho mọi màn. Không thêm cảnh xác nhận chỉ để kéo dài bước chuyển.
 
@@ -158,7 +158,7 @@ Phân biệt lịch sử, mô hình và giả tưởng ngay trong thiết kế. 
 4. Hết thoại cho đi lại, hiện **Xem lại đoạn kết / Chơi lại / Về lộ trình** trong vùng không che chủ thể.
 5. Giữ dấu hiệu ở rìa phải và cho Cuội tới đó để về lộ trình.
 
-Đèn theo tay, hướng và frame đi bộ; không để một đèn HTML đứng giữa cảnh khi Cuội đã đi xa. Dấu hiệu nhìn rõ nhưng nhẹ, không cản thao tác, có hình tĩnh khi giảm chuyển động. Chọn dấu hiệu gợi người bạn sau theo nội dung đã chốt; Tai Thính hiện chỉ dùng vệt sáng bí ẩn, chưa tự tiết lộ bạn thứ tư.
+Đèn theo tay, hướng và frame đi bộ; không để một đèn HTML đứng giữa cảnh khi Cuội đã đi xa. Dấu hiệu nhìn rõ nhưng nhẹ, không cản thao tác, có hình tĩnh khi giảm chuyển động. Chọn dấu hiệu gợi người bạn sau theo nội dung đã chốt; Tai Thính dùng hai vệt bánh xe song song để gợi cuộc gặp Bánh Lưới; đi tới đó vẫn về lộ trình để chọn màn.
 
 **Nhân vật vẫn tương tác được ở hậu kết:** bấm/chạm bạn để Cuội tới hoặc đi gần nhấn E. Chat khoảng hai lượt: cảm ơn Cuội ghé trò chuyện rồi gợi nhìn dấu hiệu phía phải. Dùng giọng riêng, hợp trẻ nhỏ, có thể nghe lại. Trong chat khóa bước đi, giữ dấu hiệu trên nền và tạm ẩn nút hậu kết; đóng chat trả điều khiển. Không đổi tiến trình/phần thưởng.
 
@@ -174,7 +174,7 @@ Lấp Lánh/Tai Thính giữ ảnh khi chơi lại; Mắt Tròn có checkpoint r
 
 Mỗi màn có nội dung, tiến trình, điều kiện nhận ảnh và hoàn thành rõ; React điều phối câu chuyện, Phaser xử lý cảnh/di chuyển, không tạo thêm nguồn trạng thái truyện trong Phaser.
 
-Giữ ổn định `LevelId`, phase, ID thoại/ảnh/trang đã lưu. Schema hiện tại v5, bộ đọc tiếp nhận v1–v4. Đổi schema/phase phải có tương thích; không reset cả hành trình để sửa save. Kết quả và chuyển chặng/ảnh cập nhật cùng lúc khi cần. Không lưu focus, hover, đích đi hoặc thời gian hiệu ứng.
+Giữ ổn định `LevelId`, phase, ID thoại/ảnh/trang đã lưu. Schema hiện tại v6 (Bánh Lưới M1), bộ đọc tiếp nhận v1–v5. Đổi schema/phase phải có tương thích; không reset cả hành trình để sửa save. Kết quả và chuyển chặng/ảnh cập nhật cùng lúc khi cần. Không lưu focus, hover, đích đi hoặc thời gian hiệu ứng.
 
 Rà đầy đủ đăng ký level, `journeyStatus`, số sao, sách, tiêu đề/footer, focus, canvas, chơi lại và bản lưu. Không chỉ thêm một phần tử vào danh sách. Phạm vi CSS theo màn/component; đổi selector chung phải đối chiếu cả ba màn cũ. `freeRoam` có ý nghĩa khác ở màn đi chiều sâu và đi ngang.
 

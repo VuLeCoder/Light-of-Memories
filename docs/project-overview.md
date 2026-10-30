@@ -1,6 +1,6 @@
 # Tổng quan dự án Cuội
 
-Cập nhật **28/10/2026**. Đây là điểm vào tài liệu hiện tại. Mỗi màn có một bản tổng hợp chính; các kế hoạch và bàn giao Game3/Game4 đã được hợp nhất để tránh mô tả khác nhau.
+Cập nhật **30/10/2026**. Đây là điểm vào tài liệu hiện tại. Mỗi màn có một bản tổng hợp chính; các kế hoạch và bàn giao Game3/Game4 đã được hợp nhất để tránh mô tả khác nhau.
 
 ## Tài liệu cần đọc
 
@@ -9,7 +9,7 @@ Cập nhật **28/10/2026**. Đây là điểm vào tài liệu hiện tại. M�
 | [Game1 — Surveyor 3 / Mắt Tròn](done/Game1_Surveyor_3.md) | Lịch sử, sách, dụng cụ, đào ảnh, nhật ký và đoạn kết; mẫu cấu trúc cho các màn |
 | [Game2 — Apollo 11 / Lấp Lánh](done/Game2_Apollo_11.md) | T01–T04, hai ảnh, phản xạ/đo khoảng cách, cánh sao thứ hai |
 | [Game3 — Apollo 12 / Tai Thính](done/Game3_Apollo_12.md) | T01–T04, ba ảnh, khoa học/nguồn, sách, trạng thái, bàn giao M0–M8 |
-| [Game4 — Apollo 17 / Bánh Lưới](done/Game4_Apollo_17.md) | T01–T03, hai ảnh, bản đồ/pin/đi bộ, camera, cánh thứ tư và bàn giao M7 |
+| [Game4 — Apollo 17 / Bánh Lưới](done/Game4_Apollo_17.md) | T01–T03, hai ảnh, bản đồ/pin/đi bộ, lấy mẫu đá/đất, cánh thứ tư và bàn giao M7 |
 | [Hướng dẫn AI thiết kế màn mới](Huong-dan-AI-thiet-ke-man-choi-moi.md) | Quyết định chung, văn phong, UI, sách, focus, hậu kết và tích hợp |
 | [Phong cách hình ảnh](visual-style.md) | Màu, nét vẽ, sprite, chân dung và bố cục |
 | [Quy ước ảnh](image-assets.md), [kiểm kê tài nguyên ban đầu](assets-inventory.md) | Thư mục, tài nguyên và thông tin crop sprite |
@@ -53,7 +53,7 @@ A/D, mũi tên hoặc chạm đất để đi; các chặng có chiều sâu dù
 
 Focus theo game qua chuyển thoại/bài/ảnh/hậu kết khi đang chơi, kể cả nút cũ bị gỡ hoặc khóa. Không giành focus từ ô nhập/sách; bấm ngoài, Tab ra ngoài hoặc đổi cửa sổ sẽ nhả bàn phím. Menu tạm dừng, tiếp tục bỏ phím/đích đi cũ.
 
-Các khóa localStorage: `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema tiến trình hiện **v10**, đọc v1–v10; lưu mốc mở đầu và tiến trình riêng từng màn, gồm phase/lượt thoại/ảnh/đáp án/dấu hoàn thành. Không đồng bộ giữa thiết bị. Không dùng reset toàn hành trình khi nâng schema.
+Các khóa localStorage: `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema tiến trình hiện **v13**, đọc v1–v13; lưu mốc mở đầu và tiến trình riêng từng màn, gồm phase/lượt thoại/ảnh/đáp án/dấu hoàn thành. Không đồng bộ giữa thiết bị. Không dùng reset toàn hành trình khi nâng schema.
 
 ## Phần chưa chốt và giới hạn
 
