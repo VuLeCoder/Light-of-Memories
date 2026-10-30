@@ -361,7 +361,7 @@ export const banBanhLuoiBook = {
     title: text("Bánh xe không cần bơm hơi", "Wheels that need no air"),
     paragraphs: [
       text("Bánh LRV đan bằng dây kim loại, có gân chữ V và không cần bơm hơi.", "LRV wheels use wire mesh and V-shaped treads. They need no air."),
-      text("Lưới có thể uốn nhưng vật sắc vẫn có thể làm đứt sợi. Minh họa chuyển động được giản lược.", "Mesh can flex, but sharp objects can break wires. Motion is simplified.")
+      text("Trong phần thử bánh, lốp hơi làm êm nhưng có thể xẹp nếu bị thủng; bánh cứng giữ hình dạng nhưng xóc hơn khi vượt đá. Bánh lưới có thể uốn theo đá, song vật sắc vẫn có thể làm đứt sợi. Đây là minh họa giản lược.", "In the wheel trial, air cushions bumps but a puncture can flatten the tyre; a rigid wheel keeps its shape but jolts more over rocks. Mesh can flex around rocks, though sharp edges can break wires. These are simplified illustrations.")
     ]
   },
   "ban-book-route": {
@@ -369,7 +369,15 @@ export const banBanhLuoiBook = {
     paragraphs: [
       text("Cuội và Bánh Lưới chuẩn bị một chuyến đi tưởng tượng. LM là tàu đổ bộ. Tuyến từ tàu ghé A, B theo thứ tự bất kỳ rồi về tàu, qua các ô chung cạnh và tránh hố.", "Cuội and Mesh Wheels plan an imaginary trip. LM means lunar module. Their route starts there, visits A and B in either order, then returns home, along shared cell edges and around craters."),
       text("Vào đất bằng tốn 1 pin, dốc tốn 2. Cả tuyến dùng tối đa 12 pin; đi lại ô cũ vẫn tính thêm.", "Entering flat ground costs 1 battery unit; a slope costs 2. Use at most 12. Revisiting a cell still adds to the cost."),
-      text("Tới A, Cuội lấy mẫu bên tảng đá; tới B, Cuội quan sát các mảng đất để tìm mẫu đất cam. Mỗi mẫu cần mang về xe trước khi đi tiếp. Hai hoạt động và vị trí A/B được giản lược cho câu chuyện.", "At A, Cuội collects a rock sample; at B, he examines soil patches to find orange soil. Each sample must be brought back to the rover before moving on. These activities and the A/B locations are simplified for the story.")
+      text("Lộ trình đã chọn sẽ trở thành chuyến đi ở T03: xe tự đi, dừng tại A và B theo thứ tự bạn đã vạch. A là điểm lấy mẫu đá; B là điểm tìm đất cam. Cất mỗi mẫu lên xe rồi mới đi tiếp. Khi về LM với đủ hai mẫu, Cuội cùng Bánh Lưới xem lại ký ức.", "Your chosen route becomes the T03 journey: the rover travels automatically and stops at A and B in your planned order. A is the rock stop; B is the orange-soil stop. Store each sample on the rover before continuing. Back at LM with both samples, Cuội and Mesh Wheels revisit the memories.")
+    ]
+  },
+  "ban-book-samples": {
+    title: text("Hai điểm dừng, hai mẫu vật", "Two stops, two samples"),
+    paragraphs: [
+      text("Tại A, Cuội gõ búa hai lần đúng lực để làm rời mẫu đá, nhặt mẫu rồi mang về cất trên xe. Hoạt động lấy cảm hứng từ việc Cernan và Schmitt lấy mẫu ở tảng đá tại vùng Nansen, Trạm 2.", "At A, Cuội loosens a rock sample with two well-timed hammer strikes, picks it up and stores it on the rover. This activity draws on Cernan and Schmitt sampling a boulder in the Nansen area at Station 2."),
+      text("Tại B, Cuội quan sát ba mảng đất, tìm hạt tròn cam và đen xen mảnh vỡ, rồi lấy mẫu mang về xe. Apollo 17 tìm thấy đất cam bên miệng hố Shorty, Trạm 4. Những hạt nhỏ này kể câu chuyện về hoạt động núi lửa cổ xưa.", "At B, Cuội examines three patches for round orange and black grains mixed with fragments, then brings a sample back to the rover. Apollo 17 found orange soil at the rim of Shorty Crater, Station 4. Its tiny grains tell a story of ancient volcanic activity."),
+      text("A/B là ký hiệu trong game, không phải tên trạm thật. Bản đồ, thứ tự ghé trạm, hai lần gõ và hình hạt phóng đại đều được giản lược. Các nhà khoa học nghiên cứu mẫu mang về để xác định thành phần; không thể chỉ nhìn màu đất mà kết luận.", "A/B are game labels, not actual station names. The map, visit order, two strikes and enlarged grains are simplified. Scientists studied returned samples to determine their composition; colour alone is not enough.")
     ]
   },
   "ban-book-walkback": {

@@ -67,7 +67,7 @@ export function readBanhLuoi(value: unknown, version = 13): BanhLuoiProgress {
 
 export function banhLuoiPageIds(progress: BanhLuoiProgress): string[] {
   return ['ban-banh-luoi', ...((progress.completedOnce || progress.keepsakes.includes('vip') || ['wheels', 'photoA', 'routeIntro', 'routePuzzle', 'guideIntro', 'guiding', 'photoB', 'memoriesIntro'].includes(progress.phase)) ? ['ban-book-wheels'] : []),
-    ...(progress.keepsakes.includes('vip') ? ['ban-photo-vip', 'ban-book-route', 'ban-book-walkback'] : []),
+    ...(progress.keepsakes.includes('vip') ? ['ban-photo-vip', 'ban-book-route', 'ban-book-walkback', 'ban-book-samples'] : []),
     ...((progress.completedOnce || progress.keepsakes.includes('orbit') || ['photoB','memoriesIntro'].includes(progress.phase)) ? ['ban-book-camera'] : []),
     ...(progress.keepsakes.includes('orbit') ? ['ban-photo-orbit', 'ban-book-legacy'] : [])];
 }

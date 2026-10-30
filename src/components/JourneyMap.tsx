@@ -132,7 +132,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     if (lastBookRequest.current === bookRequest) return;
     lastBookRequest.current = bookRequest;
-    const target = activeLevel === 'ban-banh-luoi' ? ['photoB','memoriesIntro'].includes(banhLuoiProgress.phase) ? 'ban-book-camera' : ['routeIntro', 'routePuzzle', 'guideIntro', 'guiding'].includes(banhLuoiProgress.phase) ? banhLuoiProgress.routeHint === 2 ? 'ban-book-walkback' : 'ban-book-route' : 'ban-book-wheels' : activeLevel === 'lap-lanh'
+    const target = activeLevel === 'ban-banh-luoi' ? ['photoB','memoriesIntro'].includes(banhLuoiProgress.phase) ? 'ban-book-camera' : ['guideIntro', 'guiding'].includes(banhLuoiProgress.phase) ? 'ban-book-samples' : ['routeIntro', 'routePuzzle'].includes(banhLuoiProgress.phase) ? banhLuoiProgress.routeHint === 2 ? 'ban-book-walkback' : 'ban-book-route' : 'ban-book-wheels' : activeLevel === 'lap-lanh'
       ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
       : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : ['graph', 'duration'].includes(taiThinhProgress.phase) ? 'tai-book-ringing' : taiThinhProgress.phase === 'rhythm' ? 'tai-book-rhythm' : null
       : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
@@ -182,7 +182,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
         {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
         {(photo || banPageId === 'ban-book-wheels') && <BanhLuoiPhotoView key={banPageId} photo={photo ?? banBanhLuoiMemories[0]} language={language}/>}
         {photo && <><p>{photo.caption[language]}</p><small>{photo.credit} · {photo.code}</small></>}
-        <a className="sparkle-book-source" href={banPageId === 'ban-book-camera' ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://apollojournals.org/alsj/a11/a11.clsout.html' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'ALSJ' : 'Apollo 17'} ↗</a>
+        <a className="sparkle-book-source" href={['ban-book-camera', 'ban-book-samples'].includes(banPageId) ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://apollojournals.org/alsj/a11/a11.clsout.html' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'ALSJ' : 'Apollo 17'} ↗</a>
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
     </>;
