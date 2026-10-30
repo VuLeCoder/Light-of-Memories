@@ -301,9 +301,6 @@
 /* A node is a visit, not a unique cell: retain turnarounds and intermediate LM. */
 .ban-trip-timeline { height: 56px; flex: none; overflow: hidden; border-radius: 8px; background: #21373e; box-shadow: inset 0 0 0 1px #72817555; }
 .ban-trip-timeline > svg { display: block; }
-.ban-trip-controls { display: flex; align-items: center; gap: 8px; min-height: 56px; flex: none; }
-.ban-trip-controls > span { flex: 1; font-size: 18px; line-height: 1.25; }
-.ban-trip-controls > button { flex: none; }
 @container (max-width: 639px) {
   .banh-luoi-scene:has(.ban-guide) > .banh-luoi-hud { display: grid; grid-template-columns: 1fr 2fr; gap: 4px; padding: 6px 8px; }
   .banh-luoi-scene:has(.ban-guide) .banh-luoi-hud > span { grid-column: 1 / -1; padding: 2px 0; }
@@ -314,13 +311,7 @@
 .ban-rock-track { position: relative; height: 18px; flex: 1; background: #677673; border: 1px solid #c7c4ab; }
 .ban-rock-track i { position: absolute; left: 35%; width: 45%; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, #dcca97 0 4px, #ab9866 4px 6px); border-inline: 2px solid #f5e4b6; }
 .ban-rock-track b { position: absolute; width: 3px; top: -4px; bottom: -4px; background: #fff9df; transform: translateX(-50%); }
-.ban-rock-buttons { display: flex; flex: 1; gap: 6px; min-width: 0; }
-.ban-rock-buttons button { min-width: 42px; }
-.ban-rock-buttons button[aria-disabled="true"] { opacity: .65; }
-@container (max-width: 400px) {
-  .game-stage.classic-friend-scene .ban-rock-buttons button { padding-inline: 5px; }
-  .ban-trip-controls { gap: 4px; }
-}
+
 
 .ban-soil-dialog { position: absolute; inset: 60px 8px 8px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: #142831; border: 1px solid #b9aa7d; border-radius: 10px; text-align: center; }
 .ban-soil-dialog strong { font-size: 18px; }

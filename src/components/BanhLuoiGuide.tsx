@@ -52,7 +52,6 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
   const isB = checkpoint.stage === 'atB';
   const rock = checkpoint.rock;
   const say = (vi: string, en: string) => language === 'vi' ? vi : en;
-  const actionLabel = isB ? checkpoint.soil === 'carrying' ? say('Cất mẫu', 'Store') : say('Giữ để xem', 'Hold to look') : rock === 'carrying' ? say('Cất mẫu', 'Store') : rock === 'loose' ? say('Nhặt mẫu', 'Pick up') : say('Giữ / thả', 'Hold / release');
   const rockMessage = feedback.missed ? say('Thử thả khi vạch ở vùng sáng nhé.', 'Release inside the marked zone. Try again.')
     : rock === 'carrying' ? say('Mang mẫu về xe bên trái · E để cất.', 'Bring the sample left to the rover · E to store.')
     : rock === 'loose' ? say('Mẫu đá đã rời ra · Đến gần, nhấn E để nhặt.', 'The sample is loose · Move close and press E to pick up.')
@@ -70,23 +69,6 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
     onChange(p => p.confirmedRoute && p.guideCheckpoint ? { ...p, guideCheckpoint: advanceGuide(p.confirmedRoute, p.guideCheckpoint, { key, action: 'collectSoil', patch: 'orange' }) } : p);
     dismissObservation();
   };
-  const touch = (direction: number | null) => ({
-    onPointerDown: (event: React.PointerEvent<HTMLButtonElement>) => {
-      event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); focus();
-      controls.current.cancelled = false;
-      if (direction === null) controls.current.action = true; else controls.current.direction = direction;
-    },
-    onPointerUp: () => { if (direction === null) controls.current.action = false; else controls.current.direction = 0; },
-    onPointerCancel: () => { controls.current.cancelled = true; controls.current.action = false; controls.current.direction = 0; },
-    onLostPointerCapture: () => { if (controls.current.action || controls.current.direction) { controls.current.cancelled = true; controls.current.action = false; controls.current.direction = 0; } },
-    onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (event.repeat || ![' ', 'Enter'].includes(event.key)) return;
-      event.preventDefault(); controls.current.cancelled = false; if (direction === null) controls.current.action = true; else controls.current.direction = direction;
-    },
-    onKeyUp: (event: React.KeyboardEvent<HTMLButtonElement>) => { if ([' ', 'Enter'].includes(event.key)) { event.preventDefault(); controls.current.action = false; controls.current.direction = 0; } },
-    onBlur: () => { controls.current.cancelled = true; },
-  });
-  const atStop = checkpoint.stage === 'atA' || checkpoint.stage === 'atB';
   const location = guideStop(route, checkpoint.nodeIndex) ?? (sameCell(route.cells[checkpoint.nodeIndex], model.lm) ? 'LM' : `${checkpoint.nodeIndex}`);
   const timelineText = route.cells.map((cell, index) => guideStop(route, index) ?? (sameCell(cell, model.lm) ? 'LM' : isSlope(cell) ? (language === 'vi' ? 'dốc' : 'slope') : '·')).join(' → ');
   // Unfold visits horizontally; retain the north/south relief of the selected map.
@@ -143,13 +125,7 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
       {isB && feedback.holding && <div className="ban-soil-progress" role="status">{say('Đang quan sát…', 'Looking closely…')}<progress max={.7 / 1.6} value={feedback.force} /></div>}
       </div>
       <p className="ban-guide-message" role="status">{isA ? rockMessage : isB ? soilMessage : copy[checkpoint.stage][language]}</p>
-      <div className="ban-trip-controls">{atStop ? <div className="ban-rock-buttons">
-        <button aria-label={say('Đi trái', 'Walk left')} {...touch(-1)}>←</button>
-        <button aria-label={say('Đi phải', 'Walk right')} {...touch(1)}>→</button>
-        <button {...touch(null)} aria-disabled={!feedback.near}>{actionLabel}</button>
-      </div> : <span>{`${copy.step[language]} ${checkpoint.nodeIndex}/${route.cells.length - 1}`}</span>}
-        <button onClick={() => onChange(p => ({ ...p, phase: 'routePuzzle', turn: 0 }))}>{copy.edit[language]}</button>
-      </div>
+
     </div>
     {(observation || soilCard) && <div ref={dialog} className="ban-soil-dialog" role="dialog" aria-modal="true" aria-label={say('Quan sát mẫu đất', 'Soil observation')} inert={hint || paused} onKeyDown={event => {
       if (event.key === 'Escape') { event.stopPropagation(); dismissObservation(); }
