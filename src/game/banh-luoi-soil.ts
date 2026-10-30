@@ -14,13 +14,17 @@ export function drawSoilStop(scene: Phaser.Scene) {
   g.fillStyle(0x556560).fillEllipse(637, 348, 330, 29);
   for (let i = 0; i < 240; i++) g.fillStyle(i % 3 ? 0x384a50 : 0xc5c2a6, .25).fillRect(i * 137 % 960, 374 + i * 43 % 166, 3, 2);
   [460, 620, 780].forEach((x, patch) => {
-    g.fillStyle(0x35464c, .5).fillEllipse(x - 13, 438, 94, 15);
+    // Exposed soil is flush with the surface, not a raised mound casting a shadow.
+    g.fillStyle(0x686f65, .45).fillEllipse(x, 429, 92, 21);
     g.fillStyle(patch === 1 ? 0x99806a : 0x93978b).fillEllipse(x, 429, 82, 19);
     for (let i = 0; i < 18; i++) {
       const px = x - 32 + i * 17 % 64, py = 423 + i * 7 % 11;
       g.fillStyle(patch === 1 ? (i % 2 ? 0xce985d : 0x303c3b) : 0xc2c1ae);
-      if (patch === 1) g.fillCircle(px, py, 2);
-      else g.fillTriangle(px, py - 3, px - 3, py + 2, px + 4, py + 2);
+      if (patch === 1) g.fillCircle(px, py, 1.5);
+      else {
+        g.fillStyle(0x56615a, .65).fillEllipse(px - 2, py + 1, 7, 2);
+        g.fillStyle(0xc2c1ae).fillTriangle(px, py - 2, px - 3, py + 1, px + 3, py + 1);
+      }
     }
     // One, two, three strokes distinguish patches without relying on color.
     for (let i = 0; i <= patch; i++) g.lineStyle(2, 0xe6d6aa).lineBetween(x - patch * 4 + i * 8, 453, x - patch * 4 + i * 8, 461);

@@ -26,6 +26,7 @@ export class BanhLuoiGuideScene {
   private rockBackground: Phaser.GameObjects.Graphics;
   private soilBackground: Phaser.GameObjects.Graphics;
   private props: Phaser.GameObjects.Graphics;
+  private groundMarks: Phaser.GameObjects.Graphics;
   private hammer: Phaser.GameObjects.Graphics;
   private swing: { elapsed: number; force: number; success: boolean } | null = null;
   private holding = false;
@@ -39,6 +40,8 @@ export class BanhLuoiGuideScene {
     banhLuoiScenery(scene);
     this.rockBackground = drawRockStop(scene).setVisible(false);
     this.soilBackground = drawSoilStop(scene).setVisible(false);
+    // Ground marks must stay beneath both the rover and Cuội.
+    this.groundMarks = scene.add.graphics().setDepth(3);
     this.props = scene.add.graphics().setDepth(11);
     // Match Mắt Tròn's shovel: outlined wood, blue-grey metal and ivory highlights.
     this.hammer = scene.add.graphics().setDepth(12).setVisible(false);
@@ -76,7 +79,25 @@ export class BanhLuoiGuideScene {
       this.rover.setPosition(180, 431);
       this.release();
     }
+    this.drawGroundMarks();
     if (!options.enabled) this.release();
+  }
+  private drawGroundMarks() {
+    const g = this.groundMarks.clear();
+    // Rest frame has four transparent pixels below the soles (at scale .62).
+    const footY = this.cuoi.y - 2.5;
+    g.fillStyle(0x293e45, .4).fillEllipse(this.cuoi.x - 20, footY + 3, 86, 12);
+    g.fillStyle(0x26383d, .7).fillEllipse(this.cuoi.x, footY, 48, 5);
+    // Small contact shadows under the near wheels anchor the existing cast shadow.
+    for (const x of [-94, 123]) {
+      g.fillStyle(0x26383d, .75).fillEllipse(this.rover.x + x * .55, this.rover.y + 2, 23, 4);
+    }
+    const p = this.options.checkpoint;
+    if (!['atA', 'atB'].includes(p.stage)) return;
+    const carrying = (p.stage === 'atB' ? p.soil : p.rock) === 'carrying';
+    const x = carrying ? 180 : p.stage === 'atB' ? [460, 620, 780][Math.max(0, this.patch())] : 700;
+    g.lineStyle(1, this.near() ? 0xf1d494 : 0xadb7a5, .65)
+      .strokeEllipse(x, carrying ? 434 : 429, carrying ? 100 : 90, 17);
   }
   release() {
     this.swing = null;
@@ -146,7 +167,7 @@ export class BanhLuoiGuideScene {
     }
     const g = this.props.clear(), rock = isB ? this.options.checkpoint.soil : this.options.checkpoint.rock;
     const facing = this.cuoi.flipX ? -1 : 1;
-    g.fillStyle(0x293e45, .6).fillEllipse(this.cuoi.x - 15, 435, 65, 10);
+    this.drawGroundMarks();
     // Wind up around the hand, strike, then recover before accepting another action.
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const swing = this.swing;
@@ -185,7 +206,7 @@ export class BanhLuoiGuideScene {
       g.lineStyle(2, 0x695e48).strokeRect(x, 388, 20, 25);
     }
     const near = this.near();
-    g.lineStyle(2, near ? 0xf1d494 : 0xadb7a5, .8).strokeEllipse(rock === 'carrying' ? 180 : isB ? [460, 620, 780][Math.max(0, this.patch())] : 700, 443, 75, 12);
+
     const feedback = { near, force: Math.round(this.force * 100) / 100, holding: this.holding, missed: this.missed };
     const key = JSON.stringify(feedback);
     if (key !== this.lastFeedback) { this.lastFeedback = key; this.options.onRockFeedback?.(feedback); }
@@ -213,6 +234,7 @@ export class BanhLuoiGuideScene {
     const offset = 100 * (p.nodeIndex - start + fraction) / (end - start);
     this.rover.x = 180 + offset;
     this.cuoi.x = 310 + offset;
+    this.drawGroundMarks();
     // The unfolded route always travels right, even after returning left to the rover.
     this.cuoi.setFlipX(false);
     if (!reduced && !this.cuoi.anims.isPlaying) this.cuoi.play('cuoi-walk');

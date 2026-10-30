@@ -12,10 +12,15 @@ export function drawRockStop(scene: Phaser.Scene) {
   g.fillStyle(0x78807b).fillPoints([{ x: 0, y: 383 }, { x: 280, y: 360 }, { x: 620, y: 375 }, { x: 960, y: 351 }, { x: 960, y: 540 }, { x: 0, y: 540 }], true);
   for (let i = 0; i < 250; i++) g.fillStyle(i % 3 ? 0x394b50 : 0xc6c5ad, .25).fillRect(i * 137 % 960, 373 + i * 43 % 167, 3, 2);
   for (const [x, y, size] of [[60, 403, 16], [490, 477, 24], [870, 458, 21], [820, 367, 12]]) {
-    g.fillStyle(0x384b51).fillEllipse(x - 14, y + 5, size * 2, 9);
+    g.fillStyle(0x384b51, .65).fillEllipse(x - size * .45, y + 1, size * 2.5, 5);
     g.fillStyle(0xa5a799).fillTriangle(x - size, y, x, y - size, x + size, y);
   }
-  g.fillStyle(0x35474c, .8).fillEllipse(646, 439, 200, 24);
+  // The cast shadow overlaps the base and extends away from the upper-right sun.
+  g.fillStyle(0x35474c, .65).fillPoints([
+    { x: 659, y: 422 }, { x: 750, y: 426 }, { x: 700, y: 444 },
+    { x: 571, y: 450 }, { x: 552, y: 442 },
+  ], true);
+  g.fillStyle(0x2d3e42, .8).fillEllipse(705, 428, 103, 10);
   g.fillStyle(0x888d83).fillPoints([{ x: 659, y: 425 }, { x: 649, y: 367 }, { x: 686, y: 323 }, { x: 737, y: 336 }, { x: 769, y: 390 }, { x: 750, y: 431 }], true);
   g.fillStyle(0xb7b7a1).fillPoints([{ x: 686, y: 323 }, { x: 737, y: 336 }, { x: 769, y: 390 }, { x: 709, y: 374 }], true);
   g.fillStyle(0x65736e).fillTriangle(659, 425, 649, 367, 709, 374);
