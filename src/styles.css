@@ -892,7 +892,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   font-size: clamp(13px, 1.7cqw, 17px);
   line-height: 1.4;
 }
-.game-stage.classic-friend-scene :is(button.journey-primary, .dialogue-next.is-ready, .surveyor-labels button[aria-pressed=true], .ban-wheel-options button[aria-pressed=true], .ban-camera-controls button[aria-pressed=true]) {
+.game-stage.classic-friend-scene :is(button.journey-primary, .dialogue-next.is-ready, .surveyor-labels button[aria-pressed=true], .ban-wheel-options button[aria-pressed=true]) {
   border-color: #ead4a4;
   border-radius: 7px;
   background: #dfc18a;

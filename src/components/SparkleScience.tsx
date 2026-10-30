@@ -8,7 +8,6 @@ export function CornerDiagram({ angle = 90, lit = 0, language = 'vi', onRotate }
   const drag = useRef<{ id: number; angle: number; rotation: number } | null>(null);
   const beam = traceSparkleLight(angle);
   const mirrors = cornerMirrors(angle);
-  const angleBetween = Math.acos(Math.max(-1, Math.min(1, mirrors[0].tangent.x * mirrors[1].tangent.x + mirrors[0].tangent.y * mirrors[1].tangent.y))) * 180 / Math.PI;
   const beamPath = beam.points.map((point, i) => `${i ? 'L' : 'M'}${point.x} ${point.y}`).join(' ');
   const pointerAngle = (svg: SVGSVGElement, x: number, y: number) => {
     const matrix = svg.getScreenCTM();

@@ -160,7 +160,7 @@ Canvas 960 × 540, Cuội neo chân y=431, scale 0,62; PSE tại (610,431), tr�
 
 Chân dung `public/images/portraits/tai-thinh.webp`, 1024 × 683 RGBA, WebP chất lượng 92. Tạo bằng image_gen từ hình dáng PSE trong 6916 và chất liệu minh họa Lấp Lánh: thân trụ bạc thấp, mặt trên sẫm, tấm phủ bạc xòe, dây cáp nhỏ, sáng từ trên phải, nền trong suốt; không thêm mặt/tai/tay chân, bảng gương hoặc trạm vào chân dung. Hình trong cảnh vẽ bằng mã, không phóng chân dung thay sprite.
 
-Bản xem thiết kế `/design/tai-thinh.html` chỉ phục vụ dev, không đọc/ghi tiến trình, không phải lối bỏ qua các bài; bố cục và placeholder ở bản xem không thay cho game đã tích hợp.
+Bản xem thiết kế M0–M1 cũ (`src/design/tai-thinh-preview.tsx` và CSS đi kèm) đã được loại bỏ sau khi tích hợp màn chơi; không còn trang `/design/tai-thinh.html`. Tham chiếu bố cục và tương tác từ màn chơi chính.
 
 ### Phạm vi đã kiểm tra và giới hạn
 

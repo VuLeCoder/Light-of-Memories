@@ -4,7 +4,6 @@ export const guideCopy = {
   atA: text('A · Lấy mẫu bên tảng đá', 'A · Collect a rock sample'),
   atB: text('B · Khám phá đất cam', 'B · Explore orange soil'),
   done: text('Đã về tàu cùng hai mẫu.', 'Back at the lander with both samples.'),
-  edit: text('Bản đồ', 'Map'),
   step: text('Bước', 'Step'),
   soilHints: [
     text('Đi tới một mảng đất và giữ E để xem hình hạt. Tìm hạt tròn cam và đen xen các mảnh nhỏ.', 'Walk to a patch and hold E to see its grains. Look for round orange and black grains mixed with fragments.'),

@@ -31,7 +31,6 @@
 .banh-luoi-scene[hidden]:has(.ban-wheels) { display: none; }
 .banh-luoi-scene:has(.ban-wheels) .banh-luoi-hud { position: relative; inset: auto; padding: 8px 12px; gap: 8px; font-size: 16px; }
 .banh-luoi-scene .ban-wheels { position: relative; inset: auto; margin: 0 12px 12px; padding: 12px; font-size: 16px; }
-.ban-wheels .ban-wheel-instruction { margin: 0 0 12px; line-height: 1.4; }
 .ban-wheel-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; align-items: center; }
 .ban-wheel-options { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
 .game-stage.classic-friend-scene .ban-wheels button { min-height: 44px; font-size: 16px; padding: 6px 8px; }
@@ -59,7 +58,6 @@
   .banh-luoi-scene:has(.ban-wheels) .banh-luoi-hud > span { grid-column: 1 / -1; max-width: none; font-size: 16px; padding: 4px 8px; }
   .banh-luoi-scene .ban-wheels { margin: 0 8px 8px; padding: 8px; border-radius: 8px; }
   .ban-wheel-layout { grid-template-columns: minmax(0,1fr); gap: 8px; }
-  .ban-wheels .ban-wheel-instruction { margin-bottom: 8px; }
   .ban-wheel-track { height: 100px; }
   .ban-wheels .ban-feedback { min-height: 48px; }
 }
@@ -274,7 +272,6 @@
 .ban-guide-view { position: relative; flex: 1; min-height: 0; background: #0d141c; }
 .ban-guide-view .canvas-wrap, .ban-guide-view .game-host { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; min-height: 0; }
 .game-stage.classic-friend-scene .ban-guide button { min-height: 44px; padding: 6px 12px; font-size: 16px; touch-action: none; }
-.ban-guide-message { min-height: 44px; margin: 0; display: flex; align-items: center; line-height: 1.25; }
 .ban-guide-hint { position: absolute; inset: 0; z-index: 8; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; padding: 24px; background: #142831fa; }
 .ban-guide-hint p { max-width: 440px; line-height: 1.6; }
 @container (max-width: 560px) {
