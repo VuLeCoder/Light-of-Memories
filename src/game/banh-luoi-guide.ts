@@ -26,6 +26,8 @@ export class BanhLuoiGuideScene {
   private rockBackground: Phaser.GameObjects.Graphics;
   private soilBackground: Phaser.GameObjects.Graphics;
   private props: Phaser.GameObjects.Graphics;
+  private hammer: Phaser.GameObjects.Graphics;
+  private swing: { elapsed: number; force: number; success: boolean } | null = null;
   private holding = false;
   private force = 0;
   private missed = false;
@@ -38,6 +40,16 @@ export class BanhLuoiGuideScene {
     this.rockBackground = drawRockStop(scene).setVisible(false);
     this.soilBackground = drawSoilStop(scene).setVisible(false);
     this.props = scene.add.graphics().setDepth(11);
+    // Match Mắt Tròn's shovel: outlined wood, blue-grey metal and ivory highlights.
+    this.hammer = scene.add.graphics().setDepth(12).setVisible(false);
+    this.hammer.lineStyle(7, 0x493e32).lineBetween(0, 3, 0, -39);
+    this.hammer.lineStyle(4, 0xb58a52).lineBetween(-1, 2, -1, -39);
+    this.hammer.lineStyle(1, 0xd2b27c).lineBetween(-2, -5, -2, -34);
+    this.hammer.fillStyle(0x899b9d).fillRect(-15, -48, 30, 14);
+    this.hammer.lineStyle(2, 0x35494f).strokeRect(-15, -48, 30, 14);
+    this.hammer.fillStyle(0xc6d0c8).fillRect(-14, -47, 28, 4);
+    this.hammer.fillStyle(0x60777d).fillRect(-14, -37, 28, 2);
+    this.hammer.lineStyle(1, 0xe5e4cd).lineBetween(-13, -47, 13, -47);
     const up = () => this.finishHold();
     scene.input.keyboard?.on('keyup-E', up);
     const pointer = (p: Phaser.Input.Pointer) => { if (this.active() && ['atA', 'atB'].includes(this.options.checkpoint.stage)) this.target = Phaser.Math.Clamp(p.x, 100, 850); };
@@ -67,6 +79,8 @@ export class BanhLuoiGuideScene {
     if (!options.enabled) this.release();
   }
   release() {
+    this.swing = null;
+    this.hammer.setVisible(false);
     this.holding = false;
     this.force = 0;
     this.target = null;
@@ -85,7 +99,7 @@ export class BanhLuoiGuideScene {
     return Math.abs(this.cuoi.x - (this.options.checkpoint.rock === 'carrying' ? 180 : 700)) <= 48;
   }
   interact() {
-    if (!this.active() || this.sent || !['atA', 'atB'].includes(this.options.checkpoint.stage) || !this.near()) return;
+    if (!this.active() || this.sent || this.swing || !['atA', 'atB'].includes(this.options.checkpoint.stage) || !this.near()) return;
     if (this.options.checkpoint.stage === 'atB') {
       this.target = null;
       if (this.options.checkpoint.soil === 'carrying') { this.sent = true; this.options.onEvent({ key: this.key, action: 'store' }); }
@@ -97,15 +111,16 @@ export class BanhLuoiGuideScene {
     if (rock === 'loose' || rock === 'carrying') {
       this.sent = true;
       this.options.onEvent({ key: this.key, action: rock === 'loose' ? 'pickRock' : 'store' });
-    } else if (!this.holding) { this.holding = true; this.force = 0; this.missed = false; }
+    } else if (!this.holding) { this.cuoi.setFlipX(this.cuoi.x > 700); this.holding = true; this.force = 0; this.missed = false; }
   }
   private finishHold() {
     if (!this.holding) return;
     if (this.options.checkpoint.stage === 'atB') { this.holding = false; this.force = 0; return; }
     const success = this.active() && !this.options.controls?.cancelled && this.near() && this.force >= .35 && this.force <= .8;
     this.holding = false;
-    if (success && !this.sent) { this.sent = true; this.options.onEvent({ key: this.key, action: 'hit' }); }
-    else if (this.active() && !this.options.controls?.cancelled) this.missed = true;
+    if (this.active() && !this.options.controls?.cancelled && !this.sent) {
+      this.swing = { elapsed: 0, force: this.force, success };
+    }
     this.force = 0;
   }
   private rockUpdate(delta: number) {
@@ -116,7 +131,7 @@ export class BanhLuoiGuideScene {
     let direction = (this.keys.right.isDown || this.keys.d.isDown ? 1 : 0) - (this.keys.left.isDown || this.keys.a.isDown ? 1 : 0) || control?.direction || 0;
     if (direction) this.target = null;
     if (!direction && this.target !== null) { direction = Math.sign(this.target - this.cuoi.x); if (Math.abs(this.target - this.cuoi.x) < 5) { this.target = null; direction = 0; } }
-    if (!this.holding && direction) {
+    if (!this.holding && !this.swing && direction) {
       this.cuoi.x = Phaser.Math.Clamp(this.cuoi.x + direction * Math.min(delta, 50) * .23, 100, 850);
       this.cuoi.setFlipX(direction < 0);
       if (!this.cuoi.anims.isPlaying) this.cuoi.play('cuoi-walk');
@@ -132,11 +147,35 @@ export class BanhLuoiGuideScene {
     const g = this.props.clear(), rock = isB ? this.options.checkpoint.soil : this.options.checkpoint.rock;
     const facing = this.cuoi.flipX ? -1 : 1;
     g.fillStyle(0x293e45, .6).fillEllipse(this.cuoi.x - 15, 435, 65, 10);
-    // A hammer follows the hand; the sample bag replaces it once picked up.
-    if (this.holding && !isB) {
-      const x = this.cuoi.x + 23 * facing, y = 364 - this.force * 26;
-      g.lineStyle(5, 0xbfa77a).lineBetween(x - 8 * facing, 393, x, y);
-      g.fillStyle(0xc9ccbd).fillRect(x - (facing > 0 ? 10 : 13), y - 5, 23, 10);
+    // Wind up around the hand, strike, then recover before accepting another action.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const swing = this.swing;
+    if (swing) swing.elapsed += Math.min(delta, 50);
+    const ready = !isB && (rock === 'untouched' || rock === 'hitOnce');
+    let angle = this.holding ? -.25 - this.force * .9 : .3;
+    if (swing) {
+      const raised = -.25 - swing.force * .9;
+      const down = Math.min(1, swing.elapsed / 240);
+      angle = swing.elapsed < 240 ? raised + (1.8 - raised) * down * down
+        : 1.8 - 1.5 * Phaser.Math.Clamp((swing.elapsed - 320) / 200, 0, 1);
+      if (reduced) angle = .8;
+    }
+    this.hammer.setVisible(ready).setPosition(this.cuoi.x + 16 * facing, 393)
+      .setScale(facing, 1).setRotation(angle * facing);
+    if (swing && swing.elapsed >= 240 && swing.elapsed < 440 && !reduced) {
+      const spread = (swing.elapsed - 240) / 200;
+      const x = this.cuoi.x + 56 * facing;
+      for (let i = 0; i < 4; i++) {
+        g.fillStyle(swing.success ? 0xc6d0c8 : 0x899b9d, 1 - spread)
+          .fillRect(x + (i - 1.5) * (5 + spread * 12), 402 - Math.sin(spread * Math.PI) * (8 + i * 3), 3, 3);
+      }
+    }
+    if (swing && swing.elapsed >= 520) {
+      this.swing = null;
+      if (swing.success && !this.sent) {
+        this.sent = true;
+        this.options.onEvent({ key: this.key, action: 'hit' });
+      } else this.missed = true;
     }
     if (rock === 'hitOnce' || rock === 'loose') g.lineStyle(3, 0x394e52).lineBetween(693, 399, 671, 413);
     if (rock === 'loose') g.fillStyle(0xe0d5b5).fillTriangle(680, 429, 691, 417, 702, 429);
@@ -158,6 +197,7 @@ export class BanhLuoiGuideScene {
     }
     if (['atA', 'atB'].includes(this.options.checkpoint.stage)) { this.rockUpdate(delta); return; }
     this.props.clear();
+    this.hammer.setVisible(false);
     if (this.sent || this.options.checkpoint.stage !== 'travel') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     // Give each route edge time to read, including the turn after storing a sample.
