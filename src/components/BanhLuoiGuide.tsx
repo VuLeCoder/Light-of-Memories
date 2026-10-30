@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
 import type { Language } from '../content/i18n';
 import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
@@ -52,6 +53,8 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
   const isB = checkpoint.stage === 'atB';
   const rock = checkpoint.rock;
   const say = (vi: string, en: string) => language === 'vi' ? vi : en;
+  const [footer, setFooter] = useState<HTMLElement | null>(null);
+  useEffect(() => { setFooter(document.getElementById('ban-guide-instructions')); }, []);
   const rockMessage = feedback.missed ? say('Thử thả khi vạch ở vùng sáng nhé.', 'Release inside the marked zone. Try again.')
     : rock === 'carrying' ? say('Mang mẫu về xe bên trái · E để cất.', 'Bring the sample left to the rover · E to store.')
     : rock === 'loose' ? say('Mẫu đá đã rời ra · Đến gần, nhấn E để nhặt.', 'The sample is loose · Move close and press E to pick up.')
@@ -124,7 +127,7 @@ export function BanhLuoiGuide({ progress, onChange, language, paused, hintReques
       </div>}
       {isB && feedback.holding && <div className="ban-soil-progress" role="status">{say('Đang quan sát…', 'Looking closely…')}<progress max={.7 / 1.6} value={feedback.force} /></div>}
       </div>
-      <p className="ban-guide-message" role="status">{isA ? rockMessage : isB ? soilMessage : copy[checkpoint.stage][language]}</p>
+      {footer && createPortal(<span>{isA ? rockMessage : isB ? soilMessage : copy[checkpoint.stage][language]}</span>, footer)}
 
     </div>
     {(observation || soilCard) && <div ref={dialog} className="ban-soil-dialog" role="dialog" aria-modal="true" aria-label={say('Quan sát mẫu đất', 'Soil observation')} inert={hint || paused} onKeyDown={event => {

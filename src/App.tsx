@@ -389,7 +389,7 @@ export function App() {
             {journeyOpen && !inBanhLuoi && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
-          <p className="chapter-arrival game-instructions">{chattingAtEnd ? dialogueHelp : endingExploring ? `${gameInstructions} ${language === 'vi' ? 'Đến gần bạn rồi nhấn E, hoặc bấm vào bạn để trò chuyện.' : 'Approach your friend and press E, or click your friend to chat.'}` : gameInstructions}</p>
+          <p className="chapter-arrival game-instructions">{chattingAtEnd ? dialogueHelp : endingExploring ? `${gameInstructions} ${language === 'vi' ? 'Đến gần bạn rồi nhấn E, hoặc bấm vào bạn để trò chuyện.' : 'Approach your friend and press E, or click your friend to chat.'}` : inBanhLuoi && displayedBan.phase === 'guiding' ? <span id="ban-guide-instructions" role="status"/> : gameInstructions}</p>
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
       </section>

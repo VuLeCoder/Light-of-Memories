@@ -77,7 +77,6 @@ export function BanhLuoiWheels({ language, selected, onSelect, onSuccess, paused
   };
   return <section className="ban-panel ban-wheels" aria-labelledby="ban-wheels-title">
     <h2 id="ban-wheels-title" className="sr-only">{copy['wheels.title'][language]}</h2>
-    <p className="ban-wheel-instruction">{copy['wheels.instruction'][language]}</p>
     <div className="ban-wheel-layout">
       <div className="ban-wheel-options" role="group" aria-label={copy['wheels.options'][language]}>{wheelChoices.map(kind => <button key={kind} aria-pressed={selected === kind} aria-label={copy[`wheels.${kind}`][language]} onClick={() => {
         if (paused || submitted.current || selected === kind) return;

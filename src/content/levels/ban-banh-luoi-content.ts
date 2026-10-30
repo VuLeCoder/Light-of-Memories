@@ -46,7 +46,7 @@ export const banBanhLuoiCopy = {
   "footer.dialogue": text("Space/Enter hoặc nút trong khung thoại để hiện hết câu và tiếp tục.", "Use Space/Enter or the dialogue button to reveal the full line and continue."),
   "footer.guide": text("Xe tự đi theo lộ trình; A và B là hai điểm dừng. ▼ Cuội · ▰ Bánh Lưới. Mở sách hoặc menu để tạm dừng.", "The rover follows your route, stopping at A and B. ▼ Cuội · ▰ Mesh Wheels. Open the book or menu to pause."),
   "footer.walk": text("A/D, ←/→ hoặc chạm đất để đi. Đến gần xe nhấn E, hoặc chạm xe.", "Use A/D, ←/→ or touch the ground to walk. Press E near the rover, or touch it."),
-  "footer.wheels": text("Chọn → Thử bánh → Chọn bánh này. Dùng chuột/chạm hoặc Tab và Enter/Space.", "Select → Try wheel → Choose this wheel. Use mouse/touch or Tab and Enter/Space."),
+  "footer.wheels": text("Thử bánh rồi tìm chiếc có ô lưới và gân chữ V. Chọn → Thử bánh → Chọn bánh này. Dùng chuột hoặc Tab và Enter/Space.", "Try wheels and find the mesh with V-shaped treads. Select → Try wheel → Choose this wheel. Use the mouse or Tab and Enter/Space."),
   "footer.route": text("Chọn ô kề để thêm bước. Mũi tên chọn ô, Enter/Space thêm; dùng nút để lùi hoặc vẽ lại.", "Choose a neighbouring cell to add a step. Arrow keys select a cell; Enter/Space adds it. Use the buttons to undo or reset."),
   "footer.photo": text("Cất ảnh để thêm vào sách và tiếp tục. Có thể mở ảnh lớn để xem chi tiết.", "Keep the photo to add it to the book and continue. Open a larger view to inspect it."),
   "footer.recall": text("Dùng Trang trước/Trang tiếp để đọc theo thời gian.", "Use Previous page/Next page to read in time order."),
