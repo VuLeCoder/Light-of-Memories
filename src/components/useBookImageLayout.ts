@@ -64,24 +64,29 @@ export function useBookImageLayout(pageId: string | null, language: string, requ
           if (!needsSplit) return [block];
           const value = block.textContent ?? '';
           const ends = Array.from(value.matchAll(/\S+\s*/g), match => match.index! + match[0].length);
-          const sentenceEnds = new Set(Array.from(new Intl.Segmenter(language, { granularity: 'sentence' }).segment(value), segment => segment.index + segment.segment.length));
+          const sentenceEnds = Array.from(new Intl.Segmenter(language, { granularity: 'sentence' }).segment(value), segment => segment.index + segment.segment.length);
           const pieces: HTMLElement[] = [];
           let start = 0;
           while (start < value.length) {
+            // Binary search limits synchronous layout reads on long paragraphs.
+            let low = ends.findIndex(end => end > start);
+            const first = low;
+            let high = ends.length - 1;
             let best = start;
-            let sentence = start;
-            for (const end of ends) {
-              if (end <= start) continue;
-              const probe = clonePassage(block, start, end);
+            while (low <= high) {
+              const middle = (low + high) >>> 1;
+              const probe = clonePassage(block, start, ends[middle]);
               block.after(probe);
               const fits = !overflows();
               probe.remove();
-              if (!fits) break;
-              best = end;
-              if (sentenceEnds.has(end)) sentence = end;
+              if (fits) {
+                best = ends[middle];
+                low = middle + 1;
+              } else high = middle - 1;
             }
             // Prefer a whole sentence; split at a word only if a sentence is too tall.
-            const end = sentence > start ? sentence : best > start ? best : ends.find(end => end > start) ?? value.length;
+            const sentence = sentenceEnds.filter(end => end > start && end <= best).at(-1);
+            const end = sentence ?? (best > start ? best : ends[first] ?? value.length);
             const piece = clonePassage(block, start, end);
             (pieces.at(-1) ?? block).after(piece);
             hide(piece, true);
@@ -118,13 +123,22 @@ export function useBookImageLayout(pageId: string | null, language: string, requ
     const onClick = (event: MouseEvent) => {
       if (event.target instanceof Element && event.target.closest('button')) schedule();
     };
-    const observer = new ResizeObserver(schedule);
+    let width = sheet.clientWidth;
+    let height = sheet.clientHeight;
+    const observer = new ResizeObserver(() => {
+      const nextWidth = sheet.clientWidth;
+      const nextHeight = sheet.clientHeight;
+      if (nextWidth === width && nextHeight === height) return;
+      width = nextWidth;
+      height = nextHeight;
+      schedule();
+    });
     observer.observe(sheet);
     sheet.addEventListener('load', schedule, true);
     sheet.addEventListener('error', schedule, true);
     sheet.addEventListener('click', onClick);
     window.addEventListener('resize', schedule);
-    document.fonts.ready.then(schedule);
+    if (document.fonts.status === 'loading') document.fonts.ready.then(schedule);
     fit();
     return () => {
       disposed = true;
