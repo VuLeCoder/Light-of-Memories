@@ -126,7 +126,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
   }, [selectedPage]);
-  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage);
+  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed, banhLuoiProgress.routeHint]));
   const showSources = !getBookPage(pages[page])?.blocks.some(block => block.kind !== 'fact');
   const level = getLevel(pages[page]);
   const detail = level?.text[language];

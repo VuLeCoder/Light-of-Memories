@@ -950,7 +950,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .ending-chat { z-index: 26; }
 
 /* Classified book content: labels are readable without hover or color cues. */
-.book-panel .book-sheet { overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.book-panel .book-sheet { overflow: hidden; }
 .book-content-label { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; margin: 2px 5px 2px 0; border: 1px solid #8c7554; border-radius: 4px; background: #e9dfc6; color: #493b29; font: 600 11px/1.5 'Be Vietnam Pro', sans-serif; vertical-align: baseline; max-width: 100%; }
 .book-content-label svg { width: 15px; height: 15px; flex: 0 0 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .book-label-guide { margin: 0 0 24px; color: #dce2d7; font-size: 14px; line-height: 1.6; }
@@ -1068,3 +1068,13 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   text-align: center;
 }
 .book-panel .book-sheet .book-prose .ban-photo-view--orbit button { display: block; }
+
+/* Keep book leaves readable without an inner scrollbar. */
+.book-panel .book-sheet [hidden] { display: none !important; }
+.book-panel .book-sheet.book-compact { padding: 12px 18px 16px; }
+.book-panel .book-sheet.book-compact .book-prose { margin-top: 4px; }
+.book-panel .book-sheet.book-compact .book-prose p { margin-bottom: 8px; line-height: 1.45; }
+.book-panel .book-sheet.book-compact .journey-memories { gap: 3px; }
+.book-panel .book-sheet.book-compact .journey-memories li { font-size: 16px; line-height: 1.4; }
+.book-panel .book-sheet.book-compact .book-prose > small { font-size: 11px; }
+.book-panel .book-sheet.book-compact h2 { font-size: min(var(--book-title-size), 30px); line-height: 1.2; }
