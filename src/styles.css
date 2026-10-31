@@ -948,3 +948,13 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 /* Keep the edge cue visible while a friend speaks after the ending. */
 .has-ending-chat .ending-farewell { display: none; }
 .ending-chat { z-index: 26; }
+
+/* Classified book content: labels are readable without hover or color cues. */
+.book-panel .book-sheet { overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.book-content-label { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; margin: 2px 5px 2px 0; border: 1px solid #8c7554; border-radius: 4px; background: #e9dfc6; color: #493b29; font: 600 11px/1.5 'Be Vietnam Pro', sans-serif; vertical-align: baseline; max-width: 100%; }
+.book-content-label svg { width: 15px; height: 15px; flex: 0 0 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.book-content-label-fiction { background: #e8dfe8; border-color: #89728a; color: #514052; }
+.book-label-guide { flex: 0 0 auto; color: #dce2d7; font-size: 12px; line-height: 1.6; position: relative; }
+.book-label-guide summary { cursor: pointer; min-height: 44px; padding: 12px 4px; }
+.book-label-guide > div { position: absolute; bottom: 100%; left: 0; right: 0; z-index: 5; padding: 12px; border: 1px solid #a99b7a; border-radius: 6px; background: #21333e; box-shadow: 0 4px 16px #0005; max-height: 260px; overflow-y: auto; }
+.book-label-guide + .book-navigation { margin-top: 0; }

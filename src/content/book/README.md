@@ -38,3 +38,7 @@ classification, chronological photo ordering, local assets, source coverage,
 and full export in a server environment with no DOM or save. Run `npm run build`
 for TypeScript and production integration. The check uses Vite SSR to resolve
 existing `BASE_URL` image references without starting an HTTP/WebSocket server.
+
+## Nhãn trên trình duyệt (M3)
+
+`BookParagraph` dùng phân loại trong catalog để gắn `BookContentLabel` vào từng đoạn, giữ các đoạn fact không có nhãn. Các hình nhân vật, sơ đồ game và trạng thái tiến trình được gắn nhãn tại component hiển thị. Khi thêm trang hỗn hợp, sử dụng `BookParagraph`; khi thêm hình hoặc dữ liệu game, đặt nhãn ngay cạnh khối tương ứng. `BookNavigation` cung cấp hướng dẫn ký hiệu bằng `details/summary`. Khung sách cuộn dọc để nhãn không làm cắt nội dung.
