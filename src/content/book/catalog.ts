@@ -116,7 +116,7 @@ for (const [id, entry] of Object.entries(banBanhLuoiBook)) {
       block(p, 'orbit', 'fact', fact, sections[id], i, [source(banBanhLuoiMemories[1].source)]);
       block(p, 'memory', 'fiction', fiction, 'A4.4', 0);
     } else {
-      const kind: ContentKind = id === 'ban-banh-luoi' ? 'fiction' : id === 'ban-book-route' || (['ban-book-wheels', 'ban-book-walkback'].includes(id) && i === 1) ? 'game' : 'fact';
+      const kind: ContentKind = id === 'ban-banh-luoi' ? 'fiction' : id === 'ban-book-route' || (id === 'ban-book-walkback' && i === 1) ? 'game' : 'fact';
       block(p, `paragraph-${i}`, kind, body, kind !== 'fact' ? id === 'ban-banh-luoi' ? 'A4' : id === 'ban-book-wheels' ? 'A4.1' : 'A4.2' : sections[id], i, kind === 'fact' ? sources : []);
     }
   });
@@ -125,8 +125,8 @@ for (const [id, entry] of Object.entries(banBanhLuoiBook)) {
   if (id === 'ban-book-camera') block(p, 'diagram', 'fact', entry.title, 'C4.5', 10, sources, { diagram: 'camera' });
 }
 for (const photo of banBanhLuoiMemories) {
-  const p = pages.find(p => p.id === `ban-photo-${photo.id}`)!;
-  const section = photo.id === 'vip' ? 'C4.5' : 'C4.6';
+  const p = pages.find(p => p.id === (photo.id === 'vip' ? 'ban-book-wheels' : `ban-photo-${photo.id}`))!;
+  const section = photo.id === 'vip' ? 'C4.2' : 'C4.6';
   const image = { src: photo.src, alt: photo.alt, credit: photo.credit, code: photo.code, date: photo.date };
   block(p, 'photo', 'fact', photo.caption, section, 20, [source(photo.source)], { image });
   block(p, 'detail', 'fact', photo.id === 'orbit' ? banBanhLuoiCopy['photoB.detailCaption'] : photo.detailAlt, photo.id === 'vip' ? 'C4.2' : section, 21, [source(photo.source)], { image: { ...image, src: photo.detailSrc, alt: photo.detailAlt }, reveal: 'detail' });

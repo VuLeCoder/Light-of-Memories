@@ -1037,3 +1037,34 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   width: 24px;
   text-align: center;
 }
+
+/* A spacious photo above short passages; body copy stays left aligned. */
+.book-panel .book-image-stacked .book-prose > :is(.book-memory-photo, .book-reality-photo, .ban-photo-view) {
+  display: block; float: none; width: 90%; max-width: 310px;
+  height: auto; max-height: 220px; object-fit: contain; margin: 4px auto 18px;
+}
+.book-panel .book-image-stacked .book-prose > :is(.book-reality-photo, .ban-photo-view) { max-height: none; }
+.book-panel .book-image-stacked .book-prose :is(.book-reality-photo, .ban-photo-view) img {
+  width: 100%; height: auto; max-height: 200px; object-fit: contain;
+}
+.book-panel .book-sheet .book-prose [hidden] { display: none !important; }
+
+/* Photo controls and captions take up real space below the orbital image. */
+.book-panel .book-sheet .book-prose > .ban-photo-view--orbit {
+  height: auto;
+  max-height: none;
+}
+.book-panel .book-sheet .book-prose .ban-photo-view--orbit figure { margin: 0 0 8px; }
+.book-panel .book-sheet .book-prose .ban-photo-view--orbit img {
+  height: auto;
+  max-height: 180px;
+  object-fit: contain;
+  background: transparent;
+}
+.book-panel .book-sheet .book-prose .ban-photo-view--orbit .ban-photo-detail-caption {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+.book-panel .book-sheet .book-prose .ban-photo-view--orbit button { display: block; }

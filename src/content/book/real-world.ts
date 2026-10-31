@@ -25,7 +25,7 @@ function add(after: string, chapter: BookChapter, section: string, title: BookTe
 }
 add('surveyor', 'surveyor', 'C1.1', text('Surveyor 3 ngoài đời thật', 'Meet the real Surveyor 3'), memoryPhotos.visit, text('Surveyor 3 trên bề mặt Mặt Trăng. NASA.', 'Surveyor 3 on the lunar surface. NASA.'), ['surveyor'], [
  text('Trước khi con người đặt chân lên Mặt Trăng, Surveyor 3 đã đến đây vào tháng 4 năm 1967. Không có phi hành gia ngồi bên trong: con tàu tự làm việc rồi gửi dữ liệu về Trái Đất.', 'Before people walked on the Moon, Surveyor 3 arrived in April 1967. With no astronauts aboard, the robotic lander worked on the surface and returned data to Earth.'),
- text('Những bức ảnh và phép thử đất giúp chuẩn bị cho các chuyến đổ bộ Apollo. Trong ảnh, hãy thử tìm các chân đáp đang đỡ thân tàu nhé.', 'Its photographs and soil tests helped prepare for Apollo landings. In the photograph, look for the legs supporting the spacecraft.')
+ text('Ảnh và phép thử đất của tàu giúp chuẩn bị cho các chuyến đổ bộ Apollo.', 'Its photographs and soil tests helped prepare for Apollo landings.')
 ], 'above');
 add('clue-visit', 'surveyor', 'C1.3', text('Những bộ phận trở về', 'Parts that came home'), memoryPhotos.visit, text('Apollo 12 đến thăm Surveyor 3. NASA.', 'Apollo 12 visits Surveyor 3. NASA.'), ['visit'], [
  text('Tháng 11 năm 1969, Pete Conrad và Alan Bean mang camera, xẻng cùng một số bộ phận của Surveyor 3 về Trái Đất. Các nhà nghiên cứu xem chúng đã thay đổi ra sao sau thời gian dài trong môi trường Mặt Trăng.', 'In November 1969, Pete Conrad and Alan Bean returned Surveyor 3’s camera, scoop and other parts to Earth. Researchers examined how prolonged exposure to the lunar environment had affected them.')
@@ -35,21 +35,21 @@ add('lap-lanh', 'apollo11', 'C2.1', text('Bảng phản xạ của Apollo 11', '
  text('Bảng nhận ánh sáng từ Trái Đất và phản xạ trở lại. Thiết bị hoạt động không cần pin hay tự phát sáng.', 'The panel reflects light sent from Earth back toward its source. It works without batteries or a light source of its own.')
 ], 'above');
 add('sparkle-repair-clue', 'apollo11', 'C2.2', text('Bên trong những chiếc “gương”', 'Inside the “mirrors”'), sparkleKeepsakes[0].src, text('Các lăng kính xếp thành bảng phản xạ. NASA.', 'The prisms form a reflector array. NASA.'), ['prisms', 'reflector'], [
- text('Nhìn gần hơn, bảng Apollo 11 có 100 lăng kính bằng silica nung chảy, xếp thành mười hàng. Mỗi lăng kính rộng khoảng 3,8 cm.', 'Look closer: Apollo 11’s panel holds 100 fused-silica prisms in ten rows. Each prism is about 3.8 cm across.'),
+ text('Bảng Apollo 11 có 100 lăng kính silica nung chảy, xếp thành mười hàng, mỗi lăng kính rộng khoảng 3,8 cm.', 'Apollo 11’s panel holds 100 fused-silica prisms in ten rows, each about 3.8 cm across.'),
  text('Ba mặt phản xạ vuông góc bên trong một lăng kính giúp ánh sáng quay về phía đã gửi nó tới. Cấu tạo này được gọi là bộ phản xạ góc.', 'Three mutually perpendicular reflecting faces inside a prism send light back toward its source. This is called a corner-cube reflector.'),
- text('Các lăng kính được gắn cố định trên bảng. Hai gương xoay ở trang trước chỉ giúp hình dung đường đi của ánh sáng trong một mô hình phẳng.', 'The prisms are fixed to the panel. The two turning mirrors on the previous page help illustrate light paths in a flat model.')
+ text('Lăng kính thật được gắn cố định; hai gương xoay trong trò chơi chỉ là mô hình phẳng minh họa.', 'The real prisms are fixed; the game’s two turning mirrors are a flat demonstration model.')
 ]);
 add('tai-thinh', 'apollo12', 'C3.1', text('Địa chấn kế Apollo 12', 'Apollo 12’s seismometer'), taiThinhPhotos.pse, text('Địa chấn kế với tấm phủ bảo vệ. NASA · AS12-47-6916.', 'The seismometer with its protective blanket. NASA · AS12-47-6916.'), ['seismic'], [
  text('Ngày 19 tháng 11 năm 1969, các phi hành gia Apollo 12 đặt địa chấn kế PSE ở Đại Dương Bão. Trong ảnh, tấm phủ trải quanh chân thiết bị giúp bảo vệ nó trước sự thay đổi nhiệt độ.', 'On 19 November 1969, Apollo 12 astronauts placed the PSE seismometer in the Ocean of Storms. The blanket around its base helped protect it from temperature changes.'),
  text('Các cảm biến ghi lại chuyển động rất nhỏ của mặt đất. Dữ liệu đi qua trạm trung tâm để được gửi về Trái Đất.', 'Its sensors recorded tiny ground movements. Measurements passed through the central station on their way to Earth.')
 ], 'above');
 add('tai-book-rhythm', 'apollo12', 'C3.2', text('Từ chuyển động đến bản ghi', 'From movement to a record'), image('apollo12-seismogram.png'), text('Bản ghi thật sau cú va chạm, với thước thời gian 10 phút. NASA.', 'Actual impact record with a ten-minute time scale. NASA.'), ['seismic'], [
- text('Hình có ba đường ghi, tương ứng với ba hướng chuyển động của mặt đất. Hãy tìm thước 10 phút bên dưới: nó giúp ta đọc thời gian trên bản ghi.', 'The figure has three traces, corresponding to three directions of ground motion. Find the ten-minute scale underneath: it helps us read time on the record.'),
- text('Ba đường cùng ghi một sự kiện nhưng không có hình dạng giống hệt nhau. Khi đọc, ta đối chiếu các hướng đo và mốc thời gian, thay vì tìm một chuỗi nhịp để mở cửa như trong câu chuyện.', 'The three traces record the same event but differ in shape. Researchers compare measurement directions and times, rather than seeking a door-opening rhythm as in the story.')
+ text('Ba đường ghi thể hiện ba hướng chuyển động của mặt đất. Thước 10 phút bên dưới giúp đọc thời gian.', 'Three traces show three directions of ground motion. The ten-minute scale below helps us read time.'),
+ text('Cùng một sự kiện, mỗi hướng đo cho một đường ghi khác nhau. Nhịp mở cửa trong câu chuyện là giả tưởng.', 'The same event produces different traces in each direction. The story’s door-opening rhythm is fictional.')
 ]);
 add('ban-banh-luoi', 'apollo17', 'C4.1', text('Chiếc xe của Apollo 17', 'Apollo 17’s lunar rover'), banBanhLuoiPhotos.vip, text('Xe LRV ở nơi đỗ cuối. NASA · AS17-143-21933.', 'The LRV at its final parking place. NASA · AS17-143-21933.'), ['rover'], [
  text('Tháng 12 năm 1972, Eugene Cernan và Harrison Schmitt dùng xe LRV để đi khảo sát thung lũng Taurus–Littrow. Chiếc xe chạy bằng pin, chở người, dụng cụ và mẫu vật.', 'In December 1972, Eugene Cernan and Harrison Schmitt used the LRV to explore Taurus–Littrow valley. The battery-powered vehicle carried people, tools and samples.'),
- text('Trong ảnh có hai ghế ngồi và camera ở phía trước xe. Sau chuyến khảo sát cuối, xe được để lại trên Mặt Trăng.', 'The photograph shows two seats and a camera at the front. After its final excursion, the rover remained on the Moon.')
+ text('Sau chuyến khảo sát cuối, xe được để lại trên Mặt Trăng.', 'After its final excursion, the rover remained on the Moon.')
 ], 'above');
 add('ban-book-route', 'apollo17', 'C4.3', text('Những hành trình có thật', 'The real traverses'), image('apollo17-route.jpg'), text('Bản đồ ba chuyến khảo sát Apollo 17. NASA.', 'Map of Apollo 17’s three traverses. NASA.'), ['route', 'rover'], [
  text('Apollo 17 thực hiện ba chuyến khảo sát trên bề mặt. Trên bản đồ thật, các trạm dừng được đánh số và gắn với địa hình của thung lũng.', 'Apollo 17 made three surface excursions. On the real map, numbered stations sit within the terrain of the valley.'),
@@ -57,12 +57,12 @@ add('ban-book-route', 'apollo17', 'C4.3', text('Những hành trình có thật'
 ], 'above');
 add('ban-book-samples', 'apollo17', 'C4.4', text('Một tảng đá, nhiều manh mối', 'One boulder, many clues'), image('nansen-rock.jpg'), text('Tảng đá được lấy mẫu tại Trạm 2, vùng Nansen. NASA · AS17-137-20901.', 'Sampled boulder at Station 2, Nansen. NASA · AS17-137-20901.'), ['rover'], [
  text('Cernan và Schmitt dừng tại vùng Nansen để khảo sát những tảng đá. Họ thu thập mẫu đá và đất, ghi lại nơi lấy mẫu để các nhà khoa học nghiên cứu sau chuyến bay.', 'Cernan and Schmitt stopped in the Nansen area to investigate boulders. They collected rock and soil, recording the sampling locations for study after the flight.'),
- text('Đất dưới một phần đá nhô ra cũng được lấy mẫu để tìm hiểu ảnh hưởng của gió Mặt Trời. Vị trí của mẫu vật là một phần quan trọng trong câu chuyện nó kể.', 'They also sampled soil beneath a rock overhang to investigate solar-wind effects. A sample’s location is an important part of the story it tells.')
+ text('Họ còn lấy đất dưới phần đá nhô ra để tìm hiểu ảnh hưởng của gió Mặt Trời.', 'They also sampled soil beneath a rock overhang to investigate solar-wind effects.')
 ]);
 realWorldPages[realWorldPages.length - 1].id = 'ban-book-samples-rock-reality';
 add('ban-book-samples-rock-reality', 'apollo17', 'C4.4', text('Những hạt đất màu cam', 'Tiny orange grains'), image('orange-soil.jpg'), text('Ảnh mẫu đất cam trong bộ học liệu NASA.', 'Orange-soil sample in NASA’s educational collection.'), ['soil', 'rover'], [
  text('Ở hố Shorty, các phi hành gia Apollo 17 nhận ra một vùng đất màu cam. Mẫu mang về chứa những hạt tròn đỏ cam, đen và các mảnh vỡ rất nhỏ.', 'At Shorty crater, Apollo 17 astronauts noticed orange soil. Returned material contained tiny reddish-orange and black spheres and fragments.'),
- text('Các hạt hình thành từ những giọt dung nham được phun ra trong hoạt động núi lửa cổ xưa, rồi nguội đi. Một mẫu nhỏ có thể giữ dấu vết của câu chuyện rất lâu trước chuyến đi của con người.', 'The grains formed from droplets sprayed out during ancient volcanic activity, then cooled. A small sample can preserve a story much older than human exploration.')
+ text('Các hạt hình thành khi những giọt dung nham từ núi lửa cổ xưa nguội đi.', 'The grains formed as droplets from ancient volcanic eruptions cooled.')
 ]);
 /** Insert only after an available parent; never unlock a chapter through its companion page. */
 export function insertRealWorldPages(pages: (string | null)[], canRead: (id: string) => boolean = () => true) {

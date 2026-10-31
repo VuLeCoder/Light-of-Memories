@@ -360,7 +360,7 @@ export const banBanhLuoiBook = {
     title: text("Bánh xe không cần bơm hơi", "Wheels that need no air"),
     paragraphs: [
       text("Bánh LRV đan bằng dây kim loại, có gân chữ V và không cần bơm hơi. Lưới có thể hơi biến dạng khi tiếp xúc với mặt đất.", "LRV wheels use wire mesh and V-shaped treads. They need no air, and the mesh can deform slightly where it meets the ground."),
-      text("Trong phần thử bánh, lốp hơi làm êm nhưng có thể xẹp nếu bị thủng; bánh cứng giữ hình dạng nhưng xóc hơn khi vượt đá. Bánh lưới có thể uốn theo đá, song vật sắc vẫn có thể làm đứt sợi. Đây là minh họa giản lược.", "In the wheel trial, air cushions bumps but a puncture can flatten the tyre; a rigid wheel keeps its shape but jolts more over rocks. Mesh can flex around rocks, though sharp edges can break wires. These are simplified illustrations.")
+
     ]
   },
   "ban-book-route": {
@@ -399,13 +399,6 @@ export const banBanhLuoiBook = {
       text("Tầng bay lên của Challenger rời Mặt Trăng ngày 14/12/1972. Xe và tầng dưới tàu đổ bộ ở lại.", "Challenger’s ascent stage left the Moon on 14 December 1972. The rover and the descent stage stayed behind."),
       text("Năm 2011, ảnh từ quỹ đạo vẫn cho thấy vị trí xe và các đường đi. Còn trong câu chuyện, Cuội mang ký ức của Bánh Lưới đi cùng chiếc đèn.", "In 2011, an orbital image still showed the rover’s position and trails. In the story, Cuội carries Mesh Wheels’ memories with his lantern.")
     ]
-  },
-  "ban-photo-vip": {
-    title: text("Bánh Lưới ở nơi đỗ cuối", "Mesh Wheels at the final parking spot"),
-    captionKey: "photoA.caption",
-    altKey: "photoA.alt",
-    creditKey: "photoA.credit",
-    memoryId: "vip"
   },
   "ban-photo-orbit": {
     title: text("Dấu vết nhìn từ quỹ đạo", "Tracks seen from orbit"),

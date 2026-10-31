@@ -16,7 +16,7 @@ export function BanhLuoiArchiveImage({ photo, language, detail = false }: { phot
 /** The detail view replaces the image, keeping all actions reachable by keyboard. */
 export function BanhLuoiPhotoView({ photo, language, framed = false }: { photo: Photo; language: Language; framed?: boolean }) {
   const [detail, setDetail] = useState(false);
-  return <div className="ban-photo-view">
+  return <div className={`ban-photo-view ban-photo-view--${photo.id}`}>
     <figure className={framed ? 'memory-photo-frame' : undefined}><BanhLuoiArchiveImage key={String(detail)} photo={photo} language={language} detail={detail}/>{framed && <figcaption>{photo.title[language]}</figcaption>}</figure>
     {photo.id === 'orbit' && detail && <p className="ban-photo-detail-caption">{copy['photoB.detailCaption'][language]}</p>}
     <button aria-pressed={detail} onClick={() => setDetail(v => !v)}>{detail ? copy['button.closeZoom'][language] : photo.id === 'vip' ? copy['button.wheelDetail'][language] : (language === 'vi' ? 'Xem vị trí xe' : 'Inspect the rover location')}</button>
