@@ -1,20 +1,21 @@
+import { getBrowserBookPages, getBookHintPage } from '../content/book/reading-order';
 import { useBookImageLayout } from './useBookImageLayout';
-import { bookArchiveImages, insertRealWorldPages, realWorldPages } from '../content/book/real-world';
+import { bookArchiveImages, realWorldPages } from '../content/book/real-world';
 import { BookPageLabel } from './BookContentLabel';
 import { BookParagraph } from './BookParagraph';
 import { introCopy } from '../content/book/intro-copy';
 import { BanhLuoiCameraDiagram } from './BanhLuoiCameraDiagram';
-import { banhLuoiPageIds, type BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
+import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
 import { banBanhLuoiBook } from '../content/levels/ban-banh-luoi-content';
 import { BanhLuoiRouteMap } from './BanhLuoiRouteMap';
 import { BanhLuoiPhotoView } from './BanhLuoiPhoto';
 import { banBanhLuoiMemories } from '../content/levels/ban-banh-luoi-memories';
 import { TaiThinhArchiveImage } from './TaiThinhPhoto';
 import { focusGame } from '../focus/game-focus';
-import { taiThinhPageIds, type TaiThinhProgress } from '../content/levels/tai-thinh-progress';
+import type { TaiThinhProgress } from '../content/levels/tai-thinh-progress';
 import { taiThinhBook, taiThinhBookSources, taiThinhMemories } from '../content/levels/tai-thinh-content';
 import { SparkleBookClue } from './SparkleBookClue';
-import { sparkleKeepsakes, sparkleRepairUnlocked, sparkleRangingUnlocked, type SparkleProgress } from '../content/levels/lap-lanh';
+import { sparkleKeepsakes, type SparkleProgress } from '../content/levels/lap-lanh';
 import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
 import { enterSurveyor, eventOrder } from '../content/levels/surveyor-progress';
 import { challengeCopy } from '../content/levels/surveyor-challenges';
@@ -91,20 +92,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
-  const fieldUnlocked = surveyorProgress.matched.length === 2;
-  const pages = insertRealWorldPages([null, ...journeyStops.flatMap(id => {
-    if (id && status(id) === 'locked') return [id];
-    if (id === 'surveyor') return [
-      id,
-      ...(fieldUnlocked ? eventOrder.map(event => `clue-${event}`) : []),
-      ...(fieldUnlocked ? ['surveyor-b01'] : []),
-      ...eventOrder.filter(event => surveyorProgress.found.includes(event)).map(event => `photo-${event}`),
-    ];
-    if (id === 'lap-lanh') return [id, ...sparkleProgress.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkleProgress) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkleProgress) ? ['sparkle-ranging-clue'] : [])];
-    if (id === 'tai-thinh') return taiThinhPageIds(taiThinhProgress);
-    if (id === 'ban-banh-luoi') return banhLuoiPageIds(banhLuoiProgress);
-    return id ? [id] : [];
-  })], id => !getLevel(id) || status(id as LevelId) !== 'locked');
+  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress });
   // Keep the selected page's identity when new photos or clues are inserted.
   const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel);
   const page = Math.max(0, pages.indexOf(selectedPage));
@@ -116,15 +104,10 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   const clue = eventOrder.find(id => pages[page] === `clue-${id}`);
   const clueUnlocked = !clue || eventOrder.slice(0, eventOrder.indexOf(clue)).every(id => surveyorProgress.clues.includes(id) || surveyorProgress.found.includes(id));
   const photo = eventOrder.find(id => pages[page] === `photo-${id}`);
-  const nextClue = eventOrder.find(id => !surveyorProgress.clues.includes(id) && !surveyorProgress.found.includes(id))
-    ?? eventOrder.find(id => !surveyorProgress.found.includes(id)) ?? 'arrive';
   useEffect(() => {
     if (lastBookRequest.current === bookRequest) return;
     lastBookRequest.current = bookRequest;
-    const target = activeLevel === 'ban-banh-luoi' ? ['photoB','memoriesIntro'].includes(banhLuoiProgress.phase) ? 'ban-book-camera' : ['guideIntro', 'guiding'].includes(banhLuoiProgress.phase) ? 'ban-book-samples' : ['routeIntro', 'routePuzzle'].includes(banhLuoiProgress.phase) ? banhLuoiProgress.routeHint === 2 ? 'ban-book-walkback' : 'ban-book-route' : 'ban-book-wheels' : activeLevel === 'lap-lanh'
-      ? sparkleProgress.phase === 'repair' ? 'sparkle-repair-clue' : sparkleProgress.phase === 'ranging' ? 'sparkle-ranging-clue' : null
-      : activeLevel === 'tai-thinh' ? taiThinhProgress.phase === 'identify' ? 'tai-book-devices' : taiThinhProgress.phase === 'records' ? 'tai-book-sources' : ['graph', 'duration'].includes(taiThinhProgress.phase) ? 'tai-book-ringing' : taiThinhProgress.phase === 'rhythm' ? 'tai-book-rhythm' : null
-      : activeLevel === 'surveyor' && fieldUnlocked ? `clue-${nextClue}` : null;
+    const target = getBookHintPage({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress }, activeLevel);
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);
     setBookFocusRequest(bookRequest);

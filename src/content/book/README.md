@@ -64,4 +64,8 @@ Browser and reading catalog share the revised wording and classifications: ficti
 
 ## Page composition
 
-Short character introductions use `book-prose--intro`: centred illustration above centred prose. This explicit composition stays stacked on small screens. Other illustrated pages retain the measured left-float fallback. NASA companion pages show provenance links only in their footer, without a duplicate archive kicker above the title. The overview centres its friend list as a block; each row uses the same fixed-width star column and a centred text column.
+Short character introductions use `book-prose--intro`: centred illustration above centred prose. This explicit composition stays stacked on small screens. Other illustrated pages retain the measured left-float fallback. NASA companion pages show provenance links only in their footer, without a duplicate archive kicker above the title. The overview centres its friend list as a block; each row uses the same fixed-width star column and a left-aligned text column.
+
+## Browser flow verification
+
+`npm run check:book-flow` checks progression checkpoints, hint targets, NASA companion placement, the complete browser inventory and a fresh archive. `reading-order.ts` is shared by the browser and this check. Surveyor entries follow tools, then each excavation clue and its collected photo; companion pages remain directly after their parent. Browser page selection uses stable IDs so collecting a photo does not change the page being read. The complete publication keeps its own factual/appendix order.
