@@ -15,6 +15,7 @@ import type { SurveyorEvent } from './content/levels/surveyor-progress';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { JourneyMap, JourneyBook, journeyCopy } from './components/JourneyMap';
 import { BookNavigation } from './components/BookNavigation';
+import { BookLabelGuide } from './components/BookContentLabel';
 import { EarthDialogue } from './components/EarthDialogue';
 import { GameMenu } from './components/GameMenu';
 import { VisitorCounter } from './components/VisitorCounter';
@@ -403,6 +404,7 @@ export function App() {
           <p>{currentText.description}{inSurveyor && <> <a className="scenery-source" href="https://www.nasa.gov/humans-in-space/lunar-encore-leads-to-first-precision-extraterrestrial-landing/" target="_blank" rel="noreferrer">NASA ↗</a></>}</p>
         </div>
     </section>
+    <BookLabelGuide language={language}/>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">
           <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> {t.introLabel} <span className="label-line" /></div>

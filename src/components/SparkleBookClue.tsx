@@ -1,4 +1,3 @@
-import { BookContentLabel } from './BookContentLabel';
 import { BookParagraph } from './BookParagraph';
 import { clueCopy } from '../content/book/sparkle-copy';
 import { useState } from 'react';
@@ -14,13 +13,13 @@ export function SparkleBookClue({ language, ranging }: { language: Language; ran
     {ranging ? <>
       <div className="sparkle-book-route"><RangingDiagram language={language} /></div>
       <p>{clueCopy.roundTrip[language]}</p>
-      <BookContentLabel kind="game" language={language}/><dl className="sparkle-book-data"><dt>{clueCopy.speedLabel[language]}</dt><dd>{clueCopy.speed[language]}</dd><dt>{clueCopy.timeLabel[language]}</dt><dd>{clueCopy.time[language]}</dd></dl>
-      <p>{hint && <BookContentLabel kind="game" language={language}/>} {hint ? (clueCopy.answer[language]) : (clueCopy.formula[language])}</p>
+      <dl className="sparkle-book-data"><dt>{clueCopy.speedLabel[language]}</dt><dd>{clueCopy.speed[language]}</dd><dt>{clueCopy.timeLabel[language]}</dt><dd>{clueCopy.time[language]}</dd></dl>
+      <p>{hint ? (clueCopy.answer[language]) : (clueCopy.formula[language])}</p>
       <button className="book-new-entry" aria-expanded={hint} onClick={() => setHint(!hint)}>{vi ? (hint ? 'Thu gọn gợi ý' : 'Cần thêm gợi ý?') : (hint ? 'Hide hint' : 'Need another hint?')}</button>
       <small><BookParagraph pageId="sparkle-ranging-clue" value={clueCopy.note[language]} language={language}/></small>
       <a className="sparkle-book-source" href="https://www.nasa.gov/missions/laser-beams-reflected-between-earth-and-moon-boost-science/" target="_blank" rel="noreferrer">{clueCopy.rangingSourceLabel[language]}</a>
     </> : <>
-      <BookContentLabel kind="game" language={language}/><CornerDiagram lit={4} language={language} />
+      <CornerDiagram lit={4} language={language} />
       <p>{clueCopy.model[language]}</p>
       <p>{clueCopy.reflection[language]}</p>
       <small>{clueCopy.prisms[language]}</small>

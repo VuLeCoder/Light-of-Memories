@@ -8,8 +8,17 @@ try {
   const { getReadingBook, getParagraphBlocks } = await server.ssrLoadModule('/src/content/book/publication.ts');
   const { taiThinhBook } = await server.ssrLoadModule('/src/content/levels/tai-thinh-content.ts');
   const { banBanhLuoiBook } = await server.ssrLoadModule('/src/content/levels/ban-banh-luoi-content.ts');
-  const expected = ['overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...taiThinhBook.map(p => p.id === 'intro' ? 'tai-thinh' : `tai-book-${p.id}`), ...['pse', 'station', 'magnetometer'].map(id => `tai-photo-${id}`), ...Object.keys(banBanhLuoiBook)];
+  const { realWorldPages, insertRealWorldPages } = await server.ssrLoadModule('/src/content/book/real-world.ts');
+  const expected = ['overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...taiThinhBook.map(p => p.id === 'intro' ? 'tai-thinh' : `tai-book-${p.id}`), ...['pse', 'station', 'magnetometer'].map(id => `tai-photo-${id}`), ...Object.keys(banBanhLuoiBook), ...realWorldPages.map(p => p.id)];
   assert.deepEqual(bookPages.map(p => p.id).sort(), expected.sort());
+  for (const p of realWorldPages) {
+    assert.ok(expected.includes(p.after), p.after);
+    assert.ok(p.sources.every(url => new URL(url).hostname.endsWith('.nasa.gov')), p.id);
+    const paired = insertRealWorldPages([p.after]);
+    assert.ok(paired.indexOf(p.id) > paired.indexOf(p.after));
+    assert.deepEqual(insertRealWorldPages([p.after], () => false), [p.after]);
+    assert.ok(bookPages.find(page => page.id === p.id).blocks.every(b => b.kind === 'fact'));
+  }
   const blocks = bookPages.flatMap(p => p.blocks);
   assert.equal(new Set(blocks.map(b => b.id)).size, blocks.length);
   for (const p of bookPages) assert.ok(p.blocks.length, p.id);

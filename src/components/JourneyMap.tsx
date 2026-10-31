@@ -1,4 +1,5 @@
-import { BookContentLabel } from './BookContentLabel';
+import { insertRealWorldPages, realWorldPages } from '../content/book/real-world';
+import { BookPageLabel } from './BookContentLabel';
 import { BookParagraph } from './BookParagraph';
 import { introCopy } from '../content/book/intro-copy';
 import { BanhLuoiCameraDiagram } from './BanhLuoiCameraDiagram';
@@ -90,7 +91,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
   const fieldUnlocked = surveyorProgress.matched.length === 2;
-  const pages = [null, ...journeyStops.flatMap(id => {
+  const pages = insertRealWorldPages([null, ...journeyStops.flatMap(id => {
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,
@@ -102,7 +103,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     if (id === 'tai-thinh') return taiThinhPageIds(taiThinhProgress);
     if (id === 'ban-banh-luoi') return banhLuoiPageIds(banhLuoiProgress);
     return id ? [id] : [];
-  })];
+  })], id => !getLevel(id) || status(id as LevelId) !== 'locked');
   // Keep the selected page's identity when new photos or clues are inserted.
   const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel);
   const page = Math.max(0, pages.indexOf(selectedPage));
@@ -149,10 +150,28 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   if (level && status(level.id) === 'locked') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
+      <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · {t.waiting}</span>
-      <h2 id="book-title">{t.mystery}</h2><BookContentLabel kind="game" language={language}/><p>{t.prerequisite}</p>
+      <h2 id="book-title">{t.mystery}</h2><p>{t.prerequisite}</p>
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
+  </>;
+  const reality = realWorldPages.find(entry => entry.id === pages[page]);
+  if (reality) return <>
+    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <aside className="book-panel" lang={language} aria-labelledby="reality-book-title">
+      <div tabIndex={0} className="book-sheet journey-book book-reality">
+        <div className="page-corner" aria-hidden="true" />
+        <span className="book-kicker">{language === 'vi' ? 'Từ tư liệu NASA' : 'From NASA’s archives'}</span>
+        <h2 id="reality-book-title">{reality.title[language]}</h2>
+        <div className={`book-prose book-prose--${reality.layout}`}>
+          <figure className="book-reality-photo"><img src={reality.image} alt={reality.caption[language]} /><figcaption>{reality.caption[language]}</figcaption></figure>
+          {reality.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
+        </div>
+        <footer className="book-reality-sources">{reality.sources.map((url, i) => <a key={url} href={url} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn NASA' : 'NASA source'}{reality.sources.length > 1 ? ` ${i + 1}` : ''} ↗</a>)}</footer>
+        {activeLevel && <BackToGame language={language} />}
+      </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} />
+    </aside>
   </>;
   const banPageId = pages[page];
   if (banPageId && banPageId in banBanhLuoiBook) {
@@ -161,14 +180,17 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className={`book-sheet journey-book${banPageId === 'ban-banh-luoi' ? '' : ' ban-book-study'}${banPageId === 'ban-book-wheels' ? ' ban-book-wheels' : ''}`}>
+      <BookPageLabel pageId={pages[page]} language={language}/>
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
         <h2 id="banh-luoi-book-title" tabIndex={-1}>{entry.title[language]}</h2>
-        {banPageId === 'ban-banh-luoi' && <><BookContentLabel kind="fiction" language={language}/><img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/></>}
-        {['ban-book-route', 'ban-book-walkback'].includes(banPageId) && <><BookContentLabel kind="game" language={language}/><BanhLuoiRouteMap language={language} showSafe={banPageId === 'ban-book-walkback' && banhLuoiProgress.routeHint === 2}/></>}
+        <div className="book-prose">
+        {banPageId === 'ban-banh-luoi' && <><img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/></>}
+        {['ban-book-route', 'ban-book-walkback'].includes(banPageId) && <><BanhLuoiRouteMap language={language} showSafe={banPageId === 'ban-book-walkback' && banhLuoiProgress.routeHint === 2}/></>}
         {banPageId === 'ban-book-camera' && <BanhLuoiCameraDiagram language={language}/>}
-        {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}><BookParagraph pageId={banPageId} value={paragraph[language]} language={language}/></p>)}
         {(photo || banPageId === 'ban-book-wheels') && <BanhLuoiPhotoView key={banPageId} photo={photo ?? banBanhLuoiMemories[0]} language={language}/>}
+        {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}><BookParagraph pageId={banPageId} value={paragraph[language]} language={language}/></p>)}
         {photo && <><p>{photo.caption[language]}</p><small>{photo.credit} · {photo.code}</small></>}
+        </div>
         <a className="sparkle-book-source" href={['ban-book-camera', 'ban-book-samples'].includes(banPageId) ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://apollojournals.org/alsj/a11/a11.clsout.html' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'ALSJ' : 'Apollo 17'} ↗</a>
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
@@ -181,9 +203,12 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="tai-book-title"><div tabIndex={0} className="book-sheet journey-book tai-book">
+      <BookPageLabel pageId={pages[page]} language={language}/>
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
         <h2 id="tai-book-title" tabIndex={-1}>{taiPhoto ? taiPhoto.title[language] : taiPage!.id === 'intro' ? getLevel('tai-thinh')!.text[language].friend : taiPage!.title[language]}</h2>
-        {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <><BookContentLabel kind="fiction" language={language}/><img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/></>}<p><BookParagraph pageId={taiPage!.id === 'intro' ? 'tai-thinh' : `tai-book-${taiPage!.id}`} value={taiPage!.body[language]} language={language}/></p></>}
+        <div className="book-prose">
+        {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <><img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/></>}<p><BookParagraph pageId={taiPage!.id === 'intro' ? 'tai-thinh' : `tai-book-${taiPage!.id}`} value={taiPage!.body[language]} language={language}/></p></>}
+        </div>
         {source && <a className="sparkle-book-source" href={source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>}
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
@@ -192,6 +217,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div tabIndex={0} className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
+      <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" />
       <SparkleBookClue key={pages[page]} language={language} ranging={pages[page] === 'sparkle-ranging-clue'} />
       {activeLevel && <BackToGame language={language} />}
@@ -203,8 +229,9 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="sparkle-photo-title"><div tabIndex={0} className="book-sheet journey-book">
+      <BookPageLabel pageId={pages[page]} language={language}/>
         <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{language === 'vi' ? 'Kỷ niệm cùng Lấp Lánh' : 'Memories with Sparkle'} · {sparklePhotoId + 1}/2</span>
-        <h2 id="sparkle-photo-title">{photo[language].title}</h2><img className="book-memory-photo" src={photo.src} alt={photo[language].title} /><p>{photo[language].description}</p><BookSource language={language} sparkle photo />
+        <h2 id="sparkle-photo-title">{photo[language].title}</h2><div className="book-prose"><img className="book-memory-photo" src={photo.src} alt={photo[language].title} /><p>{photo[language].description}</p></div><BookSource language={language} sparkle photo />
         {activeLevel && <BackToGame language={language} />}
         </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
     </>;
@@ -214,16 +241,17 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="field-book-title"><div tabIndex={0} className="book-sheet journey-book field-book">
+      <BookPageLabel pageId={pages[page]} language={language}/>
         <span className="book-kicker">{clue ? dt.book : dt.found} · {surveyorProgress.found.length}/3</span>
         <h2 id="field-book-title" tabIndex={-1}>{dt.names[id]}</h2>
         {clue ? clueUnlocked ? <>
-          <BookContentLabel kind="game" language={language}/><svg className="clue-sketch" viewBox="0 0 180 65" aria-hidden="true">
+          <svg className="clue-sketch" viewBox="0 0 180 65" aria-hidden="true">
             {id === 'arrive' ? <g><ellipse cx="60" cy="38" rx="28" ry="12"/><ellipse cx="120" cy="25" rx="28" ry="12"/></g> : id === 'work' ? <path d="M30 25L150 15M30 40L150 30M30 55L150 45"/> : <g>{[0,1,2,3,4,5].map(i => <ellipse key={i} cx={30 + i * 24} cy={25 + i % 2 * 15} rx="8" ry="4"/>)}</g>}
           </svg><p>{dt.clues[id]}</p>
           <button disabled={surveyorProgress.clues.includes(id)} onClick={() => onSurveyorChange({ ...surveyorProgress, clues: [...surveyorProgress.clues, id] })}>{surveyorProgress.clues.includes(id) ? `✓ ${dt.ready}` : dt.read}</button>
           {surveyorProgress.clues.includes(id) && eventOrder.indexOf(id) < eventOrder.length - 1 && <button className="book-next-clue" onClick={() => setPage(pages.indexOf(`clue-${eventOrder[eventOrder.indexOf(id) + 1]}`))}>{language === 'vi' ? 'Gợi ý tiếp theo →' : 'Next clue →'}</button>}
           {surveyorProgress.found.includes(id) && <p>✓ {dt.found}</p>}
-        </> : <p role="status">{dt.lockedClue}</p> : <><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p><BookSource language={language} /></>}
+        </> : <p role="status">{dt.lockedClue}</p> : <><div className="book-prose"><img className="book-memory-photo" src={memoryPhotos[id]} alt={dt.names[id]} /><p>{dt.descriptions[id]}</p></div><BookSource language={language} /></>}
         {activeLevel && <BackToGame language={language} />}
         </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage} /></aside>
     </>;
@@ -231,17 +259,21 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
+      <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
+      <div className="book-prose">
+      {(b01 || level) && <img className="book-friend" src={b01 ? getLevel('surveyor')!.portrait : level!.portrait} alt="" />}
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? level.id === 'lap-lanh'
         ? (introCopy.sparkleIntro[language])
         : (introCopy.surveyorIntro[language])
-        : <><BookContentLabel kind="fiction" language={language}/>{t.guide}</>}</p>
-      {b01 ? <><><BookContentLabel kind="fiction" language={language}/><img className="book-friend" src={getLevel('surveyor')!.portrait} alt="" /></><p><BookContentLabel kind="game" language={language}/>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><><BookContentLabel kind="fiction" language={language}/><img className="book-friend" src={level.portrait} alt="" /></><p><BookContentLabel kind="game" language={language}/>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <><BookContentLabel kind="game" language={language}/><ol className="journey-memories">{journeyStops.map((id, index) => {
+        : <>{t.guide}</>}</p>
+      {b01 ? <><p>✦ {st.memories} · {memoryCount(surveyorProgress)}/3</p></> : level && detail ? <><p>{detail.memory} · {level.id === 'lap-lanh' ? `${sparkleProgress.keepsakes.length}/2` : `${memoryCount(surveyorProgress)}/${level.memoryCount}`}</p></> : <><ol className="journey-memories">{journeyStops.map((id, index) => {
         const state = status(id);
         const friend = state === 'locked' ? undefined : getLevel(id);
         return <li key={index}><span aria-hidden="true">{state === 'completed' ? '★' : '☆'}</span><span>{friend ? friend.text[language].friend : t.mystery}<small>{state === 'completed' ? t.completed : friend ? t.ready : t.waiting}</small></span></li>;
       })}</ol></>}
+      </div>
 
       {(level || b01) && <BookSource language={language} sparkle={level?.id === 'lap-lanh'} />}
       {activeLevel && <BackToGame language={language} />}

@@ -953,8 +953,43 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .book-panel .book-sheet { overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .book-content-label { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; margin: 2px 5px 2px 0; border: 1px solid #8c7554; border-radius: 4px; background: #e9dfc6; color: #493b29; font: 600 11px/1.5 'Be Vietnam Pro', sans-serif; vertical-align: baseline; max-width: 100%; }
 .book-content-label svg { width: 15px; height: 15px; flex: 0 0 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.book-content-label-fiction { background: #e8dfe8; border-color: #89728a; color: #514052; }
-.book-label-guide { flex: 0 0 auto; color: #dce2d7; font-size: 12px; line-height: 1.6; position: relative; }
+.book-label-guide { margin: 0 0 24px; color: #dce2d7; font-size: 14px; line-height: 1.6; }
 .book-label-guide summary { cursor: pointer; min-height: 44px; padding: 12px 4px; }
-.book-label-guide > div { position: absolute; bottom: 100%; left: 0; right: 0; z-index: 5; padding: 12px; border: 1px solid #a99b7a; border-radius: 6px; background: #21333e; box-shadow: 0 4px 16px #0005; max-height: 260px; overflow-y: auto; }
-.book-label-guide + .book-navigation { margin-top: 0; }
+.book-label-guide > div { padding: 12px; border: 1px solid #a99b7a; border-radius: 6px; background: #21333e; }
+
+.book-sheet > .book-page-label { align-self: stretch; text-align: left; margin: 0 24px 6px 0; }
+.book-panel .book-sheet:has(> .book-page-label) { justify-content: flex-start; }
+
+/* Editorial image flow: prose continues beside and then beneath each photo. */
+.book-panel .book-sheet:has(.book-prose) { padding: 20px 22px 24px; justify-content: flex-start; }
+.book-panel .book-sheet .book-prose { display: flow-root; width: 100%; text-align: left; margin-top: 8px; overflow-wrap: break-word; }
+.book-panel .book-sheet .book-prose p { max-width: none; width: auto; margin: 0 0 12px; line-height: 1.6; text-wrap: auto; }
+.book-panel .book-sheet .book-prose > .book-friend,
+.book-panel .book-sheet .book-prose > .book-memory-photo,
+.book-panel .book-sheet .book-prose > .ban-photo-view {
+  float: left; width: 43%; max-width: 190px; height: auto; max-height: none;
+  margin: 3px 16px 10px 0;
+}
+.book-panel .book-sheet .book-prose > .book-friend { width: 34%; max-width: 120px; }
+.book-panel .book-sheet .book-prose > img,
+.book-panel .book-sheet .book-prose .tai-book-photo img,
+.book-panel .book-sheet .book-prose .ban-photo-view img { height: auto; max-height: none; object-fit: contain; }
+.book-panel .book-sheet .book-prose .ban-photo-view button { width: 100%; padding: 6px; min-height: 44px; font-size: 12px; line-height: 1.5; }
+.book-panel .book-sheet .book-prose > small { display: block; clear: both; padding-top: 4px; line-height: 1.5; }
+@media (max-width: 600px) {
+  .book-panel .book-sheet:has(.book-prose) { padding: 18px 20px 22px; }
+  .book-panel .book-sheet .book-prose > .book-memory-photo,
+  .book-panel .book-sheet .book-prose > .ban-photo-view,
+  .book-panel .book-sheet .book-prose > .book-friend { margin-right: 12px; }
+}
+
+/* NASA companion pages: short reading above/below, longer reading around the photo. */
+.book-panel .book-reality { justify-content:flex-start; }
+.book-panel .book-prose .book-reality-photo { margin:3px 16px 10px 0; float:left; width:43%; max-width:190px; }
+.book-panel .book-prose .book-reality-photo img { display:block; width:100%; height:auto; max-height:none; border-radius:5px; }
+.book-panel .book-prose .book-reality-photo figcaption { font-size:11px; line-height:1.5; color:#73664e; margin-top:7px; text-align:left; }
+.book-panel .book-prose--above .book-reality-photo { float:none; width:100%; max-width:290px; margin:0 auto 16px; }
+.book-panel .book-prose--above .book-reality-photo img { max-height:200px; object-fit:contain; }
+.book-reality-sources { display:flex; flex-wrap:wrap; gap:6px 16px; align-self:stretch; margin-top:8px; padding-top:10px; border-top:1px solid #bda98155; font-size:12px; }
+.book-reality-sources a { color:#66552f; text-underline-offset:3px; }
+@media (max-width:600px) { .book-panel .book-prose .book-reality-photo { margin-right:12px; } .book-panel .book-prose--above .book-reality-photo { margin-right:auto; } }

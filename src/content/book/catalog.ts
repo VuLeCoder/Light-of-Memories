@@ -1,3 +1,4 @@
+import { realWorldPages } from './real-world';
 import { text, type BookBlock, type BookChapter, type BookPage, type BookSource, type BookText, type ContentKind } from './types';
 import { introCopy } from './intro-copy';
 import { journeyCopy } from './journey-copy';
@@ -127,6 +128,12 @@ for (const photo of banBanhLuoiMemories) {
   const image = { src: photo.src, alt: photo.alt, credit: photo.credit, code: photo.code, date: photo.date };
   block(p, 'photo', 'fact', photo.caption, section, 20, [source(photo.source)], { image });
   block(p, 'detail', 'fact', photo.id === 'orbit' ? banBanhLuoiCopy['photoB.detailCaption'] : photo.detailAlt, photo.id === 'vip' ? 'C4.2' : section, 21, [source(photo.source)], { image: { ...image, src: photo.detailSrc, alt: photo.detailAlt }, reveal: 'detail' });
+}
+
+for (const entry of realWorldPages) {
+ const p = page(entry.id, entry.chapter, entry.title);
+ block(p, 'photo', 'fact', entry.caption, entry.section, 30, entry.sources.map(url => source(url)), { image: { src: entry.image, alt: entry.caption, credit: 'NASA' } });
+ entry.paragraphs.forEach((body, i) => block(p, `body-${i}`, 'fact', body, entry.section, 31 + i, entry.sources.map(url => source(url))));
 }
 
 /** Full inventory; no progress, React, DOM or save access. Browser visibility stays in the UI. */
