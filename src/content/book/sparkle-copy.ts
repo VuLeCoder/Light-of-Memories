@@ -56,8 +56,8 @@ export const clueCopy = {
     "en": "Light changes direction when it meets a mirror. Its incoming and outgoing angles are equal, measured from a line perpendicular to the mirror. After two bounces in a right-angle corner, the ray travels parallel to the incoming ray in the opposite direction. It may be shifted to one side."
   },
   "prisms": {
-    "vi": "Hình vẽ là mô hình phẳng. Lấp Lánh thật có 100 lăng kính cố định. Mỗi lăng kính có ba mặt phản xạ vuông góc với nhau và làm việc không cần điện.",
-    "en": "The drawing is a flat model. The real Sparkle has 100 fixed prisms. Each has three reflecting faces at right angles to one another and works without electricity."
+    "vi": "Hình vẽ là mô hình phẳng với hai gương. Lật trang để xem cấu tạo lăng kính của thiết bị thật.",
+    "en": "The drawing is a flat model with two mirrors. Turn the page to explore the real instrument’s prisms."
   },
   "repairSourceLabel": {
     "vi": "NASA/JPL · Gương Apollo 11 ↗",

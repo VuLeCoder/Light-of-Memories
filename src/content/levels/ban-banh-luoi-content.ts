@@ -353,14 +353,13 @@ export const banBanhLuoiBook = {
   "ban-banh-luoi": {
     title: text("Apollo 17 — Bánh Lưới", "Apollo 17 — Mesh Wheels"),
     paragraphs: [
-      text("Xe LRV của Apollo 17 chở Eugene Cernan và Harrison Schmitt đi khảo sát thung lũng Taurus–Littrow vào tháng 12/1972.", "The Apollo 17 LRV carried Eugene Cernan and Harrison Schmitt on exploring trips in the Taurus–Littrow valley in December 1972."),
-      text("Hai phi hành gia lái chiếc xe chạy bằng pin. Sau chuyến đi cuối, xe ở lại gần tàu đổ bộ Challenger.", "The two astronauts drove the battery-powered rover. After its last trip, it stayed near the lunar module Challenger.")
+      text("Bánh Lưới là người bạn được lấy cảm hứng từ xe LRV của Apollo 17. Mình cùng lật trang để xem chiếc xe thật từng đi trên Mặt Trăng nhé.", "Mesh Wheels is inspired by Apollo 17’s LRV. Let us turn the page to see the real vehicle that travelled on the Moon.")
     ]
   },
   "ban-book-wheels": {
     title: text("Bánh xe không cần bơm hơi", "Wheels that need no air"),
     paragraphs: [
-      text("Bánh LRV đan bằng dây kim loại, có gân chữ V và không cần bơm hơi.", "LRV wheels use wire mesh and V-shaped treads. They need no air."),
+      text("Bánh LRV đan bằng dây kim loại, có gân chữ V và không cần bơm hơi. Lưới có thể hơi biến dạng khi tiếp xúc với mặt đất.", "LRV wheels use wire mesh and V-shaped treads. They need no air, and the mesh can deform slightly where it meets the ground."),
       text("Trong phần thử bánh, lốp hơi làm êm nhưng có thể xẹp nếu bị thủng; bánh cứng giữ hình dạng nhưng xóc hơn khi vượt đá. Bánh lưới có thể uốn theo đá, song vật sắc vẫn có thể làm đứt sợi. Đây là minh họa giản lược.", "In the wheel trial, air cushions bumps but a puncture can flatten the tyre; a rigid wheel keeps its shape but jolts more over rocks. Mesh can flex around rocks, though sharp edges can break wires. These are simplified illustrations.")
     ]
   },
@@ -375,15 +374,15 @@ export const banBanhLuoiBook = {
   "ban-book-samples": {
     title: text("Hai điểm dừng, hai mẫu vật", "Two stops, two samples"),
     paragraphs: [
-      text("Tại A, Cuội gõ búa hai lần đúng lực để làm rời mẫu đá, nhặt mẫu rồi mang về cất trên xe. Hoạt động lấy cảm hứng từ việc Cernan và Schmitt lấy mẫu ở tảng đá tại vùng Nansen, Trạm 2.", "At A, Cuội loosens a rock sample with two well-timed hammer strikes, picks it up and stores it on the rover. This activity draws on Cernan and Schmitt sampling a boulder in the Nansen area at Station 2."),
-      text("Tại B, Cuội quan sát ba mảng đất, tìm hạt tròn cam và đen xen mảnh vỡ, rồi lấy mẫu mang về xe. Apollo 17 tìm thấy đất cam bên miệng hố Shorty, Trạm 4. Những hạt nhỏ này kể câu chuyện về hoạt động núi lửa cổ xưa.", "At B, Cuội examines three patches for round orange and black grains mixed with fragments, then brings a sample back to the rover. Apollo 17 found orange soil at the rim of Shorty Crater, Station 4. Its tiny grains tell a story of ancient volcanic activity."),
+      text("Tại A, Cuội gõ búa hai lần đúng lực để làm rời mẫu đá, nhặt mẫu rồi mang về cất trên xe.", "At A, Cuội loosens a rock sample with two well-timed hammer strikes, picks it up and stores it on the rover."),
+      text("Tại B, Cuội quan sát ba mảng đất, tìm hạt tròn cam và đen xen mảnh vỡ, rồi lấy mẫu mang về xe.", "At B, Cuội examines three patches for round orange and black grains mixed with fragments, then brings a sample back to the rover."),
       text("A/B là ký hiệu trong game, không phải tên trạm thật. Bản đồ, thứ tự ghé trạm, hai lần gõ và hình hạt phóng đại đều được giản lược. Các nhà khoa học nghiên cứu mẫu mang về để xác định thành phần; không thể chỉ nhìn màu đất mà kết luận.", "A/B are game labels, not actual station names. The map, visit order, two strikes and enlarged grains are simplified. Scientists studied returned samples to determine their composition; colour alone is not enough.")
     ]
   },
   "ban-book-walkback": {
     title: text("Nếu cần đi bộ về thì sao?", "Walking home safely"),
     paragraphs: [
-      text("Nếu xe hỏng, phi hành gia cần đi bộ về tàu. Oxy và nước làm mát cho người khác với pin của xe.", "If the rover failed, astronauts needed to walk home. Their oxygen and cooling water were separate from its battery."),
+      text("Nếu xe hỏng, phi hành gia cần còn đủ oxy và nước làm mát trong ba lô để đi bộ về tàu. Vì vậy, kế hoạch khảo sát luôn giới hạn quãng đường theo khả năng trở về an toàn.", "If the rover failed, astronauts needed enough oxygen and cooling water in their backpacks to walk home. Traverse planning therefore limited their range to allow a safe return."),
       text("Mọi ô trên tuyến cần đường về LM trong 4 bước, tránh hố. Dốc cũng tính 1 bước. Các số 4 và 12 chỉ là luật mô phỏng.", "Every route cell needs a walk home within 4 steps, avoiding craters. Slopes also count as 1 step. The numbers 4 and 12 are model rules only.")
     ]
   },

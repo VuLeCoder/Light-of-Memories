@@ -1,6 +1,6 @@
 # Shared companion book
 
-`catalog.ts` inventories the 35 reachable book pages as classified, bilingual
+`catalog.ts` inventories 35 original pages and 10 NASA companion pages as classified, bilingual
 blocks. `overview` corresponds to the browser's `null` page. Unlock logic remains
 in the existing progress helpers and `JourneyMap`; it never filters this catalog.
 
@@ -27,8 +27,7 @@ export filters. Reused portraits/photos are published once with cross-references
 rather than copied each time the browser displays them.
 
 Sources marked `recorded` reproduce existing project provenance, not independent
-fact checking. `needs-review` marks the Surveyor image attribution gap, the
-Apollo 11 link currently used for Apollo 17 walkback, and the legacy citation.
+fact checking. `needs-review` marks the Surveyor image attribution gap, and the legacy citation. Apollo 17 walkback now cites NASA’s Apollo 17 Press Kit.
 Do not fabricate missing Surveyor photo codes/credits. Preserve date precision
 (`1969`, `1972-12`, etc.) in PDF captions. Source/credit review is required before
 publishing the M4 sample.
@@ -45,12 +44,24 @@ existing `BASE_URL` image references without starting an HTTP/WebSocket server.
 
 ## NASA companion pages
 
-`real-world.ts` contains bilingual factual pages inserted after their available story or challenge page. Chapter locks still apply. The two sample pages form a consecutive sequence (rock, then orange soil). Each page has explicit `above` or `wrap` art direction, an archival caption and NASA source links. The catalog includes these pages as facts in the progress-independent reading edition.
+`real-world.ts` contains bilingual factual pages inserted after their available story or challenge page. Chapter locks still apply. The two sample pages form a consecutive sequence (rock, then orange soil). Each page has an initial `above` or `wrap` layout, an archival caption and NASA source links. `useBookImageLayout` measures the rendered sheet after image/font loading and resize; any overflowing page with a photo switches to a left float so text flows to its right and below. Vertical scrolling remains available for long text; content is never clipped to hide it. The catalog includes these pages as facts in the progress-independent reading edition.
 
 Sources consulted 2026-10-31 are recorded with each entry. New local images:
 - `images/book/apollo17-route.jpg` — NASA, Apollo 17 surface traverse map, linked from *50 Years Ago: Apollo 17 Lands at Taurus-Littrow*.
 - `images/book/nansen-rock.jpg` — NASA AS17-137-20901, same article.
 - `images/book/orange-soil.jpg` — NASA ARES Lunar Disk 80, image EDDISK 80_Page_4_Image_0001.jpg.
-- `images/book/apollo12-seismogram.png` — NASA Apollo 12 Mission Report, printed page 3-10, figure 3-8 (PDF page 19), extracted with its original axes, time scale and caption. Source: https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf . This is a real record, not the game waveform. The report describes about 50 minutes; the historical ALSEP account describes over 55 minutes, so the companion prose says “nearly an hour”.
+- `images/book/apollo12-seismogram.png` — NASA Apollo 12 Mission Report, printed page 3-10, figure 3-8 (PDF page 19), extracted with its original axes, time scale and caption. Source: https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf . This is a real record, not the game waveform. The report describes about 50 minutes; the historical ALSEP account describes over 55 minutes, the existing ringing page cites the historical account, while the remaining companion uses this image only to explain its axes and time scale.
 
 Other photographs reuse the project's NASA archival assets; illustrations of fictional characters are not used as photographs of real hardware.
+
+## Content review (2026-10-31)
+
+Removed eight redundant companion pages: Surveyor tools, laser ranging, ALSEP devices, tremor sources, impact ringing, rover wheels, walkback and rover legacy. Their existing pages carry the explanation; Surveyor tools and ALSEP devices now include archive images directly. Wheel flexibility and walkback life-support limits were merged into the original paragraphs. Tremor sources retain the tidal and thermal explanation. NASA references for the wheels and Apollo 17 walkback are used in both browser and catalog.
+
+Chapter introductions now introduce the imagined friend and lead into the real hardware page. Repair instructions refer forward to the actual prism page; sample tasks refer to the two following factual sample pages. The actual seismogram page now teaches how to read three measurement directions and the time scale, instead of retelling the impact or repeating the sensor definition. Captions retain identifying context even where a date or object name also appears in the prose.
+
+Browser and reading catalog share the revised wording and classifications: fictional introductions and game directions stay in the appendix; mission facts, photographs and source links stay in the main reading edition. The complete inventory is now 45 pages.
+
+## Page composition
+
+Short character introductions use `book-prose--intro`: centred illustration above centred prose. This explicit composition stays stacked on small screens. Other illustrated pages retain the measured left-float fallback. NASA companion pages show provenance links only in their footer, without a duplicate archive kicker above the title. The overview centres its friend list as a block; each row uses the same fixed-width star column and a centred text column.

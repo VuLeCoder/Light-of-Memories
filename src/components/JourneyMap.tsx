@@ -1,4 +1,5 @@
-import { insertRealWorldPages, realWorldPages } from '../content/book/real-world';
+import { useBookImageLayout } from './useBookImageLayout';
+import { bookArchiveImages, insertRealWorldPages, realWorldPages } from '../content/book/real-world';
 import { BookPageLabel } from './BookContentLabel';
 import { BookParagraph } from './BookParagraph';
 import { introCopy } from '../content/book/intro-copy';
@@ -141,6 +142,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
   }, [selectedPage]);
+  useBookImageLayout(pages[page], language);
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
   const entry = ['surveyor-b01', 'surveyor-b02', 'surveyor-b03'].indexOf(pages[page] ?? '');
@@ -162,7 +164,6 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
     <aside className="book-panel" lang={language} aria-labelledby="reality-book-title">
       <div tabIndex={0} className="book-sheet journey-book book-reality">
         <div className="page-corner" aria-hidden="true" />
-        <span className="book-kicker">{language === 'vi' ? 'Từ tư liệu NASA' : 'From NASA’s archives'}</span>
         <h2 id="reality-book-title">{reality.title[language]}</h2>
         <div className={`book-prose book-prose--${reality.layout}`}>
           <figure className="book-reality-photo"><img src={reality.image} alt={reality.caption[language]} /><figcaption>{reality.caption[language]}</figcaption></figure>
@@ -183,7 +184,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       <BookPageLabel pageId={pages[page]} language={language}/>
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
         <h2 id="banh-luoi-book-title" tabIndex={-1}>{entry.title[language]}</h2>
-        <div className="book-prose">
+        <div className={`book-prose${banPageId === 'ban-banh-luoi' ? ' book-prose--intro' : ''}`}>
         {banPageId === 'ban-banh-luoi' && <><img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/></>}
         {['ban-book-route', 'ban-book-walkback'].includes(banPageId) && <><BanhLuoiRouteMap language={language} showSafe={banPageId === 'ban-book-walkback' && banhLuoiProgress.routeHint === 2}/></>}
         {banPageId === 'ban-book-camera' && <BanhLuoiCameraDiagram language={language}/>}
@@ -191,12 +192,13 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
         {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}><BookParagraph pageId={banPageId} value={paragraph[language]} language={language}/></p>)}
         {photo && <><p>{photo.caption[language]}</p><small>{photo.credit} · {photo.code}</small></>}
         </div>
-        <a className="sparkle-book-source" href={['ban-book-camera', 'ban-book-samples'].includes(banPageId) ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://apollojournals.org/alsj/a11/a11.clsout.html' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'ALSJ' : 'Apollo 17'} ↗</a>
+        <a className="sparkle-book-source" href={['ban-book-camera', 'ban-book-samples'].includes(banPageId) ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://www.nasa.gov/wp-content/uploads/static/apollo50th/pdf/A17_PressKit.pdf' : banPageId === 'ban-book-wheels' ? 'https://ntrs.nasa.gov/api/citations/20100000019/downloads/20100000019.pdf' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'NASA' : 'Apollo 17'} ↗</a>
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} page={page} count={pages.length} onChange={setPage}/></aside>
     </>;
   }
   const taiPage = taiThinhBook.find(entry => pages[page] === `tai-book-${entry.id}` || entry.id === 'intro' && pages[page] === 'tai-thinh');
+  const archive = bookArchiveImages[pages[page] as keyof typeof bookArchiveImages];
   const taiPhoto = taiThinhMemories.find(photo => pages[page] === `tai-photo-${photo.id}`);
   if (taiPage || taiPhoto) {
     const source = taiPage ? taiThinhBookSources[taiPage.id] : 'https://apollojournals.org/alsj/a12/images12.html';
@@ -206,7 +208,8 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       <BookPageLabel pageId={pages[page]} language={language}/>
         <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
         <h2 id="tai-book-title" tabIndex={-1}>{taiPhoto ? taiPhoto.title[language] : taiPage!.id === 'intro' ? getLevel('tai-thinh')!.text[language].friend : taiPage!.title[language]}</h2>
-        <div className="book-prose">
+        <div className={`book-prose${taiPage?.id === 'intro' ? ' book-prose--intro' : ''}`}>
+        {archive && <ArchiveFigure photo={archive} language={language}/>}
         {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <><img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/></>}<p><BookParagraph pageId={taiPage!.id === 'intro' ? 'tai-thinh' : `tai-book-${taiPage!.id}`} value={taiPage!.body[language]} language={language}/></p></>}
         </div>
         {source && <a className="sparkle-book-source" href={source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>}
@@ -262,8 +265,9 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
-      <div className="book-prose">
-      {(b01 || level) && <img className="book-friend" src={b01 ? getLevel('surveyor')!.portrait : level!.portrait} alt="" />}
+      <div className={`book-prose${level ? ' book-prose--intro' : !b01 ? ' book-prose--overview' : ''}`}>
+      {archive && <ArchiveFigure photo={archive} language={language}/>}
+      {!archive && (b01 || level) && <img className="book-friend" src={b01 ? getLevel('surveyor')!.portrait : level!.portrait} alt="" />}
       <p>{b01 ? (entry === 0 ? st.bookBody : ct.bodies[entry]) : level && detail ? level.id === 'lap-lanh'
         ? (introCopy.sparkleIntro[language])
         : (introCopy.surveyorIntro[language])
@@ -295,4 +299,8 @@ function BookSource({ language, sparkle = false, photo = false }: { language: La
     : 'https://science.nasa.gov/mission/surveyor-3/'} target="_blank" rel="noreferrer">
     {language === 'vi' ? 'Nguồn NASA' : 'NASA source'} · {sparkle ? 'Apollo 11' : 'Surveyor 3'} ↗
   </a>;
+}
+
+function ArchiveFigure({ photo, language }: { photo: { src: string; caption: { vi: string; en: string } }; language: Language }) {
+  return <figure className="book-reality-photo"><img src={photo.src} alt={photo.caption[language]}/><figcaption>{photo.caption[language]}</figcaption></figure>;
 }

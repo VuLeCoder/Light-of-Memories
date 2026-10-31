@@ -993,3 +993,47 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .book-reality-sources { display:flex; flex-wrap:wrap; gap:6px 16px; align-self:stretch; margin-top:8px; padding-top:10px; border-top:1px solid #bda98155; font-size:12px; }
 .book-reality-sources a { color:#66552f; text-underline-offset:3px; }
 @media (max-width:600px) { .book-panel .book-prose .book-reality-photo { margin-right:12px; } .book-panel .book-prose--above .book-reality-photo { margin-right:auto; } }
+
+/* Measured after images/fonts load and on resize; retain readable text and full photos. */
+.book-panel .book-image-wrap .book-prose .book-reality-photo {
+  float: left;
+  width: 40%;
+  max-width: 170px;
+  margin: 3px 16px 10px 0;
+}
+.book-panel .book-image-wrap .book-prose .book-reality-photo img {
+  max-height: none;
+  height: auto;
+}
+@media (max-width: 600px) {
+  .book-panel .book-image-wrap .book-prose .book-reality-photo { margin-right: 12px; }
+}
+
+/* Short character introductions sit quietly in the centre of the page. */
+.book-panel .book-sheet .book-prose--intro { text-align: center; }
+.book-panel .book-sheet .book-prose--intro > .book-friend {
+  display: block;
+  float: none;
+  width: 45%;
+  max-width: 140px;
+  margin: 8px auto 18px;
+  border-radius: 0;
+}
+.book-panel .book-sheet .book-prose--intro p { text-align: center; }
+.book-panel .book-sheet .book-prose--overview { text-align: center; }
+.book-panel .book-prose--overview .journey-memories {
+  width: fit-content;
+  max-width: 100%;
+  margin: 12px auto 0;
+  gap: 8px;
+}
+.book-panel .book-prose--overview .journey-memories li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  column-gap: 10px;
+  text-align: left;
+}
+.book-panel .book-prose--overview .journey-memories li > span:first-child {
+  width: 24px;
+  text-align: center;
+}
