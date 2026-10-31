@@ -47,6 +47,10 @@ Mở địa chỉ Vite hiển thị trong terminal, mặc định là `http://lo
 # Kiểm tra kiểu TypeScript
 npm run typecheck
 
+# Kiểm tra nội dung và điều hướng sách
+npm run check:book
+npm run check:book-flow
+
 # Kiểm tra TypeScript và tạo bản build
 npm run build
 
@@ -89,6 +93,13 @@ Font **Lora** và **Be Vietnam Pro** được đóng gói trong `public/fonts/`,
 Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v13 lưu riêng từng màn và đọc được bản v1–v13; lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
 
 ### Những phần đang phát triển
+
+Cập nhật 31/10/2026: ba phần chính còn thiếu là **người bạn thứ năm, đoạn kết toàn hành trình và âm thanh**. Các đoạn kết của bốn màn hiện tại chưa khép lại toàn bộ câu chuyện.
+
+- Cần nối chương 5 với ý nghĩa chiếc đèn đủ năm ánh sao và xác định trải nghiệm sau khi hoàn thành hành trình.
+- Sách đã có dữ liệu phân loại và thứ tự xuất bản; **chưa có chức năng tải PDF**. Bản đầy đủ cần thêm chương 5 và phần khép lại, giữ kiến thức thật ở phần chính và nội dung giả tưởng/game ở phụ lục.
+- Sau khi tích hợp cần kiểm thử từ đầu đến cuối, lưu/tiếp tục, gợi ý sách, chơi lại, hai ngôn ngữ và âm thanh. Xem [tiến độ và các quyết định còn lại](docs/project-overview.md).
+
 
 - Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có tối đa bốn cánh sao. Bánh Lưới có ba bài: thử bánh, lập đường đi và lấy mẫu đá/đất tại hai điểm A/B; chơi lại giữ ảnh, sách và dấu hoàn thành.
 - Chưa có phần thưởng kỹ năng hoặc thẻ bạn.

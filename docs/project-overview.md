@@ -1,6 +1,6 @@
 # Tổng quan dự án Cuội
 
-Cập nhật **30/10/2026**. Đây là điểm vào tài liệu hiện tại. Mỗi màn có một bản tổng hợp chính; các kế hoạch và bàn giao Game3/Game4 đã được hợp nhất để tránh mô tả khác nhau.
+Cập nhật **31/10/2026**. Đây là điểm vào tài liệu hiện tại. Mỗi màn có một bản tổng hợp chính; các kế hoạch và bàn giao Game3/Game4 đã được hợp nhất để tránh mô tả khác nhau.
 
 ## Tài liệu cần đọc
 
@@ -26,6 +26,24 @@ Lộ trình có năm điểm; điểm thứ năm còn bí ẩn. Chọn điểm n
 Hậu kết cả bốn màn cho Cuội đi lại và trò chuyện với bạn. Bạn cảm ơn, gợi dấu hiệu phía phải; đi tới đó về lộ trình. Mắt Tròn có điểm sáng, Lấp Lánh có vòng gợn, Tai Thính có hai vệt bánh xe gợi Bánh Lưới. Bánh Lưới gợi một người bạn trên cao, còn vệt sáng mặt đất phía phải dẫn về lộ trình. Có nút xem lại kết/chơi lại/về lộ trình; xem kết Bánh Lưới chiếu lại cả ánh sáng cánh thứ tư mà không ghi thêm phần thưởng.
 
 Sách có nội dung theo tiến trình, nhóm theo người bạn, ảnh và nguồn; văn ngôi thứ ba như Mắt Tròn. Game và sách có đủ Việt/Anh. Công tắc âm thanh hiện lưu lựa chọn; các bài Tai Thính không phụ thuộc âm thanh.
+
+## Các phần còn lại để hoàn thiện hành trình
+
+Ba phần chính chưa triển khai là **người bạn thứ năm, đoạn kết toàn hành trình và âm thanh**. Các đoạn kết hiện có là kết riêng của bốn màn, chưa phải kết thúc câu chuyện Cuội đi tìm chị Hằng.
+
+| Phần | Hiện trạng và việc cần làm |
+| --- | --- |
+| Người bạn thứ năm | Có bản đề xuất Bạn Gác Trời/LRO tại `docs/plan/Ke_hoach_Chuong_5_Ban_Gac_Troi.md`; chưa tích hợp vào game. Cần chốt nội dung, thử thách, sách Việt/Anh, nguồn NASA và cánh sao thứ năm. |
+| Đoạn kết toàn hành trình | Cần chốt cách nối chương 5 tới cuộc tìm kiếm chị Hằng, ý nghĩa của chiếc đèn đủ năm ánh sao và trạng thái hoàn thành được lưu. |
+| Âm thanh | Công tắc mới lưu lựa chọn. Cần nhạc, hiệu ứng, điều khiển âm lượng, chuyển cảnh và xử lý khi rời tab; các thử thách vẫn phải chơi được khi tắt tiếng. |
+| Sách và PDF | Đã có phân loại, thứ tự đọc và dữ liệu xuất bản độc lập tiến độ. Chưa có chức năng tải PDF; cần bổ sung chương 5 và phần khép lại trước bản sách đầy đủ. PDF chứa toàn bộ sách, kiến thức thật ở phần chính và nội dung game/giả tưởng ở phụ lục. |
+| Kiểm thử hoàn chỉnh | Sau khi tích hợp cần chơi từ bản lưu mới đến đoạn kết, kiểm tra tiếp tục giữa chừng, Việt/Anh, gợi ý, thứ tự sách, chơi lại và âm thanh. |
+
+**Các quyết định còn cần thiết kế:** chiếc đèn đủ năm sao thay đổi thế nào và có vai trò gì trong đoạn kết; sau kết thúc người chơi trở lại đâu để gặp bạn, đọc sách và chơi lại mà giữ thành quả. Hậu kết từng màn đã có, nhưng hậu kết toàn hành trình chưa có.
+
+Mục lục sách có thể bấm, chế độ đọc riêng, nhớ vị trí đọc, sao lưu tiến độ và tùy chọn giảm chuyển động là **đề xuất cải thiện**, chưa được chốt thành phạm vi triển khai. Kỹ năng và thẻ bạn không phải điều kiện để hoàn thiện bản hiện tại.
+
+Ưu tiên chốt mạch truyện chương 5 và đoạn kết trước, sau đó tích hợp nội dung, âm thanh, hoàn thiện sách/PDF và kiểm thử toàn hành trình. Báo cáo [hiệu năng sách](done/book-performance-review.md) ghi phạm vi kiểm tra đã thực hiện; các phép đo đó không thay cho lượt chơi đầy đủ năm chương.
 
 ## Công nghệ và cấu trúc
 
@@ -57,6 +75,6 @@ Các khóa localStorage: `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema 
 
 ## Phần chưa chốt và giới hạn
 
-Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được duyệt. Chưa xác nhận danh tính người bạn trên cao. Vá chắn bùn, bản đồ bổ sung và âm thanh của Bánh Lưới nằm ngoài bản đầu; không tự thêm vào điều kiện hoàn thành.
+Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được duyệt. Bản kế hoạch Bạn Gác Trời/LRO là đề xuất, chưa phải nhân vật đã triển khai. Vá chắn bùn, bản đồ bổ sung và âm thanh của Bánh Lưới nằm ngoài bản đầu; không tự thêm vào điều kiện hoàn thành.
 
 Chưa có hệ thống kỹ năng hoặc thẻ bạn. Kiểm thử triển khai chủ yếu trên Chromium, chạm giả lập và Việt/Anh màn rộng/hẹp; chưa thay cho thử với học sinh, thiết bị thật, Safari/Firefox hoặc trình đọc màn hình. Font có fallback, build có cảnh báo kích thước chunk Phaser. Phạm vi kiểm tra cụ thể nằm trong tài liệu từng màn.

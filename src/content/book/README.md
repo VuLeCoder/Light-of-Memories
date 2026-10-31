@@ -1,7 +1,6 @@
 # Shared companion book
 
-`catalog.ts` inventories 35 original pages and 10 NASA companion pages as classified, bilingual
-blocks. `overview` corresponds to the browser's `null` page. Unlock logic remains
+`catalog.ts` inventories the book as classified, bilingual blocks. The current validated inventory contains 44 canonical pages; responsive pagination can produce more visible leaves. `overview` corresponds to the browser's `null` page. Unlock logic remains
 in the existing progress helpers and `JourneyMap`; it never filters this catalog.
 
 - `types.ts`: fact/game/fiction, stable block IDs, publication section/order,
@@ -17,7 +16,7 @@ in the existing progress helpers and `JourneyMap`; it never filters this catalog
   progress and requires no browser/save. `readingText` overrides wording only
   where needed for an independent reading edition.
 - `BookParagraph` preserves existing mixed paragraphs while attaching stable
-  classification attributes to their spans. Visible labels belong to M3.
+  classification attributes to their spans. Visible labels are implemented in M3.
 
 The reading edition includes the laser answer, original and cropped archive
 photos, three Surveyor sketch IDs, corner/ranging diagrams, route and safe-route
@@ -40,11 +39,11 @@ existing `BASE_URL` image references without starting an HTTP/WebSocket server.
 
 ## Nhãn trên trình duyệt (M3)
 
-`BookParagraph` giữ nguyên nội dung và thuộc tính phân loại của từng đoạn. `BookPageLabel` đọc catalog và hiển thị một nhãn chung “Nội dung giả tưởng” ở góc trên trái cho trang có khối game hoặc fiction; trang chỉ có fact không có nhãn. Không gắn nhãn lặp lại trong nội dung. Phân loại game/fiction vẫn được giữ riêng trong dữ liệu xuất bản. `BookLabelGuide` nằm dưới section nhân vật trong cảnh, giải thích nhãn bằng `details/summary`, bao gồm ý nghĩa với trang hỗn hợp. Khung sách cuộn dọc để không cắt nội dung.
+`BookParagraph` giữ nguyên nội dung và thuộc tính phân loại của từng đoạn. `BookPageLabel` đọc catalog và hiển thị một nhãn chung “Nội dung giả tưởng” ở góc trên trái cho trang có khối game hoặc fiction; trang chỉ có fact không có nhãn. Không gắn nhãn lặp lại trong nội dung. Phân loại game/fiction vẫn được giữ riêng trong dữ liệu xuất bản. `BookLabelGuide` nằm dưới section nhân vật trong cảnh, giải thích nhãn bằng `details/summary`, bao gồm ý nghĩa với trang hỗn hợp. Nội dung dài được dàn thành các trang tiếp theo thay vì dùng thanh cuộn trong trang sách.
 
 ## NASA companion pages
 
-`real-world.ts` contains bilingual factual pages inserted after their available story or challenge page. Chapter locks still apply. The two sample pages form a consecutive sequence (rock, then orange soil). Each page has an initial `above` or `wrap` layout, an archival caption and NASA source links. `useBookImageLayout` measures the rendered sheet after image/font loading and resize; any overflowing page with a photo switches to a left float so text flows to its right and below. Vertical scrolling remains available for long text; content is never clipped to hide it. The catalog includes these pages as facts in the progress-independent reading edition.
+`real-world.ts` contains bilingual factual pages inserted after their available story or challenge page. Chapter locks still apply. The two sample pages form a consecutive sequence (rock, then orange soil). Each page has an initial `above` or `wrap` layout, an archival caption and NASA source links. `useBookImageLayout` measures the rendered sheet after image/font loading and resize; any overflowing page with a photo switches to a left float so text flows to its right and below. Long text is split into additional leaves after layout measurement, preserving inline classifications and reading order. The catalog includes these pages as facts in the progress-independent reading edition.
 
 Sources consulted 2026-10-31 are recorded with each entry. New local images:
 - `images/book/apollo17-route.jpg` — NASA, Apollo 17 surface traverse map, linked from *50 Years Ago: Apollo 17 Lands at Taurus-Littrow*.
@@ -60,7 +59,7 @@ Removed eight redundant companion pages: Surveyor tools, laser ranging, ALSEP de
 
 Chapter introductions now introduce the imagined friend and lead into the real hardware page. Repair instructions refer forward to the actual prism page; sample tasks refer to the two following factual sample pages. The actual seismogram page now teaches how to read three measurement directions and the time scale, instead of retelling the impact or repeating the sensor definition. Captions retain identifying context even where a date or object name also appears in the prose.
 
-Browser and reading catalog share the revised wording and classifications: fictional introductions and game directions stay in the appendix; mission facts, photographs and source links stay in the main reading edition. The complete inventory is now 45 pages.
+Browser and reading catalog share the revised wording and classifications: fictional introductions and game directions stay in the appendix; mission facts, photographs and source links stay in the main reading edition. The current complete inventory is 44 canonical pages after the rover-page merge.
 
 ## Page composition
 
@@ -69,3 +68,15 @@ Short character introductions use `book-prose--intro`: centred illustration abov
 ## Browser flow verification
 
 `npm run check:book-flow` checks progression checkpoints, hint targets, NASA companion placement, the complete browser inventory and a fresh archive. `reading-order.ts` is shared by the browser and this check. Surveyor entries follow tools, then each excavation clue and its collected photo; companion pages remain directly after their parent. Browser page selection uses stable IDs so collecting a photo does not change the page being read. The complete publication keeps its own factual/appendix order.
+
+## Remaining work (2026-10-31)
+
+The publication model is ready for a renderer, but PDF download is not implemented.
+Add chapter five and the journey conclusion when their content is approved. The full
+PDF must include locked content independently of the save, with factual content in
+the main section and game/fiction in the appendix, in the selected language.
+
+Clickable contents, a dedicated reading view and persisted reading position remain
+proposals, not implemented features. See `docs/project-overview.md` for product scope
+and `docs/done/book-performance-review.md` for the measured pagination improvements
+and verification limits.
