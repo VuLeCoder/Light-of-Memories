@@ -5,6 +5,7 @@ import type { LevelId } from './index';
 
 /** Repeatable chats after the lantern farewell; these never change saved progress. */
 export const endingChatLines = {
+  'gac-troi': { vi: [], en: [] },
   'ban-banh-luoi': { vi: banBanhLuoiDialogue('vi', 'endingChat'), en: banBanhLuoiDialogue('en', 'endingChat') },
   surveyor: {
     vi: [

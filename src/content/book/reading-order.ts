@@ -12,10 +12,11 @@ export type BookProgress = Pick<Progress, 'surveyor' | 'sparkle' | 'taiThinh' | 
  * Unlike the complete publication, this edition only includes unlocked entries.
  */
 export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi }: BookProgress): (string | null)[] {
-  const completed = { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'tai-thinh': taiThinh.completedOnce, 'ban-banh-luoi': banhLuoi.completedOnce };
+  const completed = { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'tai-thinh': taiThinh.completedOnce, 'ban-banh-luoi': banhLuoi.completedOnce, 'gac-troi': false };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const fieldUnlocked = surveyor.matched.length === 2;
   return insertRealWorldPages([null, ...journeyStops.flatMap(id => {
+    if (id === 'gac-troi') return [];
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,

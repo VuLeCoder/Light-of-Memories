@@ -1,3 +1,4 @@
+import { freshGacTroi } from './content/levels/gac-troi-progress';
 import { BanhLuoiLevel } from './components/BanhLuoiLevel';
 import { EndingTrail } from './components/EndingTrail';
 import { freshBanhLuoi } from './content/levels/ban-banh-luoi-progress';
@@ -104,12 +105,13 @@ export function App() {
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
   const [activeLevel, setActiveLevel] = useState<LevelId | null>(saved.progress.activeLevel);
   const [surveyorProgress, setSurveyorProgress] = useState(saved.progress.surveyor);
+  const [gacTroiProgress, setGacTroiProgress] = useState(saved.progress.gacTroi);
   const [banhLuoiProgress, setBanhLuoiProgress] = useState(saved.progress.banhLuoi);
   const [taiThinhProgress, setTaiThinhProgress] = useState(saved.progress.taiThinh);
   const [sparkleProgress, setSparkleProgress] = useState(saved.progress.sparkle);
   useEffect(() => {
-    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, taiThinhProgress, banhLuoiProgress));
-  }, [chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, taiThinhProgress, banhLuoiProgress]);
+    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, taiThinhProgress, banhLuoiProgress, gacTroiProgress));
+  }, [chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, taiThinhProgress, banhLuoiProgress, gacTroiProgress]);
   const [trailWarning, setTrailWarning] = useState(false);
   const [treeTurn, setTreeTurn] = useState(0);
   const [revealing, setRevealing] = useState(false);
@@ -121,10 +123,10 @@ export function App() {
   const moonWaking = chapter === 'moon-waking';
   const questDialogue = quest === 'tree' || quest === 'lantern';
   const journeyOpen = quest === 'complete';
-  const completedFriends = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
+  const completedFriends = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const inBanhLuoi = journeyOpen && activeLevel === 'ban-banh-luoi' && journeyStatus('ban-banh-luoi', completedFriends) !== 'locked';
   const inTaiThinh = journeyOpen && activeLevel === 'tai-thinh' && journeyStatus('tai-thinh', completedFriends) !== 'locked';
-  const litStars = Number(surveyorProgress.completedOnce) + Number(sparkleProgress.completedOnce) + Number(taiThinhProgress.completedOnce) + Number(banhLuoiProgress.completedOnce);
+  const litStars = Number(surveyorProgress.completedOnce) + Number(sparkleProgress.completedOnce) + Number(taiThinhProgress.completedOnce) + Number(banhLuoiProgress.completedOnce) + Number(gacTroiProgress.completedOnce);
   const [banPreview, setBanPreview] = useState(false);
   const [banPreviewProgress, setBanPreviewProgress] = useState(banhLuoiProgress);
   const displayedBan = banPreview ? banPreviewProgress : banhLuoiProgress;
@@ -241,6 +243,7 @@ export function App() {
     setSparkleProgress(freshSparkle());
     setTaiThinhProgress(freshTaiThinh());
     setBanhLuoiProgress(freshBanhLuoi());
+    setGacTroiProgress(freshGacTroi());
     setActiveLevel(null);
     setRevealing(false);
     setScene('earth');
@@ -387,7 +390,7 @@ export function App() {
             {inTaiThinh && <TaiThinhLevel stars={litStars} onBook={openFieldBook} language={language} progress={taiThinhProgress} onChange={setTaiThinhProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {inSparkle && <SparkleLevel onBook={openFieldBook} language={language} progress={sparkleProgress} onChange={setSparkleProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {chattingAtEnd && activeLevel && <section className="ending-scene ending-chat" hidden={menuOpen}><EarthDialogue managedFocus={inBanhLuoi} language={language} paused={menuOpen} title={language === 'vi' ? 'Trò chuyện cùng bạn' : 'A chat with your friend'} lines={endingChatLines[activeLevel][language]} onTurn={noopTurn} onComplete={closeEndingChat} finalAction="moon" finalLabel={language === 'vi' ? 'Mình đi xem nhé!' : 'Let’s take a look!'} /></section>}
-            {journeyOpen && !inBanhLuoi && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
+            {journeyOpen && !inBanhLuoi && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap gacTroiProgress={gacTroiProgress} banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           <p className="chapter-arrival game-instructions">{chattingAtEnd ? dialogueHelp : endingExploring ? `${gameInstructions} ${language === 'vi' ? 'Đến gần bạn rồi nhấn E, hoặc bấm vào bạn để trò chuyện.' : 'Approach your friend and press E, or click your friend to chat.'}` : inBanhLuoi && displayedBan.phase === 'guiding' ? <span id="ban-guide-instructions" role="status"/> : gameInstructions}</p>

@@ -1,3 +1,4 @@
+import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { getBookPage } from '../content/book/catalog';
 import { getBrowserBookPages, getBookHintPage } from '../content/book/reading-order';
 import { useBookImageLayout } from './useBookImageLayout';
@@ -32,9 +33,9 @@ import { BookNavigation } from './BookNavigation';
 import { journeyCopy } from '../content/book/journey-copy';
 export { journeyCopy } from '../content/book/journey-copy';
 
-export function JourneyMap({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const level = status(activeLevel) === 'locked' ? undefined : getLevel(activeLevel);
   const detail = level?.text[language];
@@ -90,7 +91,7 @@ export function JourneyBook({ banhLuoiProgress, taiThinhProgress, sparkleProgres
 }
 
 function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': false };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
   const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress });
