@@ -2,7 +2,7 @@ import type { Language } from '../i18n';
 import { bookPages } from './catalog';
 import type { BookBlock, BookChapter } from './types';
 
-const chapterOrder: readonly BookChapter[] = ['overview', 'surveyor', 'apollo11', 'apollo12', 'apollo17'];
+const chapterOrder: readonly BookChapter[] = ['overview', 'surveyor', 'apollo11', 'apollo12', 'apollo17', 'lro'];
 /** The complete reading edition, including unrevealed hints and photo details.
  * Deliberately accepts no progress parameter. Blocks retain their browser origin
  * so PDF renderers can cross-reference the appendix without duplicating copy.

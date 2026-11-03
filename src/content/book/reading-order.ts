@@ -1,3 +1,4 @@
+import type { GacTroiProgress } from '../levels/gac-troi-progress';
 import { journeyStatus, journeyStops, type LevelId } from '../levels';
 import { eventOrder } from '../levels/surveyor-progress';
 import { sparkleRepairUnlocked, sparkleRangingUnlocked } from '../levels/lap-lanh';
@@ -6,17 +7,17 @@ import { banhLuoiPageIds } from '../levels/ban-banh-luoi-progress';
 import type { Progress } from '../../state/progress';
 import { insertRealWorldPages } from './real-world';
 
-export type BookProgress = Pick<Progress, 'surveyor' | 'sparkle' | 'taiThinh' | 'banhLuoi'>;
+export type BookProgress = Pick<Progress, 'surveyor' | 'sparkle' | 'taiThinh' | 'banhLuoi'> & { gacTroi?: GacTroiProgress };
 
 /** Browser order follows the adventure; NASA companions stay beside their parent.
  * Unlike the complete publication, this edition only includes unlocked entries.
  */
-export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi }: BookProgress): (string | null)[] {
-  const completed = { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'tai-thinh': taiThinh.completedOnce, 'ban-banh-luoi': banhLuoi.completedOnce, 'gac-troi': false };
+export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gacTroi }: BookProgress): (string | null)[] {
+  const completed = { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'tai-thinh': taiThinh.completedOnce, 'ban-banh-luoi': banhLuoi.completedOnce, 'gac-troi': gacTroi?.completedOnce ?? false };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const fieldUnlocked = surveyor.matched.length === 2;
   return insertRealWorldPages([null, ...journeyStops.flatMap(id => {
-    if (id === 'gac-troi') return [];
+    if (id === 'gac-troi') return status(id) === 'locked' ? [] : ['gac-book-orbit'];
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,
@@ -39,6 +40,7 @@ export function getBookHintPage({ surveyor, sparkle, taiThinh, banhLuoi }: BookP
   const nextClue = eventOrder.find(id => !surveyor.clues.includes(id) && !surveyor.found.includes(id))
     ?? eventOrder.find(id => !surveyor.found.includes(id)) ?? 'arrive';
   switch (activeLevel) {
+    case 'gac-troi': return 'gac-book-orbit';
     case 'surveyor':
       return fieldUnlocked ? `clue-${nextClue}` : null;
     case 'lap-lanh':

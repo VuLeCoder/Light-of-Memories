@@ -86,17 +86,17 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
   </section>;
 }
 
-export function JourneyBook({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  return <JourneyBookPages banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
+export function JourneyBook({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages gacTroiProgress={gacTroiProgress} banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': false };
+function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
-  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress });
+  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress, gacTroi: gacTroiProgress });
   // Keep the selected page's identity when new photos or clues are inserted.
-  const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel);
+  const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel === 'gac-troi' ? 'gac-book-orbit' : activeLevel);
   const page = Math.max(0, pages.indexOf(selectedPage));
   const setPage = (index: number) => setSelectedPage(pages[index] ?? null);
   const lastBookRequest = useRef(bookRequest);
@@ -109,7 +109,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     if (lastBookRequest.current === bookRequest) return;
     lastBookRequest.current = bookRequest;
-    const target = getBookHintPage({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress }, activeLevel);
+    const target = getBookHintPage({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress, gacTroi: gacTroiProgress }, activeLevel);
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);
     setBookFocusRequest(bookRequest);
@@ -118,7 +118,7 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
   useEffect(() => {
     if (!bookFocusRequest) return;
     const frame = requestAnimationFrame(() => {
-      const heading = document.getElementById(activeLevel === 'ban-banh-luoi' ? 'banh-luoi-book-title' : activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
+      const heading = document.getElementById(activeLevel === 'gac-troi' ? 'gac-book-title' : activeLevel === 'ban-banh-luoi' ? 'banh-luoi-book-title' : activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
       heading?.focus({ preventScroll: true });
       heading?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
     });
@@ -144,6 +144,21 @@ function JourneyBookPages({ banhLuoiProgress, taiThinhProgress, sparkleProgress,
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} {...bookNavigation} /></aside>
   </>;
+  if (pages[page] === 'gac-book-orbit') {
+    const entry = getBookPage('gac-book-orbit')!;
+    return <>
+      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
+        <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
+        <span className="book-kicker">05 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
+        <div className="book-prose book-prose--intro"><img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>
+          {entry.blocks.map(block => <p key={block.id}><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>)}
+        </div>
+        <a className="sparkle-book-source" href={entry.blocks[0].sources[0].url} target="_blank" rel="noreferrer">NASA · LRO ↗</a>
+        {activeLevel && <BackToGame language={language}/>}
+      </div><BookNavigation language={language} {...bookNavigation}/></aside>
+    </>;
+  }
   const reality = realWorldPages.find(entry => entry.id === pages[page]);
   if (reality) return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>

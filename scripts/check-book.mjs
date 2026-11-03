@@ -9,7 +9,7 @@ try {
   const { taiThinhBook } = await server.ssrLoadModule('/src/content/levels/tai-thinh-content.ts');
   const { banBanhLuoiBook } = await server.ssrLoadModule('/src/content/levels/ban-banh-luoi-content.ts');
   const { realWorldPages, insertRealWorldPages } = await server.ssrLoadModule('/src/content/book/real-world.ts');
-  const expected = ['overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...taiThinhBook.map(p => p.id === 'intro' ? 'tai-thinh' : `tai-book-${p.id}`), ...['pse', 'station', 'magnetometer'].map(id => `tai-photo-${id}`), ...Object.keys(banBanhLuoiBook), ...realWorldPages.map(p => p.id)];
+  const expected = ['gac-book-orbit', 'overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...taiThinhBook.map(p => p.id === 'intro' ? 'tai-thinh' : `tai-book-${p.id}`), ...['pse', 'station', 'magnetometer'].map(id => `tai-photo-${id}`), ...Object.keys(banBanhLuoiBook), ...realWorldPages.map(p => p.id)];
   assert.deepEqual(bookPages.map(p => p.id).sort(), expected.sort());
   for (const p of realWorldPages) {
     assert.ok(expected.includes(p.after), p.after);

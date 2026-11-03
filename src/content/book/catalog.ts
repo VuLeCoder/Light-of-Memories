@@ -10,6 +10,7 @@ import { sparkleKeepsakes } from '../levels/lap-lanh';
 import { taiThinhBook, taiThinhBookSources, taiThinhMemories } from '../levels/tai-thinh-content';
 import { banBanhLuoiBook, banBanhLuoiCopy } from '../levels/ban-banh-luoi-content';
 import { banBanhLuoiMemories } from '../levels/ban-banh-luoi-memories';
+import { gacTroiOrbitBook } from '../levels/gac-troi-content';
 import { portraits } from '../assets';
 
 const source = (url: string, review = false): BookSource => ({ url, status: review ? 'needs-review' : 'recorded' });
@@ -143,6 +144,10 @@ for (const entry of realWorldPages) {
  block(p, 'photo', 'fact', entry.caption, entry.section, 30, entry.sources.map(url => source(url)), { image: { src: entry.image, alt: entry.caption, credit: 'NASA' } });
  entry.paragraphs.forEach((body, i) => block(p, `body-${i}`, 'fact', body, entry.section, 31 + i, entry.sources.map(url => source(url))));
 }
+
+const orbit = page(gacTroiOrbitBook.id, 'lro', gacTroiOrbitBook.title);
+block(orbit, 'observation', 'fact', text('LRO là tàu bay quanh Mặt Trăng. Hệ máy ảnh LROC ghi ảnh bề mặt để các nhà khoa học nghiên cứu. Ảnh cho thấy nhiều dấu vết, nhưng những vật quá nhỏ không hiện rõ.', 'LRO travels around the Moon. Its LROC camera system photographs the surface for scientists to study. Pictures reveal many traces, but very small objects cannot be seen clearly.'), 'C5.1', 0, gacTroiOrbitBook.sources.map(url => source(url)));
+block(orbit, 'signal', 'fiction', text('Gác Trời nói chuyện qua đèn là nhân vật trong truyện. Cuội vẫn ở trên mặt đất; cảnh quỹ đạo là minh họa không theo tỉ lệ.', 'Sky Watcher speaking through the lantern is part of the story. Cuội stays on the ground; the orbit scene is an illustration, not to scale.'), 'A5', 0, [], { image: { src: portraits.gacTroi.url, alt: text('Minh họa bạn Gác Trời', 'Illustration of Sky Watcher') } });
 
 /** Full inventory; no progress, React, DOM or save access. Browser visibility stays in the UI. */
 export const bookPages: readonly BookPage[] = pages;

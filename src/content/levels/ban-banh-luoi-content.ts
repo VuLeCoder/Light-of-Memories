@@ -42,7 +42,7 @@ export const banBanhLuoiCopy = {
   "objective.recallB": text("2/2 · Dấu vết còn lại, năm 2011", "2/2 · Lasting tracks, 2011"),
   "objective.farewell": text("Mang theo câu chuyện của bạn", "Carry a friend’s story"),
   "objective.gift": text("Một ánh sao từ Bánh Lưới", "A star point from Mesh Wheels"),
-  "objective.finished": text("Ngước nhìn phía trời bên phải", "Look up at the sky on the right"),
+  "objective.finished": text("Theo vệt sáng bên phải để về lộ trình", "Follow the glow on the right back to the route"),
   "footer.dialogue": text("Space/Enter hoặc nút trong khung thoại để hiện hết câu và tiếp tục.", "Use Space/Enter or the dialogue button to reveal the full line and continue."),
   "footer.guide": text("Xe tự đi theo lộ trình; A và B là hai điểm dừng. ▼ Cuội · ▰ Bánh Lưới. Mở sách hoặc menu để tạm dừng.", "The rover follows your route, stopping at A and B. ▼ Cuội · ▰ Mesh Wheels. Open the book or menu to pause."),
   "footer.walk": text("A/D, ←/→ hoặc chạm đất để đi. Đến gần xe nhấn E, hoặc chạm xe.", "Use A/D, ←/→ or touch the ground to walk. Press E near the rover, or touch it."),
@@ -51,7 +51,7 @@ export const banBanhLuoiCopy = {
   "footer.photo": text("Cất ảnh để thêm vào sách và tiếp tục. Có thể mở ảnh lớn để xem chi tiết.", "Keep the photo to add it to the book and continue. Open a larger view to inspect it."),
   "footer.recall": text("Dùng Trang trước/Trang tiếp để đọc theo thời gian.", "Use Previous page/Next page to read in time order."),
   "footer.gift": text("Ánh sáng đang tới chiếc đèn. Menu có thể tạm dừng.", "The light is reaching the lantern. Menu can pause it."),
-  "footer.finished": text("Đi lại hoặc trò chuyện với xe. Tới vệt sáng mặt đất bên phải để về lộ trình.", "Walk or talk to the rover. Reach the ground glow on the right to return to the route."),
+  "footer.finished": text("Theo vệt sáng mặt đất bên phải để về lộ trình, rồi chọn Gác Trời. Bạn vẫn có thể ghé lại trò chuyện với Bánh Lưới.", "Follow the ground glow on the right back to the route, then choose Sky Watcher. You can still stop to chat with Mesh Wheels."),
   "button.confirm": text("Chọn bánh này", "Choose this wheel"),
   "button.tryWheel": text("Thử bánh", "Try wheel"),
   "button.hint": text("Gợi ý", "Hint"),
@@ -315,8 +315,26 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-giftAfter-02",
       speaker: "banhLuoi",
-      vi: "Này Cuội, thử ngước nhìn phía trời bên phải nhé. Có một chấm sáng nhỏ ở trên cao kìa!",
-      en: "Cuội, look up at the sky on the right. There is a little light high above!"
+      vi: "Khoan đã, Cuội! Ngước nhìn phía trời bên phải kìa… Một chấm sáng đang lướt qua!",
+      en: "Wait, Cuội! Look up at the sky on the right… A little light is gliding past!"
+    },
+    {
+      id: "banh-luoi-giftAfter-03",
+      speaker: "cuoi",
+      vi: "Ồ! Có phải người bạn đã chụp bức ảnh đường xe của bạn từ trên cao không?",
+      en: "Oh! Could that be the friend who photographed your tracks from above?"
+    },
+    {
+      id: "banh-luoi-giftAfter-04",
+      speaker: "banhLuoi",
+      vi: "Đúng rồi! Đó là Gác Trời, bạn bay quanh Mặt Trăng để chụp ảnh. Nhờ những bức ảnh ấy, mọi người vẫn tìm thấy mình và những đường xe đi năm xưa.",
+      en: "Yes! That is Sky Watcher, our friend who orbits the Moon to take pictures. Those pictures help people find me and the tracks from our long-ago journey."
+    },
+    {
+      id: "banh-luoi-giftAfter-05",
+      speaker: "cuoi",
+      vi: "Vậy mình sẽ mang lời chào của bạn tới Gác Trời! Mình theo vệt sáng bên phải về lộ trình, rồi chọn gặp bạn ấy nhé. Hẹn gặp lại, Bánh Lưới!",
+      en: "Then I will take your greetings to Sky Watcher! I will follow the glow on the right back to the route, then choose to meet our friend. See you again, Mesh Wheels!"
     }
   ],
   endingChat: [
@@ -329,8 +347,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-endingChat-02",
       speaker: "banhLuoi",
-      vi: "Chấm sáng vẫn ở phía trời bên phải đấy. Cứ theo vệt sáng dưới đất để đi tiếp nhé.",
-      en: "The little light is still in the sky on the right. Follow the glow on the ground to continue."
+      vi: "Gác Trời vẫn đang bay trên cao đấy! Theo vệt sáng dưới đất bên phải để về lộ trình, rồi chọn gặp bạn ấy nhé. Nhớ mang lời chào của mình nữa!",
+      en: "Sky Watcher is still orbiting above! Follow the ground glow on the right back to the route, then choose to meet our friend. Take my greetings too!"
     }
   ],
   taiThinhConnector: [

@@ -1,3 +1,5 @@
+import { gacTroiMeetingLength } from './gac-troi-content';
+
 export const gacTroiPhases = ['meeting', 'matching', 'stories', 'route', 'changes', 'farewell', 'gift', 'finished'] as const;
 export type GacTroiPhase = typeof gacTroiPhases[number];
 export const gacTroiFriends = ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'] as const;
@@ -17,5 +19,5 @@ export function readGacTroi(value: unknown): GacTroiProgress {
   if (gacTroiPhases.indexOf(phase) > 4 && !changeFound) phase = 'changes';
   const completedOnce = p.completedOnce === true && matched.length === 4 && route.length === 4 && changeFound;
   if (phase === 'finished' && !completedOnce) phase = 'gift';
-  return { phase, turn: phase === p.phase && Number.isInteger(p.turn) && Number(p.turn) >= 0 ? Math.min(Number(p.turn), 100) : 0, matched, route, changeFound, completedOnce };
+  return { phase, turn: phase === p.phase && Number.isInteger(p.turn) && Number(p.turn) >= 0 ? Math.min(Number(p.turn), phase === 'meeting' ? gacTroiMeetingLength - 1 : 100) : 0, matched, route, changeFound, completedOnce };
 }

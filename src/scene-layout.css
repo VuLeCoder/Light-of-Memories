@@ -30,3 +30,11 @@
     display: none;
   }
 }
+
+/* Keep the orbit above and Cuội beside the ground projection visible. */
+.gac-meeting .dialogue-portrait-gacTroi img { object-fit: contain; transform: none; }
+@media (max-width: 800px) {
+  .gac-meeting > .dialogue { left: 8px; right: 8px; width: auto; }
+  .gac-meeting .dialogue-portrait { display: block; width: 44px; height: 56px; }
+  .gac-meeting > .ending-farewell { left: 8px; right: 8px; max-height: calc(100% - 70px); overflow: auto; }
+}
