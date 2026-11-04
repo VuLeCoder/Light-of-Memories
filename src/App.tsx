@@ -367,7 +367,7 @@ export function App() {
           </div>
           {inBanhLuoi && displayedBan.phase === 'guiding'
             ? <p className="chapter-arrival game-instructions"><span id="ban-guide-instructions" role="status" /></p>
-            : gameInstructions && <p className="chapter-arrival game-instructions">{gameInstructions}</p>}
+            : <p className="chapter-arrival game-instructions">{gameInstructions}</p>}
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
       </section>

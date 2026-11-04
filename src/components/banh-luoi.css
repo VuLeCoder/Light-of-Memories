@@ -159,7 +159,6 @@
 .ban-ending-scene.is-exploring .ending-actions button { font-size: clamp(14px,1.7cqw,17px); }
 .ban-gift-status { position: absolute; top: 13%; left: 2.5%; width: 70%; margin: 0; padding: 16px; border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #edd9ac; font-size: clamp(14px,1.9cqw,18px); }
 .has-ending-chat .ban-ending-actions, .has-ending-chat .banh-luoi-hud { display: none; }
-.game-panel:has(.ban-ending) .game-instructions { height: auto; min-height: 0; overflow: visible; }
 @container (max-width: 860px) {
   .banh-luoi-scene:has(.ban-recollection), .banh-luoi-scene > .ban-recollection { position: relative; inset: auto; }
   .game-stage .ban-recollection .surveyor-ending { grid-template-columns: minmax(0,1fr); }
