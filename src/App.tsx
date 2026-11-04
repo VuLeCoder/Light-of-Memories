@@ -274,7 +274,7 @@ export function App() {
   // Task and dialogue instructions already appear beside their controls.
   let gameInstructions = '';
   if (!menuOpen && !transitioning && !moonWaking && !revealing && !chattingAtEnd) {
-    if (endingExploring) gameInstructions = inSurveyor ? depthMoveHelp : moveHelp;
+    if (endingExploring) gameInstructions = inBanhLuoi ? banCopy['footer.finished'][language] : inSurveyor ? depthMoveHelp : moveHelp;
     else if (inSurveyor && (surveyorMeeting || excavating && surveyorProgress.phase !== 'soil-memory')) gameInstructions = depthMoveHelp;
     else if (inSparkle && sparkleProgress.phase === 'search' && !trailWarning) gameInstructions = depthMoveHelp;
     else if (inSparkle && sparkleProgress.phase === 'arrival' || inTaiThinh && taiThinhProgress.phase === 'approach' || inBanhLuoi && displayedBan.phase === 'approach' || chapter === 'moon-free' && !journeyOpen && !tellingStory && !moonStory && !questDialogue) gameInstructions = moveHelp;

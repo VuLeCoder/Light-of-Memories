@@ -51,7 +51,7 @@ export const banBanhLuoiCopy = {
   "footer.photo": text("Cất ảnh để thêm vào sách và tiếp tục. Có thể mở ảnh lớn để xem chi tiết.", "Keep the photo to add it to the book and continue. Open a larger view to inspect it."),
   "footer.recall": text("Dùng Trang trước/Trang tiếp để đọc theo thời gian.", "Use Previous page/Next page to read in time order."),
   "footer.gift": text("Ánh sáng đang tới chiếc đèn. Menu có thể tạm dừng.", "The light is reaching the lantern. Menu can pause it."),
-  "footer.finished": text("Theo vệt sáng mặt đất bên phải để về lộ trình, rồi chọn Gác Trời. Bạn vẫn có thể ghé lại trò chuyện với Bánh Lưới.", "Follow the ground glow on the right back to the route, then choose Sky Watcher. You can still stop to chat with Mesh Wheels."),
+  "footer.finished": text("Đi sang phải để tiếp tục hành trình.", "Walk right to continue your journey."),
   "button.confirm": text("Chọn bánh này", "Choose this wheel"),
   "button.tryWheel": text("Thử bánh", "Try wheel"),
   "button.hint": text("Gợi ý", "Hint"),
@@ -345,14 +345,20 @@ export const banBanhLuoiScript = {
     {
         "id": "banh-luoi-giftAfter-07",
         "speaker": "cuoi",
-        "vi": "Mình muốn gặp bạn ấy! Mình sẽ mang theo bức ảnh và lời chào của bạn. Hẹn gặp lại, Bánh Lưới!",
-        "en": "I would love to meet our friend! I will take this picture and your greetings. See you again, Mesh Wheels!"
+        "vi": "Gác Trời ơi, mình đang tìm chị Hằng. Bạn bay trên cao, có thấy chị ở đâu không?",
+        "en": "Sky Watcher, I’m looking for chị Hằng. Have you seen her from up there?"
+    },
+    {
+        "id": "banh-luoi-giftAfter-signal",
+        "speaker": "gacTroi",
+        "vi": "Ra là bạn đang tìm chị Hằng! Mình chưa thấy chị, nhưng mình có nhiều ảnh chụp những vùng đất quanh đây. Bạn đi tiếp sang phải, qua xe của Bánh Lưới nhé. Đến đó, mình cùng xem ảnh tìm đường!",
+        "en": "So you’re looking for chị Hằng! I haven’t seen her, but I have pictures of the land around here. Keep walking right, past Mesh Wheels. When you get there, we can look through them together for a way ahead!"
     },
     {
         "id": "banh-luoi-giftAfter-08",
         "speaker": "banhLuoi",
-        "vi": "Theo vệt sáng bên phải về lộ trình nhé. Dấu ảnh sẽ chỉ chỗ gặp Gác Trời!",
-        "en": "Follow the glow on the right back to the route. The picture marks where to meet Sky Watcher!"
+        "vi": "Cuội đi nhé! Nhớ kể cho mình nghe khi tìm được chị Hằng. Hẹn gặp lại!",
+        "en": "Take care, Cuội! Come back and tell me when you find chị Hằng. See you soon!"
     }
 ],
   endingChat: [
@@ -365,8 +371,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-endingChat-02",
       speaker: "banhLuoi",
-      vi: "Gác Trời vẫn đang bay trên cao đấy! Theo vệt sáng dưới đất bên phải để về lộ trình, rồi chọn gặp bạn ấy nhé. Nhớ mang lời chào của mình nữa!",
-      en: "Sky Watcher is still orbiting above! Follow the ground glow on the right back to the route, then choose to meet our friend. Take my greetings too!"
+      vi: "Bạn cứ đi tiếp sang phải, qua xe của mình nhé. Gác Trời sẽ cùng bạn xem ảnh để tìm đường. Chúc bạn sớm gặp chị Hằng!",
+      en: "Keep walking right, past my rover. Sky Watcher will help you look through the pictures for a way ahead. I hope you find chị Hằng soon!"
     }
   ],
   taiThinhConnector: [

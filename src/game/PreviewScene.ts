@@ -161,7 +161,6 @@ export class PreviewScene extends Phaser.Scene {
       this.cuoi.setPosition(340, 431).setScale(.62).setFlipX(false);
     }
   }
-  private banExitGlow?: Phaser.GameObjects.Graphics;
   private taiGiftTime = 0;
   private taiGiftLight?: Phaser.GameObjects.Graphics;
   setTaiEnding(value: PreviewOptions['taiEnding'], stars = 0) {
@@ -441,7 +440,6 @@ export class PreviewScene extends Phaser.Scene {
       } else if (this.options.scene === 'ban-banh-luoi') {
         cacheScenery(this, banhLuoiScenery);
         drawBanhLuoi(this);
-        this.banExitGlow = this.add.graphics().setDepth(1);
         const { x, y, width, height } = banhLuoiLayout.interaction;
         this.interactionRegion = new Phaser.Geom.Rectangle(x, y, width, height);
       } else if (this.options.scene === 'tai-thinh') {
@@ -575,19 +573,6 @@ export class PreviewScene extends Phaser.Scene {
     if (this.ripple && this.moonMode !== 'paused') {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.rippleTime += Math.min(delta, 50);
       drawTaiThinhRipple(this.ripple, this.rippleTime);
-    }
-    if (this.banExitGlow) {
-      const g = this.banExitGlow.clear();
-      if (this.options.taiEnding && this.options.taiEnding !== 'none') {
-        if (this.options.taiEnding === 'free') {
-          for (let i = 0; i < 9; i++) {
-            const px = 740 + i * 18, py = 443 - i % 2 * 5;
-            g.fillStyle(0xffe3a1, .12 + i * .025).fillEllipse(px, py, 15, 6);
-          }
-          g.fillStyle(0xffe3a1, .12).fillEllipse(880, 438, 54, 16);
-          g.lineStyle(2, 0xffe3a1, .65).lineBetween(860, 438, 887, 438).lineBetween(881, 432, 888, 438).lineBetween(888, 438, 881, 444);
-        }
-      }
     }
     this.updateTaiGift(delta);
     if (this.options.sparkleTrail) { this.updateTrail(delta); return; }
