@@ -1,3 +1,4 @@
+import { gacMatchingIntroLength } from './content/levels/gac-troi-matching';
 import { GacTroiLevel } from './components/GacTroiLevel';
 import { freshGacTroi } from './content/levels/gac-troi-progress';
 import { BanhLuoiLevel } from './components/BanhLuoiLevel';
@@ -325,7 +326,7 @@ export function App() {
             }}
             onClick={(event) => {
               if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
-              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && gacTroiProgress.phase === 'meeting') || (inBanhLuoi && ((banPreview || ['route', 'meeting', 'routeIntro', 'guideIntro', 'memoriesIntro', 'farewell', 'gift'].includes(banhLuoiProgress.phase)) || banhLuoiProgress.phase === 'photoB' && banhLuoiProgress.turn === 0)) || (inTaiThinh && ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro', 'afterRinging', 'rhythmIntro', 'afterRhythm', 'afterPhotoC', 'memoriesIntro', 'farewell', 'gift'].includes(taiThinhProgress.phase)))) return;
+              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && (['meeting', 'stories'].includes(gacTroiProgress.phase) || gacTroiProgress.phase === 'matching' && gacTroiProgress.turn < gacMatchingIntroLength)) || (inBanhLuoi && ((banPreview || ['route', 'meeting', 'routeIntro', 'guideIntro', 'memoriesIntro', 'farewell', 'gift'].includes(banhLuoiProgress.phase)) || banhLuoiProgress.phase === 'photoB' && banhLuoiProgress.turn === 0)) || (inTaiThinh && ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro', 'afterRinging', 'rhythmIntro', 'afterRhythm', 'afterPhotoC', 'memoriesIntro', 'farewell', 'gift'].includes(taiThinhProgress.phase)))) return;
               if ((event.target as Element).closest('button, select, input, a')) return;
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });

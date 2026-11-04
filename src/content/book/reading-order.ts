@@ -17,7 +17,7 @@ export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gac
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const fieldUnlocked = surveyor.matched.length === 2;
   return insertRealWorldPages([null, ...journeyStops.flatMap(id => {
-    if (id === 'gac-troi') return status(id) === 'locked' ? [] : ['gac-book-orbit'];
+    if (id === 'gac-troi') return status(id) === 'locked' ? [] : ['gac-book-orbit', ...(gacTroi && gacTroi.phase !== 'meeting' ? ['gac-book-sites', ...gacTroi.matched.map(id => `gac-memory-${id}`)] : [])];
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,
@@ -35,12 +35,12 @@ export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gac
 }
 
 /** A hint chooses a stable page ID, independent of page numbers or language. */
-export function getBookHintPage({ surveyor, sparkle, taiThinh, banhLuoi }: BookProgress, activeLevel: LevelId | null): string | null {
+export function getBookHintPage({ surveyor, sparkle, taiThinh, banhLuoi, gacTroi }: BookProgress, activeLevel: LevelId | null): string | null {
   const fieldUnlocked = surveyor.matched.length === 2;
   const nextClue = eventOrder.find(id => !surveyor.clues.includes(id) && !surveyor.found.includes(id))
     ?? eventOrder.find(id => !surveyor.found.includes(id)) ?? 'arrive';
   switch (activeLevel) {
-    case 'gac-troi': return 'gac-book-orbit';
+    case 'gac-troi': return gacTroi && gacTroi.phase !== 'meeting' ? 'gac-book-sites' : 'gac-book-orbit';
     case 'surveyor':
       return fieldUnlocked ? `clue-${nextClue}` : null;
     case 'lap-lanh':

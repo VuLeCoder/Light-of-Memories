@@ -9,9 +9,10 @@ try {
   const { freshSparkle } = await load('content/levels/lap-lanh');
   const { freshTaiThinh } = await load('content/levels/tai-thinh-progress');
   const { freshBanhLuoi } = await load('content/levels/ban-banh-luoi-progress');
+  const { freshGacTroi, gacTroiFriends } = await load('content/levels/gac-troi-progress');
   const { realWorldPages } = await load('content/book/real-world');
   const { bookPages } = await load('content/book/catalog');
-  const fresh = () => ({ surveyor: freshSurveyor(), sparkle: freshSparkle(), taiThinh: freshTaiThinh(), banhLuoi: freshBanhLuoi() });
+  const fresh = () => ({ surveyor: freshSurveyor(), sparkle: freshSparkle(), taiThinh: freshTaiThinh(), banhLuoi: freshBanhLuoi(), gacTroi: freshGacTroi() });
   const p = fresh();
   const startPages = pages(p);
   let checked = 0;
@@ -89,6 +90,13 @@ try {
   }
   p.banhLuoi.keepsakes.push('orbit');
   p.banhLuoi.completedOnce = true;
+  check('gac-troi', 'gac-book-orbit');
+  p.gacTroi.phase = 'matching';
+  check('gac-troi', 'gac-book-sites');
+  for (const friend of gacTroiFriends) {
+    p.gacTroi.matched.push(friend);
+    assert.ok(check('gac-troi', 'gac-book-sites').includes(`gac-memory-${friend}`));
+  }
   ids = check();
   assert.deepEqual(ids.map(id => id ?? 'overview').sort(), bookPages.map(page => page.id).sort(), 'Full browser book contains every catalog page exactly once');
   assert.deepEqual(pages(fresh()), startPages, 'Fresh journey has no old archive');

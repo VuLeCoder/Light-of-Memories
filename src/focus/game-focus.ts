@@ -3,6 +3,9 @@ export function focusGame(stage: HTMLElement | null) {
   if (!stage) return;
   const selectors = [
     '.dialogue .dialogue-next',
+    '[data-gac-continue]',
+    '.gac-friends button[aria-pressed="true"]',
+    '.gac-friends button',
     '.ban-guide .game-host',
     '.story-canvas .game-host',
     '[data-tai-primary]',

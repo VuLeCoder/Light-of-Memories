@@ -1,3 +1,5 @@
+import { gacMemories } from '../levels/gac-troi-matching';
+import { gacImage } from '../levels/gac-troi-images';
 import { bookArchiveImages, realWorldPages } from './real-world';
 import { text, type BookBlock, type BookChapter, type BookPage, type BookSource, type BookText, type ContentKind } from './types';
 import { introCopy } from './intro-copy';
@@ -148,6 +150,18 @@ for (const entry of realWorldPages) {
 const orbit = page(gacTroiOrbitBook.id, 'lro', gacTroiOrbitBook.title);
 block(orbit, 'observation', 'fact', text('LRO là tàu bay quanh Mặt Trăng. Hệ máy ảnh LROC ghi ảnh bề mặt để các nhà khoa học nghiên cứu. Ảnh cho thấy nhiều dấu vết, nhưng những vật quá nhỏ không hiện rõ.', 'LRO travels around the Moon. Its LROC camera system photographs the surface for scientists to study. Pictures reveal many traces, but very small objects cannot be seen clearly.'), 'C5.1', 0, gacTroiOrbitBook.sources.map(url => source(url)));
 block(orbit, 'signal', 'fiction', text('Gác Trời nói chuyện qua đèn là nhân vật trong truyện. Cuội vẫn ở trên mặt đất; cảnh quỹ đạo là minh họa không theo tỉ lệ.', 'Sky Watcher speaking through the lantern is part of the story. Cuội stays on the ground; the orbit scene is an illustration, not to scale.'), 'A5', 0, [], { image: { src: portraits.gacTroi.url, alt: text('Minh họa bạn Gác Trời', 'Illustration of Sky Watcher') } });
+
+const sites = page('gac-book-sites', 'lro', text('Bốn người bạn, ba vùng đất', 'Four friends, three places'));
+block(sites, 'hint', 'game', text('Lấp Lánh ở vùng Apollo 11, Biển Yên Tĩnh. Mắt Tròn và Tai Thính cùng ở vùng Apollo 12, Đại Dương Bão. Bánh Lưới ở vùng Apollo 17, thung lũng Taurus–Littrow.', 'Sparkle is in the Apollo 11 area, the Sea of Tranquility. Round Eyes and Keen Ears share the Apollo 12 area, the Ocean of Storms. Mesh Wheels is in the Apollo 17 area, Taurus–Littrow valley.'), 'A5.1', 0, []);
+block(sites, 'how', 'game', text('Chọn thẻ người bạn, xem các vùng ảnh rồi ghép vào vùng phù hợp. Hai bạn Apollo 12 được ghép riêng. Các cặp đúng luôn được giữ lại. Ghép đúng một bạn để mở câu chuyện và ảnh của bạn ấy ở những trang tiếp theo.', 'Choose a friend, browse the pictures, then match them to a place. Match the two Apollo 12 friends separately. Correct pairs stay in place. Each match opens that friend’s story and picture on the following pages.'), 'A5.1', 1, []);
+for (const memory of gacMemories) {
+  const photo = gacImage(memory.image);
+  const p = page(`gac-memory-${memory.id}`, 'lro', memory.title);
+  const sources = [source(photo.sourcePage)];
+  if (memory.id === 'lap-lanh') sources.push(source('https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html'));
+  block(p, 'story', 'fact', memory.story, 'C5.2', 0, sources);
+  block(p, 'picture', 'fact', memory.caption, 'C5.2', 1, [source(photo.sourcePage)], { image: { src: photo.src, alt: photo.alt, credit: photo.credit } });
+}
 
 /** Full inventory; no progress, React, DOM or save access. Browser visibility stays in the UI. */
 export const bookPages: readonly BookPage[] = pages;

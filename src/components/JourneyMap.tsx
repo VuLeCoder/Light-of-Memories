@@ -145,17 +145,20 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} {...bookNavigation} /></aside>
   </>;
-  if (pages[page] === 'gac-book-orbit') {
-    const entry = getBookPage('gac-book-orbit')!;
+  if (pages[page]?.startsWith('gac-')) {
+    const entry = getBookPage(pages[page])!;
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
         <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
         <span className="book-kicker">05 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
         <div className="book-prose book-prose--intro"><img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>
-          {entry.blocks.map(block => <p key={block.id}><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>)}
+          {entry.blocks.map(block => <div key={block.id}>
+            {entry.id !== 'gac-book-orbit' && block.image && <figure className="book-reality-photo"><img src={block.image.src} alt={block.image.alt[language]}/><figcaption>{block.image.credit}</figcaption></figure>}
+            <p><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>
+          </div>)}
         </div>
-        <a className="sparkle-book-source" href={entry.blocks[0].sources[0].url} target="_blank" rel="noreferrer">NASA · LRO ↗</a>
+        {[...new Set(entry.blocks.flatMap(block => block.sources.map(s => s.url)))].map(url => <a key={url} className="sparkle-book-source" href={url} target="_blank" rel="noreferrer">NASA ↗</a>)}
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} {...bookNavigation}/></aside>
     </>;
