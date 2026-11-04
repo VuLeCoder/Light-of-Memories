@@ -1,19 +1,21 @@
-/* One viewport for every chapter. Content, hints and menus cannot resize it. */
+/* Let in-flow activities grow with the page; the game frame never scrolls. */
 .game-panel { container-type: inline-size; }
 #main-scene .game-stage {
-  height: clamp(480px, 56.25cqw, 720px);
-  min-height: 0;
+  height: auto;
+  min-height: clamp(480px, 56.25cqw, 720px);
   max-height: none;
   aspect-ratio: auto;
-  overflow: auto;
-  scrollbar-gutter: stable;
+  overflow: clip;
+  scrollbar-gutter: auto;
   overscroll-behavior: contain;
 }
 #main-scene .game-instructions {
-  height: 96px;
+  height: auto;
+  padding: 10px 18px;
+  font-size: 14px;
   min-height: 0;
   align-items: safe center;
-  overflow: auto;
+  overflow: visible;
 }
 
 /* Absolute task panels need their own scroll area for their bottom controls. */
@@ -25,7 +27,7 @@
 }
 
 @media (max-width: 800px) {
-  #main-scene .game-stage { height: clamp(480px, 68svh, 600px); }
+  #main-scene .game-stage { height: auto; min-height: clamp(480px, 68svh, 600px); }
   #main-scene .game-stage:has(.sparkle-card, .tai-task-panel, .tai-memory-photo, .tai-identify, .ban-panel, .ban-memory-photo, .ban-recollection) > .story-canvas {
     display: none;
   }

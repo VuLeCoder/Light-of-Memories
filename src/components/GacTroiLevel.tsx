@@ -19,7 +19,7 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, pau
       onTurn={turn => { if (!paused && turn !== progress.turn) onChange({ ...progress, turn }); }}
       onComplete={() => { if (!paused) onChange({ ...progress, phase: 'matching', turn: 0 }); }}
       finalAction="moon" finalLabel={vi ? 'Cùng nhìn lại hành trình' : 'Look back on our journey'}/>
-      : <div className="ending-farewell"><p>{vi ? 'Cuộc gặp đã được ghi nhớ. Những thử thách với Gác Trời đang được chuẩn bị.' : 'Your meeting is saved. Sky Watcher’s challenges are being prepared.'}</p>
+      : <div className="ending-farewell"><p>{vi ? 'Cuộc gặp đã được ghi nhớ. Cùng xem lại hành trình trong sách nhé.' : 'Your meeting is saved. Look back on the journey in your book.'}</p>
         <nav className="ending-actions"><button onClick={onBook}>{vi ? 'Góc nhìn từ quỹ đạo' : 'A view from orbit'} ▤</button><button className="journey-primary" onClick={onBack}>{vi ? 'Về lộ trình' : 'Return to the route'} →</button></nav></div>}
   </section>;
 }

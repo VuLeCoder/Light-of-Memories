@@ -269,48 +269,15 @@ export function App() {
     gameOwnsFocus.current = true;
   }
   const vi = language === 'vi';
-  const dialogueHelp = vi ? 'Nhấn Space / Enter hoặc bấm nút trong khung thoại để hiện hết câu và tiếp tục.' : 'Press Space / Enter or use the dialogue button to reveal the full line and continue.';
-  const moveHelp = vi ? 'Di chuyển bằng A/D, ←/→ hoặc bấm vào mặt đất.' : 'Move with A/D, ←/→, or click the ground.';
-  const depthMoveHelp = vi ? 'Di chuyển: WASD / phím mũi tên hoặc chạm mặt đất.' : 'Move: WASD / arrow keys or tap the ground.';
+  const moveHelp = vi ? 'Di chuyển: A/D, ←/→ hoặc chạm mặt đất.' : 'Move: A/D, ←/→, or tap the ground.';
+  const depthMoveHelp = vi ? 'Di chuyển: WASD, phím mũi tên hoặc chạm mặt đất.' : 'Move: WASD, arrow keys, or tap the ground.';
+  // Task and dialogue instructions already appear beside their controls.
   let gameInstructions = '';
-  if (!menuOpen && !transitioning && !moonWaking && !revealing) {
-    if (inGacTroi) {
-      gameInstructions = gacTroiProgress.phase === 'meeting' ? dialogueHelp : (vi ? 'Cuộc gặp đã được lưu. Bạn có thể mở sách hoặc quay lại lộ trình.' : 'Your progress is saved. Open the book or return to the route.');
-    } else if (inBanhLuoi) {
-      gameInstructions = displayedBan.phase === 'wheels' ? banCopy['footer.wheels'][language] : (displayedBan.phase === 'photoA' || displayedBan.phase === 'photoB' && displayedBan.turn === 1) ? banCopy['footer.photo'][language] : displayedBan.phase === 'routePuzzle' ? banCopy['footer.route'][language] : displayedBan.phase === 'guiding' ? banCopy['footer.guide'][language] : ['recallA','recallB'].includes(displayedBan.phase) ? banCopy['footer.recall'][language] : displayedBan.phase === 'finished' ? `${moveHelp} ${banCopy['footer.finished'][language]}` : banGiftPending ? banCopy['footer.gift'][language] : banCopy[displayedBan.phase === 'approach' ? 'footer.walk' : 'footer.dialogue'][language];
-    } else if (inTaiThinh) {
-      gameInstructions = taiThinhProgress.phase === 'gift' && taiThinhProgress.turn === 0 ? (vi ? 'Ánh sáng đang tới chiếc đèn. Bạn có thể mở menu để tạm dừng.' : 'The light is reaching the lantern. Open the menu to pause.') : ['recallA', 'recallB', 'recallC'].includes(taiThinhProgress.phase) ? (vi ? 'Dùng nút Trang trước / Trang tiếp bằng chuột, chạm hoặc Tab và Enter/Space.' : 'Use Previous / Next with mouse, touch, or Tab and Enter/Space.') : taiThinhProgress.phase === 'finished' ? `${moveHelp} ${vi ? 'Theo dấu bánh xe bên phải để về lộ trình.' : 'Follow the wheel tracks on the right to return to the route.'}` : taiThinhProgress.phase === 'approach' ? `${moveHelp} ${vi ? 'Đến gần cụm thiết bị rồi nhấn E, hoặc bấm vào cụm thiết bị.' : 'Approach the instruments and press E, or click the instruments.'}` : ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro', 'afterRinging', 'rhythmIntro', 'afterRhythm', 'afterPhotoC', 'memoriesIntro', 'farewell', 'gift'].includes(taiThinhProgress.phase) ? dialogueHelp : taiThinhProgress.phase === 'identify' ? (vi ? 'Bấm thiết bị để xem manh mối, rồi xác nhận lựa chọn. Dùng Tab và Enter/Space hoặc bấm “Gợi ý” để đọc sách.' : 'Inspect an instrument, then confirm your choice. Use Tab and Enter/Space, or select “Hint” to read the book.') : taiThinhProgress.phase === 'records' ? (vi ? 'Chọn bản ghi, đọc ghi chú rồi chọn nhãn. Dùng chuột/chạm hoặc Tab và Enter/Space; các cặp đúng được giữ lại.' : 'Choose a record, read its note, then select a label. Use mouse/touch or Tab and Enter/Space; correct matches stay in place.') : ['graph', 'duration'].includes(taiThinhProgress.phase) ? (vi ? 'Chọn đồ thị, rồi chọn thời lượng. Sai ở bước sau vẫn giữ bước trước; bấm “Gợi ý” để đọc sách.' : 'Choose a graph, then a duration. Correct steps stay saved; select “Hint” to read the book.') : taiThinhProgress.phase === 'rhythm' ? (vi ? 'Xem mẫu và nhịp từng phiến đá, rồi chọn chuỗi trùng khớp. Không cần âm thanh hoặc bấm theo nhịp.' : 'Watch the sample and each stone, then choose the matching sequence. No sound or timed tapping needed.') : ['photoA', 'photoB', 'photoC'].includes(taiThinhProgress.phase) ? (vi ? 'Bấm “Cất ảnh và tiếp tục” để thêm ảnh vào sách.' : 'Select “Keep the photo and continue” to add it to the book.') : (vi ? 'Tiến trình đã được lưu. Bạn có thể quay lại lộ trình.' : 'Your progress is saved. You can return to the route.');
-    } else if (inSparkle) {
-      const phase = sparkleProgress.phase;
-      if (phase === 'search' && !trailWarning) gameInstructions = `${depthMoveHelp} ${vi ? 'Đi vòng qua các hố đến vầng sáng bên phải.' : 'Go around the craters toward the glow on the right.'}`;
-      else if (phase === 'arrival') gameInstructions = `${moveHelp} ${vi ? 'Đến gần Lấp Lánh rồi nhấn E, hoặc bấm vào bạn ấy.' : 'Approach Sparkle and press E, or click the reflector.'}`;
-      else if (phase === 'cleaning') gameInstructions = vi
-        ? 'Giữ chuột hoặc kéo ngón tay qua các ô kính để lau bụi. Có thể dùng Tab chọn ô, Enter để lau. Lau sạch rồi nhận ảnh.'
-        : 'Hold the mouse button or drag your finger across the glass to wipe dust. You can also select a panel with Tab and wipe with Enter. Clean every panel to receive the picture.';
-      else if (phase === 'dust-photo') gameInstructions = vi ? 'Bấm “Cất ảnh và tiếp tục” để trò chuyện với Lấp Lánh.' : 'Select “Keep the picture and continue” to talk to Sparkle.';
-      else if (phase === 'clean-photo') gameInstructions = vi ? 'Cất ảnh và tiếp tục để mở thử thách khôi phục đường sáng.' : 'Keep the picture and continue to restore the light path.';
-      else if (phase === 'repair') gameInstructions = vi ? 'Kéo gương 2, căn góc so với gương 1 rồi chọn “Thử tia sáng”. Có thể dùng thanh góc xoay hoặc Tab và phím mũi tên; bấm “Gợi ý” để mở manh mối trong sách.' : 'Rotate mirror 2 relative to mirror 1 and try the light. You can also use the rotation slider or Tab and arrow keys; select “Hint” to open the book clue.';
-      else if (phase === 'ranging') gameInstructions = vi ? 'Gửi xung sáng, bấm “Gợi ý” khi cần, nhập các số và chọn dấu. Bấm Nộp kết quả hoặc nhấn Enter để trả lời.' : 'Send a pulse, select “Hint” if needed, enter the numbers and choose operators. Click Submit answer or press Enter.';
-      else if (phase === 'finished') gameInstructions = `${moveHelp} ${vi ? 'Đến những vòng gợn bên phải để về lộ trình.' : 'Reach the ripples on the right to return to the route.'}`;
-      else gameInstructions = dialogueHelp;
-    }
-    else if (tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro) gameInstructions = dialogueHelp;
-    else if (inSurveyor) {
-      const phase = surveyorProgress.phase;
-      if (surveyorMeeting) gameInstructions = `${moveHelp} ${vi ? 'Đến gần Mắt Tròn rồi nhấn E, hoặc bấm vào Mắt Tròn để trò chuyện.' : 'Approach Round Eyes and press E, or click Round Eyes to talk.'}`;
-      else if (excavating) gameInstructions = phase === 'soil-memory'
-        ? (vi ? 'Bấm nút bên cạnh ảnh để tiếp tục.' : 'Click the button beside the photo to continue.')
-        : `${depthMoveHelp} ${vi ? 'Nhấn E để đào; bấm “Gợi ý” khi cần.' : 'Press E to dig. Click “Hint” to check the book if you need help.'}`;
-      else if (phase === 'tools') gameInstructions = vi ? 'Bấm chọn công dụng, rồi bấm dụng cụ phù hợp trên hình. Bấm riêng dụng cụ để xem gợi ý.' : 'Choose a purpose, then click the matching tool. Click a tool first to see a hint.';
-      else if (phase === 'timeline') gameInstructions = vi ? 'Bấm các ảnh theo thứ tự xảy ra trước đến sau. Bấm lại để bỏ chọn, rồi bấm nút ghép nhật ký khi đủ ba ảnh.' : 'Select the photos from earliest to latest. Select again to undo, then click the journal button when all three are selected.';
-      else if (phase === 'timeline-intro') gameInstructions = dialogueHelp;
-      else if (endingFreeRoam) gameInstructions = `${depthMoveHelp} ${vi ? 'Đến điểm sáng hoặc bấm “Về lộ trình”.' : 'Walk to the distant light or click “View the route” to return to the route.'}`;
-      else if (surveyorEnding) gameInstructions = surveyorProgress.turn >= 3 && surveyorProgress.turn <= 5
-        ? (vi ? 'Bấm mũi tên để xem các trang, rồi bấm nút để trở lại Mắt Tròn.' : 'Click the arrows to read the pages, then use the button to return to Round Eyes.')
-        : dialogueHelp;
-      else gameInstructions = vi ? 'Bấm nút tiếp tục để sang thử thách tiếp theo.' : 'Click the continue button to start the next challenge.';
-    } else if (journeyOpen) gameInstructions = vi ? 'Bấm chọn một người bạn, rồi bấm nút bên dưới để đến gặp.' : 'Select a friend, then click the button below to visit.';
-    else if (chapter === 'moon-free') gameInstructions = `${moveHelp} ${quest === 'bench' ? t.benchHint : t.trailHint}`;
+  if (!menuOpen && !transitioning && !moonWaking && !revealing && !chattingAtEnd) {
+    if (endingExploring) gameInstructions = inSurveyor ? depthMoveHelp : moveHelp;
+    else if (inSurveyor && (surveyorMeeting || excavating && surveyorProgress.phase !== 'soil-memory')) gameInstructions = depthMoveHelp;
+    else if (inSparkle && sparkleProgress.phase === 'search' && !trailWarning) gameInstructions = depthMoveHelp;
+    else if (inSparkle && sparkleProgress.phase === 'arrival' || inTaiThinh && taiThinhProgress.phase === 'approach' || inBanhLuoi && displayedBan.phase === 'approach' || chapter === 'moon-free' && !journeyOpen && !tellingStory && !moonStory && !questDialogue) gameInstructions = moveHelp;
   }
   const current = inGacTroi ? { number: '07', characters: ['cuoi', 'gacTroi'] as const } : inBanhLuoi ? { number: '06', characters: ['cuoi', 'banhLuoi'] as const } : inTaiThinh ? { number: '05', characters: ['cuoi', 'taiThinh'] as const } : inSparkle ? { number: '04', characters: ['cuoi', 'lapLanh'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
   const currentText = inGacTroi ? { title: vi ? 'Bạn Gác Trời' : 'Sky Watcher', subtitle: vi ? 'LRO · Quỹ đạo Mặt Trăng' : 'LRO · Lunar orbit', description: vi ? 'LRO quan sát bề mặt Mặt Trăng từ quỹ đạo. Cuội trò chuyện qua tín hiệu trong câu chuyện tưởng tượng.' : 'LRO observes the lunar surface from orbit. Cuội speaks through a signal in the imagined story.' } : inBanhLuoi ? { title: banCopy['identity.name'][language], subtitle: banCopy['identity.location'][language], description: vi ? 'Xe Apollo 17 đã chở hai phi hành gia qua thung lũng Taurus–Littrow vào tháng 12/1972.' : 'The Apollo 17 rover carried two astronauts across Taurus–Littrow in December 1972.' } : inTaiThinh ? { title: vi ? 'Bạn Tai Thính' : 'Keen Ears', subtitle: vi ? 'Đại Dương Bão · Apollo 12, 1969' : 'Ocean of Storms · Apollo 12, 1969', description: vi ? 'Địa chấn kế PSE đo những chuyển động rất nhỏ của mặt đất Mặt Trăng.' : 'The PSE seismometer measures tiny movements of the lunar ground.' } : inSparkle ? { title: vi ? 'Bạn Lấp Lánh' : 'A sparkling friend', subtitle: vi ? 'Biển Yên Tĩnh · Apollo 11, 1969' : 'Sea of Tranquility · Apollo 11, 1969', description: vi ? 'Gương phản xạ laser không cần pin hay động cơ: nó trả ánh sáng về phía nguồn.' : 'A laser retroreflector needs no batteries or motor: it returns light toward its source.' } : inSurveyor ? encounterText : t[scene];
@@ -398,7 +365,9 @@ export function App() {
             {journeyOpen && !inGacTroi && !inBanhLuoi && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap gacTroiProgress={gacTroiProgress} banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
             {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
-          <p className="chapter-arrival game-instructions">{chattingAtEnd ? dialogueHelp : endingExploring ? `${gameInstructions} ${language === 'vi' ? 'Đến gần bạn rồi nhấn E, hoặc bấm vào bạn để trò chuyện.' : 'Approach your friend and press E, or click your friend to chat.'}` : inBanhLuoi && displayedBan.phase === 'guiding' ? <span id="ban-guide-instructions" role="status"/> : gameInstructions}</p>
+          {inBanhLuoi && displayedBan.phase === 'guiding'
+            ? <p className="chapter-arrival game-instructions"><span id="ban-guide-instructions" role="status" /></p>
+            : gameInstructions && <p className="chapter-arrival game-instructions">{gameInstructions}</p>}
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
       </section>
