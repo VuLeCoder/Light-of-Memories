@@ -11,9 +11,7 @@ export function GacTroiMatching({ language, progress, onChange, onBook, paused }
   const vi = language === 'vi';
   const [selected, setSelected] = useState<GacFriend | null>(null);
   const [siteIndex, setSiteIndex] = useState(0);
-  const [mistakes, setMistakes] = useState(0);
   const [wrong, setWrong] = useState(false);
-  const [hint, setHint] = useState(false);
   const [revisit, setRevisit] = useState<GacFriend | null>(null);
   const pending = progress.matched.find(id => !progress.seen.includes(id));
   const memory = gacMemories.find(m => m.id === (pending ?? revisit));
@@ -39,7 +37,7 @@ export function GacTroiMatching({ language, progress, onChange, onBook, paused }
         <button className="journey-primary" data-gac-continue onClick={() => {
           if (paused) return;
           returnFriend.current = memory.id;
-          setRevisit(null); setSelected(null); setWrong(false); setHint(false);
+          setRevisit(null); setSelected(null); setWrong(false);
           if (pending) onChange(finishGacMemory(progress, pending));
         }}>{vi ? 'Giữ câu chuyện này' : 'Keep this story'} →</button>
       </div>
@@ -50,7 +48,7 @@ export function GacTroiMatching({ language, progress, onChange, onBook, paused }
     <p className="gac-match-instruction">{vi ? 'Chọn một người bạn, rồi chọn vùng đất bạn ấy ở.' : 'Choose a friend, then choose the place where they live.'}</p>
     <div className="gac-friends" aria-label={vi ? 'Các người bạn' : 'Friends'}>{gacMemories.map(m => {
       const done = progress.matched.includes(m.id);
-      return <button key={m.id} data-gac-friend={m.id} aria-pressed={!done && selected === m.id} aria-label={`${m.name[language]}${done ? (vi ? ' · Xem lại câu chuyện' : ' · Read the story again') : ''}`} onClick={() => {
+      return <button key={m.id} className={done ? 'gac-friend-complete' : undefined} data-gac-friend={m.id} aria-pressed={!done && selected === m.id} aria-label={`${m.name[language]}${done ? (vi ? ' · Xem lại câu chuyện' : ' · Read the story again') : ''}`} onClick={() => {
         if (paused) return;
         returnFriend.current = m.id;
         if (done) setRevisit(m.id); else { setSelected(m.id); setWrong(false); }
@@ -58,14 +56,13 @@ export function GacTroiMatching({ language, progress, onChange, onBook, paused }
     })}</div>
     <div className="gac-sites" aria-label={vi ? 'Các vùng đất' : 'Places'}>{gacSites.map((s, i) => <button key={s.id} aria-pressed={i === siteIndex} onClick={() => { setSiteIndex(i); setWrong(false); }}>{s.name}<span>{gacMemories.filter(m => m.site === s.id && progress.matched.includes(m.id)).map(m => m.name[language]).join(' · ') || s.place[language]}</span></button>)}</div>
     <figure className="gac-site-photo"><GacTroiImage key={site.image} id={site.image} language={language}/><figcaption><a href={gacImage(site.image).sourcePage} target="_blank" rel="noreferrer">{gacImage(site.image).credit} ↗</a></figcaption></figure>
-    <div className="gac-match-response" role="status" aria-live="polite">{hint ? (vi ? 'Lấp Lánh: Apollo 11. Mắt Tròn và Tai Thính: Apollo 12. Bánh Lưới: Apollo 17.' : 'Sparkle: Apollo 11. Round Eyes and Keen Ears: Apollo 12. Mesh Wheels: Apollo 17.') : wrong ? (vi ? 'Mình thử nhớ lại nhé. Bạn ấy gắn với chuyến thám hiểm nào nhỉ?' : 'Let’s think back. Which mission was this friend part of?') : chosen ? (vi ? `Đã chọn ${chosen.name.vi}. Bạn ấy ở ${site.name} phải không?` : `${chosen.name.en} selected. Is ${site.name} their home?`) : (vi ? 'Có hai người bạn cùng ở vùng Apollo 12.' : 'Two friends share the Apollo 12 area.')}</div>
+    <div className="gac-match-response" role="status" aria-live="polite">{wrong ? (vi ? 'Mình thử nhớ lại nhé. Bạn ấy gắn với chuyến thám hiểm nào nhỉ?' : 'Let’s think back. Which mission was this friend part of?') : chosen ? (vi ? `Đã chọn ${chosen.name.vi}. Bạn ấy ở ${site.name} phải không?` : `${chosen.name.en} selected. Is ${site.name} their home?`) : (vi ? 'Có hai người bạn cùng ở vùng Apollo 12.' : 'Two friends share the Apollo 12 area.')}</div>
     <nav className="gac-match-actions">
-      <button onClick={() => setHint(true)}>{vi ? 'Gợi ý' : 'Hint'}</button>
-      {mistakes >= 2 && <button onClick={onBook}>{vi ? 'Gợi ý trong sách' : 'Book hint'}</button>}
+      <button onClick={() => { if (!paused) onBook(); }}>{vi ? 'Gợi ý' : 'Hint'}</button>
       <button className="journey-primary" data-gac-confirm disabled={!selected} onClick={() => {
         if (!selected || paused) return;
         const next = matchGacFriend(progress, selected, site.id);
-        if (next === progress) { setWrong(true); setHint(false); setMistakes(n => n + 1); }
+        if (next === progress) { setWrong(true); }
         else { returnFriend.current = selected; onChange(next); }
       }}>{vi ? 'Ghép vào vùng này' : 'Match to this place'} →</button>
     </nav>
