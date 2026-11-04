@@ -307,36 +307,54 @@ export const banBanhLuoiScript = {
   ],
   giftAfter: [
     {
-      id: "banh-luoi-giftAfter-01",
-      speaker: "cuoi",
-      vi: "Cánh sao thứ tư sáng rồi! Cảm ơn bạn, Bánh Lưới.",
-      en: "The fourth star point is shining! Thank you, Mesh Wheels."
+        "id": "banh-luoi-giftAfter-01",
+        "speaker": "cuoi",
+        "vi": "Cánh sao thứ tư sáng rồi! Cảm ơn bạn, Bánh Lưới.",
+        "en": "The fourth star point is shining! Thank you, Mesh Wheels."
     },
     {
-      id: "banh-luoi-giftAfter-02",
-      speaker: "banhLuoi",
-      vi: "Khoan đã, Cuội! Ngước nhìn phía trời bên phải kìa… Một chấm sáng đang lướt qua!",
-      en: "Wait, Cuội! Look up at the sky on the right… A little light is gliding past!"
+        "id": "banh-luoi-giftAfter-02",
+        "speaker": "banhLuoi",
+        "vi": "Cuội thử nhìn xem, những đường xe của mình chạy tới đâu?",
+        "en": "Cuội, can you see where my tracks lead?"
     },
     {
-      id: "banh-luoi-giftAfter-03",
-      speaker: "cuoi",
-      vi: "Ồ! Có phải người bạn đã chụp bức ảnh đường xe của bạn từ trên cao không?",
-      en: "Oh! Could that be the friend who photographed your tracks from above?"
+        "id": "banh-luoi-giftAfter-03",
+        "speaker": "cuoi",
+        "vi": "Từ đây mình chỉ thấy một đoạn thôi… Xa hơn nữa thì khuất mất rồi!",
+        "en": "I can only see a little from here… The rest is out of sight!"
     },
     {
-      id: "banh-luoi-giftAfter-04",
-      speaker: "banhLuoi",
-      vi: "Đúng rồi! Đó là Gác Trời, bạn bay quanh Mặt Trăng để chụp ảnh. Nhờ những bức ảnh ấy, mọi người vẫn tìm thấy mình và những đường xe đi năm xưa.",
-      en: "Yes! That is Sky Watcher, our friend who orbits the Moon to take pictures. Those pictures help people find me and the tracks from our long-ago journey."
+        "id": "banh-luoi-giftAfter-04",
+        "speaker": "banhLuoi",
+        "vi": "Ting! Có ảnh gửi đến chiếc đèn của bạn kìa! Nhìn xem, những đường xe nhỏ xíu nối dài trên mặt trăng.",
+        "en": "Ting! A picture has arrived at your lantern! Look at the tiny tracks stretching across the Moon."
     },
     {
-      id: "banh-luoi-giftAfter-05",
-      speaker: "cuoi",
-      vi: "Vậy mình sẽ mang lời chào của bạn tới Gác Trời! Mình theo vệt sáng bên phải về lộ trình, rồi chọn gặp bạn ấy nhé. Hẹn gặp lại, Bánh Lưới!",
-      en: "Then I will take your greetings to Sky Watcher! I will follow the glow on the right back to the route, then choose to meet our friend. See you again, Mesh Wheels!"
+        "id": "banh-luoi-giftAfter-05",
+        "speaker": "cuoi",
+        "vi": "Ồ, từ trên cao lại thấy rõ đến thế! Ai gửi bức ảnh này vậy?",
+        "en": "Oh, you can see so much from above! Who sent this picture?"
+    },
+    {
+        "id": "banh-luoi-giftAfter-06",
+        "speaker": "banhLuoi",
+        "vi": "Gác Trời đấy! Bạn ấy bay quanh Mặt Trăng để chụp ảnh, giúp chúng mình nhìn thấy những điều ở dưới đất khó nhận ra.",
+        "en": "Sky Watcher! Our friend orbits the Moon taking pictures, helping us see things that are hard to spot from the ground."
+    },
+    {
+        "id": "banh-luoi-giftAfter-07",
+        "speaker": "cuoi",
+        "vi": "Mình muốn gặp bạn ấy! Mình sẽ mang theo bức ảnh và lời chào của bạn. Hẹn gặp lại, Bánh Lưới!",
+        "en": "I would love to meet our friend! I will take this picture and your greetings. See you again, Mesh Wheels!"
+    },
+    {
+        "id": "banh-luoi-giftAfter-08",
+        "speaker": "banhLuoi",
+        "vi": "Theo vệt sáng bên phải về lộ trình nhé. Dấu ảnh sẽ chỉ chỗ gặp Gác Trời!",
+        "en": "Follow the glow on the right back to the route. The picture marks where to meet Sky Watcher!"
     }
-  ],
+],
   endingChat: [
     {
       id: "banh-luoi-endingChat-01",

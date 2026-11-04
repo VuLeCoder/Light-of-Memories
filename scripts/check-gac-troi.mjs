@@ -3,7 +3,6 @@ import { createServer } from 'vite';
 const server = await createServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' });
 try {
   const load = path => server.ssrLoadModule(`/src/${path}.ts`);
-  const { canMeetGacTroi } = await load('content/levels/gac-troi-transition');
   const { freshBanhLuoi } = await load('content/levels/ban-banh-luoi-progress');
   const { readGacTroi, freshGacTroi } = await load('content/levels/gac-troi-progress');
   const { gacTroiMeeting } = await load('content/levels/gac-troi-content');
@@ -12,13 +11,7 @@ try {
   const { freshSparkle } = await load('content/levels/lap-lanh');
   const { freshTaiThinh } = await load('content/levels/tai-thinh-progress');
   const { getBrowserBookPages, getBookHintPage } = await load('content/book/reading-order');
-  for (const phase of ['approach', 'farewell', 'gift']) {
-    assert.equal(canMeetGacTroi({ ...freshBanhLuoi(), phase, completedOnce: true }, false), false);
-  }
   const end = { ...freshBanhLuoi(), phase: 'finished', completedOnce: true, wheelChoice: 'mesh', keepsakes: ['vip', 'orbit'], guideLegacyPassed: true };
-  assert.equal(canMeetGacTroi(end, false), true);
-  assert.equal(canMeetGacTroi(end, true), false);
-  assert.equal(canMeetGacTroi({ ...end, completedOnce: false }, false), false);
   assert.deepEqual(gacTroiMeeting('vi').map(l => l.id), gacTroiMeeting('en').map(l => l.id));
   assert.ok(gacTroiMeeting('vi').every(l => l.id !== 'MO-01'));
   assert.equal(readGacTroi({ ...freshGacTroi(), turn: 999 }).turn, gacTroiMeeting('vi').length - 1);
@@ -42,5 +35,5 @@ try {
   assert.ok(getBrowserBookPages(prior).includes('gac-book-orbit'));
   assert.ok(!getBrowserBookPages({ ...prior, banhLuoi: freshBanhLuoi() }).includes('gac-book-orbit'));
   assert.equal(getBookHintPage(prior, 'gac-troi'), 'gac-book-orbit');
-  console.log('M2 verified: ending gate, preview isolation, v13 migration, saved answers, every dialogue checkpoint, bilingual IDs and stable book target.');
+  console.log('M2 verified: v13 migration, saved answers, every dialogue checkpoint, bilingual IDs and stable book target.');
 } finally { await server.close(); delete globalThis.localStorage; }

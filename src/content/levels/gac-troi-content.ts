@@ -5,8 +5,8 @@ const meeting = [
   {
     "id": "MO-02",
     "speaker": "cuoi",
-    "vi": "Trên cao cũng có bạn đang khám phá Mặt Trăng sao?",
-    "en": "Is a friend exploring the Moon up there too?"
+    "vi": "Đây là bức ảnh Bánh Lưới vừa cho mình xem! Gác Trời ơi, bạn đã chụp những đường xe này phải không?",
+    "en": "This is the picture Mesh Wheels showed me! Sky Watcher, did you photograph these tracks?"
   },
   {
     "id": "MO-03",

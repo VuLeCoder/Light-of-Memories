@@ -1,3 +1,4 @@
+import { OrbitPostcard } from './OrbitPostcard';
 import type { Language } from '../content/i18n';
 import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { gacTroiMeeting } from '../content/levels/gac-troi-content';
@@ -8,9 +9,11 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, pau
   onBack: () => void; onBook: () => void; paused: boolean;
 }) {
   const vi = language === 'vi';
-  return <section className="ending-scene gac-meeting" hidden={paused} lang={language} aria-label={vi ? 'Gặp Gác Trời' : 'Meet Sky Watcher'}>
+  const showPhoto = progress.phase === 'meeting' && progress.turn === 0;
+  return <section className={`ending-scene gac-meeting${showPhoto ? ' has-orbit-photo' : ''}`} hidden={paused} lang={language} aria-label={vi ? 'Gặp Gác Trời' : 'Meet Sky Watcher'}>
     <div className="surveyor-scene-hud"><span>{vi ? 'Gác Trời · Tín hiệu từ quỹ đạo' : 'Sky Watcher · A signal from orbit'}</span>
       <button onClick={onBook}>{vi ? 'Mở sách' : 'Open book'} ▤</button></div>
+    {showPhoto && <OrbitPostcard language={language} />}
     {progress.phase === 'meeting' ? <EarthDialogue managedFocus language={language} paused={paused}
       title={vi ? 'Một người bạn trên cao' : 'A friend above'} lines={gacTroiMeeting(language)} initialIndex={progress.turn}
       onTurn={turn => { if (!paused && turn !== progress.turn) onChange({ ...progress, turn }); }}

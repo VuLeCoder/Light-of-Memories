@@ -1,3 +1,4 @@
+import { OrbitPostcard } from './OrbitPostcard';
 import type { Language } from '../content/i18n';
 import { banBanhLuoiCopy as copy, banBanhLuoiDialogue } from '../content/levels/ban-banh-luoi-content';
 import { banBanhLuoiMemories } from '../content/levels/ban-banh-luoi-memories';
@@ -36,8 +37,10 @@ export function BanhLuoiEnding({ language, progress: p, onChange, onBack, paused
   }
   const gifting = p.phase === 'gift' && (preview ? p.turn === 0 : !p.completedOnce);
   const afterGift = p.phase === 'gift';
-  return <section className={`ending-scene ban-ending-scene${p.phase === 'finished' ? ' is-exploring' : ''}`} aria-label={title} lang={language}>
+  const showPhoto = afterGift && !gifting && p.turn >= 4;
+  return <section className={`ending-scene ban-ending-scene${showPhoto ? ' has-orbit-photo' : ''}${p.phase === 'finished' ? ' is-exploring' : ''}`} aria-label={title} lang={language}>
     <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {stars}/5</strong></div>
+    {showPhoto && <OrbitPostcard language={language} />}
     {p.phase === 'finished' ? <div className="ending-farewell ban-ending-actions">
       <p>{copy['objective.finished'][language]}</p><nav className="ending-actions" aria-label={title}>
         <button data-banh-primary onClick={() => { if (!paused) onPreview(true); }}>{copy['button.replayEnding'][language]}</button>

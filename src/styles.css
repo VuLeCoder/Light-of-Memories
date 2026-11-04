@@ -1078,3 +1078,41 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .book-panel .book-sheet.book-compact .journey-memories li { font-size: 16px; line-height: 1.4; }
 .book-panel .book-sheet.book-compact .book-prose > small { font-size: 11px; }
 .book-panel .book-sheet.book-compact h2 { font-size: min(var(--book-title-size), 30px); line-height: 1.2; }
+
+/* The photo and dialogue share a layout, so neither can cover the other. */
+.game-stage .ending-scene.has-orbit-photo {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-content: start; align-items: start; gap: 16px; padding: 64px 18px 18px;
+  overflow-y: auto; pointer-events: auto;
+}
+.game-stage .ending-scene.has-orbit-photo[hidden] { display: none; }
+.game-stage .ending-scene.has-orbit-photo > .dialogue {
+  position: relative; inset: auto; width: auto; max-height: none; margin: 0;
+  grid-column: 1; grid-row: 1; overflow: visible;
+}
+.orbit-postcard {
+  grid-column: 2; grid-row: 1; min-width: 0; margin: 0; padding: 8px;
+  background: #eee3c9; color: #25313b; box-shadow: 0 6px 24px #0008;
+  animation: orbit-photo-arrive .6s ease-out;
+}
+.orbit-postcard img { display: block; width: 100%; height: auto; object-fit: contain; }
+.orbit-postcard figcaption { padding-top: 7px; font-size: 13px; line-height: 1.45; }
+.orbit-postcard small { display: block; font-size: 10px; margin-top: 4px; }
+@container (max-width: 720px) {
+  #main-scene .game-stage:has(.has-orbit-photo:not([hidden])) { height: auto; aspect-ratio: auto; }
+  .game-stage .ending-scene.has-orbit-photo {
+    position: relative; inset: auto; grid-template-columns: minmax(0, 1fr);
+    padding: 12px; gap: 12px; background: #142831; overflow: visible;
+  }
+  .game-stage .ending-scene.has-orbit-photo > .surveyor-scene-hud {
+    position: relative; inset: auto; grid-row: 1; padding: 0; font-size: 14px;
+  }
+  .game-stage .ending-scene.has-orbit-photo > .orbit-postcard {
+    grid-column: 1; grid-row: 2; width: min(100%, 420px); justify-self: center;
+  }
+  .game-stage .ending-scene.has-orbit-photo > .dialogue { grid-row: 3; border-radius: 10px; }
+}
+.orbit-route-photo { position: absolute; right: 0; top: 0; width: 30px; padding: 3px; background: #eee3c9; transform: rotate(8deg); box-shadow: 0 0 12px #d7b875; }
+.orbit-route-photo img { display: block; width: 100%; height: 25px; object-fit: cover; }
+@keyframes orbit-photo-arrive { from { opacity: 0; transform: translateY(12px) scale(.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .orbit-postcard { animation: none; } }

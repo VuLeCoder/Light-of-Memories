@@ -71,6 +71,7 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
             if (friend) setEntryFriend(friend.id);
             setLocked(state === 'locked');
           }} aria-pressed={selectedStop === index} aria-label={`${index + 1}. ${friend ? `${friend.text[language].friend}. ${state === 'completed' ? t.completed : t.ready}` : `${t.mystery}. ${id ? t.prerequisite : t.locked}`}`}>
+            {id === 'gac-troi' && banhLuoiProgress.phase === 'finished' && !gacTroiProgress.completedOnce && <span className="orbit-route-photo" aria-hidden="true"><img src="/images/memories/ban-banh-luoi/apollo-17-orbit-m168000580lr.webp" alt="" /></span>}
             <span className="stop-orb">{friend ? <img src={friend.portrait} alt="" /> : '?'}</span>
             <span>{`${String(index + 1).padStart(2, '0')} · ${friend ? friend.label : t.mystery}`}</span>
             <small style={{ visibility: selectedStop === index ? 'visible' : 'hidden' }}>Cuội ✦</small>
