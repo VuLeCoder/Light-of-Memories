@@ -1,7 +1,6 @@
-import type { EndingProgress } from '../content/ending';
 import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { getBookPage } from '../content/book/catalog';
-import { getBrowserBookPages, getBookHintPage, extraReadingPages } from '../content/book/reading-order';
+import { getBrowserBookPages, getBookHintPage } from '../content/book/reading-order';
 import { useBookImageLayout } from './useBookImageLayout';
 import { bookArchiveImages, realWorldPages } from '../content/book/real-world';
 import { BookPageLabel } from './BookContentLabel';
@@ -34,7 +33,7 @@ import { BookNavigation } from './BookNavigation';
 import { journeyCopy } from '../content/book/journey-copy';
 export { journeyCopy } from '../content/book/journey-copy';
 
-export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange, onEnding }: { onEnding: () => void; gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
   const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
@@ -56,14 +55,14 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
   };
   if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onReplay={onReplay} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
-    <header><span>{`★ ${journeyStops.filter(id => id && completed[id]).length}`}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
+    <header><span>{`★ ${Object.values(completed).filter(Boolean).length}`}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
     {level && detail ? <>
       <div className="surveyor-meeting"><img src={level.portrait} alt={detail.friend} /><div><p><b>Cuội:</b> {detail.intro}</p><p><b>{detail.friend}:</b> {detail.reply}</p><p>{detail.invitation}</p></div></div>
       <button onClick={onBack}>{t.back}</button>
     </> : <>
       <p className="journey-lead">{t.lead}</p>
       <div className="journey-route">
-        <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M133 110 Q267 20 400 65 T667 110" /></svg>
+        <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M80 110 Q160 20 240 65 T400 110 T560 65 T720 110" /></svg>
         {journeyStops.map((id, index) => {
           const state = status(id);
           const friend = state === 'locked' ? undefined : getLevel(id);
@@ -83,21 +82,20 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
         const visible = index === (locked ? selectedFriend ? 1 : 2 : 0);
         return <span key={index} style={{ visibility: visible ? 'visible' : 'hidden' }} aria-hidden={!visible}>{message}</span>;
       })}</p>
-      {gacTroiProgress.completedOnce && <button className="journey-primary" onClick={onEnding}>{language === 'vi' ? 'Đi tìm chị Hằng · Đoạn kết' : 'Find Hằng · The ending'} →</button>}
       <div className="journey-entry-action"><button className="journey-primary" style={{ visibility: selectedLevel ? 'visible' : 'hidden' }} disabled={!selectedLevel} onClick={() => { if (selectedLevel) enterFriend(selectedLevel.id); }}>{entryLevel.text[language].enter} →</button></div>
     </>}
   </section>;
 }
 
-export function JourneyBook({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest, endingProgress }: { endingProgress: EndingProgress; gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  return <JourneyBookPages endingProgress={endingProgress} gacTroiProgress={gacTroiProgress} banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
+export function JourneyBook({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages gacTroiProgress={gacTroiProgress} banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest, endingProgress }: { endingProgress: EndingProgress; gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
   const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
-  const status = (id: LevelId | null) => id === 'lap-lanh' || id === 'tai-thinh' ? 'unfinished' : journeyStatus(id, completed);
+  const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
-  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress, gacTroi: gacTroiProgress, ending: endingProgress });
+  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress, gacTroi: gacTroiProgress });
   // Keep the selected page's identity when new photos or clues are inserted.
   const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel === 'gac-troi' ? 'gac-book-orbit' : activeLevel);
   const page = Math.max(0, pages.indexOf(selectedPage));
@@ -147,22 +145,20 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
       {activeLevel && <BackToGame language={language} />}
     </div><BookNavigation language={language} {...bookNavigation} /></aside>
   </>;
-  if (pages[page]?.startsWith('gac-') || pages[page] === 'extra-reading' || extraReadingPages.includes(pages[page] ?? '')) {
+  if (pages[page]?.startsWith('gac-')) {
     const entry = getBookPage(pages[page])!;
-    const extra = pages[page] === 'extra-reading' || extraReadingPages.includes(pages[page] ?? '');
-    const blocks = extra && entry.id !== 'extra-reading' && entry.id !== 'lap-lanh' && entry.id !== 'tai-thinh' ? entry.blocks.filter(b => b.kind === 'fact') : entry.blocks;
     return <>
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
         <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
-        <span className="book-kicker">{extra ? (language === 'vi' ? 'Đọc thêm' : 'Further reading') : '03 · LRO'}</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
-        <div className="book-prose book-prose--intro">{!extra && <img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>}
-          {blocks.map(block => <div key={block.id}>
+        <span className="book-kicker">05 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
+        <div className="book-prose book-prose--intro"><img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>
+          {entry.blocks.map(block => <div key={block.id}>
             {entry.id !== 'gac-book-orbit' && block.image && <figure className="book-reality-photo"><img src={block.image.src} alt={block.image.alt[language]}/><figcaption>{block.image.credit}</figcaption></figure>}
-            <p><BookParagraph pageId={entry.id} value={(block.readingText ?? block.text)[language]} language={language}/></p>
+            <p><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>
           </div>)}
         </div>
-        {[...new Set(blocks.flatMap(block => block.sources.map(s => s.url)))].map(url => <a key={url} className="sparkle-book-source" href={url} target="_blank" rel="noreferrer">NASA ↗</a>)}
+        {[...new Set(entry.blocks.flatMap(block => block.sources.map(s => s.url)))].map(url => <a key={url} className="sparkle-book-source" href={url} target="_blank" rel="noreferrer">NASA ↗</a>)}
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} {...bookNavigation}/></aside>
     </>;
@@ -191,7 +187,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className={`book-sheet journey-book${banPageId === 'ban-banh-luoi' ? '' : ' ban-book-study'}${banPageId === 'ban-book-wheels' ? ' ban-book-wheels' : ''}`}>
       <BookPageLabel pageId={pages[page]} language={language}/>
-        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">02 · Apollo 17</span>
+        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
         <h2 id="banh-luoi-book-title" tabIndex={-1}>{entry.title[language]}</h2>
         <div className={`book-prose${banPageId === 'ban-banh-luoi' ? ' book-prose--intro' : ''}`}>
         {banPageId === 'ban-banh-luoi' && <><img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/></>}
@@ -215,7 +211,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="tai-book-title"><div tabIndex={0} className="book-sheet journey-book tai-book">
       <BookPageLabel pageId={pages[page]} language={language}/>
-        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">{language === 'vi' ? 'Đọc thêm · Apollo 12' : 'Further reading · Apollo 12'}</span>
+        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
         <h2 id="tai-book-title" tabIndex={-1}>{taiPhoto ? taiPhoto.title[language] : taiPage!.id === 'intro' ? getLevel('tai-thinh')!.text[language].friend : taiPage!.title[language]}</h2>
         <div className={`book-prose${taiPage?.id === 'intro' ? ' book-prose--intro' : ''}`}>
         {archive && <ArchiveFigure photo={archive} language={language}/>}
@@ -272,7 +268,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
       <BookPageLabel pageId={pages[page]} language={language}/>
-      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${journeyStops.includes(level.id) ? String(journeyStops.indexOf(level.id) + 1).padStart(2, '0') : (language === 'vi' ? 'Đọc thêm' : 'Further reading')} · ${level.label}` : t.title}</span>
+      <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
       <h2 id="book-title">{b01 ? ct.titles[entry] : level && detail ? detail.friend : t.book}</h2>
       <div className={`book-prose${level ? ' book-prose--intro' : !b01 ? ' book-prose--overview' : ''}`}>
       {archive && <ArchiveFigure photo={archive} language={language}/>}

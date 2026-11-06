@@ -9,8 +9,8 @@ import type { LevelDefinition } from './types';
 export const levels = [surveyor, lapLanh, taiThinh, banBanhLuoi, gacTroi] as const satisfies readonly LevelDefinition[];
 export type LevelId = (typeof levels)[number]['id'];
 
-// The main story uses three encounters. Keep the legacy registry above for saved data and reading assets.
-export const journeyStops: readonly (LevelId | null)[] = ['surveyor', 'ban-banh-luoi', 'gac-troi'];
+// Empty slots remain mystery stops until their content is implemented.
+export const journeyStops: readonly (LevelId | null)[] = ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi', 'gac-troi'];
 
 export function journeyStatus(id: LevelId | null, completed: Record<LevelId, boolean>): 'locked' | 'unfinished' | 'completed' {
   if (!id) return 'locked';
@@ -26,6 +26,3 @@ export function getLevel(id: unknown) {
 export function isLevelId(id: unknown): id is LevelId {
   return getLevel(id) !== undefined;
 }
-
-/** The lantern keeps its five-point shape while three friends kindle it. */
-export const lanternPoints = (friends: number) => [0, 1, 3, 5][Math.max(0, Math.min(3, friends))];

@@ -39,7 +39,7 @@ export function BanhLuoiEnding({ language, progress: p, onChange, onBack, paused
   const afterGift = p.phase === 'gift';
   const showPhoto = afterGift && !gifting && p.turn >= 4;
   return <section className={`ending-scene ban-ending-scene${showPhoto ? ' has-orbit-photo' : ''}${p.phase === 'finished' ? ' is-exploring' : ''}`} aria-label={title} lang={language}>
-    <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {stars}/3</strong></div>
+    <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {stars}/5</strong></div>
     {showPhoto && <OrbitPostcard language={language} />}
     {p.phase === 'finished' ? <div className="ending-farewell ban-ending-actions">
       <p>{copy['objective.finished'][language]}</p><nav className="ending-actions" aria-label={title}>

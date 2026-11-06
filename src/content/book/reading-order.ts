@@ -7,19 +7,17 @@ import { banhLuoiPageIds } from '../levels/ban-banh-luoi-progress';
 import type { Progress } from '../../state/progress';
 import { insertRealWorldPages } from './real-world';
 
-export const extraReadingPages = ['lap-lanh', 'sparkle-photo-1', 'sparkle-photo-0', 'sparkle-repair-clue', 'sparkle-ranging-clue', 'tai-thinh', 'tai-book-devices', 'tai-photo-pse', 'tai-book-sources', 'tai-photo-station', 'tai-book-impact', 'tai-book-ringing', 'tai-book-sensor', 'tai-book-noise', 'tai-book-rhythm', 'tai-photo-magnetometer', 'tai-book-legacy'];
-
-export type BookProgress = Pick<Progress, 'surveyor' | 'sparkle' | 'taiThinh' | 'banhLuoi'> & { gacTroi?: GacTroiProgress; ending?: Progress['ending'] };
+export type BookProgress = Pick<Progress, 'surveyor' | 'sparkle' | 'taiThinh' | 'banhLuoi'> & { gacTroi?: GacTroiProgress };
 
 /** Browser order follows the adventure; NASA companions stay beside their parent.
  * Unlike the complete publication, this edition only includes unlocked entries.
  */
-export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gacTroi, ending }: BookProgress): (string | null)[] {
+export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gacTroi }: BookProgress): (string | null)[] {
   const completed = { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'tai-thinh': taiThinh.completedOnce, 'ban-banh-luoi': banhLuoi.completedOnce, 'gac-troi': gacTroi?.completedOnce ?? false };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const fieldUnlocked = surveyor.matched.length === 2;
   return insertRealWorldPages([null, ...journeyStops.flatMap(id => {
-    if (id === 'gac-troi') return status(id) === 'locked' ? [] : ['gac-book-orbit', ...(gacTroi && gacTroi.phase !== 'meeting' ? ['gac-book-sites', ...gacTroi.matched.map(id => `gac-memory-${id}`), ...(['route', 'changes', 'farewell', 'gift', 'finished'].includes(gacTroi.phase) ? ['gac-book-route'] : []), ...(['changes', 'farewell', 'gift', 'finished'].includes(gacTroi.phase) ? ['gac-book-changes'] : [])] : [])];
+    if (id === 'gac-troi') return status(id) === 'locked' ? [] : ['gac-book-orbit', ...(gacTroi && gacTroi.phase !== 'meeting' ? ['gac-book-sites', ...gacTroi.matched.map(id => `gac-memory-${id}`)] : [])];
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,
@@ -33,7 +31,7 @@ export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gac
     if (id === 'tai-thinh') return taiThinhPageIds(taiThinh);
     if (id === 'ban-banh-luoi') return banhLuoiPageIds(banhLuoi);
     return id ? [id] : [];
-  }), 'extra-reading', ...extraReadingPages, ...(ending?.completedOnce ? ['gac-book-reunion'] : [])], id => !journeyStops.includes(id as LevelId) || status(id as LevelId) !== 'locked');
+  })], id => !journeyStops.includes(id as LevelId) || status(id as LevelId) !== 'locked');
 }
 
 /** A hint chooses a stable page ID, independent of page numbers or language. */
@@ -42,7 +40,7 @@ export function getBookHintPage({ surveyor, sparkle, taiThinh, banhLuoi, gacTroi
   const nextClue = eventOrder.find(id => !surveyor.clues.includes(id) && !surveyor.found.includes(id))
     ?? eventOrder.find(id => !surveyor.found.includes(id)) ?? 'arrive';
   switch (activeLevel) {
-    case 'gac-troi': return gacTroi?.phase === 'route' ? 'gac-book-route' : gacTroi?.phase === 'changes' ? 'gac-book-changes' : gacTroi && gacTroi.phase !== 'meeting' ? 'gac-book-sites' : 'gac-book-orbit';
+    case 'gac-troi': return gacTroi && gacTroi.phase !== 'meeting' ? 'gac-book-sites' : 'gac-book-orbit';
     case 'surveyor':
       return fieldUnlocked ? `clue-${nextClue}` : null;
     case 'lap-lanh':

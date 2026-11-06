@@ -31,8 +31,7 @@ try {
   }
   check();
   assert.ok(!startPages.includes('surveyor-b01'));
-  assert.ok(startPages.indexOf('extra-reading') < startPages.indexOf('lap-lanh-reality'));
-  assert.ok(!startPages.includes('gac-book-reunion'));
+  assert.ok(!startPages.includes('lap-lanh-reality'));
   p.surveyor.matched = ['camera', 'scoop'];
   let ids = check('surveyor', 'clue-arrive');
   assert.ok(ids.indexOf('surveyor-b01') < ids.indexOf('clue-arrive'), 'Tools precede excavation');
@@ -98,11 +97,6 @@ try {
     p.gacTroi.matched.push(friend);
     assert.ok(check('gac-troi', 'gac-book-sites').includes(`gac-memory-${friend}`));
   }
-  p.gacTroi.phase = 'route';
-  check('gac-troi', 'gac-book-route');
-  p.gacTroi.phase = 'changes';
-  check('gac-troi', 'gac-book-changes');
-  p.ending = { phase: 'finished', turn: 0, completedOnce: true };
   ids = check();
   assert.deepEqual(ids.map(id => id ?? 'overview').sort(), bookPages.map(page => page.id).sort(), 'Full browser book contains every catalog page exactly once');
   assert.deepEqual(pages(fresh()), startPages, 'Fresh journey has no old archive');

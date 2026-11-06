@@ -159,12 +159,12 @@ export const banBanhLuoiCopy = {
   "recallA.body": text("Trong tháng 12/1972, Cernan chụp chiếc xe tại nơi đỗ cuối. Trước khi các nhà du hành rời Mặt Trăng, camera trên xe truyền hình ảnh Challenger cất cánh; người điều khiển ở Trái Đất chỉnh camera nhìn theo.", "In December 1972, Cernan photographed the rover at its final parking spot. Before the astronauts left the Moon, its camera sent back pictures of Challenger lifting off; an operator on Earth aimed the camera to follow it."),
   "recallB.title": text("2011 · Những con đường còn đó", "2011 · The trails remain"),
   "recallB.body": text("Nhiều năm sau, camera từ quỹ đạo ghi lại bãi đáp Apollo 17. Chiếc xe chỉ là một dấu nhỏ, nhưng vị trí của bạn và những đường đi vẫn còn thấy trong ảnh.", "Years later, a camera in lunar orbit recorded the Apollo 17 site. The rover is only a tiny mark, but its position and the trails can still be seen in the image."),
-  "status.completed": text("Hai cuộc gặp đã thắp sáng chiếc đèn · 2/3", "Two encounters have brightened the lantern · 2/3"),
+  "status.completed": text("Cánh sao thứ tư đã sáng · 4/5", "The fourth star point is shining · 4/5"),
   "status.interact": text("E · Trò chuyện với Bánh Lưới", "E · Talk to Mesh Wheels"),
   "status.exit": text("Theo vệt sáng → Về lộ trình", "Follow the glow → Back to the route"),
   "status.zoom": text("Ảnh lớn · Có thể đóng để trở lại", "Larger photo · Close to return"),
   "status.storage": text("Chưa lưu được tiến trình. Bạn vẫn có thể chơi tiếp trong phiên này.", "Progress could not be saved. You can keep playing during this visit."),
-  "status.bookLocked": text("Hoàn thành câu chuyện Mắt Tròn để gặp người bạn này.", "Finish Round Eyes’ story to meet this friend."),
+  "status.bookLocked": text("Hoàn thành câu chuyện Tai Thính để gặp người bạn này.", "Finish Keen Ears’ story to meet this friend."),
   "status.pause": text("Đang tạm dừng", "Paused")
 } as const satisfies Record<string, LocalizedText>;
 
@@ -173,8 +173,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-route-01",
       speaker: "narrator",
-      vi: "Cuội tạm biệt Mắt Tròn. Chiếc đèn ấm lên, soi đường cho Cuội tiếp tục tìm chị Hằng.",
-      en: "Cuội says goodbye to Round Eyes. The lantern glows warmly, lighting the next part of his search for Hằng."
+      vi: "Cánh sao thứ ba soi những vệt song song trên mặt đất. Cuội tạm biệt Tai Thính ở Đại Dương Bão.",
+      en: "The third star point lights parallel marks on the ground. Cuội says goodbye to Keen Ears in the Ocean of Storms."
     },
     {
       id: "banh-luoi-route-02",
@@ -309,8 +309,8 @@ export const banBanhLuoiScript = {
     {
         "id": "banh-luoi-giftAfter-01",
         "speaker": "cuoi",
-        "vi": "Đèn sáng thêm rồi! Cảm ơn bạn, Bánh Lưới.",
-        "en": "The lantern is brighter! Thank you, Mesh Wheels."
+        "vi": "Cánh sao thứ tư sáng rồi! Cảm ơn bạn, Bánh Lưới.",
+        "en": "The fourth star point is shining! Thank you, Mesh Wheels."
     },
     {
         "id": "banh-luoi-giftAfter-02",

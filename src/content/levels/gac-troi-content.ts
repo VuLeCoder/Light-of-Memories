@@ -35,8 +35,8 @@ const meeting = [
   {
     "id": "MO-07",
     "speaker": "gacTroi",
-    "vi": "Ừ! Bạn đã gặp Mắt Tròn và Bánh Lưới rồi nhỉ? Mình cùng tìm những nơi ấy trên ảnh nhé.",
-    "en": "Yes! You’ve met Round Eyes and Mesh Wheels, haven’t you? Let’s find those places in the pictures."
+    "vi": "Ừ! Bạn đã gặp bốn người bạn rồi nhỉ? Mình cùng tìm những nơi ấy trên ảnh nhé.",
+    "en": "Yes! You’ve met four friends, haven’t you? Let’s find those places in the pictures."
   }
 ] as const;
 export const gacTroiMeetingLength = meeting.length;
