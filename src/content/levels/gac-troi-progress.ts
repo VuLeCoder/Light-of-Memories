@@ -2,7 +2,7 @@ import { migrateGacRabbit, readGacRabbit, type GacRabbitJourney } from './gac-tr
 import { gacMatchingIntroLength, gacSummaryLength, gacMemories, type GacFriend, type GacSite } from './gac-troi-matching';
 import { gacTroiMeetingLength } from './gac-troi-content';
 
-export const gacTroiPhases = ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-map', 't03-story', 'gac-farewell', 'gac-free', 't04-slope', 't04-rock', 't04-banyan', 'reunion', 'cards-intro', 'cards', 'reflection', 'return-home', 'home', 'story-end'] as const;
+export const gacTroiPhases = ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-walk', 't03-map', 't03-story', 'gac-farewell', 'gac-free', 't04-slope', 't04-rock', 't04-banyan', 'reunion', 'cards-intro', 'cards', 'reflection', 'return-home', 'home', 'story-end'] as const;
 export type GacTroiPhase = typeof gacTroiPhases[number];
 export const gacTroiFriends = ['surveyor', 'lap-lanh'] as const;
 export const gacRouteLandmarks = ['low-slope', 'split-rock', 'banyan-shadow'] as const;

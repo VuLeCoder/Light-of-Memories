@@ -33,7 +33,7 @@ const lines = {
   't03-intro': [
     ['t03-intro-01', 'cuoi', 'Nhìn kỹ có giúp mình tìm đường tới chị Hằng không?', 'Could looking closely help me find the way to Hằng?'],
     ['t03-intro-02', 'gacTroi', 'Các nhà khoa học dùng ảnh LROC để lập bản đồ ánh sáng và bóng tối gần cực nam Mặt Trăng.', 'Scientists use LROC pictures to map light and shadow near the Moon’s south pole.'],
-    ['t03-intro-03', 'gacTroi', 'Trong bức vẽ này, Cuội thử tìm một chỗ sáng để nghỉ chân nhé!', 'In this drawing, find a bright place to rest!'],
+    ['t03-intro-03', 'gacTroi', 'Mình dẫn Cuội một đoạn đi tìm chị Hằng nhé! Đi sang phải nào. Phía trước có ba ngọn đèn đang chờ Cuội thắp sáng.', 'Let me guide you part of the way to Hằng! Walk to the right. Three lanterns ahead are waiting for you to light them.'],
   ],
   't03-story': [
     ['t03-done-01', 'cuoi', 'Qua triền đất thấp, tới tảng đá có khe, rồi tìm bóng cây đa.', 'Past the low slope, to the split rock, then look for the banyan’s shadow.'],

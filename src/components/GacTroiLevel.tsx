@@ -19,7 +19,7 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, onC
 }) {
   const vi = language === 'vi';
   const [mapVisible, setMapVisible] = useState(false);
-  const light = ['t03-map', 't03-story'].includes(progress.phase);
+  const light = ['t03-walk', 't03-map', 't03-story'].includes(progress.phase);
   const lightDialogue = ['t03-intro', 'gac-farewell'].includes(progress.phase);
   const free = progress.phase === 'gac-free';
   const intro = progress.phase === 'matching' && progress.turn < gacMatchingIntroLength;
@@ -28,16 +28,17 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, onC
   const impact = ['t02-search', 't02-story'].includes(progress.phase) && gacPhaseAvailable(progress.phase);
   const matching = progress.phase === 'matching' && !intro;
   if (progress.rabbitJourney?.active) return <GacRabbitStory language={language} progress={progress} onChange={onChange} onBack={onBack} onBook={onBook} paused={paused}/>;
+  if (light) return <GacRestLight key={progress.phase === 't03-walk' ? 'walk' : 'lamps'} language={language} progress={progress} onChange={onChange} onBack={onBack} paused={paused}/>;
   return <section className={`ending-scene gac-meeting${light || lightDialogue || free ? ' gac-later' : ''}${matching || impact || light ? ' gac-activity' : ''}`} hidden={paused} lang={language} aria-label={vi ? 'Gặp Gác Trời' : 'Meet Sky Watcher'}>
     <div className="surveyor-scene-hud"><span>{vi ? 'Gác Trời · Tín hiệu từ quỹ đạo' : 'Sky Watcher · A signal from orbit'}</span>
       {progress.phase === 't02-search' && <button className="gac-impact-help" onClick={onBook} disabled={paused}>{vi ? 'Gợi ý' : 'Hint'}</button>}
       <button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></div>
-    {light ? <GacRestLight language={language} progress={progress} onChange={onChange} onBook={onBook} paused={paused}/> : lightDialogue ? <EarthDialogue key={progress.phase} managedFocus language={language} paused={paused}
+    {lightDialogue ? <EarthDialogue key={progress.phase} managedFocus language={language} paused={paused}
       title={vi ? (progress.phase === 't03-intro' ? 'Lối nào còn ánh sáng?' : 'Một chút sáng gửi Cuội') : (progress.phase === 't03-intro' ? 'Which way stays lit?' : 'A little light for Cuội')}
       lines={gacLightDialogue(progress.phase as GacLightDialoguePhase, language)} initialIndex={progress.turn}
       onTurn={turn => { if (!paused && turn !== progress.turn) onChange({ ...progress, turn }); }}
       onComplete={() => { if (!paused) onChange(advanceGacDialogue(progress)); if (progress.phase === 'gac-farewell') onBack(); }} finalAction="moon"
-      finalLabel={progress.phase === 't03-intro' ? (vi ? 'Tìm nơi sáng' : 'Find a bright place') : (vi ? 'Về lộ trình' : 'Back to route')}/>
+      finalLabel={progress.phase === 't03-intro' ? (vi ? 'Đi cùng Gác Trời' : 'Follow Sky Watcher') : (vi ? 'Về lộ trình' : 'Back to route')}/>
       : free ? <div className="gac-free-panel">
         <p>{vi ? 'Cuội đã nhận ánh sáng của Gác Trời. Về lộ trình để chọn Đi tìm chị Hằng nhé!' : 'Cuội has received Sky Watcher’s light. Return to the route to find Hằng!'}</p>
         <nav><button onClick={onChat}>{vi ? 'Trò chuyện' : 'Chat'}</button><button aria-expanded={mapVisible} onClick={() => setMapVisible(v => !v)}>{vi ? 'Bản đồ trong đèn' : 'Map in the lantern'} ▤</button><button onClick={() => { if (!paused) onChange(replayGacTroi(progress)); }}>{vi ? 'Chơi lại Gác Trời' : 'Replay Sky Watcher'}</button></nav>

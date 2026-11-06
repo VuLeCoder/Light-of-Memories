@@ -7,6 +7,10 @@ try {
   const { freshGacTroi, readGacTroi, replayGacTroi, gacDialogueLengths } = await load('content/levels/gac-troi-progress');
   const { advanceGacDialogue: advance, keepGacLandmark: keep, enterGacTrail: enter, gacPhaseAvailable } = await load('content/levels/gac-troi-flow');
   let p = readGacTroi({ ...freshGacTroi(), matched: ['surveyor', 'lap-lanh'], seen: ['surveyor', 'lap-lanh'], t02Done: true, phase: 't03-map' });
+  const walk = advance({ ...p, phase: 't03-intro', turn: 2 });
+  assert.equal(walk.phase, 't03-walk');
+  assert.equal(readGacTroi(walk).phase, 't03-walk');
+  assert.equal(gacPhaseAvailable('t03-walk'), true);
   assert.ok(p.bookUnlocks.includes('gac-book-light'));
   assert.equal(enter(p), p);
   for (const [i, item] of gacLightSections.entries()) {

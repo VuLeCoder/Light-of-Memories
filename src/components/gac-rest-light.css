@@ -1,0 +1,65 @@
+/* A self-contained stage: scenery and controls stay inside the game frame. */
+#main-scene .game-stage:has(.gac-rest) { height:auto; aspect-ratio:auto; min-height:0; }
+#main-scene .game-stage:has(.gac-rest) > .story-canvas { display:none; }
+.gac-rest { position:relative; display:grid; isolation:isolate; color:#eee3c9; background:#101e28; container-type:inline-size; }
+/* Keep the stage height while the absolute-positioned pause menu is open. */
+.gac-rest[hidden] { display:grid; visibility:hidden; pointer-events:none; }
+.gac-rest:focus-visible { outline:2px solid #d7b875; outline-offset:-2px; }
+.rest-world { grid-area:1/1; position:relative; aspect-ratio:16/9; width:100%; overflow:hidden; }
+.rest-world .rabbit-backdrop { position:absolute; inset:0; pointer-events:none; }
+.rest-world canvas { display:block; width:100% !important; height:100% !important; }
+.rest-lights { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.rest-cuoi { position:absolute; bottom:17%; height:26%; width:auto; overflow:hidden; pointer-events:none; }
+.gac-rest button { min-height:44px; padding:8px 12px; border:1px solid #b49a6777; border-radius:7px; background:#263d45; color:#f1e5cc; font:inherit; cursor:pointer; }
+.gac-rest button:focus-visible { outline:3px solid #ffe3a2; outline-offset:2px; }
+.gac-rest button:disabled { opacity:.55; cursor:default; }
+.gac-rest .rest-ground { position:absolute; inset:50% 0 0; width:100%; height:50%; border:0; padding:0; border-radius:0; background:transparent; touch-action:manipulation; }
+.rest-hud { grid-area:1/1; align-self:start; position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 16px; background:linear-gradient(#101e28ee,transparent); }
+.rest-hud > span { font:18px Lora,serif; color:#eed395; }
+.rest-hud nav { display:flex; gap:8px; }
+.rest-card { grid-area:1/1; align-self:start; position:relative; z-index:1; width:45%; margin:78px 0 0 18px; padding:14px; box-sizing:border-box; border:1px solid #d2ba8155; border-radius:10px; background:#192e37ed; pointer-events:none; }
+.rest-card h2 { margin:0 0 8px; font:20px/1.4 Lora,serif; }
+.rest-card p { margin:0; font-size:15px; line-height:1.5; }
+.rest-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; background:#192e37; }
+.rest-directions { display:flex; gap:8px; }
+.rest-directions button { min-width:56px; touch-action:none; user-select:none; }
+.rest-controls > span { font-size:13px; }
+.rest-action { min-width:130px; }
+@container (max-width:650px) {
+  .rest-hud { grid-area:1/1; flex-wrap:wrap; padding:10px; background:none; }
+  .rest-hud > span { font-size:16px; }
+  .rest-hud nav { margin-left:auto; }
+  .rest-card { grid-area:2/1; width:auto; margin:0 10px 8px; padding:10px; }
+  .rest-card h2 { font-size:17px; margin-bottom:4px; }
+  .rest-card p { font-size:14px; }
+  .rest-world { grid-area:3/1; }
+  .rest-controls { flex-wrap:wrap; gap:8px; padding:10px; }
+  .rest-controls > span { order:3; width:100%; text-align:center; }
+}
+/* Perspective follows the excavation scene: feet anchor depth and scale. */
+.rest-darkness { position:absolute; inset:0; background:linear-gradient(transparent 40%, #0008 49%, #000 60%); transition:opacity 1.8s ease; pointer-events:none; }
+.rest-cuoi { bottom:auto; transition:filter 1.8s ease; filter:brightness(.4) drop-shadow(0 0 5px #e3c68b66); }
+.rest-lamp { position:absolute; width:10.4%; aspect-ratio:100/110; transform-origin:50% 100%; pointer-events:none; }
+.rest-lamp svg { display:block; width:100%; overflow:visible; }
+.rest-lamp-pool { opacity:.09; transition:opacity .5s; }
+.rest-lamp-glow { opacity:.08; filter:blur(7px); transition:opacity .5s; }
+.rest-lamp-core { fill:#a28d5e; filter:drop-shadow(0 0 3px #ffdc9470); transition:fill .5s,filter .5s; }
+.rest-lamp.is-lit .rest-lamp-pool { opacity:.45; }
+.rest-lamp.is-lit .rest-lamp-glow { opacity:.45; }
+.rest-lamp.is-lit .rest-lamp-core { fill:#fff0b7; filter:drop-shadow(0 0 12px #ffe3a2); }
+.gac-rest .rest-ground { inset:70% 0 0; height:30%; z-index:600; }
+.rest-directions { gap:4px; }
+.rest-directions button { min-width:44px; padding:8px; }
+@media (prefers-reduced-motion:reduce) { .rest-lamp * { transition:none; } }
+
+.gac-rest.is-approach .rest-darkness, .gac-rest.is-complete .rest-darkness { opacity:0; }
+.gac-rest.is-approach .rest-cuoi, .gac-rest.is-complete .rest-cuoi { filter:brightness(1); }
+.rest-lamp:not(.is-lit) .rest-lamp-glow { animation:rest-flicker 5s ease-in-out infinite; }
+.rest-lamp:nth-of-type(3) .rest-lamp-glow { animation-delay:-1.7s; }
+.rest-lamp:nth-of-type(4) .rest-lamp-glow { animation-delay:-3.4s; }
+@keyframes rest-flicker { 0%,100% { opacity:.06; } 50% { opacity:.14; } }
+.gac-rest[hidden] .rest-lamp-glow { animation-play-state:paused; }
+@media (prefers-reduced-motion:reduce) {
+  .rest-lamp:not(.is-lit) .rest-lamp-glow { animation:none; }
+  .rest-darkness, .rest-cuoi { transition:none; }
+}
