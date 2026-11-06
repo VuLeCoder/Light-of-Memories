@@ -1,3 +1,4 @@
+import { migrateGacRabbit, readGacRabbit, type GacRabbitJourney } from './gac-troi-rabbit';
 import { gacMatchingIntroLength, gacSummaryLength, gacMemories, type GacFriend, type GacSite } from './gac-troi-matching';
 import { gacTroiMeetingLength } from './gac-troi-content';
 
@@ -17,12 +18,12 @@ export const gacBookUnlockIds = ['gac-book-orbit', 'gac-book-sites', ...gacTroiF
   'gac-book-impact', 'gac-book-impact.hint', 'gac-book-impact.story', 'gac-book-light', 'gac-book-light.hint', 'gac-book-map',
   'ending-book-cards', ...gacCards.map(id => `ending-book-cards.${id}`), 'ending-book-home'] as const;
 export interface GacTroiProgress {
-  revision: 2; phase: GacTroiPhase; turn: number; matched: Friend[]; seen: Friend[];
+  revision: 3; rabbitJourney: GacRabbitJourney | null; phase: GacTroiPhase; turn: number; matched: Friend[]; seen: Friend[];
   t02Done: boolean; routeLandmarks: GacLandmark[]; farewellDone: boolean; clues: GacClue[];
   reunionDone: boolean; understoodCards: GacCard[]; completedOnce: boolean; storyCompletedOnce: boolean; bookUnlocks: string[];
 }
 export function freshGacTroi(): GacTroiProgress {
-  return { revision: 2, phase: 'meeting', turn: 0, matched: [], seen: [], t02Done: false, routeLandmarks: [], farewellDone: false, clues: [], reunionDone: false, understoodCards: [], completedOnce: false, storyCompletedOnce: false, bookUnlocks: ['gac-book-orbit'] };
+  return { revision: 3, rabbitJourney: null, phase: 'meeting', turn: 0, matched: [], seen: [], t02Done: false, routeLandmarks: [], farewellDone: false, clues: [], reunionDone: false, understoodCards: [], completedOnce: false, storyCompletedOnce: false, bookUnlocks: ['gac-book-orbit'] };
 }
 const setOf = <T extends string>(value: unknown, ids: readonly T[]): T[] => ids.filter(id => Array.isArray(value) && value.includes(id));
 function prefixOf<T extends string>(value: unknown, ids: readonly T[]): T[] {
@@ -66,7 +67,7 @@ export function migrateGacTroi(value: unknown): GacTroiProgress {
 export function readGacTroi(value: unknown): GacTroiProgress {
   if (!value || typeof value !== 'object') return freshGacTroi();
   const p = value as Record<string, unknown>;
-  if (p.revision !== 2) return migrateGacTroi(value);
+  if (p.revision !== 2 && p.revision !== 3) return migrateGacTroi(value);
   const matched = setOf(p.matched, gacTroiFriends);
   const seen = setOf(p.seen, matched);
   const t01Done = seen.length === 2;
@@ -100,8 +101,10 @@ export function readGacTroi(value: unknown): GacTroiProgress {
   if (t02Done && !bookUnlocks.includes('gac-book-impact.story')) bookUnlocks.push('gac-book-impact.story');
   if (t02Done && gacTroiPhases.indexOf(phase) >= gacTroiPhases.indexOf('t03-map') && !bookUnlocks.includes('gac-book-light')) bookUnlocks.push('gac-book-light');
   if (routeLandmarks.length === 3 && gacTroiPhases.indexOf(phase) >= gacTroiPhases.indexOf('gac-farewell') && !bookUnlocks.includes('gac-book-map')) bookUnlocks.push('gac-book-map');
-  return { revision: 2, phase, turn: turnFor(p, phase, matched), matched, seen, t02Done, routeLandmarks, farewellDone, clues, reunionDone, understoodCards,
+  const result: GacTroiProgress = { revision: 3, rabbitJourney: null, phase, turn: turnFor(p, phase, matched), matched, seen, t02Done, routeLandmarks, farewellDone, clues, reunionDone, understoodCards,
     completedOnce: p.completedOnce === true, storyCompletedOnce: p.storyCompletedOnce === true, bookUnlocks: setOf(bookUnlocks, gacBookUnlockIds) };
+  result.rabbitJourney = p.revision === 2 ? migrateGacRabbit(result) : p.rabbitJourney ? readGacRabbit(p.rabbitJourney) : null;
+  return result;
 }
 /** Chapter replay retains earned light, ending access and learned book entries. */
 export function replayGacTroi(p: GacTroiProgress): GacTroiProgress {

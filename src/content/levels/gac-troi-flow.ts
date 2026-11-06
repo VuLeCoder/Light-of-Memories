@@ -1,3 +1,5 @@
+// GT-R1 flow is staged independently; the legacy renderer stays live until GT-R3.
+export { gacRabbitReleased, startGacRabbitJourney, applyGacRabbitAction, rabbitObjective } from './gac-troi-rabbit';
 import { gacCards, gacClues, gacDialogueLengths, gacRouteLandmarks, unlockGacBook, type GacCard, type GacClue, type GacLandmark, type GacTroiPhase, type GacTroiProgress } from './gac-troi-progress';
 
 /** M4 ships T01–T04 and the reunion. Later checkpoints survive saves,
