@@ -16,34 +16,30 @@ const { mkdirSync } = require('node:fs');
     localStorage.setItem('cuoi.progress',JSON.stringify({version:18,milestone:'complete',activeLevel:'gac-troi',surveyor:{...freshSurveyor(),completedOnce:true},sparkle:{...freshSparkle(),completedOnce:true},gacTroi:{...freshGacTroi(),phase:'t02-search',matched:['surveyor','lap-lanh'],seen:['surveyor','lap-lanh']}}));
    },language);
    // Keep exact game widths and the minimum height after every checkpoint reload.
-   const resume=async()=>{await page.reload();await page.getByRole('button',{name:language==='vi'?'Tiếp tục':'Continue',exact:true}).click({timeout:10000}).catch(async e=>{console.log({errors,body:await page.locator('body').innerText()});throw e;});await page.addStyleTag({content:`#main-scene .game-stage {width:${size}px!important;height:480px!important;min-height:480px!important;max-width:none!important} .game-panel {width:${size}px!important}`});};
+   const resume=async()=>{await page.reload();await page.getByRole('button',{name:language==='vi'?'Tiếp tục':'Continue',exact:true}).click({timeout:10000}).catch(async e=>{console.log({errors,body:await page.locator('body').innerText()});throw e;});await page.addStyleTag({content:`#main-scene .game-stage {width:${size}px!important;min-height:480px!important;max-width:none!important} .game-panel {width:${size}px!important}`});};
    await resume();
    const state=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('cuoi.progress')).gacTroi);
    const photo=page.locator('.gac-impact-frame .gac-impact-photo');
    await page.waitForFunction(()=>document.querySelector('.gac-impact-regions button')?.disabled===false);
-   const before=await photo.boundingBox();
-   await page.locator('.gac-impact-switch button').nth(1).click();
-   await page.waitForFunction(()=>document.querySelector('.gac-impact-regions button')?.disabled===false);
-   const after=await photo.boundingBox();assert.deepEqual(after,before,'Before/after use identical full frame');
+   assert.equal(await photo.count(),2);
+   const before=await photo.nth(0).boundingBox(), after=await photo.nth(1).boundingBox();
+   assert.ok(Math.abs(before.width-after.width)<1);
    assert.ok(Math.abs(after.width/after.height-16/9)<.01);
-   const frame=await page.locator('.gac-impact-frame').boundingBox();
-   if(frame.height>after.height+8) await page.mouse.click(frame.x+frame.width/2,frame.y+2);
-   assert.equal(await page.locator('.gac-impact-response').innerText(),'\u00a0');
+   assert.equal(await page.locator('.gac-impact-grid span').count(),6);
+   assert.equal(await page.locator('.gac-impact').evaluate(el=>el.scrollWidth>el.clientWidth+2),false);
+   mkdirSync('/tmp/cuoi-t02-redesign',{recursive:true});
+   await page.locator('.game-stage').screenshot({path:`/tmp/cuoi-t02-redesign/search-${size}-${language}.png`});
    await page.locator('.gac-impact-regions button').nth(0).press('Enter');
    assert.equal((await state()).phase,'t02-search');
    assert.ok((await page.locator('.gac-impact-response').innerText()).length>10);
    // Hint opens the broad reference, keeps the answer and scene untouched.
-   await page.locator('.gac-impact-switch button').nth(2).click();
+   await page.locator('.gac-impact-help').click();
    await page.locator('.book-panel [data-book-block="gac-book-impact.hint"] .gac-impact-hint').waitFor({state:'visible'});
    assert.equal((await state()).phase,'t02-search');assert.equal((await state()).t02Done,false);
    assert.equal(await page.locator('.book-panel .gac-impact-answer').count(),0);
-   await page.locator('.gac-impact-switch button').nth(0).focus();
-   // Choose on the Before frame. Both pointer and keyboard paths are exercised.
-   await page.locator('.gac-impact-switch button').nth(0).click();
-   await page.waitForFunction(()=>document.querySelector('.gac-impact-regions button')?.disabled===false);
-   if(size===320||size===640) {
-    const box=await photo.boundingBox();await page.mouse.click(box.x+box.width*.509,box.y+box.height*.5);
-   } else await page.locator('.gac-impact-regions button').nth(1).press('Enter');
+   await page.locator('.gac-impact-regions button').nth(1).focus();
+   if(size===320||size===640) await page.locator('.gac-impact-regions button').nth(1).click();
+   else await page.locator('.gac-impact-regions button').nth(1).press('Enter');
    await page.locator('[data-line="t02-found-01"]').waitFor();
    assert.equal((await state()).t02Done,false);
    assert.ok((await page.locator('.gac-impact-frame img').getAttribute('src')).includes('after'));
@@ -60,6 +56,7 @@ const { mkdirSync } = require('node:fs');
     assert.equal((await state()).t02Done,false);
     assert.equal(await page.locator('.gac-impact').evaluate(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2),false,'Story line fits');
     // Persist and resume every story checkpoint, without triggering a second award.
+    await page.waitForFunction(turn=>JSON.parse(localStorage.getItem('cuoi.progress')).gacTroi.turn===turn,i);
     await resume();await page.locator(`[data-line="t02-found-0${i+1}"]`).waitFor();
     await page.waitForFunction(()=>document.querySelector('.gac-impact .dialogue')?.dataset.complete==='true');
     await page.locator('.gac-impact .dialogue-next').press('Enter');
@@ -70,7 +67,7 @@ const { mkdirSync } = require('node:fs');
    await resume();await page.locator('[data-line="t03-intro-01"]').waitFor();
    assert.equal((await state()).phase,'t03-intro');
    assert.deepEqual(errors,[]);
-   console.log(`${size}px ${language}: frame, padding, retry, book hint, pointer/keyboard, story reloads and T03 introduction passed`);
+   console.log(`${size}px ${language}: paired photos, numbered areas, retry, book hint, pointer/keyboard, story reloads and T03 introduction passed`);
    await page.close();
   }
  }finally{await browser.close();}

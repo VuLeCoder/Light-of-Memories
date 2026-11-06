@@ -1,9 +1,9 @@
 import { gacCards, gacClues, gacDialogueLengths, gacRouteLandmarks, unlockGacBook, type GacCard, type GacClue, type GacLandmark, type GacTroiPhase, type GacTroiProgress } from './gac-troi-progress';
 
-/** M3 ships T01–T03, the farewell and a walk to the T04 rest checkpoint. Later checkpoints survive saves,
+/** M4 ships T01–T04 and the reunion. Later checkpoints survive saves,
  * but their screens stay behind this release gate until implemented. */
 export function gacPhaseAvailable(phase: GacTroiPhase): boolean {
-  return ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-map', 't03-story', 'gac-farewell', 'gac-free'].includes(phase);
+  return ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-map', 't03-story', 'gac-farewell', 'gac-free', 't04-slope', 't04-rock', 't04-banyan', 'reunion'].includes(phase);
 }
 export function advanceGacDialogue(p: GacTroiProgress): GacTroiProgress {
   const length = gacDialogueLengths[p.phase];

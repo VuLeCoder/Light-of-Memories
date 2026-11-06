@@ -1,6 +1,6 @@
 # Tài nguyên hình ảnh
 
-Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md), [Game1](done/Game1_Surveyor_3.md), [Game2](done/Game2_Apollo_11.md), [M1 Gác Trời](done/M1_Gac_Troi_progress.md), [M2](done/M2_T02.md) và [M3](done/M3_T03.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
+Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md), [Game1](done/Game1_Surveyor_3.md), [Game2](done/Game2_Apollo_11.md), [M1 Gác Trời](done/M1_Gac_Troi_progress.md), [M2](done/M2_T02.md), [M3](done/M3_T03.md) và [M4](done/M4_T04.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
 
 Cập nhật 06/11/2026: tuyến hiện tại gồm Mắt Tròn, Lấp Lánh và Gác Trời. Đã xóa 12 ảnh không còn tham chiếu trong mã nguồn; xem [biên bản dọn file](done/unused-files-cleanup.md). Các phần Tai Thính/Bánh Lưới bên dưới ghi lại lịch sử thiết kế; ảnh kỷ niệm của hai màn này và ảnh sách Apollo 12/17 đã được gỡ khỏi `public/`. Chân dung và mã vẽ cảnh còn được import được giữ nguyên.
 
@@ -9,6 +9,7 @@ Cập nhật 06/11/2026: tuyến hiện tại gồm Mắt Tròn, Lấp Lánh và
 - `sprites/`: ba sheet An/bà/Cuội và sprite nghỉ Lấp Lánh.
 - `memories/<id>/`: ảnh tư liệu của Lấp Lánh và Gác Trời, có mã nhiệm vụ/ảnh trong tên file.
 - `public/assets/`: ba ảnh ký ức JPG của Mắt Tròn vẫn đang dùng; không tự di chuyển khi chỉ dọn tài liệu.
+- T04: ba nền, đèn sau khe đá và hai tư thế Hằng được vẽ bằng mã Phaser trong `src/game/gac-trail-scenery.ts`; dùng chung silhouette bản đồ T03. Chân dung thoại Hằng tái dùng nguyên file, không cắt thành sprite. Các hình này là sáng tác trong truyện.
 - Tên file dùng chữ thường, tiếng Việt không dấu và dấu gạch ngang.
 
 ## Ánh xạ tên cũ và mới

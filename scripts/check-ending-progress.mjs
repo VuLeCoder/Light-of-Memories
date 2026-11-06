@@ -11,6 +11,13 @@ try {
   const { freshSparkle } = await load('content/levels/lap-lanh');
   const { gacT02Intro } = await load('content/levels/gac-troi-content');
   const { getBrowserBookPages } = await load('content/book/reading-order');
+  // T02's retained data checks; image-coordinate clicking was retired.
+  const { gacT02Story } = await load('content/levels/gac-troi-impact');
+  const search = readGacTroi({ ...freshGacTroi(), phase: 't02-search', matched: ['surveyor', 'lap-lanh'], seen: ['surveyor', 'lap-lanh'] });
+  assert.ok(search.bookUnlocks.includes('gac-book-impact'));
+  assert.ok(!search.bookUnlocks.includes('gac-book-impact.story'));
+  assert.deepEqual(readGacTroi(search), search);
+  for (const language of ['vi', 'en']) assert.equal(gacT02Story(language).length, gacDialogueLengths['t02-story']);
   const store = new Map(); let writes = 0;
   globalThis.localStorage = { getItem: key => store.get(key) ?? null, setItem: (key, value) => { writes++; store.set(key, value); } };
   const prior = { surveyor: { ...freshSurveyor(), completedOnce: true }, sparkle: { ...freshSparkle(), completedOnce: true } };
@@ -116,7 +123,7 @@ try {
   assert.equal(broken.completedOnce, true, 'Earned achievements survive a damaged current replay');
   assert.deepEqual(readGacTroi(broken), broken, 'Repairing a save is idempotent');
   assert.deepEqual(readGacTroi({ ...completed, phase: 't03-map', routeLandmarks: ['bad', 'low-slope', 'low-slope', 'split-rock'] }).routeLandmarks, ['low-slope', 'split-rock']);
-  for (const phase of state.gacTroiPhases.slice(11)) assert.equal(flow.gacPhaseAvailable(phase), false, `Unshipped ${phase} gated`);
+  for (const phase of state.gacTroiPhases.slice(15)) assert.equal(flow.gacPhaseAvailable(phase), false, `Unshipped ${phase} gated`);
   const noReceipts = readGacTroi({ ...freshGacTroi(), phase: 'story-end' });
   assert.equal(noReceipts.phase, 'matching'); assert.equal(noReceipts.storyCompletedOnce, false);
   assert.deepEqual(readGacTroi({ ...completed, phase: 't04-rock', clues: ['slope'] }).clues, ['slope']);

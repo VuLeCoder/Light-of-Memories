@@ -61,8 +61,8 @@ export const gacTroiOrbitBook = {
   ]
 } as const;
 
-// T02 introduction continues into the full-frame photo comparison.
+// T02 introduction continues into the side-by-side photo comparison.
 export const gacT02Intro = (language: Language): StoryLine[] => [
   { id: 't02-intro-01', speaker: 'gacTroi', text: language === 'vi' ? 'Còn đây là hai ảnh của cùng một vùng đất, chụp vào hai ngày khác nhau.' : 'Here are two pictures of the same place, taken on different days.' },
-  { id: 't02-intro-02', speaker: 'gacTroi', text: language === 'vi' ? 'Cuội đổi qua lại hai ảnh rồi tìm chỗ có thêm một dấu vết nhé.' : 'Switch between them, Cuội, and look for a new mark.' },
+  { id: 't02-intro-02', speaker: 'gacTroi', text: language === 'vi' ? 'Mình đặt hai ảnh cạnh nhau nhé. Cuội tìm vùng có thêm đốm sáng rồi chọn số của vùng ấy.' : 'Let’s put them side by side. Find the area with a new bright spot, Cuội, then choose its number.' },
 ];

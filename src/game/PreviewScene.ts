@@ -1,3 +1,4 @@
+import { drawGacTrail, drawTrailLantern, isGacTrail } from './gac-trail-scenery';
 import { gacTroiScenery } from './gac-troi-scenery';
 import { BanhLuoiGuideScene } from './banh-luoi-guide';
 import { banhLuoiScenery, drawBanhLuoi, banhLuoiLayout } from './banh-luoi-scenery';
@@ -15,6 +16,11 @@ import { copy, type Language } from '../content/i18n';
 
 export class PreviewScene extends Phaser.Scene {
   private options: PreviewOptions;
+  private trailLantern?: Phaser.GameObjects.Graphics;
+  private trailTime = 0;
+  walkToDestination(value: number | undefined) {
+    if (value !== undefined && isGacTrail(this.options.scene) && this.moonMode === 'free') this.walkTarget = Phaser.Math.Clamp(value, 52, 895);
+  }
   private guide?: BanhLuoiGuideScene;
   setBanhLuoiGuide(value: PreviewOptions['banhLuoiGuide']) {
     this.options.banhLuoiGuide = value;
@@ -154,7 +160,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   private get interactionX() { if (this.options.scene === 'ban-banh-luoi') return banhLuoiLayout.approachX; if (this.options.scene === 'tai-thinh') return this.options.freeRoam ? taiThinhLayout.pse.x : 520; if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { if (this.options.scene === 'gac-troi') return false; if (this.options.scene === 'ban-banh-luoi') return !!this.options.freeRoam || !this.options.encounterStarted; if (this.options.freeRoam) return true; return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  private get canInteract() { if (this.options.scene === 'gac-troi' || isGacTrail(this.options.scene)) return false; if (this.options.scene === 'ban-banh-luoi') return !!this.options.freeRoam || !this.options.encounterStarted; if (this.options.freeRoam) return true; return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
   setSparkleEnding(value: boolean) {
     const entering = value && !this.options.sparkleEnding;
     this.options.sparkleEnding = value;
@@ -179,7 +185,7 @@ export class PreviewScene extends Phaser.Scene {
     this.syncLanternGrip();
   }
   private drawTaiLight() {
-    if (!['tai-thinh', 'ban-banh-luoi', 'gac-troi'].includes(this.options.scene) || !this.earnedLight) return;
+    if ((!['tai-thinh', 'ban-banh-luoi', 'gac-troi'].includes(this.options.scene) && !isGacTrail(this.options.scene)) || !this.earnedLight) return;
     const g = this.earnedLight.clear();
     const count = this.options.taiStars ?? 0;
     for (let i = 0; i < count; i++) {
@@ -436,7 +442,11 @@ export class PreviewScene extends Phaser.Scene {
       // Align An's seated hips with the porch edge (y=425), feet on the lower step.
       this.addCharacter('an', 313, 465, 0.37);
     } else {
-      if (this.options.scene === 'gac-troi') {
+      if (isGacTrail(this.options.scene)) {
+        cacheScenery(this, scene => drawGacTrail(scene, this.options.scene));
+        if (this.options.scene === 't04-rock') this.trailLantern = drawTrailLantern(this);
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.cameras.main.fadeIn(300, 13, 24, 34);
+      } else if (this.options.scene === 'gac-troi') {
         cacheScenery(this, gacTroiScenery);
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.cameras.main.fadeIn(600, 13, 20, 28);
       } else if (this.options.scene === 'ban-banh-luoi') {
@@ -513,7 +523,7 @@ export class PreviewScene extends Phaser.Scene {
         this.taiGiftLight = this.add.graphics();
         this.drawTaiLight();
       }
-      if (['ban-banh-luoi', 'gac-troi'].includes(this.options.scene)) this.drawTaiLight();
+      if (['ban-banh-luoi', 'gac-troi'].includes(this.options.scene) || isGacTrail(this.options.scene)) this.drawTaiLight();
       this.syncLanternGrip();
       // Follow the final animated pose and position, including direction changes.
       this.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncLanternGrip, this);
@@ -573,6 +583,10 @@ export class PreviewScene extends Phaser.Scene {
   update(_time: number, delta: number) {
     if (this.guide) { this.guide.update(delta); return; }
     if (!this.cuoi || !this.keys) return;
+    if (this.trailLantern && this.moonMode !== 'paused') {
+      this.trailTime += Math.min(delta, 50);
+      this.trailLantern.setRotation(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : Math.sin(this.trailTime / 850) * .06);
+    }
     if (this.ripple && this.moonMode !== 'paused') {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) this.rippleTime += Math.min(delta, 50);
       drawTaiThinhRipple(this.ripple, this.rippleTime);
@@ -598,6 +612,12 @@ export class PreviewScene extends Phaser.Scene {
     const rightEdge = this.rightEdge;
     this.cuoi.x = Phaser.Math.Clamp(this.cuoi.x + heading * Math.min(distance, remaining), 52, rightEdge);
     if (this.options.scene === 'surveyor') this.cuoi.y = surveyorGroundY(this.cuoi.x);
+    if (isGacTrail(this.options.scene) && this.options.scene !== 'reunion' && this.cuoi.x >= (this.options.scene === 't04-banyan' ? 650 : 875) && !this.exitTriggered) {
+      this.exitTriggered = true;
+      this.setMoonMode('story');
+      this.options.onExit();
+      return;
+    }
     const finishedTrail = this.options.freeRoam && ['lap-lanh', 'tai-thinh', 'ban-banh-luoi', 'gac-troi'].includes(this.options.scene);
     if (((this.options.scene === 'moon' && this.options.quest === 'trail' && this.cuoi.x >= 890) || (finishedTrail && this.cuoi.x >= 875)) && !this.exitTriggered) {
       this.exitTriggered = true;
@@ -646,17 +666,17 @@ export class PreviewScene extends Phaser.Scene {
       .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
       .setDepth(c.depth - .1)
       .setVisible(this.options.scene === 'surveyor' ? (!!this.options.freeRoam || this.options.surveyorLantern === 'unlit' || this.options.surveyorLantern === 'lit') : this.options.scene === 'lap-lanh' ? true : ['lantern', 'trail', 'complete'].includes(this.options.quest));
-    this.earnedLight?.setVisible(['tai-thinh', 'ban-banh-luoi', 'gac-troi', 'lap-lanh'].includes(this.options.scene) || !!this.options.freeRoam || (this.options.scene === 'surveyor' && this.options.surveyorLantern === 'lit'))
+    this.earnedLight?.setVisible(isGacTrail(this.options.scene) || ['tai-thinh', 'ban-banh-luoi', 'gac-troi', 'lap-lanh'].includes(this.options.scene) || !!this.options.freeRoam || (this.options.scene === 'surveyor' && this.options.surveyorLantern === 'lit'))
       .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
     this.sparkleGiftLight?.setVisible(!!this.options.freeRoam || this.options.sparkleLantern === 'lit')
       .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .04);
   }
 
-  private get rightEdge() { return this.options.freeRoam || this.options.scene === 'surveyor' ? 895 : this.options.quest === 'trail' ? 908 : 830; }
+  private get rightEdge() { return this.options.freeRoam || this.options.scene === 'surveyor' || isGacTrail(this.options.scene) ? 895 : this.options.quest === 'trail' ? 908 : 830; }
 
   private addMoonCuoi() {
     if (!this.textures.exists('cuoi')) return;
-    const startX = this.options.scene === 'gac-troi' ? 690 : this.options.scene === 'ban-banh-luoi' ? (this.options.encounterStarted ? banhLuoiLayout.approachX : 140) : this.options.scene === 'tai-thinh' ? (this.options.encounterStarted ? 430 : 140) : this.options.scene === 'lap-lanh' ? (this.options.sparkleEnding ? 340 : 140) : this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
+    const startX = isGacTrail(this.options.scene) ? (this.options.scene === 'reunion' ? 650 : 120) : this.options.scene === 'gac-troi' ? 690 : this.options.scene === 'ban-banh-luoi' ? (this.options.encounterStarted ? banhLuoiLayout.approachX : 140) : this.options.scene === 'tai-thinh' ? (this.options.encounterStarted ? 430 : 140) : this.options.scene === 'lap-lanh' ? (this.options.sparkleEnding ? 340 : 140) : this.options.scene === 'surveyor' ? (this.options.encounterStarted ? surveyorEncounter.x - 80 : 140) : this.options.quest === 'complete' ? 890 : this.options.quest === 'bench' ? 307 : 470;
     this.cuoi = this.add.sprite(startX, this.options.scene === 'surveyor' ? surveyorGroundY(startX) : 431, 'cuoi', this.options.initiallyAwake ? 'rest' : 'sleep')
       .setOrigin(0.5, 1).setScale(0.62).setDepth(10);
     if (this.options.sparkleTrail) this.syncTrailPerspective();

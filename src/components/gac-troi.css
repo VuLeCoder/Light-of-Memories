@@ -131,3 +131,22 @@
   .gac-impact .dialogue-text { font-size:14px; }
   .gac-impact figcaption { font-size:9px; }
 }
+
+/* T02: compare without remembering or switching the earlier picture. */
+.gac-impact-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.gac-impact-pair figure { min-width:0; }
+.gac-impact-pair figure > strong { font-size:14px; color:#ffe3a2; }
+.gac-impact-pair .gac-impact-frame { flex:none; aspect-ratio:16/9; cursor:default; }
+.gac-impact-grid { position:absolute; inset:0; display:grid; grid-template-columns:repeat(3,1fr); pointer-events:none; }
+.gac-impact-grid span { border-right:1px dashed #ffe3a299; padding:4px; color:#fff3ce; font-size:16px; font-weight:700; text-shadow:0 1px 3px #000,0 0 4px #000; }
+.gac-impact-grid span:last-child { border-right:0; }
+.gac-impact-result { flex:1; min-height:100px; display:flex; }
+.gac-impact-result figure > strong { display:none; }
+.gac-impact-credit { font-size:10px; line-height:1.4; }
+.gac-impact-help { align-self:flex-start; min-height:44px; }
+#main-scene .game-stage:has(.gac-impact:not(.gac-impact-story)) { height:auto; aspect-ratio:auto; min-height:480px; }
+#main-scene .game-stage:has(.gac-impact:not(.gac-impact-story)) > .story-canvas { display:none; }
+.gac-meeting:has(.gac-impact:not(.gac-impact-story)) { position:relative; min-height:480px; }
+@container (max-width:480px) {
+  .gac-impact-pair { grid-template-columns:1fr; gap:8px; }
+}

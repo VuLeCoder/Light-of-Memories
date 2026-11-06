@@ -1,5 +1,6 @@
 # M1 — Luồng và lưu tiến trình Gác Trời
 
+> Cập nhật hồ sơ 06/11/2026: mô tả và kết quả bên dưới thuộc thời điểm bàn giao. Trạng thái hiện tại xem [tổng quan](../project-overview.md). `check:gac-impact` đã bỏ; kiểm tra dữ liệu T02 chuyển vào `check:ending-progress`, còn hồi quy giao diện ở `scripts/check-gac-impact.cjs`.
 Bàn giao ngày 06/11/2026, theo hợp đồng M0 tại `docs/plan/ket-truyen-m0/luu-tien-trinh.md`.
 
 ## Hành vi trong bản M1

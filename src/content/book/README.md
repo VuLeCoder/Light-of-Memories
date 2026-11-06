@@ -2,7 +2,7 @@
 
 Current scope (2026-11-06): 26 canonical pages for Surveyor 3, Apollo 11 and Gác Trời, including T02/T03. The Apollo 12/17 companion pages described in the historical notes below have been removed from the catalog; their four unused local images were removed during [asset cleanup](../../../docs/done/unused-files-cleanup.md). Keep the source records below for provenance.
 
-`catalog.ts` inventories the book as classified, bilingual blocks. The current validated inventory contains 44 canonical pages; responsive pagination can produce more visible leaves. `overview` corresponds to the browser's `null` page. Unlock logic remains
+`catalog.ts` inventories the book as classified, bilingual blocks. The current validated inventory contains 26 canonical pages (52 bilingual blocks); responsive pagination can produce more visible leaves. `overview` corresponds to the browser's `null` page. Unlock logic remains
 in the existing progress helpers and `JourneyMap`; it never filters this catalog.
 
 - `types.ts`: fact/game/fiction, stable block IDs, publication section/order,
@@ -43,7 +43,7 @@ existing `BASE_URL` image references without starting an HTTP/WebSocket server.
 
 `BookParagraph` giữ nguyên nội dung và thuộc tính phân loại của từng đoạn. `BookPageLabel` đọc catalog và hiển thị một nhãn chung “Nội dung giả tưởng” ở góc trên trái cho trang có khối game hoặc fiction; trang chỉ có fact không có nhãn. Không gắn nhãn lặp lại trong nội dung. Phân loại game/fiction vẫn được giữ riêng trong dữ liệu xuất bản. `BookLabelGuide` nằm dưới section nhân vật trong cảnh, giải thích nhãn bằng `details/summary`, bao gồm ý nghĩa với trang hỗn hợp. Nội dung dài được dàn thành các trang tiếp theo thay vì dùng thanh cuộn trong trang sách.
 
-## NASA companion pages
+## NASA companion pages (historical notes, 2026-10-31)
 
 `real-world.ts` contains bilingual factual pages inserted after their available story or challenge page. Chapter locks still apply. The two sample pages form a consecutive sequence (rock, then orange soil). Each page has an initial `above` or `wrap` layout, an archival caption and NASA source links. `useBookImageLayout` measures the rendered sheet after image/font loading and resize; any overflowing page with a photo switches to a left float so text flows to its right and below. Long text is split into additional leaves after layout measurement, preserving inline classifications and reading order. The catalog includes these pages as facts in the progress-independent reading edition.
 
@@ -55,13 +55,13 @@ Sources consulted 2026-10-31 are recorded with each entry. New local images:
 
 Other photographs reuse the project's NASA archival assets; illustrations of fictional characters are not used as photographs of real hardware.
 
-## Content review (2026-10-31)
+## Content review (historical, 2026-10-31)
 
 Removed eight redundant companion pages: Surveyor tools, laser ranging, ALSEP devices, tremor sources, impact ringing, rover wheels, walkback and rover legacy. Their existing pages carry the explanation; Surveyor tools and ALSEP devices now include archive images directly. Wheel flexibility and walkback life-support limits were merged into the original paragraphs. Tremor sources retain the tidal and thermal explanation. NASA references for the wheels and Apollo 17 walkback are used in both browser and catalog.
 
 Chapter introductions now introduce the imagined friend and lead into the real hardware page. Repair instructions refer forward to the actual prism page; sample tasks refer to the two following factual sample pages. The actual seismogram page now teaches how to read three measurement directions and the time scale, instead of retelling the impact or repeating the sensor definition. Captions retain identifying context even where a date or object name also appears in the prose.
 
-Browser and reading catalog share the revised wording and classifications: fictional introductions and game directions stay in the appendix; mission facts, photographs and source links stay in the main reading edition. The current complete inventory is 44 canonical pages after the rover-page merge.
+Browser and reading catalog share the revised wording and classifications: fictional introductions and game directions stay in the appendix; mission facts, photographs and source links stay in the main reading edition. That historical inventory had 44 canonical pages; the current three-friend inventory has 26.
 
 ## Page composition
 
@@ -71,10 +71,12 @@ Short character introductions use `book-prose--intro`: centred illustration abov
 
 `npm run check:book-flow` checks progression checkpoints, hint targets, NASA companion placement, the complete browser inventory and a fresh archive. `reading-order.ts` is shared by the browser and this check. Surveyor entries follow tools, then each excavation clue and its collected photo; companion pages remain directly after their parent. Browser page selection uses stable IDs so collecting a photo does not change the page being read. The complete publication keeps its own factual/appendix order.
 
-## Remaining work (2026-10-31)
+## Remaining work (2026-11-06)
 
 The publication model is ready for a renderer, but PDF download is not implemented.
-Add chapter five and the journey conclusion when their content is approved. The full
+Gác Trời T02/T03 and the T04 map hint are integrated. Add the M5 story cards
+and M6 journey conclusion when implemented; reaching `cards-intro` does not yet
+add those unpublished pages to the catalog. The full
 PDF must include locked content independently of the save, with factual content in
 the main section and game/fiction in the appendix, in the selected language.
 

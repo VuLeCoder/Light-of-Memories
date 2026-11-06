@@ -106,18 +106,14 @@ const { mkdirSync } = require('node:fs');
         const canvas = await page.locator('.game-host canvas').boundingBox();
         await page.mouse.click(canvas.x + canvas.width * .93, canvas.y + canvas.height * .8);
       } else { await page.keyboard.down('ArrowRight'); }
-      await page.locator('.gac-meeting .ending-farewell').waitFor();
+      await page.locator('.gac-trail').waitFor();
       await page.keyboard.up('ArrowRight');
       assert.equal((await state()).phase, 't04-slope'); assert.deepEqual((await state()).clues, []);
-      await resume(); await page.locator('.gac-meeting .ending-farewell').waitFor();
+      await resume(); await page.locator('.gac-trail').waitFor();
       assert.equal((await state()).phase, 't04-slope');
-      await page.getByRole('button', { name: language === 'vi' ? 'Chơi lại Gác Trời' : 'Replay Sky Watcher', exact: true }).click();
-      await page.locator('[data-line="MO-02"]').waitFor();
-      const replay = await state();
-      assert.equal(replay.completedOnce, true); assert.equal(replay.farewellDone, false);
-      assert.deepEqual(replay.routeLandmarks, []); assert.ok(replay.bookUnlocks.includes('gac-book-map'));
+      // Replay from the new T04 endpoint is covered by check-gac-trail.cjs.
       assert.deepEqual(errors, []);
-      console.log(`${size}px ${language}: two moments, retry, saved landmarks, hint, dialogue reloads, farewell, chat, walk/tap exit and replay passed`);
+      console.log(`${size}px ${language}: two moments, retry, saved landmarks, hint, dialogue reloads, farewell, chat, walk/tap exit into T04 passed`);
       await page.close();
     }
   } finally { await browser.close(); }

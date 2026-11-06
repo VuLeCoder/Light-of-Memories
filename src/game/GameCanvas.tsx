@@ -4,7 +4,7 @@ import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
 
-const canvasLabel = (scene: GameSceneId, language: Language, guiding = false) => guiding ? (language === 'vi' ? 'Cuội dẫn Bánh Lưới theo lộ trình trong chuyến đi tưởng tượng.' : 'Cuội guides Mesh Wheels along the planned imaginary trip.') : scene === 'gac-troi' ? (language === 'vi' ? 'Cuội đứng trên mặt đất, trò chuyện qua tín hiệu với Gác Trời ở quỹ đạo Mặt Trăng. Cảnh minh họa không theo tỉ lệ.' : 'Cuội stands on the surface, speaking by signal with Sky Watcher in lunar orbit. Illustration not to scale.') : scene === 'ban-banh-luoi' ? (language === 'vi' ? 'Cuội cạnh xe Apollo 17 đỗ yên giữa thung lũng Taurus–Littrow.' : 'Cuội beside the parked Apollo 17 rover in the Taurus–Littrow valley.') : scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
+const canvasLabel = (scene: GameSceneId, language: Language, guiding = false) => scene.startsWith('t04-') || scene === 'reunion' ? (language === 'vi' ? 'Cuội tìm chị Hằng: triền đất thấp, đá có khe và cây đa. Cảnh minh họa trong truyện.' : 'Cuội looks for Hằng: low slope, split rock and banyan tree. Story illustration.') : guiding ? (language === 'vi' ? 'Cuội dẫn Bánh Lưới theo lộ trình trong chuyến đi tưởng tượng.' : 'Cuội guides Mesh Wheels along the planned imaginary trip.') : scene === 'gac-troi' ? (language === 'vi' ? 'Cuội đứng trên mặt đất, trò chuyện qua tín hiệu với Gác Trời ở quỹ đạo Mặt Trăng. Cảnh minh họa không theo tỉ lệ.' : 'Cuội stands on the surface, speaking by signal with Sky Watcher in lunar orbit. Illustration not to scale.') : scene === 'ban-banh-luoi' ? (language === 'vi' ? 'Cuội cạnh xe Apollo 17 đỗ yên giữa thung lũng Taurus–Littrow.' : 'Cuội beside the parked Apollo 17 rover in the Taurus–Littrow valley.') : scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
   ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
 
 function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
@@ -14,7 +14,8 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ sparkleLantern = 'hidden', surveyorLantern = 'hidden', banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ sparkleLantern = 'hidden', surveyorLantern = 'hidden', banhLuoiGuide, walkDestination, walkCommand, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  walkDestination?: number; walkCommand?: number;
   sparkleLantern?: PreviewOptions['sparkleLantern'];
   surveyorLantern?: PreviewOptions['surveyorLantern'];
   banhLuoiGuide?: PreviewOptions['banhLuoiGuide'];
@@ -134,6 +135,7 @@ export function GameCanvas({ sparkleLantern = 'hidden', surveyorLantern = 'hidde
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.walkToDestination(walkDestination); }, [walkDestination, walkCommand, ready]);
   useEffect(() => { phaserScene.current?.setBanhLuoiGuide(banhLuoiGuide); }, [banhLuoiGuide]);
   useEffect(() => { phaserScene.current?.setTaiEnding(taiEnding, taiStars); }, [taiEnding, taiStars]);
   useEffect(() => { phaserScene.current?.setSparkleLantern(sparkleLantern); }, [sparkleLantern]);

@@ -29,7 +29,7 @@ try {
   p = advance({ ...p, turn: 3 });
   assert.equal(p.completedOnce, true); assert.equal(p.farewellDone, true);
   assert.equal(enter(p).phase, 't04-slope');
-  assert.equal(gacPhaseAvailable('t04-slope'), false);
+  assert.equal(gacPhaseAvailable('t04-slope'), true);
   const replay = replayGacTroi(p);
   assert.equal(replay.completedOnce, true); assert.equal(replay.farewellDone, false);
   assert.deepEqual(replay.routeLandmarks, []); assert.deepEqual(replay.bookUnlocks, p.bookUnlocks);
