@@ -10,9 +10,9 @@ Tuyến hiện tại gồm **Mắt Tròn / Surveyor 3 → Lấp Lánh / Apollo 1
 
 - Mắt Tròn: nhận biết dụng cụ, đào ảnh ký ức, nhật ký và kết riêng.
 - Lấp Lánh: lau bụi, phản xạ, đo khoảng cách và kết riêng.
-- Gác Trời: T01 ghép ký ức; T02 xem đồng thời hai ảnh Trước/Sau, chọn vùng 1–2–3 có đốm mới; T03 đối chiếu hai thời điểm để ghi ba mốc đường; tạm biệt và thắp đủ đèn.
-- T04: đi theo triền thấp, nhận ra khối đá và ngọn đèn thấp, đến cây đa và gặp chị Hằng. Năm lượt thoại gặp lại được lưu theo checkpoint.
-- Sau cuộc gặp, game nghỉ tại `cards-intro`. M5 thẻ câu chuyện và M6 cảnh kết An–bà chưa triển khai. Hoàn thành Gác Trời không đồng nghĩa hoàn thành toàn câu chuyện.
+- Gác Trời: giữ T01 ghép ký ức và T02 chọn vùng có đốm mới; tiếp theo là chuyện thật LROC lập bản đồ ánh sáng, rồi cầu nối cổ tích.
+- Hành trình Thỏ Ngọc: tìm Thỏ và đánh thức bốn sao qua triền thấp, khe đá, cây đa; gặp Hằng (4 lượt), cảm ơn Gác Trời (5 lượt), nhận ánh sáng cuối ở lượt 3 → 4.
+- Cảnh nghỉ dưới cây có Chat (3 lượt, không đổi save), sách, lộ trình và chơi lại. Không dẫn vào thẻ hay kết An–bà. Xem [GT-R3](done/GT-R3-gap-Hang-va-ket-Gac-Troi.md); kiểm tra toàn diện GT-R4 còn lại.
 
 Sách hiện có **26 trang chuẩn, 49 khối nội dung Việt/Anh**; phân trang theo màn hình có thể tạo thêm trang hiển thị. Sách mở theo tiến trình, có gợi ý, nguồn ảnh và dữ liệu xuất bản độc lập bản lưu. Gợi ý không tự giải thử thách. Mục lục cho phép chọn nhanh trang; đáp án đo khoảng cách chỉ hiện khi mở phần xem đáp án. Xem [đợt chỉnh sách](done/book-content-review.md).
 
@@ -42,7 +42,7 @@ Game bên trái, sách giấy kem bên phải; màn hẹp xếp sách xuống d�
 
 A/D, mũi tên hoặc chạm đất để đi; E hoặc bấm vật để tương tác; Space/Enter tiếp tục thoại. Các bài HTML có nút riêng và hướng dẫn theo chặng. Menu tạm dừng; bấm sách hoặc ra ngoài nhả bàn phím game.
 
-Các khóa localStorage là `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema **v18** đọc v1–v18; Gác Trời revision 2. Save cảnh đã bỏ trở về lộ trình và giữ thành tích hợp lệ. Chơi lại Gác Trời giữ thành tích và sách đã mở, nhưng lượt chơi mới vẫn phải hoàn thành các bước để vào T04. Không đồng bộ giữa thiết bị.
+Các khóa localStorage là `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema **v18** đọc v1–v18; Gác Trời revision 3. Save cảnh đã bỏ trở về lộ trình và giữ thành tích hợp lệ. Chơi lại Gác Trời giữ thành tích và sách đã mở, nhưng lượt chơi mới vẫn phải hoàn thành các bước của hành trình Thỏ Ngọc. Không đồng bộ giữa thiết bị.
 
 ## Công việc còn lại và giới hạn
 

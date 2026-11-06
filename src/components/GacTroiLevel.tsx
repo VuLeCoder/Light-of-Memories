@@ -1,3 +1,4 @@
+import { GacRabbitStory } from './GacRabbitStory';
 import { GacLightMap } from './GacLightMap';
 import { useState } from 'react';
 import { GacTroiLight } from './GacTroiLight';
@@ -26,6 +27,7 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, onC
   const t02Intro = progress.phase === 't02-intro' && gacPhaseAvailable(progress.phase);
   const impact = ['t02-search', 't02-story'].includes(progress.phase) && gacPhaseAvailable(progress.phase);
   const matching = progress.phase === 'matching' && !intro;
+  if (progress.rabbitJourney?.active) return <GacRabbitStory language={language} progress={progress} onChange={onChange} onBack={onBack} onBook={onBook} paused={paused}/>;
   return <section className={`ending-scene gac-meeting${light || lightDialogue || free ? ' gac-later' : ''}${matching || impact || light ? ' gac-activity' : ''}`} hidden={paused} lang={language} aria-label={vi ? 'Gặp Gác Trời' : 'Meet Sky Watcher'}>
     <div className="surveyor-scene-hud"><span>{vi ? 'Gác Trời · Tín hiệu từ quỹ đạo' : 'Sky Watcher · A signal from orbit'}</span>
       {progress.phase === 't02-search' && <button className="gac-impact-help" onClick={onBook} disabled={paused}>{vi ? 'Gợi ý' : 'Hint'}</button>}

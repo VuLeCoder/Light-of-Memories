@@ -1,7 +1,7 @@
 import type { GacTroiProgress } from './gac-troi-progress';
 
-/** Open only when GT-R2 and GT-R3 supply every screen. */
-export const gacRabbitReleased: boolean = false;
+/** GT-R2 interactions and GT-R3 story screens are connected in the released app. */
+export const gacRabbitReleased: boolean = true;
 export const rabbitStops = ['slope', 'rock', 'banyan'] as const;
 export type RabbitStop = typeof rabbitStops[number];
 export const rabbitStages = ['real', 'bridge', ...rabbitStops, 'reunion', 'farewell', 'free'] as const;

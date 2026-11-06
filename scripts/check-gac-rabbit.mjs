@@ -31,9 +31,10 @@ try {
   assert.equal(replayGacTroi(completed).completedOnce, true);
   assert.equal(replayGacTroi(completed).storyCompletedOnce, true);
   assert.deepEqual(replayGacTroi(completed).bookUnlocks, completed.bookUnlocks);
-  assert.equal(rabbit.gacRabbitReleased, false);
-  assert.equal(rabbit.startGacRabbitJourney(base), base);
-  // Exercise staged flow directly; the production activation remains closed.
+  assert.equal(rabbit.gacRabbitReleased, true);
+  assert.equal(rabbit.startGacRabbitJourney(base).rabbitJourney.active, true);
+  assert.equal(rabbit.startGacRabbitJourney(freshGacTroi()).rabbitJourney, null);
+  // Exercise the released flow with a reload after every transaction.
   let p = { ...base, phase: 't03-intro', rabbitJourney: { ...rabbit.freshGacRabbit(), active: true } };
   let raw;
   globalThis.localStorage = { getItem: () => raw ?? null, setItem: (_, value) => { raw = value; } };

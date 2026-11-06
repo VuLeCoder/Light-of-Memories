@@ -5,6 +5,7 @@ import { applyGacRabbitAction, rabbitObjective, type RabbitAction, type RabbitSt
 import { gacRabbitCopy } from '../content/levels/gac-rabbit-copy';
 import { GacRabbitBackdrop, RabbitCuoi } from './GacRabbitBackdrop';
 import './gac-rabbit.css';
+import { Rabbit, Star, RabbitLantern } from './GacRabbitArt';
 
 const positions = {
   slope: { hidden: [725,335], shown: [650,390], stars: [[790,390]], wrong: [355,340], path: '200,430 790,430 890,410' },
@@ -12,22 +13,6 @@ const positions = {
   banyan: { hidden: [675,380], shown: [600,400], stars: [[740,440]], wrong: [805,410], path: '200,450 740,465 850,420' },
 } as const;
 const at = (p: readonly number[]): CSSProperties => ({ left: `${p[0]/9.6}%`, top: `${p[1]/5.4}%` });
-
-function Rabbit({ hidden, tail, sneeze = false }: { hidden: boolean; tail: boolean; sneeze?: boolean }) {
-  return <svg viewBox="0 0 80 104" aria-hidden="true">
-    {hidden ? tail ? <path fill="#eee3c6" d="M18 50h12V38h28v12h12v28H58v12H30V78H18z"/> : <>
-      <path fill="#eee3c6" d="M12 94V12h20v66h16V4h20v90z"/><path fill="#b97c64" d="M19 24h6v48h-6zm36-8h6v54h-6z"/>
-    </> : <><path fill="#9baeb1" d="M8 97h64v7H8z"/><path fill="#eee3c6" d="M12 94V60h8V40h4V8h16v34h8V2h16v48h8v44H58v8H14v-8z"/>
-      <path fill="#b97c64" d="M29 16h6v25h-6zm24-6h6v29h-6z"/>{sneeze ? <path stroke="#263c45" strokeWidth="3" fill="none" d="m29 57 7 4-7 4m30-8-7 4 7 4M40 72h8m24-8 8-4m-8 12h8"/> : <path fill="#263c45" d="M30 57h5v6h-5zm22 0h5v6h-5zM40 70h8v4h-8z"/>}
-      <path fill="#9baeb1" d="M16 94h14v6H16zm36-14h24v6H52z"/></>}
-  </svg>;
-}
-function Star({ awake, yawning }: { awake: boolean; yawning: boolean }) {
-  return <svg viewBox="0 0 64 64" aria-hidden="true"><path fill={awake ? '#eed395' : '#9baeb1'} stroke="#eee3c6" strokeWidth="2" d="M32 3 41 21 61 24 47 39 50 60 32 50 14 60 17 39 3 24 23 21Z"/>
-    {awake ? <path fill="#263c45" d="M23 28h4v6h-4zm14 0h4v6h-4zM27 39h10v4H27z"/> : <path fill="none" stroke="#263c45" strokeWidth="3" d="m21 30 4 3 5-3m5 0 4 3 5-3"/>}
-    {yawning && <ellipse fill="#263c45" cx="32" cy="40" rx="5" ry="7"/>}
-  </svg>;
-}
 
 /** GT-R2 screen. Mounted by the release renderer only for active stop stages. */
 export function GacRabbitTrail({ language, progress, onChange, onBack, paused = false }: {
@@ -114,7 +99,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
         {objective === 'ready' && <polyline points={data.path} fill="none" stroke="#eed395" strokeWidth="6" strokeDasharray="8 14"/>}
         {stop === 'slope' && !j.rabbitFound && [570,610,650].map((x,i) => <path key={x} fill="#c4c4ac" d={`M${x} ${385-i*10}h8v5h-8zm12-6h8v5h-8z`}/>)}
       </svg>
-      <svg className="rabbit-path" viewBox="0 0 960 540" aria-hidden="true"><path stroke="#9a704b" strokeWidth="3" fill="none" d="M220 386h28v12"/><path fill="#eed395" stroke="#b97c64" strokeWidth="3" d="m248 392 8 14 16 3-12 11 2 16-14-8-14 8 2-16-12-11 16-3Z"/></svg>
+      <svg className="rabbit-path" viewBox="0 0 960 540" aria-hidden="true"><RabbitLantern/></svg>
       <RabbitCuoi/>
       {objective === 'find' && optionalFits && <svg className="rabbit-wrong-figure" style={at(data.wrong)} viewBox="0 0 64 48" aria-hidden="true"><path fill={stop === 'banyan' ? '#796c4e' : '#8c9792'} stroke="#667673" strokeWidth="3" d={stop === 'banyan' ? 'M4 40 22 22 30 4 36 24 60 38 56 44 32 32 12 46Z' : 'M4 40 12 12 34 4 54 18 60 42Z'}/></svg>}
       {/* Decoration has no invisible hitbox; exactly one progress button below. */}

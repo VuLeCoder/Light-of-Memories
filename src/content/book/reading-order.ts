@@ -44,6 +44,7 @@ export function getBookHintPage({ surveyor, sparkle, gacTroi }: BookProgress, ac
     ?? eventOrder.find(id => !surveyor.found.includes(id)) ?? 'arrive';
   switch (activeLevel) {
     case 'gac-troi':
+      if (gacTroi?.rabbitJourney?.active) return gacTroi.bookUnlocks.includes('gac-book-map') ? 'gac-book-map' : 'gac-book-light';
       if (gacTroi?.bookUnlocks.includes('gac-book-map') && !['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-map', 't03-story'].includes(gacTroi.phase)) return 'gac-book-map';
       if (gacTroi && ['t03-map', 't03-story'].includes(gacTroi.phase)) return 'gac-book-light';
       if (gacTroi?.phase === 't03-intro' && gacTroi.t02Done) return 'gac-book-impact.story';

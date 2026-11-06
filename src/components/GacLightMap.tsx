@@ -8,6 +8,13 @@ export function GacLightMap({ language, section = 3, moment = 0, completed = 3, 
 }) {
   const id = useId().replace(/:/g, '');
   const vi = language === 'vi';
+  if (section === 3) return <svg className="gac-light-map" viewBox="0 0 960 540" role="img" aria-label={vi ? 'Theo Thỏ tới gốc đa: triền đất thấp, đá có khe, cây đa. Bản đồ trong truyện.' : 'Follow Rabbit to the banyan: low slope, split rock, banyan tree. A story map.'}>
+    <path fill="#263943" d="M0 0H960V540H0Z"/>
+    <path d="M150 300H810" fill="none" stroke="#eed395" strokeWidth="8" strokeDasharray="12 12"/>
+    {[150,480,810].map((x,i)=><g key={x} transform={`translate(${x} 270)`}><circle r="65" fill="#344b52" stroke="#eed395" strokeWidth="3"/><path d={gacLandmarkShapes[i]} fill="#c5b68d" stroke="#152c36" strokeWidth="4"/><text y="110" fill="#eee3c9" fontSize="25" textAnchor="middle">{i+1}. {(vi ? ['Triền đất thấp','Đá có khe','Cây đa'] : ['Low slope','Split rock','Banyan tree'])[i]}</text></g>)}
+    <text x="480" y="80" fill="#eed395" fontSize="30" textAnchor="middle">{vi ? 'Theo Thỏ tới gốc đa' : 'Follow Rabbit to the banyan'}</text>
+    <text x="480" y="470" fill="#d9d0b7" fontSize="24" textAnchor="middle">{vi ? 'Minh họa trong truyện' : 'Story illustration'}</text>
+  </svg>;
   return <svg className="gac-light-map" viewBox="0 0 960 540" role="img" aria-label={vi ? 'Bản đồ minh họa: triền đất thấp, đá có khe, bóng cây đa. Đường sáng có viền liền; đường tối có gạch chéo.' : 'Imagined map: low slope, split rock, banyan shadow. Visible paths have solid borders; shaded paths have hatching.'}>
     <defs><pattern id={id} width="14" height="14" patternUnits="userSpaceOnUse"><path d="M-4 4L4 -4M0 14L14 0M10 18L18 10" stroke="#9baeb1" strokeWidth="3"/></pattern></defs>
     <g shapeRendering="crispEdges">

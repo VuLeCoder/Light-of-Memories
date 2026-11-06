@@ -19,7 +19,7 @@ Dự án được phát triển theo challenge **Abandoned but not Forgotten: St
 
 Đã dựng phần mở đầu: hội thoại An và bà, chuyển cảnh lên Mặt Trăng, Cuội thức dậy, di chuyển, quan sát ghế đá, trò chuyện với Cây Đa và nhận đèn trước khi lên đường. Website có menu, chọn tiếng Việt / tiếng Anh và lưu tiến trình theo mốc trên trình duyệt.
 
-Tuyến hiện tại gồm **Surveyor 3 — Mắt Tròn → Apollo 11 — Lấp Lánh → LRO — Gác Trời**. Hai chương đầu đã có thử thách và đoạn kết. Gác Trời đã có T01 ghép ký ức, T02 so sánh hai ảnh thật và chọn vùng có đốm mới, T03 chọn đường qua hai thời điểm và đoạn tạm biệt. Sau khi đèn sáng đủ, Cuội theo ba mốc T04 để gặp lại chị Hằng. Game hiện dừng ở bảng nghỉ trước thẻ câu chuyện; phần kết toàn hành trình chưa mở.
+Tuyến hiện tại gồm **Surveyor 3 — Mắt Tròn → Apollo 11 — Lấp Lánh → LRO — Gác Trời**. Hai chương đầu đã có thử thách và đoạn kết. Gác Trời giữ T01 ghép ký ức và T02 so sánh hai ảnh thật, sau đó kể chuyện bản đồ ánh sáng của LROC. Cuội tìm Thỏ Ngọc và đánh thức bốn đốm sao qua triền thấp, khe đá và cây đa; gặp Hằng rồi mới cảm ơn Gác Trời, nhận ánh sáng cuối và nghỉ dưới cây. Cảnh nghỉ có trò chuyện lại, mở sách, về lộ trình và chơi lại. Xem [bàn giao GT-R3](docs/done/GT-R3-gap-Hang-va-ket-Gac-Troi.md).
 
 Game nằm bên trái, sách đồng hành bên phải; phần giới thiệu nằm bên dưới. Trên màn hình nhỏ, sách và panel chuyển xuống dưới game. Sách mở nội dung theo tiến trình, có gợi ý và nguồn ảnh.
 
@@ -54,6 +54,7 @@ npm run check:book-flow
 # Kiểm tra T01, chuyển save và checkpoint kết truyện
 npm run check:gac-troi
 npm run check:ending-progress
+npm run check:gac-rabbit
 npm run check:gac-light
 npm run check:gac-trail
 
@@ -63,6 +64,8 @@ npm run build
 # Xem bản build trên máy, sau khi build thành công
 npm run preview
 ```
+
+Kiểm tra trình duyệt hành trình mới: `npm run check:gac-rabbit-ui` và `npm run check:gac-rabbit-release` (cần Playwright và Chrome tại `/usr/bin/google-chrome`; không thuộc bước build).
 
 Bản build giao diện nằm trong `dist/`. Game có thể chạy trên hosting tĩnh; riêng bộ đếm người truy cập cần Vercel Function trong `api/` và database Upstash Redis.
 

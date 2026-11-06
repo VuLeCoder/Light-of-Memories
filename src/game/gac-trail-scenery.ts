@@ -1,4 +1,5 @@
 import type Phaser from 'phaser';
+import { sparkleScenery } from './sparkle-scenery';
 import type { GameSceneId } from './types';
 import { gacLandmarkShapes } from '../content/levels/gac-troi-light';
 
@@ -22,6 +23,7 @@ function outline(path: string, x: number, y: number, scale: number) {
 
 /** Entirely imagined pixel scenery. No historical equipment is placed under the tree. */
 export function drawGacTrail(scene: Phaser.Scene, phase: GameSceneId, rabbitJourney = false) {
+  if (rabbitJourney) { drawRabbitLandscape(scene, phase); return; }
   const g = scene.add.graphics();
   g.fillStyle(0x0d1822).fillRect(0, 0, 960, 540);
   for (let i = 0; i < 50; i++) g.fillStyle(i % 4 ? 0x9baeb1 : 0xd7b875, .45).fillRect((i * 137 + 25) % 960, (i * 43 + 15) % 270, 2, 2);
@@ -96,5 +98,50 @@ export function drawHang(scene: Phaser.Scene, greeting: boolean, x = 790) {
     g.lineStyle(2,0xb29b6c).strokeRect(-15,-77,30,16).lineBetween(0,-77,0,-61);
     g.fillStyle(0x6f9290).fillRect(-11,-73,7,6);
     g.fillStyle(0xf0c49c).fillRect(-20,-72,7,7).fillRect(13,-72,7,7);
+  }
+}
+
+/** The same layered lunar soil as Sparkle, with story landmarks in the foreground. */
+function drawRabbitLandscape(scene: Phaser.Scene, phase: GameSceneId) {
+  sparkleScenery(scene);
+  const g = scene.add.graphics();
+  const polygon = (color: number, points: number[], alpha = 1) => g.fillStyle(color, alpha).fillPoints(
+    Array.from({length: points.length / 2}, (_, i) => ({x: points[i * 2], y: points[i * 2 + 1]})), true);
+  // Low, distant crater rims keep the foreground clues readable.
+  for (const [x,y,w] of [[140,245,95],[480,215,70],[850,285,100]]) {
+    g.fillStyle(0x33434b,.2).fillEllipse(x,y,w,14);
+    g.lineStyle(2,0xc3c1b5,.35).strokeEllipse(x,y-3,w,13);
+  }
+  if (phase === 't04-slope') {
+    polygon(0x43545b,[600,416,632,387,670,374,706,347,750,352,794,384,836,416]);
+    polygon(0x9eaaa1,[620,408,670,374,706,347,750,352,779,380,713,369,684,394]);
+    polygon(0x758780,[684,394,713,369,779,380,836,416,730,414]);
+    g.lineStyle(2,0xc4c4ac,.6).lineBetween(670,374,706,347).lineBetween(706,347,750,352);
+  } else if (phase === 't04-rock') {
+    g.fillStyle(0x263740,.3).fillEllipse(647,421,225,24);
+    polygon(0x52656c,[546,416,558,346,590,303,629,291,672,311,710,371,725,417]);
+    polygon(0xa5ada5,[558,346,590,303,629,291,651,314,617,349,582,361]);
+    polygon(0x82928d,[617,349,651,314,672,311,710,371,725,417,647,408]);
+    polygon(0x263740,[629,297,617,346,636,367,625,416,646,416,648,363,630,342,642,309]);
+    g.lineStyle(2,0xc5c8b5,.55).lineBetween(590,303,629,291).lineBetween(651,314,672,311);
+  } else {
+    g.fillStyle(0x263740,.3).fillEllipse(743,428,280,32);
+    // Organic trunk and interlocking foliage echo the banyan of the opening.
+    polygon(0x655b46,[683,424,710,395,722,302,709,250,731,238,747,293,759,244,777,246,758,331,769,402,806,426,751,414,735,386,723,415]);
+    polygon(0x9a8860,[710,408,731,330,727,269,736,280,742,356,730,404]);
+    polygon(0x3c483a,[749,405,748,320,766,260,759,331,769,402,793,421]);
+    for (const [x,y,rx,ry] of [[640,233,120,61],[688,194,151,81],[761,181,156,87],[819,214,143,75],[752,236,171,73]]) {
+      g.fillStyle(0x263f3d).fillEllipse(x,y,rx,ry);
+      g.fillStyle(0x3a5750).fillEllipse(x-9,y-12,rx*.88,ry*.75);
+      g.fillStyle(0x506b59,.7).fillEllipse(x-21,y-23,rx*.55,ry*.4);
+    }
+    for(let i=0;i<85;i++) {
+      const x=593+(i*47)%278,y=170+(i*29)%83;
+      g.fillStyle(i%3 ? 0x789075 : 0xabc29a,.24).fillEllipse(x,y,8+i%5,3);
+    }
+    for(const [x,y,h] of [[653,251,111],[677,266,98],[801,250,119],[824,243,99]]) {
+      g.lineStyle(2,0x8e8060,.8).lineBetween(x,y,x-3,y+h);
+      g.lineStyle(1,0xb3a27a,.5).lineBetween(x+3,y,x+1,y+h-15);
+    }
   }
 }

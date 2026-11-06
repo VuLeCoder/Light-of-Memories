@@ -41,3 +41,22 @@
 @keyframes rabbit-cuoi-step { from { margin-left:-24px; } to { margin-left:0; } }
 
 .rabbit-wrong-figure { position:absolute; width:max(6%,32px); transform:translate(-50%,-50%); pointer-events:none; z-index:2; shape-rendering:crispEdges; }
+.rabbit-rest-art { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:3; shape-rendering:crispEdges; }
+.rabbit-rest-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.rabbit-story > .dialogue { position:relative; inset:auto; width:auto; margin:12px 0 0; }
+.rabbit-story .dialogue-text { min-height:3.2em; }
+.rabbit-gift.is-lit { transform:translate(-35px,55px); }
+
+.game-stage .ending-scene.rabbit-story { position:relative; inset:auto; pointer-events:auto; animation:none; }
+.game-stage .rabbit-story > .dialogue { position:relative; inset:auto; width:auto; max-height:none; overflow:visible; margin:12px 0 0; padding:14px; border:1px solid #d2ba8155; border-radius:8px; background:#192e37; }
+.game-stage .rabbit-story .dialogue-text { font-size:18px; line-height:1.6; }
+.game-stage .rabbit-story .dialogue-portrait { display:block; width:52px; height:66px; }
+.game-stage .rabbit-story .dialogue-portrait-gacTroi img { object-fit:contain; transform:none; }
+.game-stage .ending-scene.rabbit-story[hidden] { display:block; visibility:hidden; pointer-events:none; }
+.rabbit-gift { transition:transform .35s ease-out; }
+
+/* Match the illustrated cast and softly faceted props of the earlier encounters. */
+.rabbit-figure svg,.rabbit-star svg,.rabbit-rest-art { shape-rendering:auto; }
+.rabbit-hang { position:absolute; left:81%; bottom:21%; height:32%; width:auto; pointer-events:none; z-index:2; }
+.rabbit-star.awake { filter:drop-shadow(0 0 5px #f5d48b55); }
+.rabbit-cuoi { top:auto; bottom:21%; height:25.3%; width:8.72%; }

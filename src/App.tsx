@@ -1,3 +1,4 @@
+import { startGacRabbitJourney, rabbitStops, type RabbitStop } from './content/levels/gac-troi-rabbit';
 import { GacTroiTrail, isGacTrailPhase } from './components/GacTroiTrail';
 import { gacMatchingIntroLength } from './content/levels/gac-troi-matching';
 import { GacTroiLevel } from './components/GacTroiLevel';
@@ -102,7 +103,7 @@ export function App() {
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
   const [activeLevel, setActiveLevel] = useState<LevelId | null>(saved.progress.activeLevel);
   const [surveyorProgress, setSurveyorProgress] = useState(saved.progress.surveyor);
-  const [gacTroiProgress, setGacTroiProgress] = useState(saved.progress.gacTroi);
+  const [gacTroiProgress, setGacTroiProgress] = useState(() => startGacRabbitJourney(saved.progress.gacTroi));
   const [sparkleProgress, setSparkleProgress] = useState(saved.progress.sparkle);
   useEffect(() => {
     if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, gacTroiProgress));
@@ -140,8 +141,10 @@ export function App() {
   const surveyorDigIntro = inSurveyor && surveyorProgress.phase === 'soil-intro';
   const surveyorChat = surveyorMeeting && surveyorProgress.phase === 'dialogue';
   const encounterText = surveyorEncounterCopy[language];
-  const gacTrail = inGacTroi && isGacTrailPhase(gacTroiProgress.phase);
-  const gacWalking = inGacTroi && gacTroiProgress.phase === 'gac-free';
+  const gacRabbit = inGacTroi && gacTroiProgress.rabbitJourney?.active === true;
+  const rabbitStage = gacRabbit ? gacTroiProgress.rabbitJourney!.stage : null;
+  const gacTrail = inGacTroi && (gacRabbit ? rabbitStops.includes(rabbitStage as RabbitStop) : isGacTrailPhase(gacTroiProgress.phase));
+  const gacWalking = inGacTroi && !gacRabbit && gacTroiProgress.phase === 'gac-free';
   const endingExploring = gacWalking || endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished');
   const [endingChat, setEndingChat] = useState<LevelId | null>(null);
   const chattingAtEnd = endingExploring && endingChat === activeLevel;
@@ -175,14 +178,14 @@ export function App() {
   // A new scene starts at the top of the shared scroll viewport.
   useLayoutEffect(() => {
     gameStage.current?.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [chapter, quest, activeLevel, surveyorProgress.phase, sparkleProgress.phase, gacTroiProgress.phase, menuOpen]);
+  }, [chapter, quest, activeLevel, surveyorProgress.phase, sparkleProgress.phase, gacTroiProgress.phase, rabbitStage, menuOpen]);
   // Keep focus on a persistent element while the canvas is inert or dialogue unmounts.
   useLayoutEffect(() => {
     if (menuOpen || !gameOwnsFocus.current) return;
     const stage = gameStage.current;
     if (transitioning || moonWaking) stage?.focus({ preventScroll: true });
     else focusGame(stage);
-  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, gacTroiProgress.phase, trailWarning, chattingAtEnd, canvasReady]);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, gacTroiProgress.phase, rabbitStage, trailWarning, chattingAtEnd, canvasReady]);
   // Removal, disabling and inert updates do not consistently emit focusout.
   // Recover after the DOM settles, for every scene, without taking focus from
   // another game control, the companion book, or the rest of the page.
@@ -263,8 +266,10 @@ export function App() {
     else if (inSparkle && sparkleProgress.phase === 'search' && !trailWarning) gameInstructions = depthMoveHelp;
     else if (inSparkle && sparkleProgress.phase === 'arrival' || chapter === 'moon-free' && !journeyOpen && !tellingStory && !moonStory && !questDialogue) gameInstructions = moveHelp;
   }
-  const current = gacTrail ? { number: '05', characters: ['cuoi', 'chiHang'] as const } : inGacTroi ? { number: '05', characters: ['cuoi', 'gacTroi'] as const } : inSparkle ? { number: '04', characters: ['cuoi', 'lapLanh'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
-  const currentText = gacTrail ? { title: vi ? 'Tìm chị Hằng' : 'Finding Hằng', subtitle: vi ? 'Dưới bóng cây đa · Chuyện tưởng tượng' : 'Beneath the banyan · An imagined story', description: vi ? 'Cuội theo bản đồ trong đèn, nhìn kỹ từng manh mối để tìm chị Hằng.' : 'Cuội follows the map in his lantern, looking closely at each clue to find Hằng.' } : inGacTroi ? { title: vi ? 'Bạn Gác Trời' : 'Sky Watcher', subtitle: vi ? 'LRO · Quỹ đạo Mặt Trăng' : 'LRO · Lunar orbit', description: vi ? 'LRO quan sát bề mặt Mặt Trăng từ quỹ đạo. Cuội trò chuyện qua tín hiệu trong câu chuyện tưởng tượng.' : 'LRO observes the lunar surface from orbit. Cuội speaks through a signal in the imagined story.' } : inSparkle ? { title: vi ? 'Bạn Lấp Lánh' : 'A sparkling friend', subtitle: vi ? 'Biển Yên Tĩnh · Apollo 11, 1969' : 'Sea of Tranquility · Apollo 11, 1969', description: vi ? 'Gương phản xạ laser không cần pin hay động cơ: nó trả ánh sáng về phía nguồn.' : 'A laser retroreflector needs no batteries or motor: it returns light toward its source.' } : inSurveyor ? encounterText : t[scene];
+  const gacTogether = gacRabbit && ['reunion', 'farewell', 'free'].includes(rabbitStage!);
+  const gacGround = gacRabbit && rabbitStage !== 'real';
+  const current = (gacTogether || gacTrail && !gacRabbit) ? { number: '05', characters: ['cuoi', 'chiHang'] as const } : inGacTroi ? { number: '05', characters: ['cuoi', 'gacTroi'] as const } : inSparkle ? { number: '04', characters: ['cuoi', 'lapLanh'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
+  const currentText = gacGround ? { title: vi ? (gacTogether ? 'Dưới gốc đa' : 'Theo Thỏ Ngọc') : (gacTogether ? 'Beneath the banyan' : 'Follow Moon Rabbit'), subtitle: vi ? 'Chuyện tưởng tượng · Cuội và những người bạn' : 'An imagined story · Cuội and friends', description: vi ? 'Cuội tìm Thỏ, gọi các đốm sáng phép thuật dậy để tới gặp chị Hằng và cảm ơn Gác Trời.' : 'Cuội finds Rabbit and wakes the magical lights to meet Hằng and thank Sky Watcher.' } : gacTrail ? { title: vi ? 'Tìm chị Hằng' : 'Finding Hằng', subtitle: vi ? 'Dưới bóng cây đa · Chuyện tưởng tượng' : 'Beneath the banyan · An imagined story', description: vi ? 'Cuội theo bản đồ trong đèn, nhìn kỹ từng manh mối để tìm chị Hằng.' : 'Cuội follows the map in his lantern, looking closely at each clue to find Hằng.' } : inGacTroi ? { title: vi ? 'Bạn Gác Trời' : 'Sky Watcher', subtitle: vi ? 'LRO · Quỹ đạo Mặt Trăng' : 'LRO · Lunar orbit', description: vi ? 'LRO quan sát bề mặt Mặt Trăng từ quỹ đạo. Cuội trò chuyện qua tín hiệu trong câu chuyện tưởng tượng.' : 'LRO observes the lunar surface from orbit. Cuội speaks through a signal in the imagined story.' } : inSparkle ? { title: vi ? 'Bạn Lấp Lánh' : 'A sparkling friend', subtitle: vi ? 'Biển Yên Tĩnh · Apollo 11, 1969' : 'Sea of Tranquility · Apollo 11, 1969', description: vi ? 'Gương phản xạ laser không cần pin hay động cơ: nó trả ánh sáng về phía nguồn.' : 'A laser retroreflector needs no batteries or motor: it returns light toward its source.' } : inSurveyor ? encounterText : t[scene];
   const characterName = (id: keyof typeof portraits) => language === 'en' ? ({ gacTroi: 'Sky Watcher', banhLuoi: 'Mesh Wheels', taiThinh: 'Keen Ears', lapLanh: 'Sparkle', an: 'An', ba: 'Grandma', cuoi: 'Cuội', cayDa: 'Banyan tree', matTron: 'Round Eyes', chiHang: 'Hằng' } as const)[id] : portraits[id].name;
 
   return <main className="app-shell">
@@ -309,13 +314,13 @@ export function App() {
             }}
             onClick={(event) => {
               if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
-              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && (['meeting', 'stories', 't02-intro', 't02-story', 't03-intro', 't03-story', 'gac-farewell'].includes(gacTroiProgress.phase) || gacTroiProgress.phase === 'matching' && gacTroiProgress.turn < gacMatchingIntroLength)))) return;
+              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && (gacRabbit ? ['real', 'bridge', 'reunion', 'farewell'].includes(rabbitStage!) : (['meeting', 'stories', 't02-intro', 't02-story', 't03-intro', 't03-story', 'gac-farewell'].includes(gacTroiProgress.phase) || gacTroiProgress.phase === 'matching' && gacTroiProgress.turn < gacMatchingIntroLength))))) return;
               if ((event.target as Element).closest('button, select, input, a')) return;
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              {!gacTrail && <GameCanvas sparkleLantern={inSparkle && sparkleProgress.phase === 'farewell' && sparkleProgress.turn >= 4 ? sparkleProgress.turn >= 5 ? 'lit' : 'unlit' : 'hidden'} surveyorLantern={surveyorEnding && surveyorProgress.turn >= 6 ? surveyorProgress.turn >= 7 ? 'lit' : 'unlit' : 'hidden'} taiStars={Math.max(litStars, inGacTroi && gacTroiProgress.phase === 'gac-farewell' && gacTroiProgress.turn >= 2 ? 5 : 0)} onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingExploring} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={endingExploring ? () => setEndingChat(activeLevel) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={gacWalking ? () => setGacTroiProgress(p => enterGacTrail(p)) : endingExploring ? () => setActiveLevel(null) : onExit} scene={inGacTroi ? 'gac-troi' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />}
+              {!gacTrail && !gacRabbit && <GameCanvas sparkleLantern={inSparkle && sparkleProgress.phase === 'farewell' && sparkleProgress.turn >= 4 ? sparkleProgress.turn >= 5 ? 'lit' : 'unlit' : 'hidden'} surveyorLantern={surveyorEnding && surveyorProgress.turn >= 6 ? surveyorProgress.turn >= 7 ? 'lit' : 'unlit' : 'hidden'} taiStars={Math.max(litStars, inGacTroi && !gacRabbit && gacTroiProgress.phase === 'gac-farewell' && gacTroiProgress.turn >= 2 ? 5 : 0)} onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingExploring} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={endingExploring ? () => setEndingChat(activeLevel) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={gacWalking ? () => setGacTroiProgress(p => enterGacTrail(p)) : endingExploring ? () => setActiveLevel(null) : onExit} scene={inGacTroi ? 'gac-troi' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />}
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
             {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
