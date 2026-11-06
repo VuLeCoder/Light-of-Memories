@@ -72,7 +72,7 @@ Short character introductions use `book-prose--intro`: centred illustration abov
 ## Remaining work (2026-10-31)
 
 The publication model is ready for a renderer, but PDF download is not implemented.
-Add chapter five and the journey conclusion when their content is approved. The full
+The three-friend journey, LRO activities and reunion conclusion are included. The full
 PDF must include locked content independently of the save, with factual content in
 the main section and game/fiction in the appendix, in the selected language.
 

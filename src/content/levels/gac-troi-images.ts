@@ -1,5 +1,13 @@
 const base = `${import.meta.env.BASE_URL}images/memories/gac-troi/`;
 const images = {
+  "impact2013-before": {
+    alt: { vi: 'Bề mặt Mặt Trăng trước va chạm, ngày 12/02/2012.', en: 'Lunar surface before the impact, 12 February 2012.' },
+    credit: 'NASA/GSFC/Arizona State University', sourcePage: 'https://svs.gsfc.nasa.gov/4242/', file: 'impact2013-before.webp',
+  },
+  "impact2013-after": {
+    alt: { vi: 'Cùng vùng đất sau va chạm, ngày 28/07/2013.', en: 'The same area after the impact, 28 July 2013.' },
+    credit: 'NASA/GSFC/Arizona State University', sourcePage: 'https://svs.gsfc.nasa.gov/4242/', file: 'impact2013-after.webp',
+  },
   "apollo11-lro": {
     "alt": {
       "vi": "Khu Apollo 11 nhìn từ quỹ đạo.",

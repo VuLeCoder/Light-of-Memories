@@ -39,7 +39,7 @@ function split(body: BookText, vi: string, en: string): [BookText, BookText] {
   return [text(body.vi.slice(0, a).trim(), body.en.slice(0, b).trim()), text(body.vi.slice(a).trim(), body.en.slice(b).trim())];
 }
 const overview = page('overview', 'overview', text(journeyCopy.vi.book, journeyCopy.en.book));
-block(overview, 'guide', 'fiction', text(journeyCopy.vi.guide, journeyCopy.en.guide), 'A0', 0, [], { readingText: text('Cuội đi tìm chị Hằng với chiếc đèn ông sao. Quyển sách hiện kể về bốn người bạn trên Mặt Trăng; người bạn thứ năm là lời hẹn cho phần tiếp theo.', 'Cuội searches for Hằng with his star lantern. This book currently tells the stories of four lunar friends; a fifth friend is a teaser for a later chapter.') });
+block(overview, 'guide', 'fiction', text(journeyCopy.vi.guide, journeyCopy.en.guide), 'A0', 0, [], { readingText: text('Cuội đi tìm chị Hằng với chiếc đèn ông sao. Ba người bạn Mắt Tròn, Bánh Lưới và Gác Trời giúp Cuội quan sát, nhớ đường và tìm ra hướng đi tiếp.', 'Cuội searches for Hằng with his star lantern. Round Eyes, Mesh Wheels and Sky Watcher help him observe, remember his route and find the way ahead.') });
 block(overview, 'reading-guide', 'game', text('Trong trò chơi, hoàn thành câu chuyện trước để mở cuộc gặp tiếp theo: Mắt Tròn, Lấp Lánh, Tai Thính, rồi Bánh Lưới. Ảnh và gợi ý được thêm vào sách khi chơi. Bản đọc này chứa đủ nội dung, gồm cả gợi ý và đáp án trong phụ lục.', 'In the game, finish each story to unlock the next encounter: Round Eyes, Sparkle, Keen Ears, then Mesh Wheels. Photos and clues are added to the book during play. This reading edition includes all content, including hints and answers in the appendix.'), 'A0', 1);
 const surveyor = page('surveyor', 'surveyor', text('Mắt Tròn — Surveyor 3', 'Round Eyes — Surveyor 3'));
 block(surveyor, 'intro', 'fiction', introCopy.surveyorIntro, 'A1', -1); portrait(surveyor, 'matTron', 'A1');
@@ -151,17 +151,27 @@ const orbit = page(gacTroiOrbitBook.id, 'lro', gacTroiOrbitBook.title);
 block(orbit, 'observation', 'fact', text('LRO là tàu bay quanh Mặt Trăng. Hệ máy ảnh LROC ghi ảnh bề mặt để các nhà khoa học nghiên cứu. Ảnh cho thấy nhiều dấu vết, nhưng những vật quá nhỏ không hiện rõ.', 'LRO travels around the Moon. Its LROC camera system photographs the surface for scientists to study. Pictures reveal many traces, but very small objects cannot be seen clearly.'), 'C5.1', 0, gacTroiOrbitBook.sources.map(url => source(url)));
 block(orbit, 'signal', 'fiction', text('Gác Trời nói chuyện qua đèn là nhân vật trong truyện. Cuội vẫn ở trên mặt đất; cảnh quỹ đạo là minh họa không theo tỉ lệ.', 'Sky Watcher speaking through the lantern is part of the story. Cuội stays on the ground; the orbit scene is an illustration, not to scale.'), 'A5', 0, [], { image: { src: portraits.gacTroi.url, alt: text('Minh họa bạn Gác Trời', 'Illustration of Sky Watcher') } });
 
-const sites = page('gac-book-sites', 'lro', text('Bốn người bạn, ba vùng đất', 'Four friends, three places'));
-block(sites, 'hint', 'game', text('Lấp Lánh ở vùng Apollo 11, Biển Yên Tĩnh. Mắt Tròn và Tai Thính cùng ở vùng Apollo 12, Đại Dương Bão. Bánh Lưới ở vùng Apollo 17, thung lũng Taurus–Littrow.', 'Sparkle is in the Apollo 11 area, the Sea of Tranquility. Round Eyes and Keen Ears share the Apollo 12 area, the Ocean of Storms. Mesh Wheels is in the Apollo 17 area, Taurus–Littrow valley.'), 'A5.1', 0, []);
-block(sites, 'how', 'game', text('Chọn thẻ người bạn, xem các vùng ảnh rồi ghép vào vùng phù hợp. Hai bạn Apollo 12 được ghép riêng. Các cặp đúng luôn được giữ lại. Ghép đúng một bạn để mở câu chuyện và ảnh của bạn ấy ở những trang tiếp theo.', 'Choose a friend, browse the pictures, then match them to a place. Match the two Apollo 12 friends separately. Correct pairs stay in place. Each match opens that friend’s story and picture on the following pages.'), 'A5.1', 1, []);
+const sites = page('gac-book-sites', 'lro', text('Hai người bạn, hai vùng đất', 'Two friends, two places'));
+block(sites, 'hint', 'game', text('Mắt Tròn ở vùng Apollo 12, Đại Dương Bão. Bánh Lưới ở vùng Apollo 17, thung lũng Taurus–Littrow.', 'Round Eyes is in the Apollo 12 area, the Ocean of Storms. Mesh Wheels is in the Apollo 17 area, Taurus–Littrow valley.'), 'A5.1', 0);
+block(sites, 'how', 'game', text('Chọn thẻ người bạn, xem ảnh rồi ghép vào vùng phù hợp. Ghép đúng để mở câu chuyện và ảnh của bạn ấy. Các cặp đúng luôn được giữ lại.', 'Choose a friend, browse the pictures, then match them to a place. Each correct match opens that friend’s story and picture. Correct pairs stay in place.'), 'A5.1', 1);
 for (const memory of gacMemories) {
   const photo = gacImage(memory.image);
   const p = page(`gac-memory-${memory.id}`, 'lro', memory.title);
   const sources = [source(photo.sourcePage)];
-  if (memory.id === 'lap-lanh') sources.push(source('https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html'));
   block(p, 'story', 'fact', memory.story, 'C5.2', 0, sources);
   block(p, 'picture', 'fact', memory.caption, 'C5.2', 1, [source(photo.sourcePage)], { image: { src: photo.src, alt: photo.alt, credit: photo.credit } });
 }
+
+const route = page('gac-book-route', 'lro', text('Nhớ đường đã qua', 'Remember the journey'));
+block(route, 'hint', 'game', text('Cuội gặp Mắt Tròn trước, rồi tới Bánh Lưới. Chọn hai bạn theo thứ tự ấy. Có thể hoàn tác bước vừa chọn.', 'Cuội met Round Eyes first, then Mesh Wheels. Choose them in that order. You can undo the last step.'), 'A5.2', 0);
+block(route, 'journey', 'fiction', text('Ánh đèn nối những cuộc gặp trong truyện. Hai vùng Apollo 12 và Apollo 17 ở xa nhau; đường ánh sáng không phải bản đồ địa lý.', 'The lantern links encounters in the story. Apollo 12 and Apollo 17 are far apart; the line of light is not a geographical map.'), 'A5.2', 1);
+const changes = page('gac-book-changes', 'lro', text('Nhìn ra điều đổi thay', 'Noticing change'));
+block(changes, 'hint', 'game', text('Đổi qua lại ảnh trước và sau. Tìm đốm sáng mới ở vùng chính giữa ảnh sau. Bạn có thể chọn từng ô bằng Tab rồi Enter.', 'Switch between the before and after pictures. Look for the new bright spot in the centre of the later picture. Use Tab and Enter to choose an area.'), 'A5.3', 0);
+block(changes, 'impact', 'fact', text('Một vật thể va vào Mặt Trăng ngày 17/03/2013, tạo hố rộng khoảng 18 m. Ảnh LRO chụp trước ngày 12/02/2012 và sau ngày 28/07/2013 giúp xác định hố mới. Chớp sáng được quan sát từ Trái Đất.', 'An object struck the Moon on 17 March 2013, making a crater about 18 m wide. LRO images from 12 February 2012 and 28 July 2013 helped identify the new crater. The flash was observed from Earth.'), 'C5.3', 1, [source('https://svs.gsfc.nasa.gov/4242/')]);
+const reunion = page('gac-book-reunion', 'lro', text('Chiếc đèn đã dẫn đường', 'The lantern led the way'));
+block(reunion, 'home', 'fiction', text('Cuội đã tìm thấy chị Hằng. Hai người trở về bên cây đa, mang theo kỷ niệm về Mắt Tròn, Bánh Lưới và Gác Trời. Dưới hiên nhà, An và bà vẫn cùng ngắm trăng.', 'Cuội found Hằng. Together they returned to the banyan tree, carrying memories of Round Eyes, Mesh Wheels and Sky Watcher. On the porch, An and Grandma watched the Moon.'), 'A5.4', 0, [], { image: { src: portraits.chiHang.url, alt: text('Chị Hằng trong câu chuyện', 'Hằng in the story') } });
+const further = page('extra-reading', 'overview', text('Những câu chuyện bên lề', 'More stories from the Moon'));
+block(further, 'intro', 'fiction', text('Ngoài ba người bạn trong hành trình, sách còn có Lấp Lánh và Tai Thính, hai nhân vật lấy cảm hứng từ thiết bị trên Mặt Trăng. Lật trang để tìm hiểu thêm nhé.', 'Beyond the three friends in the journey, this book introduces Sparkle and Keen Ears, characters inspired by lunar instruments. Turn the page to learn more.'), 'A6', 0);
 
 /** Full inventory; no progress, React, DOM or save access. Browser visibility stays in the UI. */
 export const bookPages: readonly BookPage[] = pages;

@@ -9,7 +9,7 @@ export const moonTreeDialogue = [
   { id: 'moon-04', speaker: 'narrator', text: 'Cuội chờ một lúc. Vẫn chưa thấy chị Hằng đâu.' },
   { id: 'moon-05', speaker: 'cayDa', text: 'Chị ấy không đi xa đâu, con. Nhưng Mặt Trăng đã khác rồi.' },
   { id: 'moon-06', speaker: 'cayDa', text: 'Trong lúc con ngủ, những người bạn mới đã đến. Họ có nhiều chuyện để kể. Con thử đến gặp họ nhé!' },
-  { id: 'moon-07', speaker: 'cayDa', text: 'Mỗi người bạn sẽ thắp sáng một cánh đèn. Khi cả năm cánh cùng sáng, ánh đèn sẽ dẫn con đến bên chị Hằng.' },
+  { id: 'moon-07', speaker: 'cayDa', text: 'Con hãy gặp ba người bạn ấy nhé. Mỗi cuộc gặp sẽ làm chiếc đèn sáng thêm. Khi đèn sáng trọn vẹn, con sẽ tìm được đường đến bên chị Hằng.' },
 ] as const;
 
 export const moonDepartureDialogue = [

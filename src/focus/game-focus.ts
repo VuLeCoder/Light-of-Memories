@@ -6,6 +6,8 @@ export function focusGame(stage: HTMLElement | null) {
     '[data-gac-continue]',
     '.gac-friends button[aria-pressed="true"]',
     '.gac-friends button',
+    '.final-canvas .game-host',
+    '[data-final-primary]',
     '.ban-guide .game-host',
     '.story-canvas .game-host',
     '[data-tai-primary]',

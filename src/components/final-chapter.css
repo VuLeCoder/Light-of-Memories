@@ -1,0 +1,22 @@
+.final-chapter { position:absolute; inset:0; z-index:20; color:#eee3c9; }
+.final-chapter[hidden] { display:none; }
+.final-canvas { position:absolute; inset:0; pointer-events:auto; }
+.final-canvas .canvas-wrap { height:100%; aspect-ratio:auto; }
+.ending-scene.final-chapter > .dialogue { width:47%; z-index:2; }
+.final-walk-note { position:absolute; bottom:18px; left:18px; max-width:min(340px,75%); padding:10px 14px; border:1px solid #cdb77b66; border-radius:10px; background:#15232be8; font-size:clamp(13px,1.8cqw,18px); line-height:1.5; pointer-events:none; }
+.final-walk-note p { margin:0; }
+.final-actions h2 { font:500 clamp(17px,2.4cqw,25px)/1.4 Lora,serif; margin:0 0 12px; }
+.final-actions,.final-confirm { max-width:calc(100% - 24px); box-sizing:border-box; }
+.final-confirm { padding:10px; background:#15232bf5; border-radius:8px; font-size:14px; }
+.final-chapter .ending-actions { flex-wrap:wrap; }
+@container (max-width:520px) {
+ .final-walk-note { bottom:18px; left:12px; max-width:calc(100% - 24px); }
+ .final-chapter:not(.is-walking) .final-canvas { bottom:40%; }
+ .ending-scene.final-chapter > .dialogue { inset:auto 8px 8px; width:auto; max-height:50%; padding:12px; }
+ .final-chapter .dialogue-portrait { display:block; width:44px; height:56px; }
+ .final-chapter .dialogue-text { font-size:15px; }
+ .final-chapter .dialogue-next { font-size:14px; white-space:normal; }
+ .final-chapter .surveyor-scene-hud { gap:6px; }
+ .final-chapter .surveyor-scene-hud > span { max-width:58%; }
+ .final-actions .ending-actions button { padding:8px; font-size:13px; }
+}

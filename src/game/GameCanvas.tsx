@@ -14,7 +14,8 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ finale, banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  finale?: PreviewOptions['finale'];
   banhLuoiGuide?: PreviewOptions['banhLuoiGuide'];
   onReady?: () => void;
   taiEnding?: PreviewOptions['taiEnding']; taiStars?: number; onTaiGift?: () => void;
@@ -56,6 +57,7 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
     void Promise.all([import('phaser'), import('./PreviewScene'), textFont]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
+        finale,
         banhLuoiGuide: progressRef.current.banhLuoiGuide ? { ...progressRef.current.banhLuoiGuide, onEvent: e => progressRef.current.banhLuoiGuide?.onEvent(e) } : undefined,
         initiallyAwake: awakeRef.current,
         taiEnding: progressRef.current.taiEnding,
@@ -128,7 +130,7 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
         game.destroy(true);
       }
     };
-  }, [scene]);
+  }, [scene, finale]);
 
   useEffect(() => { phaserScene.current?.setBanhLuoiGuide(banhLuoiGuide); }, [banhLuoiGuide]);
   useEffect(() => { phaserScene.current?.setTaiEnding(taiEnding, taiStars); }, [taiEnding, taiStars]);
