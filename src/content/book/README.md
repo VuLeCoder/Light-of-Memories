@@ -1,5 +1,7 @@
 # Shared companion book
 
+Current scope (2026-11-06): 26 canonical pages for Surveyor 3, Apollo 11 and Gác Trời, including T02/T03. The Apollo 12/17 companion pages described in the historical notes below have been removed from the catalog; their four unused local images were removed during [asset cleanup](../../../docs/done/unused-files-cleanup.md). Keep the source records below for provenance.
+
 `catalog.ts` inventories the book as classified, bilingual blocks. The current validated inventory contains 44 canonical pages; responsive pagination can produce more visible leaves. `overview` corresponds to the browser's `null` page. Unlock logic remains
 in the existing progress helpers and `JourneyMap`; it never filters this catalog.
 
