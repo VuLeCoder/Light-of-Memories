@@ -23,21 +23,6 @@ export const portraits = {
   matTron: { name: 'Mắt Tròn', url: matTronPortrait }, chiHang: { name: 'Chị Hằng', url: chiHangPortrait },
 } as const;
 
-// M0–M1 art preparation; chapter registration and saves are handled in M2.
-export const taiThinhPhotos = {
-  pse: imageUrl('memories/tai-thinh/apollo-12-as12-47-6916.webp'),
-  station: imageUrl('memories/tai-thinh/apollo-12-as12-47-6918.webp'),
-  magnetometer: imageUrl('memories/tai-thinh/apollo-12-as12-47-6921.webp'),
-} as const;
-
-// Bánh Lưới M0 photo preparation; chapter registration follows in M1–M2.
-export const banBanhLuoiPhotos = {
-  vip: imageUrl('memories/ban-banh-luoi/apollo-17-as17-143-21933.webp'),
-  vipDetail: imageUrl('memories/ban-banh-luoi/apollo-17-wheel-detail.webp'),
-  orbit: imageUrl('memories/ban-banh-luoi/apollo-17-orbit-m168000580lr.webp'),
-  orbitDetail: imageUrl('memories/ban-banh-luoi/apollo-17-orbit-detail.webp'),
-} as const;
-
 // Hand-inspected rectangles in ORIGINAL image pixels, not an assumed uniform grid.
 // Resting poses; Cuội animation frames are defined separately below.
 export const spriteSources = [

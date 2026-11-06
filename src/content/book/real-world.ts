@@ -13,7 +13,6 @@ export interface RealWorldPage {
  title: BookText; paragraphs: BookText[]; image: string; caption: BookText;
  sources: string[]; layout: 'above' | 'wrap';
 }
-const image = (name: string) => `${import.meta.env.BASE_URL}images/book/${name}`;
 export const realWorldPages: RealWorldPage[] = [];
 function add(after: string, chapter: BookChapter, section: string, title: BookText, image: string, caption: BookText, refs: (keyof typeof sources)[], paragraphs: BookText[], layout: 'above' | 'wrap' = 'wrap') {
  realWorldPages.push({ id: `${after}-reality`, after, chapter, section, title, image, caption, sources: refs.map(key => sources[key]), paragraphs, layout: image.includes('seismogram') ? 'above' : layout });

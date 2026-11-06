@@ -65,26 +65,6 @@ function MemoryPhoto({ src, caption, language }: { src: string; caption: string;
   </figure>;
 }
 
-/** Five separate paper panels; only the top point receives this friend's light. */
-export function MemoryLantern({ lit, second = false }: { lit: boolean; second?: boolean }) {
-  return <svg className={`ending-lantern ${lit ? 'is-lit' : ''}`} viewBox="0 0 240 240" role="img" aria-label={second ? (lit ? '★ 2/3' : '★ 1/3') : (lit ? '★ 1/3' : '☆ 0/3')}>
-    <circle className="lantern-aura" cx="120" cy="110" r="90" fill="#ffd88a" opacity="0" />
-    <path d="M120 26V10M114 10H126" stroke="#bd9761" strokeWidth="3" fill="none" />
-    <g stroke="#c89b61" strokeWidth="2" strokeLinejoin="round">
-      <path className={second ? undefined : "lit-point"} d="M120 110L97 79L120 26L143 79Z" fill={second ? "#ffe29b" : "#67503c"} />
-      <path className={second ? "lit-point" : undefined} d="M120 110L143 79L208 85L159 126Z" fill="#664e3c" />
-      <path className={second ? "lit-point" : undefined} d="M120 110L159 126L175 190L120 156Z" fill="#594638" />
-      <path d="M120 110L120 156L65 190L81 126Z" fill="#624a39" />
-      <path d="M120 110L81 126L32 85L97 79Z" fill="#71543b" />
-      <path d="M120 26V156M32 85L159 126M208 85L81 126M65 190L143 79M175 190L97 79" strokeWidth="1" opacity=".6" fill="none" />
-    </g>
-    <circle cx="120" cy="110" r="5" fill="#f3ca83" />
-    <g stroke="#d4ae6f" strokeWidth="2"><path d="M65 190V210M175 190V210" /></g>
-    <g fill="#b66447"><path d="M61 208H69L72 229H58Z" /><path d="M171 208H179L182 229H168Z" /></g>
-    <path d="M65 211V229M175 211V229" stroke="#e8bd73" />
-  </svg>;
-}
-
 export function SurveyorEnding({ language, progress, onChange, onReplay, onBack, paused = false }: {
   language: Language; progress: SurveyorProgress; onChange: (p: SurveyorProgress) => void; onReplay: () => void; onBack: () => void; paused?: boolean;
 }) {
