@@ -6,8 +6,8 @@ import { gacT02Story, impactCredit, impactDate, impactSource } from '../content/
 import { GacImpactPhoto } from './GacImpactPhoto';
 import { EarthDialogue } from './EarthDialogue';
 
-export function GacTroiImpact({ language, progress, onChange, onBook, paused }: {
-  language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void; onBook: () => void; paused: boolean;
+export function GacTroiImpact({ language, progress, onChange, paused }: {
+  language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void; paused: boolean;
 }) {
   const vi = language === 'vi', story = progress.phase === 't02-story';
   const [loaded, setLoaded] = useState({ before: false, after: false });
@@ -44,7 +44,6 @@ export function GacTroiImpact({ language, progress, onChange, onBook, paused }: 
       onComplete={() => { if (!paused) onChange(advanceGacDialogue(progress)); }} finalAction="moon" finalLabel={vi ? 'Giữ câu chuyện này' : 'Keep this story'}/>
       : <>
         <div className="gac-impact-regions" role="group" aria-label={vi ? 'Vùng nào có đốm mới?' : 'Which area has a new spot?'}>{[1, 2, 3].map((n, i) => <button key={n} disabled={paused || !ready} onFocus={() => setRegion(i)} onBlur={() => setRegion(null)} onMouseEnter={() => setRegion(i)} onMouseLeave={() => setRegion(null)} onClick={() => answer(i === 1)}>{vi ? `Vùng ${n}` : `Area ${n}`}</button>)}</div>
-        <button className="gac-impact-help" onClick={onBook} disabled={paused}>{vi ? 'Gác Trời gợi ý' : 'Ask Sky Watcher'} ▤</button>
         <p className="gac-impact-response" role="status">{wrong ? (vi ? 'Vùng này vẫn giống nhau. Nhìn vùng 2 ở hai ảnh nhé: ảnh sau có gì mới?' : 'This area looks the same. Look at area 2 in both pictures: what is new in the later one?') : '\u00a0'}</p>
       </>}
   </div>;

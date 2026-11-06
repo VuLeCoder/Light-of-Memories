@@ -143,7 +143,7 @@
 .gac-impact-result { flex:1; min-height:100px; display:flex; }
 .gac-impact-result figure > strong { display:none; }
 .gac-impact-credit { font-size:10px; line-height:1.4; }
-.gac-impact-help { align-self:flex-start; min-height:44px; }
+.gac-impact-help { min-height:44px; }
 #main-scene .game-stage:has(.gac-impact:not(.gac-impact-story)) { height:auto; aspect-ratio:auto; min-height:480px; }
 #main-scene .game-stage:has(.gac-impact:not(.gac-impact-story)) > .story-canvas { display:none; }
 .gac-meeting:has(.gac-impact:not(.gac-impact-story)) { position:relative; min-height:480px; }

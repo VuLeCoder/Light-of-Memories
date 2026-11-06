@@ -28,6 +28,7 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, onC
   const matching = progress.phase === 'matching' && !intro;
   return <section className={`ending-scene gac-meeting${light || lightDialogue || free ? ' gac-later' : ''}${matching || impact || light ? ' gac-activity' : ''}`} hidden={paused} lang={language} aria-label={vi ? 'Gặp Gác Trời' : 'Meet Sky Watcher'}>
     <div className="surveyor-scene-hud"><span>{vi ? 'Gác Trời · Tín hiệu từ quỹ đạo' : 'Sky Watcher · A signal from orbit'}</span>
+      {progress.phase === 't02-search' && <button className="gac-impact-help" onClick={onBook} disabled={paused}>{vi ? 'Gợi ý' : 'Hint'}</button>}
       <button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></div>
     {light ? <GacTroiLight language={language} progress={progress} onChange={onChange} onBook={onBook} paused={paused}/> : lightDialogue ? <EarthDialogue key={progress.phase} managedFocus language={language} paused={paused}
       title={vi ? (progress.phase === 't03-intro' ? 'Lối nào còn ánh sáng?' : 'Một chút sáng gửi Cuội') : (progress.phase === 't03-intro' ? 'Which way stays lit?' : 'A little light for Cuội')}
@@ -39,7 +40,7 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, onC
         <p>{vi ? 'Bên phải là triền đất thấp. Cuội đi tiếp nhé!' : 'The low slope is to the right. On we go, Cuội!'}</p>
         <nav><button onClick={onChat}>{vi ? 'Trò chuyện' : 'Chat'}</button><button aria-expanded={mapVisible} onClick={() => setMapVisible(v => !v)}>{vi ? 'Bản đồ trong đèn' : 'Map in the lantern'} ▤</button><button onClick={() => { if (!paused) onChange(replayGacTroi(progress)); }}>{vi ? 'Chơi lại Gác Trời' : 'Replay Sky Watcher'}</button></nav>
         {mapVisible && <div className="gac-free-map"><GacLightMap language={language}/><p>{vi ? 'Triền đất thấp → đá có khe → bóng cây đa.' : 'Low slope → split rock → banyan shadow.'}</p><button onClick={onBook}>{vi ? 'Mở bản đồ trong sách' : 'Open the map in the book'} ▤</button></div>}
-      </div> : impact ? <GacTroiImpact language={language} progress={progress} onChange={onChange} onBook={onBook} paused={paused}/> : matching ? <GacTroiMatching language={language} progress={progress} onChange={onChange} onBook={onBook} paused={paused}/> : t02Intro ? <EarthDialogue key="t02-intro" managedFocus language={language} paused={paused}
+      </div> : impact ? <GacTroiImpact language={language} progress={progress} onChange={onChange} paused={paused}/> : matching ? <GacTroiMatching language={language} progress={progress} onChange={onChange} onBook={onBook} paused={paused}/> : t02Intro ? <EarthDialogue key="t02-intro" managedFocus language={language} paused={paused}
       title={vi ? 'Đốm mới trong bức ảnh' : 'A new mark in the picture'} lines={gacT02Intro(language)} initialIndex={progress.turn}
       onTurn={turn => { if (!paused && turn !== progress.turn) onChange({ ...progress, turn }); }}
       onComplete={() => { if (!paused) onChange(advanceGacDialogue(progress)); }}
