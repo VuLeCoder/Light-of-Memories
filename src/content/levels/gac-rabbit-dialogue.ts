@@ -59,8 +59,8 @@ const lines = [
   {
     "id": "rabbit-reunion-04",
     "speaker": "chiHang",
-    "vi": "Mình cùng cảm ơn Gác Trời nhé!",
-    "en": "Let’s thank Sky Watcher together!"
+    "vi": "Chiếc đèn giữ kỷ niệm của cả ba người bạn. Mình nghỉ dưới cây đa nhé!",
+    "en": "Your lantern holds memories of all three friends. Let’s rest beneath the banyan!"
   },
   {
     "id": "rabbit-farewell-01",

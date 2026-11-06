@@ -56,7 +56,7 @@ export function rabbitObjective(j: GacRabbitJourney): 'find' | 'wake-1' | 'wake-
 /** The renderer must not activate a journey until every required screen ships. */
 export function startGacRabbitJourney(p: GacTroiProgress): GacTroiProgress {
   if (!gacRabbitReleased || !p.t02Done || p.rabbitJourney?.active) return p;
-  const journey = migrateGacRabbit(p);
+  const journey = p.rabbitJourney ?? { ...freshGacRabbit(), stage: 'bridge' as const };
   return { ...p, rabbitJourney: { ...journey, active: true }, bookUnlocks: p.bookUnlocks.includes('gac-book-light') ? p.bookUnlocks : [...p.bookUnlocks, 'gac-book-light'] };
 }
 export type RabbitAction =
@@ -83,8 +83,8 @@ export function applyGacRabbitAction(p: GacTroiProgress, action: RabbitAction): 
       next = { ...j, turn: j.turn + 1 };
       if (j.stage === 'farewell' && j.turn === 2) completedOnce = true;
     } else {
-      const stage = ({ real: 'bridge', bridge: 'slope', reunion: 'farewell', farewell: 'free' } as const)[action.stage];
-      next = { ...j, stage, turn: 0, reunionDone: j.reunionDone || j.stage === 'reunion', farewellDone: j.stage === 'farewell' };
+      const stage = ({ real: 'bridge', bridge: 'slope', reunion: 'free', farewell: 'free' } as const)[action.stage];
+      next = { ...j, stage, turn: 0, reunionDone: j.reunionDone || j.stage === 'reunion', farewellDone: j.stage === 'farewell' || j.stage === 'reunion' };
       if (stage === 'slope' && !books.includes('gac-book-map')) books = [...books, 'gac-book-map'];
     }
   }

@@ -28,7 +28,7 @@ import { BookNavigation } from './BookNavigation';
 import { journeyCopy } from '../content/book/journey-copy';
 export { journeyCopy } from '../content/book/journey-copy';
 
-export function JourneyMap({ gacTroiProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { gacTroiProgress: GacTroiProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ onFindHang, gacTroiProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { onFindHang: () => void; gacTroiProgress: GacTroiProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
   const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
@@ -72,6 +72,7 @@ export function JourneyMap({ gacTroiProgress, sparkleProgress, language, activeL
           </button>;
         })}
       </div>
+      <div className="journey-entry-action">{gacTroiProgress.completedOnce && <button className="journey-primary" onClick={onFindHang}>{language === 'vi' ? '04 · Đi tìm chị Hằng →' : '04 · Find Hằng →'}</button>}</div>
       <p className="journey-message" role="status">{[t.guide, t.prerequisite, t.locked].map((message, index) => {
         const visible = index === (locked ? selectedFriend ? 1 : 2 : 0);
         return <span key={index} style={{ visibility: visible ? 'visible' : 'hidden' }} aria-hidden={!visible}>{message}</span>;

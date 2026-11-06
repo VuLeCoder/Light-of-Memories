@@ -32,8 +32,8 @@ export const gacLightSections: readonly {
 const lines = {
   't03-intro': [
     ['t03-intro-01', 'cuoi', 'Nhìn kỹ có giúp mình tìm đường tới chị Hằng không?', 'Could looking closely help me find the way to Hằng?'],
-    ['t03-intro-02', 'gacTroi', 'Mình thử xem bản đồ này nhé. Bóng tối đổi chỗ khi ánh sáng đổi hướng.', 'Let’s look at this map. Shadows shift when the light changes direction.'],
-    ['t03-intro-03', 'gacTroi', 'Ở mỗi đoạn, xem cả hai lúc rồi chọn lối còn nhìn rõ.', 'For each part, look at both moments and choose a path you can still see.'],
+    ['t03-intro-02', 'gacTroi', 'Các nhà khoa học dùng ảnh LROC để lập bản đồ ánh sáng và bóng tối gần cực nam Mặt Trăng.', 'Scientists use LROC pictures to map light and shadow near the Moon’s south pole.'],
+    ['t03-intro-03', 'gacTroi', 'Trong bức vẽ này, Cuội thử tìm một chỗ sáng để nghỉ chân nhé!', 'In this drawing, find a bright place to rest!'],
   ],
   't03-story': [
     ['t03-done-01', 'cuoi', 'Qua triền đất thấp, tới tảng đá có khe, rồi tìm bóng cây đa.', 'Past the low slope, to the split rock, then look for the banyan’s shadow.'],
@@ -41,7 +41,7 @@ const lines = {
   ],
   'gac-farewell': [
     ['gac-farewell-01', 'gacTroi', 'Mình chỉ nhìn được đến đây thôi. Qua triền đất, Cuội sẽ tự tìm tiếp nhé.', 'This is as far as I can see. Beyond the slope, you’ll need to look around for yourself.'],
-    ['gac-farewell-02', 'cuoi', 'Cảm ơn bạn. Có bản đồ rồi, mình thấy yên tâm hơn nhiều.', 'Thank you. Having a map makes me feel much better.'],
+    ['gac-farewell-02', 'cuoi', 'Cảm ơn bạn. Mình đã biết nhìn kỹ ánh sáng và bóng tối rồi.', 'Thank you. I have learned to look closely at light and shadow.'],
     ['gac-farewell-03', 'gacTroi', 'Mình gửi thêm một chút sáng vào đèn của bạn.', 'Here’s a little more light for your lantern.'],
     ['gac-farewell-04', 'cuoi', 'Đèn sáng đủ rồi! Mình đi tìm chị Hằng đây!', 'All the lantern’s lights are shining! I’m off to find Hằng!'],
   ],

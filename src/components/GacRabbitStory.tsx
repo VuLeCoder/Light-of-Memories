@@ -31,7 +31,7 @@ export function GacRabbitStory({ language, progress, onChange, onBack, onBook, p
   const finalLabels = {
     real: vi ? 'Theo Thỏ Ngọc' : 'Follow Moon Rabbit',
     bridge: vi ? 'Tìm Thỏ nào!' : 'Let’s find Rabbit!',
-    reunion: vi ? 'Gọi Gác Trời' : 'Call Sky Watcher',
+    reunion: vi ? 'Ở lại dưới cây' : 'Stay beneath the tree',
     farewell: vi ? 'Ở lại dưới cây' : 'Stay beneath the tree',
     chat: vi ? 'Ở lại dưới cây' : 'Stay beneath the tree',
   };
@@ -41,7 +41,7 @@ export function GacRabbitStory({ language, progress, onChange, onBack, onBook, p
     const next = applyGacRabbitAction(p, { type: 'dialogue', stage: stage as keyof typeof rabbitDialogueLengths, turn });
     if (next !== p) { latest.current = next; onChange(next); }
   }
-  const lit = stage === 'free' || stage === 'farewell' && j.turn >= 3;
+  const lit = progress.completedOnce || stage === 'free' || stage === 'farewell' && j.turn >= 3;
   return <section className="ending-scene gac-rabbit rabbit-story" hidden={paused} lang={language} aria-label={vi ? 'Câu chuyện Gác Trời' : 'Sky Watcher’s story'}>
     <div className="rabbit-hud"><span>{vi ? 'Gác Trời · Tín hiệu từ quỹ đạo' : 'Sky Watcher · A signal from orbit'}</span><nav><button onClick={onBack} disabled={paused}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></div>
     <div className="rabbit-view">

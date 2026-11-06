@@ -1,4 +1,4 @@
-import { startGacRabbitJourney } from './gac-troi-rabbit';
+
 // The released rabbit journey follows T02; legacy helpers remain for saved-state compatibility.
 export { gacRabbitReleased, startGacRabbitJourney, applyGacRabbitAction, rabbitObjective } from './gac-troi-rabbit';
 import { gacCards, gacClues, gacDialogueLengths, gacRouteLandmarks, unlockGacBook, type GacCard, type GacClue, type GacLandmark, type GacTroiPhase, type GacTroiProgress } from './gac-troi-progress';
@@ -15,7 +15,7 @@ export function advanceGacDialogue(p: GacTroiProgress): GacTroiProgress {
     case 'meeting': return unlockGacBook({ ...p, phase: 'matching', turn: 0 }, 'gac-book-sites');
     case 'stories': return { ...p, phase: 't02-intro', turn: 0 };
     case 't02-intro': return unlockGacBook({ ...p, phase: 't02-search', turn: 0 }, 'gac-book-impact');
-    case 't02-story': return startGacRabbitJourney(unlockGacBook({ ...p, phase: 't03-intro', turn: 0, t02Done: true }, 'gac-book-impact.story'));
+    case 't02-story': return unlockGacBook({ ...p, phase: 't03-intro', turn: 0, t02Done: true }, 'gac-book-impact.story');
     case 't03-intro': return unlockGacBook({ ...p, phase: 't03-map', turn: 0 }, 'gac-book-light');
     case 't03-story': return unlockGacBook({ ...p, phase: 'gac-farewell', turn: 0 }, 'gac-book-map');
     case 'gac-farewell': return { ...p, phase: 'gac-free', turn: 0, farewellDone: true, completedOnce: true };
