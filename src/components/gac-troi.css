@@ -1,6 +1,45 @@
 /* Scoped activity layout: real photographs stay separate from the story text. */
 .gac-meeting.gac-activity { pointer-events:auto; background:#101e28; display:flex; flex-direction:column; padding:10px 14px; gap:6px; box-sizing:border-box; }
 .gac-activity[hidden] { display:none; }
+#main-scene .gac-later button { min-height:44px; }
+.gac-light { flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; color:#eee3c9; }
+.gac-light header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.gac-light h2 { margin:0; font:500 clamp(16px,2.2cqw,22px)/1.3 Lora,serif; }
+.gac-light p { margin:0; font-size:13px; line-height:1.4; }
+.gac-light header > span { white-space:nowrap; font-size:13px; color:#d7b875; }
+.gac-light-picture { flex:1; min-height:60px; display:flex; background:#101e28; }
+.gac-light-map { display:block; width:100%; height:100%; min-height:0; object-fit:contain; }
+.gac-light-times { display:flex; gap:6px; }
+.gac-light-times button { flex:1; }
+.gac-light-times button,.gac-light-branches button,.gac-light-feedback button { min-height:44px; padding:5px 8px; font-size:14px; }
+#main-scene .gac-light button { min-height:44px; padding:5px 8px; font-size:14px; }
+#main-scene .gac-light button[aria-pressed=true] { background:#e2c58d; color:#25313b; }
+.gac-light-branches { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.gac-light-branches button { min-width:0; }
+.gac-light-branches span { display:block; font-size:11px; line-height:1.4; margin-top:3px; }
+.gac-light-feedback { min-height:4.2em; display:flex; align-items:center; gap:8px; }
+.gac-light-feedback p { flex:1; }
+.gac-light-feedback button { max-width:45%; }
+.gac-light-story .dialogue { position:static; width:auto; flex:none; padding:10px; margin:0; border:1px solid #d2ba8155; border-radius:8px; background:#192e37; pointer-events:auto; }
+.gac-light-story .dialogue-footer { margin-top:6px; }
+.gac-light-story .dialogue-next { min-height:44px; padding:5px 10px; }
+.gac-free-panel { position:absolute; left:12px; bottom:12px; width:min(310px,60%); max-height:calc(100% - 90px); overflow:auto; padding:10px; border:1px solid #d2ba8155; border-radius:8px; background:#152831f5; color:#eee3c9; pointer-events:auto; box-sizing:border-box; }
+.gac-free-panel p { font-size:13px; line-height:1.5; margin:0 0 8px; }
+.gac-free-panel nav { display:flex; flex-wrap:wrap; gap:5px; }
+.gac-free-panel button { min-height:44px; padding:5px 8px; font-size:13px; }
+.gac-free-map { margin-top:8px; }
+.gac-free-map svg { height:auto; aspect-ratio:16/9; }
+.has-ending-chat .gac-free-panel { display:none; }
+.book-gac-map { margin:8px 0; width:100%; aspect-ratio:16/9; }
+@container (max-width:520px) {
+  #main-scene .gac-light button { font-size:12px; padding:4px; }
+  .gac-light-times button,.gac-light-branches button,.gac-light-feedback button { font-size:12px; padding:4px; }
+  .gac-light-branches span { font-size:10px; }
+  .gac-light-feedback { min-height:5.6em; }
+  .gac-light-story .dialogue-text { font-size:14px; }
+  .gac-free-panel { left:8px; bottom:8px; padding:8px; width:58%; }
+  .gac-free-panel button { font-size:12px; }
+}
 .gac-activity .surveyor-scene-hud { position:static; flex:none; align-items:center; gap:8px; }
 .gac-activity .surveyor-scene-hud > span { padding:6px 8px; }
 .gac-activity .surveyor-scene-hud button { padding:6px 10px; }
@@ -54,4 +93,41 @@
   .gac-site-photo { grid-area:photo; }
   .gac-match-response { grid-area:response; }
   .gac-match-actions { grid-area:actions; }
+}
+
+.gac-impact { flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; color:#eee3c9; }
+.gac-impact header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.gac-impact h2 { margin:0; font:500 clamp(16px,2.2cqw,22px)/1.3 Lora,serif; }
+.gac-impact header > span { font-size:11px; white-space:nowrap; color:#c7c5ae; }
+.gac-impact p { margin:0; }
+.gac-impact-instruction,.gac-impact-response { font-size:13px; line-height:1.4; }
+.gac-impact figure { flex:1; min-height:0; margin:0; display:flex; flex-direction:column; gap:4px; }
+.gac-impact-frame { position:relative; flex:1; min-height:60px; background:#091219; container-type:size; cursor:crosshair; }
+.gac-impact-photo { position:relative; width:100%; aspect-ratio:16/9; background:#091219; overflow:hidden; }
+.gac-impact-photo img { display:block; width:100%; height:100%; object-fit:contain; image-rendering:auto; }
+.gac-impact-frame > .gac-impact-photo { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(100cqw,177.77778cqh); height:min(56.25cqw,100cqh); }
+.gac-impact-answer,.gac-impact-hint,.gac-impact-region { position:absolute; pointer-events:none; box-sizing:border-box; border:2px solid #ffe3a2; box-shadow:0 0 0 1px #1d2935; }
+.gac-impact-answer { transform:translate(-50%,-50%); border-radius:50%; }
+.gac-impact-hint { left:36%; top:30%; width:30%; height:40%; border-style:dashed; }
+.gac-impact-region { left:calc(var(--region) * 100% / 3); top:0; width:calc(100% / 3); height:100%; }
+.gac-impact-error { position:absolute; inset:0; display:grid; place-content:center; padding:10px; text-align:center; font-size:13px; }
+.gac-impact figcaption { display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 12px; font-size:10px; line-height:1.3; }
+.gac-impact figcaption > span { color:#eee3c9; }
+.gac-impact-switch,.gac-impact-regions { display:flex; gap:6px; }
+.gac-impact-switch button,.gac-impact-regions button { flex:1; padding:6px 10px; font-size:13px; min-height:44px; }
+.gac-impact-switch button:last-child { margin-left:12px; }
+.gac-impact-response { min-height:2.8em; }
+.gac-impact .dialogue { position:static; width:100%; max-height:none; flex:none; padding:10px; border:1px solid #d2ba8155; border-radius:8px; background:#192f39; }
+.gac-impact .dialogue-body { gap:10px; }
+.gac-impact .dialogue-text { font-size:15px; line-height:1.5; }
+.gac-impact .dialogue-footer { margin-top:6px; }
+.gac-impact .dialogue-next { font-size:13px; padding:6px 10px; }
+.gac-impact-story .gac-impact-frame { cursor:default; }
+.book-impact-photo { margin:10px 0; clear:both; }
+.book-impact-photo figcaption { font:10px/1.4 'Be Vietnam Pro',sans-serif; margin-top:4px; }
+@container (max-width:520px) {
+  .gac-impact header { flex-direction:column; align-items:flex-start; gap:2px; }
+  .gac-impact .dialogue-portrait { width:36px; height:46px; }
+  .gac-impact .dialogue-text { font-size:14px; }
+  .gac-impact figcaption { font-size:9px; }
 }

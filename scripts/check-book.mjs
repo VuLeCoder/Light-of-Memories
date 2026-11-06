@@ -7,7 +7,7 @@ try {
   const { bookPages, getBookBlock } = await server.ssrLoadModule('/src/content/book/catalog.ts');
   const { getReadingBook, getParagraphBlocks } = await server.ssrLoadModule('/src/content/book/publication.ts');
   const { realWorldPages, insertRealWorldPages } = await server.ssrLoadModule('/src/content/book/real-world.ts');
-  const expected = ['gac-book-orbit', 'gac-book-sites', ...['surveyor','lap-lanh'].map(id => `gac-memory-${id}`), 'overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...realWorldPages.map(p => p.id)];
+  const expected = ['gac-book-light', 'gac-book-map', 'gac-book-impact', 'gac-book-impact.story', 'gac-book-orbit', 'gac-book-sites', ...['surveyor','lap-lanh'].map(id => `gac-memory-${id}`), 'overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...realWorldPages.map(p => p.id)];
   assert.deepEqual(bookPages.map(p => p.id).sort(), expected.sort());
   for (const p of realWorldPages) {
     assert.ok(expected.includes(p.after), p.after);

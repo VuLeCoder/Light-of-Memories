@@ -33,8 +33,7 @@ const assert = require('node:assert/strict');
    await page.locator('[data-gac-confirm]').click();
    await page.locator('[data-gac-continue]').click();
    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('cuoi.progress')).gacTroi.seen.length),2);
-   // M1: finish the summary, reload inside T02's introduction, then stop
-   // safely before the unshipped photo challenge. Drive the actual keyboard UI.
+   // Finish the summary and reload inside T02's introduction using the keyboard.
    for (let i=0;i<4;i++) {
     const dialogue=page.locator('.gac-meeting .dialogue');
     await dialogue.locator('.dialogue-next').waitFor();
@@ -49,13 +48,13 @@ const assert = require('node:assert/strict');
     await dialogue.locator('.dialogue-next').press('Enter');
     await page.waitForFunction(line=>document.querySelector('.gac-meeting .dialogue')?.dataset.line!==line,line);
    }
-   await page.locator('.gac-meeting .ending-farewell').waitFor();
+   await page.locator('.gac-impact:not(.gac-impact-story)').waitFor();
    let saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('cuoi.progress')));
    assert.equal(saved.version,18);assert.equal(saved.gacTroi.phase,'t02-search');
    assert.equal(saved.gacTroi.t02Done,false);assert.equal(saved.gacTroi.completedOnce,false);
    await page.reload();
    await page.getByRole('button',{name:language==='vi'?'Tiếp tục':'Continue',exact:true}).click();
-   await page.locator('.gac-meeting .ending-farewell').waitFor();
+   await page.locator('.gac-impact:not(.gac-impact-story)').waitFor();
    // A real v17 completed save keeps its earned light but resumes new T02.
    await page.evaluate(()=>{
     const p=JSON.parse(localStorage.getItem('cuoi.progress'));
@@ -73,6 +72,27 @@ const assert = require('node:assert/strict');
     await page.locator('.gac-meeting .dialogue-next').click();
     await page.waitForFunction(line=>document.querySelector('.gac-meeting .dialogue')?.dataset.line!==line,line);
    }
+   await page.locator('.gac-impact-regions button').nth(1).click();
+   for(let i=0;i<4;i++) {
+    await page.waitForFunction(()=>document.querySelector('.gac-meeting .dialogue')?.dataset.complete==='true');
+    const line=await page.locator('.gac-meeting .dialogue').getAttribute('data-line');
+    await page.locator('.gac-meeting .dialogue-next').press('Enter');
+    await page.waitForFunction(line=>document.querySelector('.gac-meeting .dialogue')?.dataset.line!==line,line);
+   }
+   for(let i=0;i<3;i++) {
+    await page.waitForFunction(()=>document.querySelector('.gac-meeting .dialogue')?.dataset.complete==='true');
+    await page.locator('.gac-meeting .dialogue-next').press('Enter');
+   }
+   for(let i=0;i<3;i++) {
+    await page.locator('.gac-light-times button').nth(1).click();
+    await page.locator('.gac-light-branches button').first().click();
+    await page.locator('[data-gac-continue]').click();
+   }
+   for(let i=0;i<6;i++) {
+    await page.waitForFunction(()=>document.querySelector('.gac-meeting .dialogue')?.dataset.complete==='true');
+    await page.locator('.gac-meeting .dialogue-next').press('Enter');
+   }
+   await page.locator('.gac-free-panel').waitFor();
    await page.getByRole('button',{name:language==='vi'?'Chơi lại Gác Trời':'Replay Sky Watcher',exact:true}).click();
    await page.locator('[data-line="MO-02"]').waitFor();
    saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('cuoi.progress')));
@@ -86,7 +106,7 @@ const assert = require('node:assert/strict');
    assert.deepEqual(issues.broken,[]);assert.deepEqual(issues.overflow,[]);
    assert.doesNotMatch(issues.text,/Tai Thính|Bánh Lưới|Keen Ears|Mesh Wheels/);
    assert.deepEqual(errors,[]);
-   console.log(`${width}px ${language}: route, T01, T02 intro/reload/gate, v17 migration, chapter replay, images and overflow passed`);
+   console.log(`${width}px ${language}: route, T01, T02 intro/reload/story, v17 migration, chapter replay, images and overflow passed`);
    await page.close();
   }
  } finally { await browser.close(); }

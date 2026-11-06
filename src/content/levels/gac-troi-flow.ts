@@ -1,9 +1,9 @@
 import { gacCards, gacClues, gacDialogueLengths, gacRouteLandmarks, unlockGacBook, type GacCard, type GacClue, type GacLandmark, type GacTroiPhase, type GacTroiProgress } from './gac-troi-progress';
 
-/** M1 ships T01 and the T02 introduction. Later checkpoints survive saves,
+/** M3 ships T01–T03, the farewell and a walk to the T04 rest checkpoint. Later checkpoints survive saves,
  * but their screens stay behind this release gate until implemented. */
 export function gacPhaseAvailable(phase: GacTroiPhase): boolean {
-  return ['meeting', 'matching', 'stories', 't02-intro'].includes(phase);
+  return ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-map', 't03-story', 'gac-farewell', 'gac-free'].includes(phase);
 }
 export function advanceGacDialogue(p: GacTroiProgress): GacTroiProgress {
   const length = gacDialogueLengths[p.phase];
@@ -11,9 +11,9 @@ export function advanceGacDialogue(p: GacTroiProgress): GacTroiProgress {
   switch (p.phase) {
     case 'meeting': return unlockGacBook({ ...p, phase: 'matching', turn: 0 }, 'gac-book-sites');
     case 'stories': return { ...p, phase: 't02-intro', turn: 0 };
-    case 't02-intro': return { ...p, phase: 't02-search', turn: 0 };
+    case 't02-intro': return unlockGacBook({ ...p, phase: 't02-search', turn: 0 }, 'gac-book-impact');
     case 't02-story': return unlockGacBook({ ...p, phase: 't03-intro', turn: 0, t02Done: true }, 'gac-book-impact.story');
-    case 't03-intro': return { ...p, phase: 't03-map', turn: 0 };
+    case 't03-intro': return unlockGacBook({ ...p, phase: 't03-map', turn: 0 }, 'gac-book-light');
     case 't03-story': return unlockGacBook({ ...p, phase: 'gac-farewell', turn: 0 }, 'gac-book-map');
     case 'gac-farewell': return { ...p, phase: 'gac-free', turn: 0, farewellDone: true, completedOnce: true };
     case 'reunion': return unlockGacBook({ ...p, phase: 'cards-intro', turn: 0, reunionDone: true }, 'ending-book-cards');

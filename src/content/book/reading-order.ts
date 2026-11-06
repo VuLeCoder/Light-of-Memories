@@ -19,7 +19,9 @@ export function getBrowserBookPages({ surveyor, sparkle, gacTroi }: BookProgress
       if (status(id) === 'locked') return [];
       const memories = gacTroiFriends.filter(friend => gacTroi?.matched.includes(friend) || gacTroi?.bookUnlocks.includes(`gac-memory-${friend}`));
       const sites = gacTroi && (gacTroi.phase !== 'meeting' || gacTroi.bookUnlocks.includes('gac-book-sites') || memories.length > 0);
-      return ['gac-book-orbit', ...(sites ? ['gac-book-sites', ...memories.map(friend => `gac-memory-${friend}`)] : [])];
+      const impact = gacTroi && (gacTroi.bookUnlocks.includes('gac-book-impact') || ['t02-search', 't02-story'].includes(gacTroi.phase) || gacTroi.t02Done);
+      const impactStory = gacTroi && (gacTroi.t02Done || gacTroi.bookUnlocks.includes('gac-book-impact.story'));
+      return ['gac-book-orbit', ...(sites ? ['gac-book-sites', ...memories.map(friend => `gac-memory-${friend}`)] : []), ...(impact ? ['gac-book-impact'] : []), ...(impactStory ? ['gac-book-impact.story'] : []), ...(gacTroi?.bookUnlocks.includes('gac-book-light') || gacTroi && ['t03-map', 't03-story', 'gac-farewell', 'gac-free'].includes(gacTroi.phase) ? ['gac-book-light'] : []), ...(gacTroi?.bookUnlocks.includes('gac-book-map') || gacTroi?.farewellDone ? ['gac-book-map'] : [])];
     }
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
@@ -41,7 +43,12 @@ export function getBookHintPage({ surveyor, sparkle, gacTroi }: BookProgress, ac
   const nextClue = eventOrder.find(id => !surveyor.clues.includes(id) && !surveyor.found.includes(id))
     ?? eventOrder.find(id => !surveyor.found.includes(id)) ?? 'arrive';
   switch (activeLevel) {
-    case 'gac-troi': return gacTroi && gacTroi.phase !== 'meeting' ? 'gac-book-sites' : 'gac-book-orbit';
+    case 'gac-troi':
+      if (gacTroi?.bookUnlocks.includes('gac-book-map') && !['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-map', 't03-story'].includes(gacTroi.phase)) return 'gac-book-map';
+      if (gacTroi && ['t03-map', 't03-story'].includes(gacTroi.phase)) return 'gac-book-light';
+      if (gacTroi?.phase === 't03-intro' && gacTroi.t02Done) return 'gac-book-impact.story';
+      if (gacTroi && ['t02-intro', 't02-search', 't02-story'].includes(gacTroi.phase)) return gacTroi.phase === 't02-intro' ? 'gac-book-sites' : 'gac-book-impact';
+      return gacTroi && gacTroi.phase !== 'meeting' ? 'gac-book-sites' : 'gac-book-orbit';
     case 'surveyor':
       return fieldUnlocked ? `clue-${nextClue}` : null;
     case 'lap-lanh':

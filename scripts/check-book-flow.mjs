@@ -57,7 +57,16 @@ try {
     p.gacTroi.matched.push(friend);
     assert.ok(check('gac-troi', 'gac-book-sites').includes(`gac-memory-${friend}`));
   }
-  ids = check();
+  p.gacTroi.phase = 't02-search';
+  ids = check('gac-troi', 'gac-book-impact');
+  assert.ok(!ids.includes('gac-book-impact.story'));
+  p.gacTroi.t02Done = true;
+  p.gacTroi.phase = 't03-map';
+  ids = check('gac-troi', 'gac-book-light');
+  assert.ok(!ids.includes('gac-book-map'));
+  p.gacTroi.bookUnlocks.push('gac-book-light', 'gac-book-map');
+  p.gacTroi.phase = 'gac-free';
+  ids = check('gac-troi', 'gac-book-map');
   assert.deepEqual(ids.map(id => id ?? 'overview').sort(), bookPages.map(page => page.id).sort(), 'Full browser book contains every catalog page exactly once');
   assert.deepEqual(pages(fresh()), startPages, 'Fresh journey has no old archive');
   assert.equal(hint(fresh(), 'surveyor'), null, 'No excavation hint before tools');

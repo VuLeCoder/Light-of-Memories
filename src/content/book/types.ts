@@ -4,7 +4,7 @@ export type BookText = Readonly<Record<Language, string>>;
 export const text = (vi: string, en: string): BookText => ({ vi, en });
 export type ContentKind = 'fact' | 'game' | 'fiction';
 export type BookChapter = 'overview' | 'surveyor' | 'apollo11' | 'lro';
-export type BookDiagram = 'clue-arrive' | 'clue-work' | 'clue-visit' | 'corner' | 'ranging' | 'route' | 'route-safe' | 'camera';
+export type BookDiagram = 'gac-map' | 'clue-arrive' | 'clue-work' | 'clue-visit' | 'corner' | 'ranging' | 'route' | 'route-safe' | 'camera';
 export interface BookSource {
   url: string;
   /** Provenance copied from the project; not an assertion of external verification. */
@@ -12,6 +12,7 @@ export interface BookSource {
   note?: BookText;
 }
 export interface BookImage {
+  annotation?: 'hint' | 'answer';
   src: string;
   alt: BookText;
   credit?: string;

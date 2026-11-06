@@ -1,0 +1,46 @@
+[
+  {
+    "id": "impact-before",
+    "source": "docs/plan/ban-gac-troi/sources/impact2013-before.png",
+    "sourceId": "impact0317_hw4x.0001.tif",
+    "sourcePage": "https://svs.gsfc.nasa.gov/4242/",
+    "sourceDimensions": [
+      5760,
+      3240
+    ],
+    "sourceSha256": "f31ef87e2b29c7a2531b11956ea8b981415312882e30267848c0933a25bede0e",
+    "output": "public/images/memories/gac-troi/impact2013-before.webp",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "outputSha256": "600d7aa776359d81d7da63846f4a389c6fa72a5bd4ebb85d06c010c68f17478f",
+    "crop": null,
+    "conversion": "Pillow 10.2.0, LANCZOS resize, WebP lossless method 6",
+    "credit": "NASA/GSFC/Arizona State University; NASA’s Scientific Visualization Studio, visualization: Ernie Wright",
+    "sourceDownload": "Existing project source files; original download date not recorded",
+    "processed": "2026-11-06"
+  },
+  {
+    "id": "impact-after",
+    "source": "docs/plan/ban-gac-troi/sources/impact2013-after.png",
+    "sourceId": "impact0317_hw4x.0002.tif",
+    "sourcePage": "https://svs.gsfc.nasa.gov/4242/",
+    "sourceDimensions": [
+      5760,
+      3240
+    ],
+    "sourceSha256": "4a291b048bcd40c8d88d6117625f539e27111b975764ca16428565248bd40420",
+    "output": "public/images/memories/gac-troi/impact2013-after.webp",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "outputSha256": "5bf4e71b7a99af33e585cd6283782bdfb7aeeb77187a18a8a731868887734e99",
+    "crop": null,
+    "conversion": "Pillow 10.2.0, LANCZOS resize, WebP lossless method 6",
+    "credit": "NASA/GSFC/Arizona State University; NASA’s Scientific Visualization Studio, visualization: Ernie Wright",
+    "sourceDownload": "Existing project source files; original download date not recorded",
+    "processed": "2026-11-06"
+  }
+]

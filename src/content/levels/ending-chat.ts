@@ -1,10 +1,11 @@
+import { gacLightDialogue } from './gac-troi-light';
 import type { StoryLine } from '../earth-dialogue';
 import type { Language } from '../i18n';
 import type { LevelId } from './index';
 
 /** Repeatable chats after the lantern farewell; these never change saved progress. */
 export const endingChatLines = {
-  'gac-troi': { vi: [], en: [] },
+  'gac-troi': { vi: gacLightDialogue('chat', 'vi'), en: gacLightDialogue('chat', 'en') },
   surveyor: {
     vi: [
       { id: 'round-eyes-chat-thanks', speaker: 'matTron', text: 'Cảm ơn Cuội đã đến trò chuyện với mình! Có bạn ghé thăm, mình vui lắm.' },

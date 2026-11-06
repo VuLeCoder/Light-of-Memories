@@ -1,3 +1,4 @@
+import { impactAlt, impactCredit, impactPhoto, impactSource } from '../levels/gac-troi-impact';
 import { gacMemories } from '../levels/gac-troi-matching';
 import { gacImage } from '../levels/gac-troi-images';
 import { bookArchiveImages, realWorldPages } from './real-world';
@@ -94,6 +95,18 @@ for (const memory of gacMemories) {
   block(p, 'story', 'fact', memory.story, 'C5.2', 0, sources);
   block(p, 'picture', 'fact', memory.caption, 'C5.2', 1, [source(photo.sourcePage)], { image: { src: photo.src, alt: photo.alt, credit: photo.credit } });
 }
+
+const impact = page('gac-book-impact', 'lro', text('Một dấu vết mới', 'A new trace'));
+block(impact, 'compare', 'fact', text('Hai ảnh cùng một vùng giúp tìm thay đổi nhỏ. Ảnh trước: 12/02/2012; ảnh sau: 28/07/2013.', 'Two pictures of the same place help reveal small changes. Before: 12 Feb 2012; after: 28 Jul 2013.'), 'C5.3', 0, [source(impactSource)]);
+block(impact, 'hint', 'game', text('Đổi ảnh rồi nhìn vùng giữa, gần nhóm hố nhỏ. Hình gợi ý đánh dấu một vùng rộng để đối chiếu.', 'Switch pictures and look near the middle, beside the small craters. The hint marks a broad area to compare.'), 'A5.2', 0, [], { reveal: 'hint', image: { src: impactPhoto('before'), alt: text('Ảnh trước va chạm với khung gợi ý rộng gần giữa ảnh.', 'Before the impact, with a broad hint box near the middle.'), credit: impactCredit, annotation: 'hint', date: '2012-02-12' } });
+const impactStory = page('gac-book-impact.story', 'lro', text('Chớp sáng và chiếc hố', 'A flash and a crater'));
+block(impactStory, 'crater', 'fact', text('Chớp sáng ngày 17/03/2013 được quan sát từ Trái Đất. Ảnh LRO sau đó giúp xác định hố mới khoảng 18 m. Đây là va chạm tự nhiên.', 'The flash on 17 Mar 2013 was observed from Earth. Later LRO images helped identify a new crater about 18 m wide. This was a natural impact.'), 'C5.3', 1, [source(impactSource), source('https://www.nasa.gov/solar-system/nasas-lro-spacecraft-finds-march-17-2013-impact-crater-and-more/')], { image: { src: impactPhoto('after'), alt: impactAlt.answer, credit: impactCredit, annotation: 'answer', date: '2013-07-28' } });
+
+const light = page('gac-book-light', 'lro', text('Ánh sáng và bóng tối', 'Light and shadow'));
+block(light, 'observations', 'fact', text('Dữ liệu LRO giúp nghiên cứu vùng sáng và vùng tối gần cực Mặt Trăng. Bản đồ chiếu sáng PIA13720 tổng hợp nhiều lần quan sát, không phải hai giờ trong câu đố.', 'LRO data helps study light and shadow near the lunar poles. Illumination map PIA13720 combines many observations; it does not show the puzzle’s two moments.'), 'C5.4', 0, [source('https://science.nasa.gov/photojournal/south-pole-illumination-map/')]);
+block(light, 'hint', 'game', text('So từng nhánh ở cả hai lúc; giữ lối còn nhìn rõ, rồi nhớ điểm mốc. Hai lần quan sát không chứng minh một lối luôn sáng hoặc đủ mọi điều kiện an toàn. Bản đồ chơi là sáng tác.', 'Compare each branch at both moments; keep the visible path and remember its landmark. Two observations do not prove a path is always lit or safe in every way. The game map is imagined.'), 'A5.3', 0, [], { reveal: 'hint' });
+const map = page('gac-book-map', 'lro', text('Bản đồ trong đèn', 'The map in the lantern'));
+block(map, 'landmarks', 'fiction', text('Triền đất thấp → đá có khe → bóng cây đa. Đây là điểm mốc trong truyện, không phải bản đồ đến một địa điểm NASA.', 'Low slope → split rock → banyan shadow. These are story landmarks, not directions to a NASA site.'), 'A5.3', 1, [], { diagram: 'gac-map' });
 
 /** Full inventory; no progress, React, DOM or save access. Browser visibility stays in the UI. */
 export const bookPages: readonly BookPage[] = pages;

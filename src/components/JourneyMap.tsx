@@ -1,3 +1,6 @@
+import { GacLightMap } from './GacLightMap';
+import { Fragment } from 'react';
+import { GacImpactPhoto } from './GacImpactPhoto';
 import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { getBookPage } from '../content/book/catalog';
 import { getBrowserBookPages, getBookHintPage } from '../content/book/reading-order';
@@ -91,6 +94,8 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   const page = Math.max(0, pages.indexOf(selectedPage));
   const setPage = (index: number) => setSelectedPage(pages[index] ?? null);
   const lastBookRequest = useRef(bookRequest);
+  const [lightHintVisible, setLightHintVisible] = useState(false);
+  const [impactHintVisible, setImpactHintVisible] = useState(false);
   const [bookFocusRequest, setBookFocusRequest] = useState(0);
   const t = journeyCopy[language];
   const dt = digCopy[language];
@@ -103,6 +108,8 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
     const target = getBookHintPage({ surveyor: surveyorProgress, sparkle: sparkleProgress, gacTroi: gacTroiProgress }, activeLevel);
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);
+    if (target === 'gac-book-light') setLightHintVisible(true);
+    if (target === 'gac-book-impact') setImpactHintVisible(true);
     setBookFocusRequest(bookRequest);
   }, [bookRequest]);
   // Wait until the requested page has rendered before looking up its heading.
@@ -118,7 +125,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   useEffect(() => {
     document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
   }, [selectedPage]);
-  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed]));
+  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed, impactHintVisible, lightHintVisible]));
   const showSources = !getBookPage(pages[page])?.blocks.some(block => block.kind !== 'fact');
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
@@ -142,11 +149,16 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
       <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
         <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
         <span className="book-kicker">03 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
-        <div className="book-prose book-prose--intro"><img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>
-          {entry.blocks.map(block => <div key={block.id}>
+        <div className="book-prose book-prose--intro">{!['gac-book-map', 'gac-book-light'].includes(entry.id) && !entry.id.startsWith('gac-book-impact') && <img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>}
+          {entry.blocks.filter(block => (entry.id !== 'gac-book-light' || (lightHintVisible ? block.id === 'gac-book-light.hint' : block.id !== 'gac-book-light.hint')) && (block.id !== 'gac-book-impact.hint' || impactHintVisible) && (block.id !== 'gac-book-impact.compare' || !impactHintVisible)).map(block => block.diagram === 'gac-map' ? <Fragment key={block.id}><figure className="book-gac-map" data-book-block={block.id}><GacLightMap language={language}/></figure><p data-book-block={block.id}>{block.text[language]}</p></Fragment> : block.image?.annotation ? <Fragment key={block.id}>
+            <figure className="book-impact-photo" data-book-block={block.id}><GacImpactPhoto when={block.image.annotation === 'hint' ? 'before' : 'after'} language={language} annotation={block.image.annotation}/><figcaption>{block.image.date} · {block.image.credit}</figcaption></figure>
+            <p data-book-block={block.id}>{block.text[language]}</p>
+          </Fragment> : <div key={block.id} data-book-block={block.id}>
             {entry.id !== 'gac-book-orbit' && block.image && <figure className="book-reality-photo"><img src={block.image.src} alt={block.image.alt[language]}/><figcaption>{block.image.credit}</figcaption></figure>}
             <p><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>
           </div>)}
+          {entry.id === 'gac-book-light' && <button aria-pressed={lightHintVisible} onClick={() => setLightHintVisible(value => !value)}>{language === 'vi' ? (lightHintVisible ? 'Chuyện thật' : 'Nhớ cả hai lúc') : (lightHintVisible ? 'The real story' : 'Remember both moments')}</button>}
+          {entry.id === 'gac-book-impact' && <button aria-expanded={impactHintVisible} onClick={() => setImpactHintVisible(value => !value)}>{language === 'vi' ? 'Nhìn kỹ hơn' : 'A closer look'}</button>}
         </div>
         {[...new Set(entry.blocks.flatMap(block => block.sources.map(s => s.url)))].map(url => <a key={url} className="sparkle-book-source" href={url} target="_blank" rel="noreferrer">NASA ↗</a>)}
         {activeLevel && <BackToGame language={language}/>}

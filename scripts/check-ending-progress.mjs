@@ -67,7 +67,7 @@ try {
   assert.deepEqual(gacT02Intro('vi').map(l => l.id), gacT02Intro('en').map(l => l.id));
   assert.equal(gacT02Intro('vi').length, gacDialogueLengths['t02-intro']);
   assert.equal(flow.advanceGacDialogue(game), game, 'Cannot complete dialogue before its last line');
-  dialogue(); assert.equal(game.phase, 't02-search'); assert.equal(flow.gacPhaseAvailable(game.phase), false);
+  dialogue(); assert.equal(game.phase, 't02-search'); assert.equal(flow.gacPhaseAvailable(game.phase), true);
   assert.equal(flow.keepGacLandmark(game, 'low-slope'), game, 'Cannot bypass T02');
   game = flow.findGacImpact(game); reload(); assert.equal(game.t02Done, false, 'Correct click alone is not completion');
   dialogue(); assert.equal(game.t02Done, true); assert.equal(game.phase, 't03-intro');
@@ -116,7 +116,7 @@ try {
   assert.equal(broken.completedOnce, true, 'Earned achievements survive a damaged current replay');
   assert.deepEqual(readGacTroi(broken), broken, 'Repairing a save is idempotent');
   assert.deepEqual(readGacTroi({ ...completed, phase: 't03-map', routeLandmarks: ['bad', 'low-slope', 'low-slope', 'split-rock'] }).routeLandmarks, ['low-slope', 'split-rock']);
-  for (const phase of state.gacTroiPhases.slice(4)) assert.equal(flow.gacPhaseAvailable(phase), false, `Unshipped ${phase} gated`);
+  for (const phase of state.gacTroiPhases.slice(11)) assert.equal(flow.gacPhaseAvailable(phase), false, `Unshipped ${phase} gated`);
   const noReceipts = readGacTroi({ ...freshGacTroi(), phase: 'story-end' });
   assert.equal(noReceipts.phase, 'matching'); assert.equal(noReceipts.storyCompletedOnce, false);
   assert.deepEqual(readGacTroi({ ...completed, phase: 't04-rock', clues: ['slope'] }).clues, ['slope']);

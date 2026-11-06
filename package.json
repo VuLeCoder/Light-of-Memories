@@ -11,7 +11,9 @@
     "check:book": "node scripts/check-book.mjs",
     "check:book-flow": "node scripts/check-book-flow.mjs",
     "check:gac-troi": "node scripts/check-gac-troi.mjs",
-    "check:ending-progress": "node scripts/check-ending-progress.mjs"
+    "check:ending-progress": "node scripts/check-ending-progress.mjs",
+    "check:gac-light": "node scripts/check-gac-light.mjs",
+    "check:gac-impact": "node scripts/check-gac-impact.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0",

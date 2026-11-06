@@ -19,7 +19,7 @@ Dự án được phát triển theo challenge **Abandoned but not Forgotten: St
 
 Đã dựng phần mở đầu: hội thoại An và bà, chuyển cảnh lên Mặt Trăng, Cuội thức dậy, di chuyển, quan sát ghế đá, trò chuyện với Cây Đa và nhận đèn trước khi lên đường. Website có menu, chọn tiếng Việt / tiếng Anh và lưu tiến trình theo mốc trên trình duyệt.
 
-Tuyến hiện tại gồm **Surveyor 3 — Mắt Tròn → Apollo 11 — Lấp Lánh → LRO — Gác Trời**. Hai chương đầu đã có thử thách và đoạn kết. Gác Trời đã có T01 ghép ký ức và lời giới thiệu T02; phần tìm thay đổi, bản đồ, tìm chị Hằng và kết truyện đang được phát triển. Bản M1 dừng an toàn sau giới thiệu T02, giữ tiến trình để tiếp tục ở bản sau.
+Tuyến hiện tại gồm **Surveyor 3 — Mắt Tròn → Apollo 11 — Lấp Lánh → LRO — Gác Trời**. Hai chương đầu đã có thử thách và đoạn kết. Gác Trời đã có T01 ghép ký ức, T02 tìm thay đổi trên cặp ảnh thật, T03 chọn đường qua hai thời điểm và đoạn tạm biệt. Sau khi đèn sáng đủ, Cuội đi sang phải để tới bảng nghỉ bên triền đất thấp; T04 tìm chị Hằng và kết truyện đang được phát triển.
 
 Game nằm bên trái, sách đồng hành bên phải; phần giới thiệu nằm bên dưới. Trên màn hình nhỏ, sách và panel chuyển xuống dưới game. Sách mở nội dung theo tiến trình, có gợi ý và nguồn ảnh.
 
@@ -54,6 +54,8 @@ npm run check:book-flow
 # Kiểm tra T01, chuyển save và checkpoint kết truyện
 npm run check:gac-troi
 npm run check:ending-progress
+npm run check:gac-impact
+npm run check:gac-light
 
 # Kiểm tra TypeScript và tạo bản build
 npm run build
@@ -98,9 +100,9 @@ Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `loca
 
 ### Những phần đang phát triển
 
-Cập nhật 06/11/2026: **M1 mở rộng luồng và lưu tiến trình đã hoàn thành**. Xem [bàn giao M1](docs/done/M1_Gac_Troi_progress.md) cho schema, migration, cổng phát hành và kiểm tra.
+Cập nhật 06/11/2026: **M3: T03 và kết Gác Trời đã triển khai**. Xem [bàn giao M3](docs/done/M3_T03.md). Xem [bàn giao M2](docs/done/M2_T02.md) và [manifest ảnh](docs/done/M2_T02_assets.json). Xem [bàn giao M1](docs/done/M1_Gac_Troi_progress.md) cho schema, migration, cổng phát hành và kiểm tra.
 
-- M2–M6 sẽ triển khai lần lượt T02, T03, kết Gác Trời, T04, thẻ câu chuyện và cảnh An–bà. Các checkpoint đã có nhưng màn chưa hoàn thiện chưa mở trong game.
+- M4–M6 sẽ triển khai lần lượt T04, thẻ câu chuyện và cảnh An–bà. Các checkpoint đã có nhưng màn chưa hoàn thiện chưa mở trong game.
 - Xem lại kết truyện đã có con trỏ dữ liệu tạm riêng; giao diện xem lại được nối khi nội dung kết truyện hoàn thành.
 - Sách đã có dữ liệu phân loại và thứ tự xuất bản; chưa có chức năng tải PDF.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.

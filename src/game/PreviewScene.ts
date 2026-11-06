@@ -95,8 +95,9 @@ export class PreviewScene extends Phaser.Scene {
       const sparkle = this.options.scene === 'lap-lanh';
       const tai = this.options.scene === 'tai-thinh';
       const ban = this.options.scene === 'ban-banh-luoi';
-      const x = ban ? (this.options.encounterStarted ? banhLuoiLayout.approachX : 140) : tai ? (this.options.encounterStarted ? 430 : 140) : sparkle ? 340 : surveyorEncounter.x - 80;
-      this.cuoi.setPosition(x, sparkle || tai || ban ? 431 : surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
+      const gac = this.options.scene === 'gac-troi';
+      const x = gac ? 690 : ban ? (this.options.encounterStarted ? banhLuoiLayout.approachX : 140) : tai ? (this.options.encounterStarted ? 430 : 140) : sparkle ? 340 : surveyorEncounter.x - 80;
+      this.cuoi.setPosition(x, sparkle || tai || ban || gac ? 431 : surveyorGroundY(x)).setScale(.62).setFlipX(false).setDepth(10);
       this.setCuoiFrame('rest');
       this.digShadow?.setVisible(false);
       this.exitTriggered = false;
@@ -153,7 +154,7 @@ export class PreviewScene extends Phaser.Scene {
   }
 
   private get interactionX() { if (this.options.scene === 'ban-banh-luoi') return banhLuoiLayout.approachX; if (this.options.scene === 'tai-thinh') return this.options.freeRoam ? taiThinhLayout.pse.x : 520; if (this.options.scene === 'lap-lanh') return 480; return this.options.scene === 'surveyor' ? surveyorEncounter.x : 520; }
-  private get canInteract() { if (this.options.scene === 'ban-banh-luoi') return !!this.options.freeRoam || !this.options.encounterStarted; if (this.options.freeRoam) return true; return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
+  private get canInteract() { if (this.options.scene === 'gac-troi') return false; if (this.options.scene === 'ban-banh-luoi') return !!this.options.freeRoam || !this.options.encounterStarted; if (this.options.freeRoam) return true; return this.options.scene === 'tai-thinh' ? !this.options.taiEnding || this.options.taiEnding === 'none' : this.options.scene === 'lap-lanh' ? !this.options.sparkleEnding : (this.options.scene === 'surveyor' && !this.options.excavation && !this.options.freeRoam) || this.options.quest === 'bench'; }
   setSparkleEnding(value: boolean) {
     const entering = value && !this.options.sparkleEnding;
     this.options.sparkleEnding = value;
@@ -597,7 +598,7 @@ export class PreviewScene extends Phaser.Scene {
     const rightEdge = this.rightEdge;
     this.cuoi.x = Phaser.Math.Clamp(this.cuoi.x + heading * Math.min(distance, remaining), 52, rightEdge);
     if (this.options.scene === 'surveyor') this.cuoi.y = surveyorGroundY(this.cuoi.x);
-    const finishedTrail = this.options.freeRoam && ['lap-lanh', 'tai-thinh', 'ban-banh-luoi'].includes(this.options.scene);
+    const finishedTrail = this.options.freeRoam && ['lap-lanh', 'tai-thinh', 'ban-banh-luoi', 'gac-troi'].includes(this.options.scene);
     if (((this.options.scene === 'moon' && this.options.quest === 'trail' && this.cuoi.x >= 890) || (finishedTrail && this.cuoi.x >= 875)) && !this.exitTriggered) {
       this.exitTriggered = true;
       this.setMoonMode('story');

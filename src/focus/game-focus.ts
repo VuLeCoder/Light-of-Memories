@@ -4,6 +4,8 @@ export function focusGame(stage: HTMLElement | null) {
   const selectors = [
     '.dialogue .dialogue-next',
     '[data-gac-continue]',
+    '.gac-light-times button[aria-pressed="true"]',
+    '.gac-impact-switch button[aria-pressed="true"]',
     '.gac-friends button[aria-pressed="true"]',
     '.gac-friends button',
     '.ban-guide .game-host',

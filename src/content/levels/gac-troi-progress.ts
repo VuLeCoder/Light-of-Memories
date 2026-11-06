@@ -96,6 +96,10 @@ export function readGacTroi(value: unknown): GacTroiProgress {
   if (phase === 'story-end' && p.storyCompletedOnce !== true) phase = 'home';
   const bookUnlocks = setOf(p.bookUnlocks, gacBookUnlockIds);
   for (const id of t01Books(matched, phase)) if (!bookUnlocks.includes(id)) bookUnlocks.push(id);
+  if (t01Done && gacTroiPhases.indexOf(phase) >= gacTroiPhases.indexOf('t02-search') && !bookUnlocks.includes('gac-book-impact')) bookUnlocks.push('gac-book-impact');
+  if (t02Done && !bookUnlocks.includes('gac-book-impact.story')) bookUnlocks.push('gac-book-impact.story');
+  if (t02Done && gacTroiPhases.indexOf(phase) >= gacTroiPhases.indexOf('t03-map') && !bookUnlocks.includes('gac-book-light')) bookUnlocks.push('gac-book-light');
+  if (routeLandmarks.length === 3 && gacTroiPhases.indexOf(phase) >= gacTroiPhases.indexOf('gac-farewell') && !bookUnlocks.includes('gac-book-map')) bookUnlocks.push('gac-book-map');
   return { revision: 2, phase, turn: turnFor(p, phase, matched), matched, seen, t02Done, routeLandmarks, farewellDone, clues, reunionDone, understoodCards,
     completedOnce: p.completedOnce === true, storyCompletedOnce: p.storyCompletedOnce === true, bookUnlocks: setOf(bookUnlocks, gacBookUnlockIds) };
 }
