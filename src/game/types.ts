@@ -4,6 +4,8 @@ import type { Language } from '../content/i18n';
 export type MoonQuest = 'bench' | 'tree' | 'lantern' | 'trail' | 'complete';
 export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh' | 'tai-thinh' | 'ban-banh-luoi' | 'gac-troi';
 export interface PreviewOptions {
+  surveyorLantern?: 'hidden' | 'unlit' | 'lit';
+  sparkleLantern?: 'hidden' | 'unlit' | 'lit';
   banhLuoiGuide?: import('./banh-luoi-guide').BanhLuoiGuideOptions;
   taiEnding?: 'none' | 'thanks' | 'gifting' | 'lit' | 'free';
   taiStars?: number;

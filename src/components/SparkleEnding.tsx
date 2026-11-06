@@ -3,7 +3,6 @@ import type { Language } from '../content/i18n';
 import type { StoryLine } from '../content/earth-dialogue';
 import { sparkleKeepsakes, type SparkleProgress } from '../content/levels/lap-lanh';
 import { EarthDialogue } from './EarthDialogue';
-import { MemoryLantern } from './SurveyorEnding';
 
 export function SparkleEnding({ language, progress, onChange, paused }: {
   language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; paused: boolean;
@@ -51,7 +50,6 @@ export function SparkleEnding({ language, progress, onChange, paused }: {
   const lit = step >= 5;
   return <section className={`ending-scene sparkle-ending-scene${gifting ? ' is-gifting' : ''}`} hidden={paused} lang={language} aria-label={title}>
     <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {lit ? '2' : '1'}/3</strong></div>
-    {step >= 4 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} second />{gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}</div>}
     {gifting && <span className="ending-light-travel" aria-hidden="true" onAnimationEnd={() => setGifting(false)} />}
     <EarthDialogue key={step === 0 ? 'intro' : 'outro'} language={language} paused={paused} title={title} lines={step === 0 ? intro : outro} initialIndex={step === 0 ? 0 : Math.max(0, step - 4)} onTurn={index => { if (step !== 0 && index + 4 !== step) go(index + 4); }} finalAction="moon" finalLabel={step === 0 ? (vi ? 'Nghe Lấp Lánh kể' : 'Listen to Sparkle') : (vi ? 'Mang theo ánh sáng' : 'Carry the light')} onComplete={() => step === 0 ? go(1) : onChange({ ...progress, phase: 'finished', turn: 0, completedOnce: true })} />
   </section>;

@@ -121,9 +121,6 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
   </section>;
   return <section className={`ending-scene${gifting ? ' is-gifting' : ''}${step === 10 ? ' is-exploring' : ''}`} hidden={paused} lang={language} aria-label={t.title}>
     <div className="surveyor-scene-hud"><span>{t.title}</span>{lit && <strong role="status">★ 1/3</strong>}</div>
-    {step >= 6 && step < 10 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} />
-      {gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}
-    </div>}
     {gifting && <span className="ending-light-travel" aria-hidden="true" onAnimationEnd={() => setGifting(false)} />}
     {step >= 8 && <span className="ending-distant-light" role="img" aria-label={t.distant} />}
     {step < 3 ? <EarthDialogue key="ending-intro" language={language} paused={paused} lines={t.intro} initialIndex={step} title={t.title} finalAction="moon" finalLabel={t.listen} onTurn={index => { if (index !== step) go(index); }} onComplete={() => go(3)} />

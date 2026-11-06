@@ -27,6 +27,7 @@ export class PreviewScene extends Phaser.Scene {
   private keys?: Record<'left' | 'right' | 'up' | 'down' | 'w' | 's' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
   private walkTarget?: number;
   private earnedLight?: Phaser.GameObjects.Graphics;
+  private sparkleGiftLight?: Phaser.GameObjects.Graphics;
   private digTarget?: { x: number; y: number };
   private digNear: SurveyorEvent | null = null;
   private digMarks?: Phaser.GameObjects.Graphics;
@@ -503,8 +504,9 @@ export class PreviewScene extends Phaser.Scene {
       this.earnedLight.fillStyle(0xffe6a2).fillTriangle(0, 0, points[9].x, points[9].y, points[0].x, points[0].y);
       this.earnedLight.fillTriangle(0, 0, points[0].x, points[0].y, points[1].x, points[1].y);
       if (this.options.scene === 'lap-lanh') {
-        this.earnedLight.fillTriangle(0, 0, points[1].x, points[1].y, points[2].x, points[2].y);
-        this.earnedLight.fillTriangle(0, 0, points[2].x, points[2].y, points[3].x, points[3].y);
+        this.sparkleGiftLight = this.add.graphics().fillStyle(0xffe6a2);
+        this.sparkleGiftLight.fillTriangle(0, 0, points[1].x, points[1].y, points[2].x, points[2].y);
+        this.sparkleGiftLight.fillTriangle(0, 0, points[2].x, points[2].y, points[3].x, points[3].y);
       }
       if (['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene)) {
         this.taiGiftLight = this.add.graphics();
@@ -608,12 +610,23 @@ export class PreviewScene extends Phaser.Scene {
     else if (!this.cuoi.anims.isPlaying || this.cuoi.anims.currentAnim?.key !== 'cuoi-walk') this.cuoi.play('cuoi-walk');
   }
 
+  setSparkleLantern(state: PreviewOptions['sparkleLantern']) {
+    this.options.sparkleLantern = state;
+    this.syncLanternGrip();
+  }
+
+  setSurveyorLantern(state: PreviewOptions['surveyorLantern']) {
+    this.options.surveyorLantern = state;
+    this.syncLanternGrip();
+  }
+
   private syncLanternGrip() {
     const c = this.cuoi, lantern = this.lantern;
     if (!c || !lantern) return;
-    if ((['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene) && (!this.options.taiEnding || this.options.taiEnding === 'none')) || (this.options.scene === 'lap-lanh' && !this.options.freeRoam)) {
+    if ((['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene) && (!this.options.taiEnding || this.options.taiEnding === 'none')) || (this.options.scene === 'lap-lanh' && !this.options.freeRoam && (!this.options.sparkleLantern || this.options.sparkleLantern === 'hidden'))) {
       lantern.setVisible(false);
       this.earnedLight?.setVisible(false);
+      this.sparkleGiftLight?.setVisible(false);
       return;
     }
     // Fist centers in each trimmed sprite frame (original image pixels).
@@ -631,9 +644,11 @@ export class PreviewScene extends Phaser.Scene {
     lantern.setScale(scale).setRotation(angle)
       .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
       .setDepth(c.depth - .1)
-      .setVisible(this.options.scene === 'surveyor' ? !!this.options.freeRoam : ['lantern', 'trail', 'complete'].includes(this.options.quest));
-    this.earnedLight?.setVisible(['tai-thinh', 'ban-banh-luoi', 'gac-troi'].includes(this.options.scene) || !!this.options.freeRoam)
+      .setVisible(this.options.scene === 'surveyor' ? (!!this.options.freeRoam || this.options.surveyorLantern === 'unlit' || this.options.surveyorLantern === 'lit') : this.options.scene === 'lap-lanh' ? true : ['lantern', 'trail', 'complete'].includes(this.options.quest));
+    this.earnedLight?.setVisible(['tai-thinh', 'ban-banh-luoi', 'gac-troi', 'lap-lanh'].includes(this.options.scene) || !!this.options.freeRoam || (this.options.scene === 'surveyor' && this.options.surveyorLantern === 'lit'))
       .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
+    this.sparkleGiftLight?.setVisible(!!this.options.freeRoam || this.options.sparkleLantern === 'lit')
+      .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .04);
   }
 
   private get rightEdge() { return this.options.freeRoam || this.options.scene === 'surveyor' ? 895 : this.options.quest === 'trail' ? 908 : 830; }

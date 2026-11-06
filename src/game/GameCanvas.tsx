@@ -14,7 +14,9 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ sparkleLantern = 'hidden', surveyorLantern = 'hidden', banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  sparkleLantern?: PreviewOptions['sparkleLantern'];
+  surveyorLantern?: PreviewOptions['surveyorLantern'];
   banhLuoiGuide?: PreviewOptions['banhLuoiGuide'];
   onReady?: () => void;
   taiEnding?: PreviewOptions['taiEnding']; taiStars?: number; onTaiGift?: () => void;
@@ -28,8 +30,8 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
   readyRef.current = onReady;
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
-  progressRef.current = { banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
+  const progressRef = useRef({ sparkleLantern, surveyorLantern, banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
+  progressRef.current = { sparkleLantern, surveyorLantern, banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -61,6 +63,8 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
         taiEnding: progressRef.current.taiEnding,
         taiStars: progressRef.current.taiStars,
         onTaiGift: () => { if (!cancelled) progressRef.current.onTaiGift?.(); },
+        sparkleLantern: progressRef.current.sparkleLantern,
+        surveyorLantern: progressRef.current.surveyorLantern,
         sparkleEnding: progressRef.current.sparkleEnding,
         sparkleDust: progressRef.current.sparkleDust,
         sparkleTrail: progressRef.current.sparkleTrail,
@@ -132,6 +136,8 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
 
   useEffect(() => { phaserScene.current?.setBanhLuoiGuide(banhLuoiGuide); }, [banhLuoiGuide]);
   useEffect(() => { phaserScene.current?.setTaiEnding(taiEnding, taiStars); }, [taiEnding, taiStars]);
+  useEffect(() => { phaserScene.current?.setSparkleLantern(sparkleLantern); }, [sparkleLantern]);
+  useEffect(() => { phaserScene.current?.setSurveyorLantern(surveyorLantern); }, [surveyorLantern]);
   useEffect(() => { phaserScene.current?.setSparkleEnding(sparkleEnding); }, [sparkleEnding]);
   useEffect(() => { phaserScene.current?.setSparkleDust(sparkleDust); }, [sparkleDust]);
   useEffect(() => { phaserScene.current?.setSparkleTrail(sparkleTrail); }, [sparkleTrail]);
