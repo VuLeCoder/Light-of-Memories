@@ -25,7 +25,7 @@ const englishTree = [
   'Cuội waited. Hằng was nowhere to be seen.',
   'She has not gone far, my child. But the Moon has changed.',
   'While you slept, new friends arrived. They have stories to tell. Go and meet them!',
-  'Each friend will light one point of your lantern. When all five points shine, its light will lead you to Hằng.',
+  'Three friends will help your lantern grow brighter. Once you have met all three, its light will lead you to Hằng.',
 ];
 const englishDeparture = [
   'Cuội looked at the unlit five-pointed star lantern, then at the strange footprints in the grey dust.',

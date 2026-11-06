@@ -45,15 +45,6 @@ const images = {
     "sourcePage": "https://science.nasa.gov/resource/apollo-12-and-surveyor-3/",
     "file": "conrad-surveyor3-as12-48-7134.webp"
   },
-  "apollo17-lro": {
-    "alt": {
-      "vi": "Khu Apollo 17, có nhãn xe rover và đường di chuyển.",
-      "en": "Apollo 17 site with labels for the rover and travel tracks."
-    },
-    "credit": "NASA/GSFC/Arizona State University",
-    "sourcePage": "https://science.nasa.gov/image-article/apod-2011-september-8-apollo-17-site-a-sharper-view/",
-    "file": "apollo17-lro.webp"
-  }
 } as const;
 export type GacImageId = keyof typeof images;
 export const gacImage = (id: GacImageId) => ({ ...images[id], src: base + images[id].file });

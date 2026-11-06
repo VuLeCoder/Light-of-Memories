@@ -6,10 +6,8 @@ const server = await createServer({ server: { middlewareMode: true, hmr: false, 
 try {
   const { bookPages, getBookBlock } = await server.ssrLoadModule('/src/content/book/catalog.ts');
   const { getReadingBook, getParagraphBlocks } = await server.ssrLoadModule('/src/content/book/publication.ts');
-  const { taiThinhBook } = await server.ssrLoadModule('/src/content/levels/tai-thinh-content.ts');
-  const { banBanhLuoiBook } = await server.ssrLoadModule('/src/content/levels/ban-banh-luoi-content.ts');
   const { realWorldPages, insertRealWorldPages } = await server.ssrLoadModule('/src/content/book/real-world.ts');
-  const expected = ['gac-book-orbit', 'gac-book-sites', ...['surveyor','lap-lanh','tai-thinh','ban-banh-luoi'].map(id => `gac-memory-${id}`), 'overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...taiThinhBook.map(p => p.id === 'intro' ? 'tai-thinh' : `tai-book-${p.id}`), ...['pse', 'station', 'magnetometer'].map(id => `tai-photo-${id}`), ...Object.keys(banBanhLuoiBook), ...realWorldPages.map(p => p.id)];
+  const expected = ['gac-book-orbit', 'gac-book-sites', ...['surveyor','lap-lanh'].map(id => `gac-memory-${id}`), 'overview', 'surveyor', 'surveyor-b01', ...['arrive', 'work', 'visit'].flatMap(id => [`clue-${id}`, `photo-${id}`]), 'lap-lanh', 'sparkle-photo-0', 'sparkle-photo-1', 'sparkle-repair-clue', 'sparkle-ranging-clue', ...realWorldPages.map(p => p.id)];
   assert.deepEqual(bookPages.map(p => p.id).sort(), expected.sort());
   for (const p of realWorldPages) {
     assert.ok(expected.includes(p.after), p.after);
@@ -38,21 +36,10 @@ try {
     assert.ok(book.main.every(b => b.kind === 'fact'));
     assert.ok(book.appendix.every(b => b.kind !== 'fact'));
     assert.ok(book.appendix.some(b => b.id === 'sparkle-ranging-clue.answer' && b.text.includes('384')));
-    assert.ok(book.main.some(b => b.id === 'ban-photo-orbit.detail' && b.image));
-    assert.ok(book.appendix.some(b => b.diagram === 'route-safe'));
     assert.ok(book.main.findIndex(b => b.pageId === 'sparkle-photo-1') < book.main.findIndex(b => b.pageId === 'sparkle-photo-0'));
-    for (const entry of taiThinhBook) {
-      const id = entry.id === 'intro' ? 'tai-thinh' : `tai-book-${entry.id}`;
-      const page = bookPages.find(p => p.id === id);
-      assert.equal(getParagraphBlocks(page.blocks, entry.body[lang], lang).map(b => b.text[lang]).join(' '), entry.body[lang]);
-    }
-    for (const [id, entry] of Object.entries(banBanhLuoiBook)) {
-      if (!entry.paragraphs) continue;
-      const page = bookPages.find(p => p.id === id);
-      for (const paragraph of entry.paragraphs) assert.equal(getParagraphBlocks(page.blocks, paragraph[lang], lang).map(b => b.text[lang]).join(' '), paragraph[lang]);
-    }
   }
-  assert.equal(getBookBlock('tai-book-rhythm.door').kind, 'fiction');
+  assert.ok(bookPages.every(p => !['apollo12', 'apollo17'].includes(p.chapter)));
+  assert.doesNotMatch(JSON.stringify(bookPages), /Tai Thính|Bánh Lưới|Keen Ears|Mesh Wheels/);
   console.log(`Book verified: ${bookPages.length} pages, ${blocks.length} blocks, VI/EN; full export without browser or save.`);
 } finally {
   await server.close();

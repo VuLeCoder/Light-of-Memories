@@ -4,7 +4,6 @@ import type { StoryLine } from '../content/earth-dialogue';
 import { sparkleKeepsakes, type SparkleProgress } from '../content/levels/lap-lanh';
 import { EarthDialogue } from './EarthDialogue';
 import { MemoryLantern } from './SurveyorEnding';
-import { EndingTrail } from './EndingTrail';
 
 export function SparkleEnding({ language, progress, onChange, paused }: {
   language: Language; progress: SparkleProgress; onChange: (p: SparkleProgress) => void; paused: boolean;
@@ -22,8 +21,8 @@ export function SparkleEnding({ language, progress, onChange, paused }: {
     : 'That is right, about 384,000 kilometres in this measurement! Let us open those two pictures and start my story from the day I arrived.' }];
   const outro: StoryLine[] = [
     { id: 'sparkle-ending-thanks', speaker: 'lapLanh', text: vi ? 'Cảm ơn Cuội đã tìm đến, lau bụi và cùng mình khám phá đường đi của ánh sáng. Mình tặng bạn một chút lấp lánh để mang theo nhé!' : 'Thank you for finding me, cleaning the dust and exploring light with me. Here is a little sparkle for your journey!' },
-    { id: 'sparkle-ending-star', speaker: 'cuoi', text: vi ? 'Cánh sao thứ hai sáng rồi! Mỗi khi nhìn nó, mình sẽ nhớ người bạn nhỏ vẫn gửi những lời chào về Trái Đất.' : 'The second star point is shining! It will remind me of my little friend who sends greetings back to Earth.' },
-    { id: 'sparkle-ending-goodbye', speaker: 'lapLanh', text: vi ? 'Kìa, những vòng gợn nhỏ phía xa! Có lẽ một người bạn đang lắng nghe mặt đất. Cuội thử đến xem nhé. Tạm biệt, nhớ ghé thăm mình!' : 'Look, little ripples in the distance! Perhaps a friend is listening to the ground. Go and see, Cuội. Goodbye, come visit again!' },
+    { id: 'sparkle-ending-star', speaker: 'cuoi', text: vi ? 'Chiếc đèn sáng thêm rồi! Mỗi khi nhìn nó, mình sẽ nhớ người bạn nhỏ vẫn gửi những lời chào về Trái Đất.' : 'The lantern is brighter now! It will remind me of my little friend who sends greetings back to Earth.' },
+    { id: 'sparkle-ending-goodbye', speaker: 'lapLanh', text: vi ? 'Cuội thử hỏi Gác Trời nhé. Bạn ấy bay quanh Mặt Trăng, chụp ảnh những vùng đất bên dưới. Biết đâu nhìn từ trên cao, bạn ấy giúp Cuội tìm được đường đến chỗ chị Hằng.' : 'Try asking Sky Watcher, Cuội. They orbit the Moon, photographing the land below. Perhaps their view from above can help you find a way to Hằng.' },
   ];
   if (step === 1 || step === 2) {
     const page = step - 1;
@@ -51,10 +50,9 @@ export function SparkleEnding({ language, progress, onChange, paused }: {
   }
   const lit = step >= 5;
   return <section className={`ending-scene sparkle-ending-scene${gifting ? ' is-gifting' : ''}`} hidden={paused} lang={language} aria-label={title}>
-    <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {lit ? '2' : '1'}/5</strong></div>
+    <div className="surveyor-scene-hud"><span>{title}</span><strong role="status">★ {lit ? '2' : '1'}/3</strong></div>
     {step >= 4 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} second />{gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}</div>}
     {gifting && <span className="ending-light-travel" aria-hidden="true" onAnimationEnd={() => setGifting(false)} />}
-    {step === 6 && <EndingTrail language={language} ripple />}
     <EarthDialogue key={step === 0 ? 'intro' : 'outro'} language={language} paused={paused} title={title} lines={step === 0 ? intro : outro} initialIndex={step === 0 ? 0 : Math.max(0, step - 4)} onTurn={index => { if (step !== 0 && index + 4 !== step) go(index + 4); }} finalAction="moon" finalLabel={step === 0 ? (vi ? 'Nghe Lấp Lánh kể' : 'Listen to Sparkle') : (vi ? 'Mang theo ánh sáng' : 'Carry the light')} onComplete={() => step === 0 ? go(1) : onChange({ ...progress, phase: 'finished', turn: 0, completedOnce: true })} />
   </section>;
 }

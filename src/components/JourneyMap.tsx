@@ -6,16 +6,7 @@ import { bookArchiveImages, realWorldPages } from '../content/book/real-world';
 import { BookPageLabel } from './BookContentLabel';
 import { BookParagraph } from './BookParagraph';
 import { introCopy } from '../content/book/intro-copy';
-import { BanhLuoiCameraDiagram } from './BanhLuoiCameraDiagram';
-import type { BanhLuoiProgress } from '../content/levels/ban-banh-luoi-progress';
-import { banBanhLuoiBook } from '../content/levels/ban-banh-luoi-content';
-import { BanhLuoiRouteMap } from './BanhLuoiRouteMap';
-import { BanhLuoiPhotoView } from './BanhLuoiPhoto';
-import { banBanhLuoiMemories } from '../content/levels/ban-banh-luoi-memories';
-import { TaiThinhArchiveImage } from './TaiThinhPhoto';
 import { focusGame } from '../focus/game-focus';
-import type { TaiThinhProgress } from '../content/levels/tai-thinh-progress';
-import { taiThinhBook, taiThinhBookSources, taiThinhMemories } from '../content/levels/tai-thinh-content';
 import { SparkleBookClue } from './SparkleBookClue';
 import { sparkleKeepsakes, type SparkleProgress } from '../content/levels/lap-lanh';
 import { digCopy, memoryPhotos } from '../content/levels/surveyor-dig';
@@ -33,9 +24,9 @@ import { BookNavigation } from './BookNavigation';
 import { journeyCopy } from '../content/book/journey-copy';
 export { journeyCopy } from '../content/book/journey-copy';
 
-export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
+export function JourneyMap({ gacTroiProgress, sparkleProgress, language, activeLevel, onEnter, onBack, onReplay, surveyorProgress, onSurveyorChange }: { gacTroiProgress: GacTroiProgress; sparkleProgress: SparkleProgress; surveyorProgress: SurveyorProgress; onSurveyorChange: (value: SurveyorProgress) => void; onReplay: () => void; language: Language; activeLevel: LevelId | null; onEnter: (id: LevelId) => void; onBack: () => void }) {
   const t = journeyCopy[language];
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const level = status(activeLevel) === 'locked' ? undefined : getLevel(activeLevel);
   const detail = level?.text[language];
@@ -62,7 +53,7 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
     </> : <>
       <p className="journey-lead">{t.lead}</p>
       <div className="journey-route">
-        <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M80 110 Q160 20 240 65 T400 110 T560 65 T720 110" /></svg>
+        <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M133 110 Q267 20 400 65 T667 110" /></svg>
         {journeyStops.map((id, index) => {
           const state = status(id);
           const friend = state === 'locked' ? undefined : getLevel(id);
@@ -71,7 +62,6 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
             if (friend) setEntryFriend(friend.id);
             setLocked(state === 'locked');
           }} aria-pressed={selectedStop === index} aria-label={`${index + 1}. ${friend ? `${friend.text[language].friend}. ${state === 'completed' ? t.completed : t.ready}` : `${t.mystery}. ${id ? t.prerequisite : t.locked}`}`}>
-            {id === 'gac-troi' && banhLuoiProgress.phase === 'finished' && !gacTroiProgress.completedOnce && <span className="orbit-route-photo" aria-hidden="true"><img src="/images/memories/ban-banh-luoi/apollo-17-orbit-m168000580lr.webp" alt="" /></span>}
             <span className="stop-orb">{friend ? <img src={friend.portrait} alt="" /> : '?'}</span>
             <span>{`${String(index + 1).padStart(2, '0')} · ${friend ? friend.label : t.mystery}`}</span>
             <small style={{ visibility: selectedStop === index ? 'visible' : 'hidden' }}>Cuội ✦</small>
@@ -87,15 +77,15 @@ export function JourneyMap({ gacTroiProgress, banhLuoiProgress, taiThinhProgress
   </section>;
 }
 
-export function JourneyBook({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  return <JourneyBookPages gacTroiProgress={gacTroiProgress} banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
+export function JourneyBook({ gacTroiProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  return <JourneyBookPages gacTroiProgress={gacTroiProgress} sparkleProgress={sparkleProgress} onSurveyorChange={onSurveyorChange} bookRequest={bookRequest} key={activeLevel ?? 'route'} language={language} activeLevel={activeLevel} surveyorProgress={surveyorProgress} />;
 }
 
-function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; banhLuoiProgress: BanhLuoiProgress; taiThinhProgress: TaiThinhProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
-  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
+function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLevel, surveyorProgress, onSurveyorChange, bookRequest }: { gacTroiProgress: GacTroiProgress; sparkleProgress: SparkleProgress; onSurveyorChange: (p: SurveyorProgress) => void; bookRequest: number; language: Language; activeLevel: LevelId | null; surveyorProgress: SurveyorProgress }) {
+  const completed = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   // Only configured stops have readable pages. Reading never changes the game level.
-  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress, gacTroi: gacTroiProgress });
+  const pages = getBrowserBookPages({ surveyor: surveyorProgress, sparkle: sparkleProgress, gacTroi: gacTroiProgress });
   // Keep the selected page's identity when new photos or clues are inserted.
   const [selectedPage, setSelectedPage] = useState<string | null>(activeLevel === 'gac-troi' ? 'gac-book-orbit' : activeLevel);
   const page = Math.max(0, pages.indexOf(selectedPage));
@@ -110,7 +100,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
   useEffect(() => {
     if (lastBookRequest.current === bookRequest) return;
     lastBookRequest.current = bookRequest;
-    const target = getBookHintPage({ surveyor: surveyorProgress, sparkle: sparkleProgress, taiThinh: taiThinhProgress, banhLuoi: banhLuoiProgress, gacTroi: gacTroiProgress }, activeLevel);
+    const target = getBookHintPage({ surveyor: surveyorProgress, sparkle: sparkleProgress, gacTroi: gacTroiProgress }, activeLevel);
     if (!target || !pages.includes(target)) return;
     setSelectedPage(target);
     setBookFocusRequest(bookRequest);
@@ -119,7 +109,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
   useEffect(() => {
     if (!bookFocusRequest) return;
     const frame = requestAnimationFrame(() => {
-      const heading = document.getElementById(activeLevel === 'gac-troi' ? 'gac-book-title' : activeLevel === 'ban-banh-luoi' ? 'banh-luoi-book-title' : activeLevel === 'tai-thinh' ? 'tai-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
+      const heading = document.getElementById(activeLevel === 'gac-troi' ? 'gac-book-title' : activeLevel === 'lap-lanh' ? 'sparkle-clue-title' : 'field-book-title');
       heading?.focus({ preventScroll: true });
       heading?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
     });
@@ -128,7 +118,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
   useEffect(() => {
     document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
   }, [selectedPage]);
-  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed, banhLuoiProgress.routeHint]));
+  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed]));
   const showSources = !getBookPage(pages[page])?.blocks.some(block => block.kind !== 'fact');
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
@@ -151,7 +141,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
       <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
       <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
         <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
-        <span className="book-kicker">05 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
+        <span className="book-kicker">03 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
         <div className="book-prose book-prose--intro"><img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>
           {entry.blocks.map(block => <div key={block.id}>
             {entry.id !== 'gac-book-orbit' && block.image && <figure className="book-reality-photo"><img src={block.image.src} alt={block.image.alt[language]}/><figcaption>{block.image.credit}</figcaption></figure>}
@@ -179,49 +169,7 @@ function JourneyBookPages({ gacTroiProgress, banhLuoiProgress, taiThinhProgress,
       </div><BookNavigation language={language} {...bookNavigation} />
     </aside>
   </>;
-  const banPageId = pages[page];
-  if (banPageId && banPageId in banBanhLuoiBook) {
-    const entry = banBanhLuoiBook[banPageId as keyof typeof banBanhLuoiBook];
-    const photo = banBanhLuoiMemories.find(item => banPageId === (item.id === 'vip' ? 'ban-book-wheels' : `ban-photo-${item.id}`));
-    return <>
-      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="banh-luoi-book-title"><div tabIndex={0} className={`book-sheet journey-book${banPageId === 'ban-banh-luoi' ? '' : ' ban-book-study'}${banPageId === 'ban-book-wheels' ? ' ban-book-wheels' : ''}`}>
-      <BookPageLabel pageId={pages[page]} language={language}/>
-        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">04 · Apollo 17</span>
-        <h2 id="banh-luoi-book-title" tabIndex={-1}>{entry.title[language]}</h2>
-        <div className={`book-prose${banPageId === 'ban-banh-luoi' ? ' book-prose--intro' : ''}`}>
-        {banPageId === 'ban-banh-luoi' && <><img className="book-friend" src={getLevel('ban-banh-luoi')!.portrait} alt=""/></>}
-        {['ban-book-route', 'ban-book-walkback'].includes(banPageId) && <><BanhLuoiRouteMap language={language} showSafe={banPageId === 'ban-book-walkback' && banhLuoiProgress.routeHint === 2}/></>}
-        {banPageId === 'ban-book-camera' && <BanhLuoiCameraDiagram language={language}/>}
-        {(photo || banPageId === 'ban-book-wheels') && <BanhLuoiPhotoView key={banPageId} photo={photo ?? banBanhLuoiMemories[0]} language={language}/>}
-        {'paragraphs' in entry && entry.paragraphs.map((paragraph, i) => <p key={i}><BookParagraph pageId={banPageId} value={paragraph[language]} language={language}/></p>)}
-        {photo && <><p>{photo.caption[language]}</p><small>{photo.credit} · {photo.code}</small></>}
-        </div>
-        {showSources && <a className="sparkle-book-source" href={['ban-book-camera', 'ban-book-samples'].includes(banPageId) ? 'https://www.nasa.gov/history/50-years-ago-apollo-17-lands-at-taurus-littrow/' : banPageId === 'ban-book-walkback' ? 'https://www.nasa.gov/wp-content/uploads/static/apollo50th/pdf/A17_PressKit.pdf' : banPageId === 'ban-book-wheels' ? 'https://ntrs.nasa.gov/api/citations/20100000019/downloads/20100000019.pdf' : banPageId === 'ban-book-route' ? 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' : (photo ?? banBanhLuoiMemories[0]).source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · {banPageId === 'ban-book-walkback' ? 'NASA' : 'Apollo 17'} ↗</a>}
-        {activeLevel && <BackToGame language={language}/>}
-      </div><BookNavigation language={language} {...bookNavigation}/></aside>
-    </>;
-  }
-  const taiPage = taiThinhBook.find(entry => pages[page] === `tai-book-${entry.id}` || entry.id === 'intro' && pages[page] === 'tai-thinh');
   const archive = bookArchiveImages[pages[page] as keyof typeof bookArchiveImages];
-  const taiPhoto = taiThinhMemories.find(photo => pages[page] === `tai-photo-${photo.id}`);
-  if (taiPage || taiPhoto) {
-    const source = taiPage ? taiThinhBookSources[taiPage.id] : 'https://apollojournals.org/alsj/a12/images12.html';
-    return <>
-      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
-      <aside className="book-panel" lang={language} aria-labelledby="tai-book-title"><div tabIndex={0} className="book-sheet journey-book tai-book">
-      <BookPageLabel pageId={pages[page]} language={language}/>
-        <div className="page-corner" aria-hidden="true"/><span className="book-kicker">03 · Apollo 12</span>
-        <h2 id="tai-book-title" tabIndex={-1}>{taiPhoto ? taiPhoto.title[language] : taiPage!.id === 'intro' ? getLevel('tai-thinh')!.text[language].friend : taiPage!.title[language]}</h2>
-        <div className={`book-prose${taiPage?.id === 'intro' ? ' book-prose--intro' : ''}`}>
-        {archive && <ArchiveFigure photo={archive} language={language}/>}
-        {taiPhoto ? <><div className="book-memory-photo tai-book-photo"><TaiThinhArchiveImage key={taiPhoto.id} photo={taiPhoto} language={language}/></div><p>{taiPhoto.caption[language]}</p><small>{taiPhoto.credit} · {taiPhoto.code}</small></> : <>{taiPage!.id === 'intro' && <><img className="book-friend" src={getLevel('tai-thinh')!.portrait} alt=""/></>}<p><BookParagraph pageId={taiPage!.id === 'intro' ? 'tai-thinh' : `tai-book-${taiPage!.id}`} value={taiPage!.body[language]} language={language}/></p></>}
-        </div>
-        {showSources && source && <a className="sparkle-book-source" href={source} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn tư liệu' : 'Source'} · Apollo 12 ↗</a>}
-        {activeLevel && <BackToGame language={language}/>}
-      </div><BookNavigation language={language} {...bookNavigation}/></aside>
-    </>;
-  }
   if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
     <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
     <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div tabIndex={0} className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>

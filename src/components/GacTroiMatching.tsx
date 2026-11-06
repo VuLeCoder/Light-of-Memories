@@ -44,7 +44,7 @@ export function GacTroiMatching({ language, progress, onChange, onBook, paused }
     </div>;
   }
   return <div className="gac-match" ref={area}>
-    <header><h2>{vi ? 'Bốn người bạn, ba vùng đất' : 'Four friends, three places'}</h2><span>{progress.matched.length}/4</span></header>
+    <header><h2>{vi ? 'Hai người bạn, hai vùng đất' : 'Two friends, two places'}</h2><span>{progress.matched.length}/{gacMemories.length}</span></header>
     <p className="gac-match-instruction">{vi ? 'Chọn một người bạn, rồi chọn vùng đất bạn ấy ở.' : 'Choose a friend, then choose the place where they live.'}</p>
     <div className="gac-friends" aria-label={vi ? 'Các người bạn' : 'Friends'}>{gacMemories.map(m => {
       const done = progress.matched.includes(m.id);
@@ -56,7 +56,7 @@ export function GacTroiMatching({ language, progress, onChange, onBook, paused }
     })}</div>
     <div className="gac-sites" aria-label={vi ? 'Các vùng đất' : 'Places'}>{gacSites.map((s, i) => <button key={s.id} aria-pressed={i === siteIndex} onClick={() => { setSiteIndex(i); setWrong(false); }}>{s.name}<span>{gacMemories.filter(m => m.site === s.id && progress.matched.includes(m.id)).map(m => m.name[language]).join(' · ') || s.place[language]}</span></button>)}</div>
     <figure className="gac-site-photo"><GacTroiImage key={site.image} id={site.image} language={language}/><figcaption><a href={gacImage(site.image).sourcePage} target="_blank" rel="noreferrer">{gacImage(site.image).credit} ↗</a></figcaption></figure>
-    <div className="gac-match-response" role="status" aria-live="polite">{wrong ? (vi ? 'Mình thử nhớ lại nhé. Bạn ấy gắn với chuyến thám hiểm nào nhỉ?' : 'Let’s think back. Which mission was this friend part of?') : chosen ? (vi ? `Đã chọn ${chosen.name.vi}. Bạn ấy ở ${site.name} phải không?` : `${chosen.name.en} selected. Is ${site.name} their home?`) : (vi ? 'Có hai người bạn cùng ở vùng Apollo 12.' : 'Two friends share the Apollo 12 area.')}</div>
+    <div className="gac-match-response" role="status" aria-live="polite">{wrong ? (vi ? 'Mình thử nhớ lại nhé. Bạn ấy gắn với chuyến thám hiểm nào nhỉ?' : 'Let’s think back. Which mission was this friend part of?') : chosen ? (vi ? `Đã chọn ${chosen.name.vi}. Bạn ấy ở ${site.name} phải không?` : `${chosen.name.en} selected. Is ${site.name} their home?`) : (vi ? 'Mắt Tròn và Lấp Lánh đang chờ bạn tìm lại nơi quen thuộc.' : 'Help Round Eyes and Sparkle find their familiar places.')}</div>
     <nav className="gac-match-actions">
       <button onClick={() => { if (!paused) onBook(); }}>{vi ? 'Gợi ý' : 'Hint'}</button>
       <button className="journey-primary" data-gac-confirm disabled={!selected} onClick={() => {

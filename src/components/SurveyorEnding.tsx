@@ -16,7 +16,7 @@ const endingCopy = {
     ],
     captions: ['Chân đế Surveyor 3 · 1967 · NASA', 'Rãnh khảo sát năm 1967, được chụp lại năm 1969 · NASA', 'Pete Conrad bên Surveyor 3 · 1969 · NASA'],
     before: 'Trang trước', next: 'Trang tiếp', return: 'Trở lại bên Mắt Tròn', listen: 'Nghe Mắt Tròn kể', carry: 'Mang theo ánh sáng',
-    route: 'Về lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại', reward: 'Đã thắp sáng 1/5 cánh sao',
+    route: 'Về lộ trình', replay: 'Xem lại đoạn kết', playAgain: 'Chơi lại', reward: 'Kỷ niệm đầu tiên · Chiếc đèn đã sáng thêm',
     distant: 'Đi đến điểm sáng phía xa để trở về lộ trình.', journal: 'Ba bức ảnh đã được lưu trong sổ tay của Cuội.', unavailable: 'Ảnh tư liệu chưa tải được.', retry: 'Tải lại ảnh',
     intro: [
       { id: 'ending-intro-0', speaker: 'matTron', text: 'Những bức ảnh… giờ đã trở về đúng chỗ rồi.' },
@@ -39,7 +39,7 @@ const endingCopy = {
     ],
     captions: ['Surveyor 3 footpad · 1967 · NASA', 'Trenches dug in 1967, photographed in 1969 · NASA', 'Pete Conrad beside Surveyor 3 · 1969 · NASA'],
     before: 'Previous page', next: 'Next page', return: 'Return to Round Eyes', listen: 'Listen to the story', carry: 'Carry the light',
-    route: 'View the route', replay: 'Replay the ending', playAgain: 'Play again', reward: 'One of five star points is shining',
+    route: 'View the route', replay: 'Replay the ending', playAgain: 'Play again', reward: 'First memory · The lantern is brighter',
     distant: 'Walk to the distant light to return to the route.', journal: 'All three photographs are now in Cuội’s notebook.', unavailable: 'The archive photo could not load.', retry: 'Retry photo',
     intro: [
       { id: 'ending-intro-0', speaker: 'matTron', text: 'The photographs… they are all back in the right places.' },
@@ -67,13 +67,13 @@ function MemoryPhoto({ src, caption, language }: { src: string; caption: string;
 
 /** Five separate paper panels; only the top point receives this friend's light. */
 export function MemoryLantern({ lit, second = false }: { lit: boolean; second?: boolean }) {
-  return <svg className={`ending-lantern ${lit ? 'is-lit' : ''}`} viewBox="0 0 240 240" role="img" aria-label={second ? (lit ? '★ 2/5' : '★ 1/5') : (lit ? '★ 1/5' : '☆ 0/5')}>
+  return <svg className={`ending-lantern ${lit ? 'is-lit' : ''}`} viewBox="0 0 240 240" role="img" aria-label={second ? (lit ? '★ 2/3' : '★ 1/3') : (lit ? '★ 1/3' : '☆ 0/3')}>
     <circle className="lantern-aura" cx="120" cy="110" r="90" fill="#ffd88a" opacity="0" />
     <path d="M120 26V10M114 10H126" stroke="#bd9761" strokeWidth="3" fill="none" />
     <g stroke="#c89b61" strokeWidth="2" strokeLinejoin="round">
       <path className={second ? undefined : "lit-point"} d="M120 110L97 79L120 26L143 79Z" fill={second ? "#ffe29b" : "#67503c"} />
       <path className={second ? "lit-point" : undefined} d="M120 110L143 79L208 85L159 126Z" fill="#664e3c" />
-      <path d="M120 110L159 126L175 190L120 156Z" fill="#594638" />
+      <path className={second ? "lit-point" : undefined} d="M120 110L159 126L175 190L120 156Z" fill="#594638" />
       <path d="M120 110L120 156L65 190L81 126Z" fill="#624a39" />
       <path d="M120 110L81 126L32 85L97 79Z" fill="#71543b" />
       <path d="M120 26V156M32 85L159 126M208 85L81 126M65 190L143 79M175 190L97 79" strokeWidth="1" opacity=".6" fill="none" />
@@ -120,7 +120,7 @@ export function SurveyorEnding({ language, progress, onChange, onReplay, onBack,
     </div>
   </section>;
   return <section className={`ending-scene${gifting ? ' is-gifting' : ''}${step === 10 ? ' is-exploring' : ''}`} hidden={paused} lang={language} aria-label={t.title}>
-    <div className="surveyor-scene-hud"><span>{t.title}</span>{lit && <strong role="status">★ 1/5</strong>}</div>
+    <div className="surveyor-scene-hud"><span>{t.title}</span>{lit && <strong role="status">★ 1/3</strong>}</div>
     {step >= 6 && step < 10 && <div className={`ending-scene-lantern ${lit ? 'is-kindled' : ''}`}><MemoryLantern lit={lit} />
       {gifting && <span className="ending-sparkles" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>✦</span>)}</span>}
     </div>}

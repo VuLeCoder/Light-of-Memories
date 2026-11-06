@@ -5,14 +5,14 @@ const meeting = [
   {
     "id": "MO-02",
     "speaker": "cuoi",
-    "vi": "Đây là bức ảnh Bánh Lưới vừa cho mình xem! Gác Trời ơi, bạn đã chụp những đường xe này phải không?",
-    "en": "This is the picture Mesh Wheels showed me! Sky Watcher, did you photograph these tracks?"
+    "vi": "Lấp Lánh bảo có một người bạn đang bay trên cao. Bạn là Gác Trời phải không?",
+    "en": "Sparkle told me about a friend flying high above. Are you Sky Watcher?"
   },
   {
     "id": "MO-03",
     "speaker": "gacTroi",
-    "vi": "Cuội đến rồi! Mình chụp đấy. Mọi người còn gọi mình là LRO. Mình bay quanh Mặt Trăng, chụp lại những vùng đất bên dưới.",
-    "en": "You’re here, Cuội! Yes, I took it. I’m also called LRO. I travel around the Moon, taking pictures of the land below."
+    "vi": "Cuội đến rồi! Là mình đây. Mọi người còn gọi mình là LRO. Mình bay quanh Mặt Trăng, chụp lại những vùng đất bên dưới.",
+    "en": "You’re here, Cuội! That’s me. I’m also called LRO. I travel around the Moon, taking pictures of the land below."
   },
   {
     "id": "MO-04",
@@ -35,8 +35,8 @@ const meeting = [
   {
     "id": "MO-07",
     "speaker": "gacTroi",
-    "vi": "Ừ! Bạn đã gặp bốn người bạn rồi nhỉ? Mình cùng tìm những nơi ấy trên ảnh nhé.",
-    "en": "Yes! You’ve met four friends, haven’t you? Let’s find those places in the pictures."
+    "vi": "Ừ! Bạn đã gặp Mắt Tròn và Lấp Lánh rồi nhỉ? Mình cùng tìm những nơi ấy trên ảnh nhé.",
+    "en": "Yes! You’ve met Round Eyes and Sparkle, haven’t you? Let’s find those places in the pictures."
   }
 ] as const;
 export const gacTroiMeetingLength = meeting.length;
