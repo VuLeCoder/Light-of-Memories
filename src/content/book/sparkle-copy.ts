@@ -12,8 +12,8 @@ export const clueCopy = {
     "en": "The corner reflector’s secret"
   },
   "roundTrip": {
-    "vi": "Một trạm trên Trái Đất gửi tia laser đến Lấp Lánh. Bạn phản xạ ánh sáng về phía trạm. Đồng hồ đo thời gian của cả lượt đi lẫn lượt về.",
-    "en": "A station on Earth sends laser light to Sparkle. The reflector sends it back toward the station. A clock measures the time for both journeys."
+    "vi": "Một trạm trên Trái Đất gửi tia laser đến bảng phản xạ Apollo 11 (Lấp Lánh trong truyện). Bảng phản xạ ánh sáng về phía trạm. Đồng hồ đo thời gian của cả lượt đi lẫn lượt về.",
+    "en": "A station on Earth sends laser light to the Apollo 11 reflector (Sparkle in the story). The reflector sends it back toward the station. A clock measures the time for both journeys."
   },
   "speedLabel": {
     "vi": "Vận tốc làm tròn",
@@ -52,8 +52,8 @@ export const clueCopy = {
     "en": "In the model, the first mirror stays still and the second can turn. When they form a right angle of 90°, light bounces off both mirrors and returns to the receiving slit."
   },
   "reflection": {
-    "vi": "Ánh sáng gặp gương sẽ đổi hướng. Góc tới bằng góc phản xạ, cùng đo từ đường vuông góc với mặt gương. Sau hai lần phản xạ ở góc vuông, tia đi ra song song và ngược chiều tia đi vào, nhưng có thể lệch sang bên.",
-    "en": "Light changes direction when it meets a mirror. Its incoming and outgoing angles are equal, measured from a line perpendicular to the mirror. After two bounces in a right-angle corner, the ray travels parallel to the incoming ray in the opposite direction. It may be shifted to one side."
+    "vi": "Ánh sáng gặp gương sẽ đổi hướng. Với hai gương vuông góc, sau hai lần phản xạ, tia sáng đi ngược về phía đã tới. Hai tia song song nhưng có thể lệch sang bên.",
+    "en": "Light changes direction when it meets a mirror. After bouncing off two mirrors at a right angle, it travels back toward the side it came from. The two rays are parallel but may be shifted sideways."
   },
   "prisms": {
     "vi": "Hình vẽ là mô hình phẳng với hai gương. Lật trang để xem cấu tạo lăng kính của thiết bị thật.",

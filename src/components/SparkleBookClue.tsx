@@ -11,7 +11,8 @@ export function SparkleBookClue({ language, ranging, showSources }: { language: 
       <div className="sparkle-book-route"><RangingDiagram language={language} /></div>
       <p>{clueCopy.roundTrip[language]}</p>
       <dl className="sparkle-book-data"><dt>{clueCopy.speedLabel[language]}</dt><dd>{clueCopy.speed[language]}</dd><dt>{clueCopy.timeLabel[language]}</dt><dd>{clueCopy.time[language]}</dd></dl>
-      <p>{clueCopy.answer[language]}</p>
+      <p>{clueCopy.formula[language]}</p>
+      <details className="book-answer"><summary>{language === 'vi' ? 'Xem đáp án' : 'Show answer'}</summary><p>{clueCopy.answer[language]}</p></details>
       <small><BookParagraph pageId="sparkle-ranging-clue" value={clueCopy.note[language]} language={language}/></small>
       {showSources && <a className="sparkle-book-source" href="https://www.nasa.gov/missions/laser-beams-reflected-between-earth-and-moon-boost-science/" target="_blank" rel="noreferrer">{clueCopy.rangingSourceLabel[language]}</a>}
     </> : <>

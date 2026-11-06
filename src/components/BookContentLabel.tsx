@@ -5,7 +5,7 @@ import { getBookPage } from '../content/book/catalog';
 export function BookContentLabel({ language }: { language: Language }) {
   return <span className="book-content-label">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z" /></svg>
-    {language === 'vi' ? 'Nội dung giả tưởng' : 'Fictional content'}
+    {language === 'vi' ? 'Có yếu tố trò chơi / hư cấu' : 'Includes game / fiction'}
   </span>;
 }
 

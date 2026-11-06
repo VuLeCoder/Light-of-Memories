@@ -1,3 +1,4 @@
+import { impactCredit, impactDate } from '../content/levels/gac-troi-impact';
 import { GacLightMap } from './GacLightMap';
 import { Fragment } from 'react';
 import { GacImpactPhoto } from './GacImpactPhoto';
@@ -125,8 +126,11 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   useEffect(() => {
     document.querySelector('.book-panel .book-sheet')?.scrollTo({ top: 0 });
   }, [selectedPage]);
-  const bookNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed, impactHintVisible, lightHintVisible]));
-  const showSources = !getBookPage(pages[page])?.blocks.some(block => block.kind !== 'fact');
+  const leafNavigation = useBookImageLayout(pages[page], language, bookRequest, pages, page, setPage, JSON.stringify([surveyorProgress.found, surveyorProgress.clues, sparkleProgress.keepsakes, completed, impactHintVisible, lightHintVisible]));
+  const bookNavigation = { ...leafNavigation, contents: pages.map((id, index) => ({
+    title: `${id?.startsWith('clue-') ? (language === 'vi' ? 'Gợi ý · ' : 'Clue · ') : id?.startsWith('photo-') ? (language === 'vi' ? 'Ảnh · ' : 'Photo · ') : ''}${getBookPage(id)?.title[language] ?? ''}`, index,
+  })).map(item => { const level = getLevel(pages[item.index]); return level && status(level.id) === 'locked' ? { ...item, title: t.mystery } : item; }), selected: page, onSelect: setPage };
+  const showSources = !!getBookPage(pages[page])?.blocks.some(block => block.sources.length > 0);
   const level = getLevel(pages[page]);
   const detail = level?.text[language];
   const entry = ['surveyor-b01', 'surveyor-b02', 'surveyor-b03'].indexOf(pages[page] ?? '');
@@ -149,18 +153,24 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
       <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
         <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
         <span className="book-kicker">03 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
-        <div className="book-prose book-prose--intro">{!['gac-book-map', 'gac-book-light'].includes(entry.id) && !entry.id.startsWith('gac-book-impact') && <img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>}
-          {entry.blocks.filter(block => (entry.id !== 'gac-book-light' || (lightHintVisible ? block.id === 'gac-book-light.hint' : block.id !== 'gac-book-light.hint')) && (block.id !== 'gac-book-impact.hint' || impactHintVisible) && (block.id !== 'gac-book-impact.compare' || !impactHintVisible)).map(block => block.diagram === 'gac-map' ? <Fragment key={block.id}><figure className="book-gac-map" data-book-block={block.id}><GacLightMap language={language}/></figure><p data-book-block={block.id}>{block.text[language]}</p></Fragment> : block.image?.annotation ? <Fragment key={block.id}>
-            <figure className="book-impact-photo" data-book-block={block.id}><GacImpactPhoto when={block.image.annotation === 'hint' ? 'before' : 'after'} language={language} annotation={block.image.annotation}/><figcaption>{block.image.date} · {block.image.credit}</figcaption></figure>
-            <p data-book-block={block.id}>{block.text[language]}</p>
-          </Fragment> : <div key={block.id} data-book-block={block.id}>
-            {entry.id !== 'gac-book-orbit' && block.image && <figure className="book-reality-photo"><img src={block.image.src} alt={block.image.alt[language]}/><figcaption>{block.image.credit}</figcaption></figure>}
-            <p><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>
-          </div>)}
-          {entry.id === 'gac-book-light' && <button aria-pressed={lightHintVisible} onClick={() => setLightHintVisible(value => !value)}>{language === 'vi' ? (lightHintVisible ? 'Chuyện thật' : 'Nhớ cả hai lúc') : (lightHintVisible ? 'The real story' : 'Remember both moments')}</button>}
-          {entry.id === 'gac-book-impact' && <button aria-expanded={impactHintVisible} onClick={() => setImpactHintVisible(value => !value)}>{language === 'vi' ? 'Nhìn kỹ hơn' : 'A closer look'}</button>}
+        <div className={`book-prose${entry.id === 'gac-book-orbit' ? ' book-prose--intro' : ''}`}>
+          {entry.id === 'gac-book-orbit' && <img className="book-friend" src={getLevel('gac-troi')!.portrait} alt=""/>}
+          {entry.id === 'gac-book-impact' && <div className="book-impact-pair">
+            {(['before', 'after'] as const).map(when => <figure key={when}>
+              <div className="book-impact-regions"><GacImpactPhoto when={when} language={language}/><div className="book-impact-numbers" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div></div>
+              <figcaption>{impactDate(when, language)}</figcaption>
+            </figure>)}
+          </div>}
+          {entry.blocks.filter(block => (block.id !== 'gac-book-light.hint' || lightHintVisible) && (block.id !== 'gac-book-impact.hint' || impactHintVisible)).map(block => <Fragment key={block.id}>
+            {block.diagram === 'gac-map' && <figure className="book-gac-map" data-book-block={block.id}><GacLightMap language={language}/></figure>}
+            {block.image?.annotation === 'answer' && <figure className="book-impact-photo" data-book-block={block.id}><GacImpactPhoto when="after" language={language} annotation="answer"/><figcaption>{impactDate('after', language)}</figcaption></figure>}
+            {entry.id !== 'gac-book-orbit' && block.image && !block.image.annotation && <figure className="book-reality-photo" data-book-block={block.id}><img src={block.image.src} alt={block.image.alt[language]}/><figcaption>{block.image.credit}</figcaption></figure>}
+            <p data-book-block={block.id}><BookParagraph pageId={entry.id} value={block.text[language]} language={language}/></p>
+          </Fragment>)}
+          {entry.id === 'gac-book-light' && <button className="book-hint-toggle" aria-expanded={lightHintVisible} onClick={() => setLightHintVisible(value => !value)}>{language === 'vi' ? (lightHintVisible ? 'Ẩn gợi ý' : 'Gợi ý') : (lightHintVisible ? 'Hide hint' : 'Hint')}</button>}
+          {entry.id === 'gac-book-impact' && <button className="book-hint-toggle" aria-expanded={impactHintVisible} onClick={() => setImpactHintVisible(value => !value)}>{language === 'vi' ? (impactHintVisible ? 'Ẩn gợi ý' : 'Gợi ý') : (impactHintVisible ? 'Hide hint' : 'Hint')}</button>}
         </div>
-        {[...new Set(entry.blocks.flatMap(block => block.sources.map(s => s.url)))].map(url => <a key={url} className="sparkle-book-source" href={url} target="_blank" rel="noreferrer">NASA ↗</a>)}
+        {[...new Set(entry.blocks.flatMap(block => block.sources.map(s => s.url)))].map(url => <BookReference key={url} url={url} language={language}/>)}
         {activeLevel && <BackToGame language={language}/>}
       </div><BookNavigation language={language} {...bookNavigation}/></aside>
     </>;
@@ -173,10 +183,10 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
         <div className="page-corner" aria-hidden="true" />
         <h2 id="reality-book-title">{reality.title[language]}</h2>
         <div className={`book-prose book-prose--${reality.layout}`}>
-          <figure className="book-reality-photo"><img src={reality.image} alt={reality.caption[language]} /><figcaption>{reality.caption[language]}</figcaption></figure>
+          {reality.image && <figure className="book-reality-photo"><img src={reality.image} alt={reality.caption[language]} /><figcaption>{reality.caption[language]}</figcaption></figure>}
           {reality.paragraphs.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
         </div>
-        <footer className="book-reality-sources">{reality.sources.map((url, i) => <a key={url} href={url} target="_blank" rel="noreferrer">{language === 'vi' ? 'Nguồn NASA' : 'NASA source'}{reality.sources.length > 1 ? ` ${i + 1}` : ''} ↗</a>)}</footer>
+        <footer className="book-reality-sources">{reality.sources.map(url => <BookReference key={url} url={url} language={language}/>)}</footer>
         {activeLevel && <BackToGame language={language} />}
       </div><BookNavigation language={language} {...bookNavigation} />
     </aside>
@@ -268,4 +278,23 @@ function BookSource({ language, sparkle = false, photo = false }: { language: La
 
 function ArchiveFigure({ photo, language }: { photo: { src: string; caption: { vi: string; en: string } }; language: Language }) {
   return <figure className="book-reality-photo"><img src={photo.src} alt={photo.caption[language]}/><figcaption>{photo.caption[language]}</figcaption></figure>;
+}
+
+/** Human-readable titles keep multiple references distinguishable. */
+function BookReference({ url, language }: { url: string; language: Language }) {
+  const titles: Record<string, [string, string]> = {
+    'spacecraft-and-instruments': ['Tàu LRO và thiết bị', 'LRO spacecraft and instruments'],
+    'apollo-11-landing-site': ['Khu hạ cánh Apollo 11', 'Apollo 11 landing site'],
+    'apollo-12-and-surveyor-3': ['Conrad bên Surveyor 3', 'Conrad beside Surveyor 3'],
+    '4242': ['Ảnh trước và sau va chạm', 'Before and after the impact'],
+    'impact-crater': ['Hố va chạm tháng 3/2013', 'March 2013 impact crater'],
+    'surveyor-3-camera': ['Máy ảnh Surveyor 3 trở về', 'Surveyor 3 camera returned'],
+    'surveyor-3': ['Sứ mệnh Surveyor 3', 'Surveyor 3 mission'],
+    'ap11_reflector': ['Cấu tạo bảng phản xạ', 'Reflector construction'],
+    'ap11_general': ['Thí nghiệm Apollo 11', 'Apollo 11 experiment'],
+    'experiment-still': ['Bảng phản xạ Apollo 11', 'Apollo 11 reflector'],
+    'south-pole': ['Bản đồ chiếu sáng cực Nam', 'South pole illumination map'],
+  };
+  const title = Object.entries(titles).find(([part]) => url.includes(part))?.[1][language === 'vi' ? 0 : 1];
+  return <a className="sparkle-book-source" href={url} target="_blank" rel="noreferrer" title={url.includes('/4242/') ? impactCredit : undefined}>{title ? `NASA · ${title}` : `NASA · ${new URL(url).pathname.split('/').filter(Boolean).at(-1)?.replaceAll('-', ' ') || 'LRO'}`} ↗</a>;
 }

@@ -2,7 +2,7 @@
 
 Current scope (2026-11-06): 26 canonical pages for Surveyor 3, Apollo 11 and Gác Trời, including T02/T03. The Apollo 12/17 companion pages described in the historical notes below have been removed from the catalog; their four unused local images were removed during [asset cleanup](../../../docs/done/unused-files-cleanup.md). Keep the source records below for provenance.
 
-`catalog.ts` inventories the book as classified, bilingual blocks. The current validated inventory contains 26 canonical pages (52 bilingual blocks); responsive pagination can produce more visible leaves. `overview` corresponds to the browser's `null` page. Unlock logic remains
+`catalog.ts` inventories the book as classified, bilingual blocks. The current validated inventory contains 26 canonical pages (49 bilingual blocks); responsive pagination can produce more visible leaves. `overview` corresponds to the browser's `null` page. Unlock logic remains
 in the existing progress helpers and `JourneyMap`; it never filters this catalog.
 
 - `types.ts`: fact/game/fiction, stable block IDs, publication section/order,
@@ -41,7 +41,7 @@ existing `BASE_URL` image references without starting an HTTP/WebSocket server.
 
 ## Nhãn trên trình duyệt (M3)
 
-`BookParagraph` giữ nguyên nội dung và thuộc tính phân loại của từng đoạn. `BookPageLabel` đọc catalog và hiển thị một nhãn chung “Nội dung giả tưởng” ở góc trên trái cho trang có khối game hoặc fiction; trang chỉ có fact không có nhãn. Không gắn nhãn lặp lại trong nội dung. Phân loại game/fiction vẫn được giữ riêng trong dữ liệu xuất bản. `BookLabelGuide` nằm dưới section nhân vật trong cảnh, giải thích nhãn bằng `details/summary`, bao gồm ý nghĩa với trang hỗn hợp. Nội dung dài được dàn thành các trang tiếp theo thay vì dùng thanh cuộn trong trang sách.
+`BookParagraph` giữ nguyên nội dung và thuộc tính phân loại của từng đoạn. `BookPageLabel` đọc catalog và hiển thị một nhãn chung “Có yếu tố trò chơi / hư cấu” ở góc trên trái cho trang có khối game hoặc fiction; trang chỉ có fact không có nhãn. Không gắn nhãn lặp lại trong nội dung. Phân loại game/fiction vẫn được giữ riêng trong dữ liệu xuất bản. `BookLabelGuide` nằm dưới section nhân vật trong cảnh, giải thích nhãn bằng `details/summary`, bao gồm ý nghĩa với trang hỗn hợp. Nội dung dài được dàn thành các trang tiếp theo thay vì dùng thanh cuộn trong trang sách.
 
 ## NASA companion pages (historical notes, 2026-10-31)
 
@@ -80,7 +80,17 @@ add those unpublished pages to the catalog. The full
 PDF must include locked content independently of the save, with factual content in
 the main section and game/fiction in the appendix, in the selected language.
 
-Clickable contents, a dedicated reading view and persisted reading position remain
-proposals, not implemented features. See `docs/project-overview.md` for product scope
+The browser has a contents selector for the pages available in the current journey.
+A dedicated reading view and persisted reading position remain proposals. See `docs/project-overview.md` for product scope
 and `docs/done/book-performance-review.md` for the measured pagination improvements
 and verification limits.
+
+## Book review (2026-11-06)
+
+- Keep all 26 page IDs and existing unlock rules. Remove three repeated archive-image blocks; the inventory now has 49 bilingual blocks.
+- Distinguish the Apollo 12 visit, returned-material research and surface-versus-orbit view. Replace the repeated reflector photo on the prism page with an explicitly labelled, original top-view SVG diagram.
+- Simplify reflection wording; show the ranging method first and reveal the numeric answer on request. Mixed pages retain their factual sources.
+- Keep T02/T03 factual paragraphs when hints open. T02 displays both dated images with numbered thirds; story completion still controls the annotated answer page.
+- Reserve the Gác Trời portrait and centred prose for its introduction. Other pages use normal prose and independently paginated paragraphs/figures.
+- The contents selector uses canonical page identity and existing availability, never unlocks pages, and does not modify the save. Visible leaf numbers still depend on measured layout.
+- Observe native disclosure toggles so expanding an answer recalculates pagination.

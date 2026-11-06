@@ -13,7 +13,7 @@ export const surveyorPlayCopy = {
     result: 'Máy ảnh giúp mình quan sát. Chiếc xẻng giúp mình tìm hiểu đất!',
     bookNotice: 'Sổ tay đã có ba trang gợi ý. Cùng nhận xẻng và tìm ba bức ảnh nhé! Khi cần giúp, Cuội có thể mở sách.',
     bookTitle: 'Đôi mắt và chiếc xẻng',
-    bookBody: 'Camera gửi về hình ảnh mặt đất quanh tàu. Chiếc xẻng trên cánh tay vươn ra đào và thử đất, để lại những rãnh nhỏ trong ảnh. Những phép thử ấy giúp tìm hiểu lớp đất mà tàu Apollo sẽ đáp xuống.',
+    bookBody: 'Máy ảnh của Surveyor 3 gửi về hình ảnh mặt đất quanh tàu. Chiếc xẻng trên cánh tay vươn ra đào và thử đất, để lại những rãnh nhỏ trong ảnh. Những phép thử ấy giúp tìm hiểu lớp đất mà tàu Apollo sẽ đáp xuống.',
     matched: 'Đã ghép', memories: 'Ký ức', back: 'Về lộ trình',
   },
   en: {
@@ -30,7 +30,7 @@ export const surveyorPlayCopy = {
     result: 'My camera helps me observe. My scoop helps me study the soil!',
     bookNotice: 'Your notebook has three clue pages. Take the memory scoop and find the photos! Open the book whenever you need help.',
     bookTitle: 'A camera and a scoop',
-    bookBody: 'The camera returned views of the ground around the lander. A scoop on an extending arm dug and tested the soil, leaving the little trenches in the photograph. These tests helped investigate the material an Apollo lander would rest on.',
+    bookBody: 'Surveyor 3’s camera returned views of the ground around the lander. A scoop on an extending arm dug and tested the soil, leaving the little trenches in the photograph. These tests helped investigate the material an Apollo lander would rest on.',
     matched: 'Matched', memories: 'Memories', back: 'Back to the route',
   },
 };

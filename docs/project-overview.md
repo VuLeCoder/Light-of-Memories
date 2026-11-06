@@ -14,7 +14,7 @@ Tuyến hiện tại gồm **Mắt Tròn / Surveyor 3 → Lấp Lánh / Apollo 1
 - T04: đi theo triền thấp, nhận ra khối đá và ngọn đèn thấp, đến cây đa và gặp chị Hằng. Năm lượt thoại gặp lại được lưu theo checkpoint.
 - Sau cuộc gặp, game nghỉ tại `cards-intro`. M5 thẻ câu chuyện và M6 cảnh kết An–bà chưa triển khai. Hoàn thành Gác Trời không đồng nghĩa hoàn thành toàn câu chuyện.
 
-Sách hiện có **26 trang chuẩn, 52 khối nội dung Việt/Anh**; phân trang theo màn hình có thể tạo thêm trang hiển thị. Sách mở theo tiến trình, có gợi ý, nguồn ảnh và dữ liệu xuất bản độc lập bản lưu. Gợi ý không tự giải thử thách.
+Sách hiện có **26 trang chuẩn, 49 khối nội dung Việt/Anh**; phân trang theo màn hình có thể tạo thêm trang hiển thị. Sách mở theo tiến trình, có gợi ý, nguồn ảnh và dữ liệu xuất bản độc lập bản lưu. Gợi ý không tự giải thử thách. Mục lục cho phép chọn nhanh trang; đáp án đo khoảng cách chỉ hiện khi mở phần xem đáp án. Xem [đợt chỉnh sách](done/book-content-review.md).
 
 ## Công nghệ và cấu trúc
 

@@ -76,7 +76,7 @@ for (const [id, photo] of Object.entries(bookArchiveImages)) {
 
 for (const entry of realWorldPages) {
  const p = page(entry.id, entry.chapter, entry.title);
- block(p, 'photo', 'fact', entry.caption, entry.section, 30, entry.sources.map(url => source(url)), { image: { src: entry.image, alt: entry.caption, credit: 'NASA' } });
+ if (entry.image) block(p, 'photo', 'fact', entry.caption, entry.section, 30, entry.sources.map(url => source(url)), { image: { src: entry.image, alt: entry.caption, credit: entry.caption.en } });
  entry.paragraphs.forEach((body, i) => block(p, `body-${i}`, 'fact', body, entry.section, 31 + i, entry.sources.map(url => source(url))));
 }
 
@@ -92,13 +92,16 @@ for (const memory of gacMemories) {
   const p = page(`gac-memory-${memory.id}`, 'lro', memory.title);
   const sources = [source(photo.sourcePage)];
   if (memory.id === 'lap-lanh') sources.push(source('https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html'));
-  block(p, 'story', 'fact', memory.story, 'C5.2', 0, sources);
+  const bookStory = memory.id === 'surveyor'
+    ? text('Surveyor 3 là Mắt Tròn trong câu chuyện. Ảnh này cho thấy Conrad đứng bên tàu trên mặt đất, khác với góc nhìn từ quỹ đạo trong thử thách ghép vùng.', 'Surveyor 3 is Round Eyes in the story. This picture shows Conrad beside the lander on the surface, unlike the orbital view used in the matching challenge.')
+    : text('Bảng phản xạ Apollo 11 là Lấp Lánh trong câu chuyện. Ảnh quỹ đạo cho thấy khu hạ cánh ở Biển Yên Tĩnh; các chú thích giúp nhận ra vị trí thiết bị, dù không thấy rõ từng lăng kính.', 'Apollo 11’s reflector is Sparkle in the story. This orbital picture shows the landing site in the Sea of Tranquility; labels identify instrument locations, although individual prisms cannot be seen.');
+  block(p, 'story', 'fact', bookStory, 'C5.2', 0, sources);
   block(p, 'picture', 'fact', memory.caption, 'C5.2', 1, [source(photo.sourcePage)], { image: { src: photo.src, alt: photo.alt, credit: photo.credit } });
 }
 
 const impact = page('gac-book-impact', 'lro', text('Một dấu vết mới', 'A new trace'));
 block(impact, 'compare', 'fact', text('Hai ảnh cùng một vùng giúp tìm thay đổi nhỏ. Ảnh trước: 12/02/2012; ảnh sau: 28/07/2013.', 'Two pictures of the same place help reveal small changes. Before: 12 Feb 2012; after: 28 Jul 2013.'), 'C5.3', 0, [source(impactSource)]);
-block(impact, 'hint', 'game', text('Nhìn vùng 2 ở cả hai ảnh, gần nhóm hố nhỏ. Hình gợi ý đánh dấu một vùng rộng để đối chiếu.', 'Look at area 2 in both pictures, beside the small craters. The hint marks a broad area to compare.'), 'A5.2', 0, [], { reveal: 'hint', image: { src: impactPhoto('before'), alt: text('Ảnh trước va chạm với khung gợi ý rộng gần giữa ảnh.', 'Before the impact, with a broad hint box near the middle.'), credit: impactCredit, annotation: 'hint', date: '2012-02-12' } });
+block(impact, 'hint', 'game', text('Nhìn vùng 2 (phần giữa) ở cả hai ảnh. Ảnh sau có thêm đốm sáng nào?', 'Look at area 2 (the middle) in both pictures. Can you spot a new bright mark in the later picture?'), 'A5.2', 0, [], { reveal: 'hint', image: { src: impactPhoto('before'), alt: text('Ảnh trước va chạm với khung gợi ý rộng gần giữa ảnh.', 'Before the impact, with a broad hint box near the middle.'), credit: impactCredit, annotation: 'hint', date: '2012-02-12' } });
 const impactStory = page('gac-book-impact.story', 'lro', text('Chớp sáng và chiếc hố', 'A flash and a crater'));
 block(impactStory, 'crater', 'fact', text('Chớp sáng ngày 17/03/2013 được quan sát từ Trái Đất. Ảnh LRO sau đó giúp xác định hố mới khoảng 18 m. Đây là va chạm tự nhiên.', 'The flash on 17 Mar 2013 was observed from Earth. Later LRO images helped identify a new crater about 18 m wide. This was a natural impact.'), 'C5.3', 1, [source(impactSource), source('https://www.nasa.gov/solar-system/nasas-lro-spacecraft-finds-march-17-2013-impact-crater-and-more/')], { image: { src: impactPhoto('after'), alt: impactAlt.answer, credit: impactCredit, annotation: 'answer', date: '2013-07-28' } });
 

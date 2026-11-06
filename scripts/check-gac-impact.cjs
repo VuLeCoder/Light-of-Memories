@@ -32,9 +32,12 @@ const { mkdirSync } = require('node:fs');
    await page.locator('.gac-impact-regions button').nth(0).press('Enter');
    assert.equal((await state()).phase,'t02-search');
    assert.ok((await page.locator('.gac-impact-response').innerText()).length>10);
-   // Hint opens the broad reference, keeps the answer and scene untouched.
+   // Hint opens the numbered comparison, keeps the answer and scene untouched.
    await page.locator('.gac-impact-help').click();
-   await page.locator('.book-panel [data-book-block="gac-book-impact.hint"] .gac-impact-hint').waitFor({state:'visible'});
+   await page.locator('.book-panel [data-book-block="gac-book-impact.hint"]').waitFor({state:'visible'});
+   assert.equal(await page.locator('.book-impact-pair img').count(),2);
+   assert.equal(await page.locator('.book-impact-numbers span').count(),6);
+   assert.ok(await page.locator('[data-book-block="gac-book-impact.compare"]').count());
    assert.equal((await state()).phase,'t02-search');assert.equal((await state()).t02Done,false);
    assert.equal(await page.locator('.book-panel .gac-impact-answer').count(),0);
    await page.locator('.gac-impact-regions button').nth(1).focus();

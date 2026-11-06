@@ -4,7 +4,7 @@ export const journeyCopy = {
     lead: 'Ba điểm sáng… Có ai ở đó biết chị Hằng đang ở đâu không nhỉ?',
     guide: 'Cùng Cuội gặp ba người bạn trên Mặt Trăng và khám phá câu chuyện của họ.',
     prerequisite: 'Hoàn thành câu chuyện của người bạn phía trước để mở khóa cuộc gặp này.', mystery: 'Người bạn bí ẩn', locked: 'Người bạn này sẽ xuất hiện trong phần tiếp theo. Hẹn Cuội sớm nhé!', back: 'Về lộ trình',
-    note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và giúp chiếc đèn sáng thêm trên chiếc đèn.',
+    note: 'Mỗi cuộc gặp sẽ để lại một kỷ niệm và giúp chiếc đèn sáng thêm.',
     waiting: 'Chưa khám phá', ready: 'Điểm đến tiếp theo', completed: 'Đã hoàn thành câu chuyện', replay: 'Chơi lại cùng bạn',
   },
   en: {

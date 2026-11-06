@@ -137,6 +137,7 @@ export function useBookImageLayout(pageId: string | null, language: string, requ
     sheet.addEventListener('load', schedule, true);
     sheet.addEventListener('error', schedule, true);
     sheet.addEventListener('click', onClick);
+    sheet.addEventListener('toggle', schedule, true);
     window.addEventListener('resize', schedule);
     if (document.fonts.status === 'loading') document.fonts.ready.then(schedule);
     fit();
@@ -147,6 +148,7 @@ export function useBookImageLayout(pageId: string | null, language: string, requ
       sheet.removeEventListener('load', schedule, true);
       sheet.removeEventListener('error', schedule, true);
       sheet.removeEventListener('click', onClick);
+      sheet.removeEventListener('toggle', schedule, true);
       window.removeEventListener('resize', schedule);
       restore();
       sheet.classList.remove('book-image-wrap', 'book-image-stacked', 'book-compact');
