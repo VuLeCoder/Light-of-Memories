@@ -30,3 +30,7 @@ Hoàn thành ngày 07/11/2026. GT-R0–GT-R2 là nền tảng; GT-R4 kiểm tra 
 Hai script trình duyệt cần Playwright có sẵn và Chrome ở `/usr/bin/google-chrome`. Chúng khởi chạy Vite riêng rồi đóng sau kiểm tra; không sửa bản lưu trình duyệt của người dùng. Script release dùng bản lưu thử riêng trong browser context, không bỏ qua renderer App.
 
 GT-R4 tiếp tục hồi quy toàn bộ hai bạn trước, tổ hợp bản lưu cũ, đổi ngôn ngữ giữa cảnh và thử với trẻ nếu có điều kiện. Chưa tuyên bố đã kiểm chứng độ dễ chơi với trẻ.
+
+## Điều chỉnh bố cục hội thoại sau Gác Trời
+
+Hội thoại, hướng dẫn và các nút dùng chung khung cảnh với nền, theo bảng tối trong suốt của các cảnh bạn trước. Màn hình rộng đặt bảng bên trái, phía dưới thanh điều hướng; màn hình có khung cảnh không quá 800px đặt bảng phía trên vùng tương tác trong cùng khung để chữ không che thỏ/sao. Áp dụng từ chuyện thật, theo Thỏ, ba chặng, gặp Hằng, chia tay tới nghỉ dưới cây và trò chuyện lại. Không đổi lời thoại, logic tương tác hay bản lưu. Script release kiểm tra bảng nằm trong khung và mục tiêu không bị che.

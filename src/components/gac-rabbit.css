@@ -1,15 +1,15 @@
 #main-scene .game-stage:has(.gac-rabbit) { height:auto; aspect-ratio:auto; min-height:0; }
 #main-scene .game-stage:has(.gac-rabbit) > .story-canvas { display:none; }
-.gac-rabbit { color:#eee3c9; background:#101e28; padding:12px; container-type:inline-size; }
+.gac-rabbit { color:#eee3c9; background:#101e28; padding:0; container-type:inline-size; position:relative; isolation:isolate; display:grid; grid-template-columns:minmax(0,1fr); }
 .gac-rabbit[hidden] { display:block; visibility:hidden; pointer-events:none; }
 .rabbit-hud,.rabbit-hud nav { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
-.rabbit-hud { justify-content:space-between; margin-bottom:10px; }
+.rabbit-hud { justify-content:space-between; margin:0; padding:12px 16px; position:relative; z-index:6; grid-area:1/1; align-self:start; background:linear-gradient(#101e28ed,#101e2800); }
 .rabbit-hud > span { font:20px Lora,serif; color:#eed395; }
 .rabbit-hud nav { margin-left:auto; }
 .gac-rabbit button { min-height:44px; border:1px solid #b49a6777; border-radius:6px; background:#223b43; color:#f1e5cc; font:inherit; padding:8px 12px; cursor:pointer; }
 .gac-rabbit button:disabled { cursor:default; }
 .gac-rabbit button:focus-visible { outline:3px solid #ffe3a2; outline-offset:3px; }
-.rabbit-view { position:relative; width:100%; aspect-ratio:16/9; background:#0d1822; isolation:isolate; }
+.rabbit-view { grid-area:1/1; position:relative; width:100%; aspect-ratio:16/9; background:#0d1822; isolation:isolate; }
 .rabbit-backdrop,.rabbit-path { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
 .rabbit-backdrop canvas { display:block; width:100% !important; height:100% !important; }
 .rabbit-path { z-index:1; }
@@ -32,7 +32,7 @@
 @keyframes rabbit-hop { 0%,100% { margin-top:0; } 45% { margin-top:-18px; } }
 @keyframes rabbit-stretch { 50% { scale:1.15 1.25; } }
 @keyframes rabbit-wiggle { 33% { margin-left:-3px; } 66% { margin-left:3px; } }
-@container (max-width:639px) {
+@container (max-width:800px) {
   .rabbit-panel > button { width:100%; }
   .rabbit-hud > span { font-size:18px; }
 }
@@ -43,16 +43,40 @@
 .rabbit-wrong-figure { position:absolute; width:max(6%,32px); transform:translate(-50%,-50%); pointer-events:none; z-index:2; shape-rendering:crispEdges; }
 .rabbit-rest-art { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:3; shape-rendering:crispEdges; }
 .rabbit-rest-actions { display:flex; gap:8px; flex-wrap:wrap; }
-.rabbit-story > .dialogue { position:relative; inset:auto; width:auto; margin:12px 0 0; }
-.rabbit-story .dialogue-text { min-height:3.2em; }
-.rabbit-gift.is-lit { transform:translate(-35px,55px); }
-
-.game-stage .ending-scene.rabbit-story { position:relative; inset:auto; pointer-events:auto; animation:none; }
-.game-stage .rabbit-story > .dialogue { position:relative; inset:auto; width:auto; max-height:none; overflow:visible; margin:12px 0 0; padding:14px; border:1px solid #d2ba8155; border-radius:8px; background:#192e37; }
-.game-stage .rabbit-story .dialogue-text { font-size:18px; line-height:1.6; }
+/* The same inset, translucent cards used by the earlier friend scenes.
+   Keep the interaction card on the left, clear of Rabbit and the stars. */
+.gac-rabbit > .rabbit-panel,
+.game-stage .rabbit-story > .dialogue {
+  position:relative; inset:auto; grid-area:1/1; align-self:start;
+  z-index:5; box-sizing:border-box; width:46%; margin:78px 0 18px 18px;
+  padding:16px; border:1px solid #d2ba8155; border-radius:10px;
+  background:linear-gradient(120deg,#21343bf5,#152831f5);
+  pointer-events:auto; max-height:none; overflow:visible;
+}
+.game-stage .rabbit-story > .dialogue { width:57%; }
+.game-stage .rabbit-story .dialogue-text { min-height:0; font-size:17px; line-height:1.55; }
 .game-stage .rabbit-story .dialogue-portrait { display:block; width:52px; height:66px; }
 .game-stage .rabbit-story .dialogue-portrait-gacTroi img { object-fit:contain; transform:none; }
-.game-stage .ending-scene.rabbit-story[hidden] { display:block; visibility:hidden; pointer-events:none; }
+.game-stage .ending-scene.rabbit-story { position:relative; inset:auto; pointer-events:auto; animation:none; display:grid; }
+.game-stage .ending-scene.rabbit-story[hidden] { display:grid; visibility:hidden; pointer-events:none; }
+.rabbit-gift.is-lit { transform:translate(-35px,55px); }
+
+/* Narrow screens keep the controls above the play area, inside one scene.
+   Intrinsic rows accommodate both languages without hiding text or hit targets. */
+@container (max-width:800px) {
+  .rabbit-hud { grid-area:1/1; padding:10px; background:transparent; }
+  .rabbit-hud > span { font-size:16px; }
+  .rabbit-view { grid-area:3/1; }
+  .gac-rabbit > .rabbit-panel,
+  .game-stage .rabbit-story > .dialogue {
+    grid-area:2/1; width:auto; margin:4px 10px 10px; padding:12px;
+  }
+  .rabbit-panel { font-size:16px; gap:8px; }
+  .rabbit-feedback { min-height:0; }
+  .game-stage .rabbit-story .dialogue-text { font-size:16px; }
+  .rabbit-rest-actions { gap:6px; }
+  .rabbit-rest-actions button { flex:1 1 auto; }
+}
 .rabbit-gift { transition:transform .35s ease-out; }
 
 /* Match the illustrated cast and softly faceted props of the earlier encounters. */

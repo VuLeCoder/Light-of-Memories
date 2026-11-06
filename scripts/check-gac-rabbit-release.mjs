@@ -17,6 +17,18 @@ try {
   const state=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('cuoi.progress')).gacTroi);
   const resume=async()=> {await page.getByRole('button',{name:lang==='vi'?'Tiếp tục':'Continue',exact:true}).click();};
   await page.reload();await resume();
+  const layout=async()=> {
+   const issues=await page.locator('.gac-rabbit').evaluate(el=>{
+    const frame=el.getBoundingClientRect();
+    const cards=[...el.querySelectorAll('.rabbit-hud,.rabbit-panel,.dialogue')];
+    const outside=cards.some(card=>{const b=card.getBoundingClientRect();return b.left<frame.left-1||b.right>frame.right+1||b.top<frame.top-1||b.bottom>frame.bottom+1;});
+    const target=el.querySelector('.rabbit-target');
+    const b=target?.getBoundingClientRect();
+    const covered=b && !target.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2));
+    return {outside,covered:!!covered};
+   });
+   assert.deepEqual(issues,{outside:false,covered:false});
+  };
   const next=async()=>{const b=page.locator('.dialogue:not([hidden]) .dialogue-next:visible');await b.click();await page.waitForTimeout(80);};
   // Finish T02 story and verify that the app activates the released journey.
   for(let i=0;i<8 && !(await state()).rabbitJourney?.active;i++) await next();
@@ -25,12 +37,13 @@ try {
    for(let i=0;i<length;i++) {
     await page.waitForFunction(id=>document.querySelector('.rabbit-story .dialogue')?.getAttribute('data-line')===`rabbit-${id}`,`${stage}-${String(i+1).padStart(2,'0')}`);
     await page.waitForFunction(()=>document.querySelector('.rabbit-story .dialogue')?.getAttribute('data-complete')==='true');
+    await layout();
     await next();
    }
   };
   await dialogue('real',3);await dialogue('bridge',3);
   for(const stop of ['slope','rock','banyan']) {
-   for(let i=0;i<(stop==='rock'?3:2);i++) await page.locator('.rabbit-target').click();
+   for(let i=0;i<(stop==='rock'?3:2);i++) { await page.locator('.gac-rabbit').scrollIntoViewIfNeeded(); await layout(); await page.locator('.rabbit-target').click(); }
    assert.equal((await state()).completedOnce,false);
    await page.locator('.rabbit-panel button').click();
   }
