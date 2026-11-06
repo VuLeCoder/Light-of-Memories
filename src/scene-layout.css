@@ -20,17 +20,17 @@
   overflow: clip;
 }
 
-/* Absolute task panels need their own scroll area for their bottom controls. */
-#main-scene .tai-task-panel { overflow: auto; }
+/* Effects follow the 16:9 scenery, not the taller mobile dialogue stage. */
+.surveyor-ending-effects { position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 16 / 9; pointer-events: none; }
 
 /* Full-page activities start with their controls, rather than a canvas-sized gap. */
-#main-scene .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC, .tai-recollection, .ban-recollection) > .story-canvas {
+#main-scene .game-stage:has(.ban-recollection) > .story-canvas {
   display: none;
 }
 
 @media (max-width: 800px) {
   #main-scene .game-stage { height: auto; min-height: clamp(480px, 68svh, 600px); }
-  #main-scene .game-stage:has(.sparkle-card, .tai-task-panel, .tai-memory-photo, .tai-identify, .ban-panel, .ban-memory-photo, .ban-recollection) > .story-canvas {
+  #main-scene .game-stage:has(.ban-panel, .ban-memory-photo, .ban-recollection) > .story-canvas {
     display: none;
   }
 }

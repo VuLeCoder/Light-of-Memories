@@ -58,3 +58,12 @@ Kiểm tra dữ liệu bao gồm khóa/mở theo ba bạn, lọc save cũ, đáp
 Kiểm tra trình duyệt chạy 1440px/390px, cả Việt/Anh: toàn bộ Gác Trời và phần kết; tải lại giữa ký ức, nối đường và hội thoại; menu tạm dừng; gợi ý; ảnh lỗi/thử lại; hoàn tác; reset và mở đầu mới. Đo tràn khung, chiều cao footer và chụp ảnh vào `docs/plan/three-friends/verification/` (thư mục tài liệu cục bộ được gitignore).
 
 Giới hạn kiểm chứng: Chrome giả lập chuột/chạm và bàn phím, chưa kiểm tra trên thiết bị di động thật hoặc trình đọc màn hình. Các minigame Mắt Tròn/Bánh Lưới giữ cơ chế cũ; lượt kiểm tra mới tập trung vào đoạn nối, mở khóa và phần nội dung được thay đổi. Build có cảnh báo kích thước bundle Phaser như trước.
+
+## Rà soát sau triển khai — 06/11/2026
+
+- Bỏ nhánh điều khiển và 12 component giao diện cũ của Lấp Lánh/Tai Thính, CSS riêng Tai Thính và các nhánh dựng sách đã bị phần đọc thêm thay thế. Giữ dữ liệu đọc save cũ, nguồn tư liệu và ảnh dùng trong sách; các hàm đồ họa dùng chung chưa bị thay đổi.
+- Sửa trang giới thiệu Lấp Lánh/Tai Thính trong mục đọc thêm bị hiện khóa chương. Hai trang giờ đọc được ngay như các tư liệu bổ sung khác.
+- Trang đoàn tụ dùng chân dung chị Hằng và nhãn “Khép lại hành trình”; bỏ chân dung Gác Trời và nhãn LRO không phù hợp.
+- Neo hiệu ứng đèn/ánh sáng cuối cảnh Mắt Tròn theo khung nền 16:9. Trước đó hiệu ứng tính theo chiều cao cả sân khấu nên rơi xuống vùng trống trên màn hẹp.
+- Thêm `node scripts/check-journey-images.cjs` (cần Vite và Chrome như kiểm tra hành trình). Kiểm tra ảnh hiển thị giải mã được, lật tới cuối sách, mục đọc thêm không bị khóa, sách không tràn, các cảnh kết/ảnh/lộ trình Mắt Tròn–Bánh Lưới không có thanh cuộn và ánh sáng nằm trong nền cảnh. Chạy ở 1440px/390px, Việt/Anh; ảnh chụp tại `docs/plan/three-friends/image-review/`.
+- Kiểm tra luồng Gác Trời → kết → chơi lại, build, sách và save đều qua. Giữ nguyên màu sắc, bố cục và footer 96px. Chưa kiểm tra trên điện thoại thật.
