@@ -20,7 +20,7 @@ try {
   let p = readProgress().progress;
   assert.equal(p.activeLevel, null, 'Removed scene returns to route');
   assert.deepEqual(p.gacTroi, freshGacTroi());
-  const fifth = { ...freshGacTroi(), phase: 'matching', turn: gacMatchingIntroLength, matched: ['surveyor', 'lap-lanh'] };
+  const fifth = readGacTroi({ ...freshGacTroi(), phase: 'matching', turn: gacMatchingIntroLength, matched: ['surveyor', 'lap-lanh'] });
   assert.ok(saveProgress(p.chapter, p.quest, p.completed, 'gac-troi', p.surveyor, p.sparkle, fifth));
   p = readProgress().progress;
   assert.deepEqual(p.gacTroi, fifth, 'Reentry preserves confirmed answers');
@@ -34,11 +34,11 @@ try {
   assert.ok(!getBrowserBookPages({ ...prior, sparkle: freshSparkle() }).includes('gac-book-orbit'));
   assert.equal(getBookHintPage(prior, 'gac-troi'), 'gac-book-orbit');
   // Legacy v14 has no story receipts; keep pairs and resume the unread memories.
-  const legacy = { ...fifth }; delete legacy.seen;
+  const legacy = { ...fifth }; delete legacy.seen; delete legacy.revision;
   assert.deepEqual(readGacTroi(legacy), fifth);
   store.set('cuoi.progress', JSON.stringify({ version: 14, milestone: 'complete', activeLevel: 'gac-troi', ...prior, gacTroi: legacy }));
   assert.deepEqual(readProgress().progress.gacTroi, fifth);
-  let game = { ...freshGacTroi(), phase: 'matching', turn: gacMatchingIntroLength };
+  let game = readGacTroi({ ...freshGacTroi(), phase: 'matching', turn: gacMatchingIntroLength });
   assert.equal(matchGacFriend(game, 'surveyor', 'apollo11'), game, 'Wrong match changes nothing');
   assert.ok(!getBrowserBookPages({ ...prior, gacTroi: game }).includes('gac-memory-surveyor'));
   for (const memory of [gacMemories[1], gacMemories[0]]) {
@@ -59,12 +59,12 @@ try {
     const lines = gacMatchingDialogue('vi', ending);
     assert.deepEqual(lines.map(l => l.id), gacMatchingDialogue('en', ending).map(l => l.id));
     for (let turn = 0; turn < lines.length; turn++) {
-      const checkpoint = ending ? { ...game, turn } : { ...freshGacTroi(), phase: 'matching', turn };
+      const checkpoint = readGacTroi(ending ? { ...game, turn } : { ...freshGacTroi(), phase: 'matching', turn });
       assert.deepEqual(readGacTroi(checkpoint), checkpoint);
     }
   }
   assert.equal(readGacTroi({ ...game, turn: 999 }).turn, 1);
-  assert.equal(readGacTroi({ ...game, phase: 'route', turn: 999 }).turn, 0);
+  assert.equal(readGacTroi({ ...game, phase: 't02-intro', turn: -1 }).turn, 0);
   assert.deepEqual(readGacTroi({ ...freshGacTroi(), matched: ['unknown', 'surveyor', 'surveyor'], seen: ['unknown','lap-lanh','surveyor'] }).seen, ['surveyor']);
   const { levels, journeyStops, journeyStatus, isLevelId } = await load('content/levels/index');
   assert.deepEqual(levels.map(l => l.id), ['surveyor', 'lap-lanh', 'gac-troi']);
@@ -81,9 +81,10 @@ try {
   }
   assert.equal(journeyStatus('gac-troi', { surveyor: true, 'lap-lanh': false, 'gac-troi': false }), 'locked');
   assert.equal(journeyStatus('gac-troi', { surveyor: true, 'lap-lanh': true, 'gac-troi': false }), 'unfinished');
-  const old = { ...game, matched: ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'], seen: ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'], route: ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'] };
+  const old = { ...game, revision: undefined, phase: 'route', matched: ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'], seen: ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'], route: ['surveyor', 'lap-lanh', 'tai-thinh', 'ban-banh-luoi'] };
   assert.deepEqual(readGacTroi(old).matched, ['surveyor', 'lap-lanh']);
-  assert.deepEqual(readGacTroi(old).route, ['surveyor', 'lap-lanh']);
+  assert.deepEqual(readGacTroi(old).routeLandmarks, [], 'Old friend route is not the new light map');
+  assert.equal(readGacTroi(old).phase, 't02-intro');
   console.log('M2/M3 verified: correct/incorrect pairs, two friends, story receipts, hint unlocks, v14 migration, and dialogue reloads.');
   console.log('M2 verified: v13 migration, saved answers, every dialogue checkpoint, bilingual IDs and stable book target.');
 } finally { await server.close(); delete globalThis.localStorage; }

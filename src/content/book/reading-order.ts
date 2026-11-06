@@ -1,4 +1,4 @@
-import type { GacTroiProgress } from '../levels/gac-troi-progress';
+import { gacTroiFriends, type GacTroiProgress } from '../levels/gac-troi-progress';
 import { journeyStatus, journeyStops, type LevelId } from '../levels';
 import { eventOrder } from '../levels/surveyor-progress';
 import { sparkleRepairUnlocked, sparkleRangingUnlocked } from '../levels/lap-lanh';
@@ -15,7 +15,12 @@ export function getBrowserBookPages({ surveyor, sparkle, gacTroi }: BookProgress
   const status = (id: LevelId | null) => journeyStatus(id, completed);
   const fieldUnlocked = surveyor.matched.length === 2;
   return insertRealWorldPages([null, ...journeyStops.flatMap(id => {
-    if (id === 'gac-troi') return status(id) === 'locked' ? [] : ['gac-book-orbit', ...(gacTroi && gacTroi.phase !== 'meeting' ? ['gac-book-sites', ...gacTroi.matched.map(id => `gac-memory-${id}`)] : [])];
+    if (id === 'gac-troi') {
+      if (status(id) === 'locked') return [];
+      const memories = gacTroiFriends.filter(friend => gacTroi?.matched.includes(friend) || gacTroi?.bookUnlocks.includes(`gac-memory-${friend}`));
+      const sites = gacTroi && (gacTroi.phase !== 'meeting' || gacTroi.bookUnlocks.includes('gac-book-sites') || memories.length > 0);
+      return ['gac-book-orbit', ...(sites ? ['gac-book-sites', ...memories.map(friend => `gac-memory-${friend}`)] : [])];
+    }
     if (id && status(id) === 'locked') return [id];
     if (id === 'surveyor') return [
       id,

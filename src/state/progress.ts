@@ -1,4 +1,4 @@
-import { freshGacTroi, readGacTroi, type GacTroiProgress } from '../content/levels/gac-troi-progress';
+import { freshGacTroi, migrateGacTroi, readGacTroi, type GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { freshSparkle, readSparkle, type SparkleProgress } from '../content/levels/lap-lanh';
 import { freshSurveyor, readSurveyorProgress, type SurveyorProgress } from '../content/levels/surveyor-progress';
 import { journeyStatus, isLevelId, type LevelId } from '../content/levels';
@@ -19,11 +19,11 @@ export function readProgress(): { progress: Progress; unavailable: boolean } {
   if (!raw) return { progress: fresh, unavailable: false };
   try {
     const data = JSON.parse(raw);
-    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].includes(data.version) || !milestones.includes(data.milestone)) return { progress: fresh, unavailable: false };
+    if (!data || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].includes(data.version) || !milestones.includes(data.milestone)) return { progress: fresh, unavailable: false };
     const milestone: Milestone = data.milestone;
     const sparkle = readSparkle(data.sparkle);
     const surveyor = data.version >= 3 && (milestone === 'complete' || milestone === 'surveyor') ? readSurveyorProgress(data.surveyor) : freshSurveyor();
-    const gacTroi = data.version >= 14 ? readGacTroi(data.gacTroi) : freshGacTroi();
+    const gacTroi = data.version >= 18 ? readGacTroi(data.gacTroi) : data.version >= 14 ? migrateGacTroi(data.gacTroi) : freshGacTroi();
     const activeAllowed = isLevelId(data.activeLevel) && journeyStatus(data.activeLevel, { surveyor: surveyor.completedOnce, 'lap-lanh': sparkle.completedOnce, 'gac-troi': gacTroi.completedOnce }) !== 'locked';
     return { unavailable: false, progress: {
       scene: milestone === 'earth' ? 'earth' : 'moon',
@@ -41,7 +41,7 @@ export function saveProgress(chapter: Chapter, quest: MoonQuest, completed: bool
   const milestone: Milestone = completed ? 'complete' : chapter === 'earth' ? 'earth'
     : ['departing', 'arriving', 'moon-waking'].includes(chapter) ? 'moon'
     : chapter === 'moon-story' ? 'moon-story' : quest === 'bench' ? 'awake' : quest;
-  try { localStorage.setItem(key, JSON.stringify({ version: 17, milestone, surveyor, sparkle, gacTroi, activeLevel: milestone === 'complete' ? activeLevel : null })); return true; }
+  try { localStorage.setItem(key, JSON.stringify({ version: 18, milestone, surveyor, sparkle, gacTroi, activeLevel: milestone === 'complete' ? activeLevel : null })); return true; }
   catch { return false; }
 }
 

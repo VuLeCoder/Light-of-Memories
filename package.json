@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "check:book": "node scripts/check-book.mjs",
     "check:book-flow": "node scripts/check-book-flow.mjs",
-    "check:gac-troi": "node scripts/check-gac-troi.mjs"
+    "check:gac-troi": "node scripts/check-gac-troi.mjs",
+    "check:ending-progress": "node scripts/check-ending-progress.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0",

@@ -305,7 +305,7 @@ export function App() {
             }}
             onClick={(event) => {
               if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
-              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && (['meeting', 'stories'].includes(gacTroiProgress.phase) || gacTroiProgress.phase === 'matching' && gacTroiProgress.turn < gacMatchingIntroLength)))) return;
+              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && (['meeting', 'stories', 't02-intro'].includes(gacTroiProgress.phase) || gacTroiProgress.phase === 'matching' && gacTroiProgress.turn < gacMatchingIntroLength)))) return;
               if ((event.target as Element).closest('button, select, input, a')) return;
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });

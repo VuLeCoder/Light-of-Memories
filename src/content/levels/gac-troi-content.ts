@@ -60,3 +60,9 @@ export const gacTroiOrbitBook = {
     "https://science.nasa.gov/mission/lro/spacecraft-and-instruments/"
   ]
 } as const;
+
+// M1 introduces T02; its interactive photo screen ships in M2.
+export const gacT02Intro = (language: Language): StoryLine[] => [
+  { id: 't02-intro-01', speaker: 'gacTroi', text: language === 'vi' ? 'Còn đây là hai ảnh của cùng một vùng đất, chụp vào hai ngày khác nhau.' : 'Here are two pictures of the same place, taken on different days.' },
+  { id: 't02-intro-02', speaker: 'gacTroi', text: language === 'vi' ? 'Cuội đổi qua lại hai ảnh rồi tìm chỗ có thêm một dấu vết nhé.' : 'Switch between them, Cuội, and look for a new mark.' },
+];

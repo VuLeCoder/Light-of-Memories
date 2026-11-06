@@ -19,7 +19,7 @@ Dự án được phát triển theo challenge **Abandoned but not Forgotten: St
 
 Đã dựng phần mở đầu: hội thoại An và bà, chuyển cảnh lên Mặt Trăng, Cuội thức dậy, di chuyển, quan sát ghế đá, trò chuyện với Cây Đa và nhận đèn trước khi lên đường. Website có menu, chọn tiếng Việt / tiếng Anh và lưu tiến trình theo mốc trên trình duyệt.
 
-Bốn màn đã triển khai: **Surveyor 3 — Mắt Tròn**, **Apollo 11 — Lấp Lánh**, **Apollo 12 — Tai Thính**, **Apollo 17 — Bánh Lưới**, gồm thử thách, ảnh tư liệu, sách và đoạn kết. Mỗi người bạn thắp một cánh đèn; người bạn thứ năm còn bí ẩn.
+Tuyến hiện tại gồm **Surveyor 3 — Mắt Tròn → Apollo 11 — Lấp Lánh → LRO — Gác Trời**. Hai chương đầu đã có thử thách và đoạn kết. Gác Trời đã có T01 ghép ký ức và lời giới thiệu T02; phần tìm thay đổi, bản đồ, tìm chị Hằng và kết truyện đang được phát triển. Bản M1 dừng an toàn sau giới thiệu T02, giữ tiến trình để tiếp tục ở bản sau.
 
 Game nằm bên trái, sách đồng hành bên phải; phần giới thiệu nằm bên dưới. Trên màn hình nhỏ, sách và panel chuyển xuống dưới game. Sách mở nội dung theo tiến trình, có gợi ý và nguồn ảnh.
 
@@ -50,6 +50,10 @@ npm run typecheck
 # Kiểm tra nội dung và điều hướng sách
 npm run check:book
 npm run check:book-flow
+
+# Kiểm tra T01, chuyển save và checkpoint kết truyện
+npm run check:gac-troi
+npm run check:ending-progress
 
 # Kiểm tra TypeScript và tạo bản build
 npm run build
@@ -90,29 +94,25 @@ Font **Lora** và **Be Vietnam Pro** được đóng gói trong `public/fonts/`,
 - **E** khi đứng gần vật hoặc người bạn để tương tác; có thể bấm trực tiếp. Các chặng đào đất/đi có chiều sâu có hướng dẫn riêng ở footer.
 - Mở menu sẽ tạm dừng tương tác trong game.
 
-Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v13 lưu riêng từng màn và đọc được bản v1–v13; lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
+Tiến trình, ngôn ngữ và lựa chọn âm thanh được lưu bằng `localStorage` trên trình duyệt hiện tại, chưa đồng bộ giữa thiết bị. Khi tải lại trang, chọn **Tiếp tục** trong menu để trở về mốc đã lưu. Tiến trình schema v18 đọc được bản v1–v18. Save Gác Trời v14–v17 giữ các cặp T01 và câu chuyện đã đọc; save đã qua T01 tiếp tục ở giới thiệu T02. Thành tích hợp lệ và các trang sách đã mở được giữ khi chơi lại Gác Trời. Lượt thoại được giữ theo quy tắc từng chặng. Xóa dữ liệu website sẽ mất bản lưu. Nếu trình duyệt chặn lưu trữ, game vẫn chơi được trong phiên.
 
 ### Những phần đang phát triển
 
-Cập nhật 31/10/2026: ba phần chính còn thiếu là **người bạn thứ năm, đoạn kết toàn hành trình và âm thanh**. Các đoạn kết của bốn màn hiện tại chưa khép lại toàn bộ câu chuyện.
+Cập nhật 06/11/2026: **M1 mở rộng luồng và lưu tiến trình đã hoàn thành**. Xem [bàn giao M1](docs/done/M1_Gac_Troi_progress.md) cho schema, migration, cổng phát hành và kiểm tra.
 
-- Cần nối chương 5 với ý nghĩa chiếc đèn đủ năm ánh sao và xác định trải nghiệm sau khi hoàn thành hành trình.
-- Sách đã có dữ liệu phân loại và thứ tự xuất bản; **chưa có chức năng tải PDF**. Bản đầy đủ cần thêm chương 5 và phần khép lại, giữ kiến thức thật ở phần chính và nội dung giả tưởng/game ở phụ lục.
-- Sau khi tích hợp cần kiểm thử từ đầu đến cuối, lưu/tiếp tục, gợi ý sách, chơi lại, hai ngôn ngữ và âm thanh. Xem [tiến độ và các quyết định còn lại](docs/project-overview.md).
-
-
-- Người bạn thứ năm và cảnh gặp lại chị Hằng chưa được chốt. Hiện có tối đa bốn cánh sao. Bánh Lưới có ba bài: thử bánh, lập đường đi và lấy mẫu đá/đất tại hai điểm A/B; chơi lại giữ ảnh, sách và dấu hoàn thành.
-- Chưa có phần thưởng kỹ năng hoặc thẻ bạn.
+- M2–M6 sẽ triển khai lần lượt T02, T03, kết Gác Trời, T04, thẻ câu chuyện và cảnh An–bà. Các checkpoint đã có nhưng màn chưa hoàn thiện chưa mở trong game.
+- Xem lại kết truyện đã có con trỏ dữ liệu tạm riêng; giao diện xem lại được nối khi nội dung kết truyện hoàn thành.
+- Sách đã có dữ liệu phân loại và thứ tự xuất bản; chưa có chức năng tải PDF.
 - Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
-- Bản build còn cảnh báo kích thước gói Phaser; các giới hạn đã biết được ghi trong tài liệu từng màn.
+- Bản build còn cảnh báo kích thước gói Phaser.
 
 ### Tài liệu tham khảo
 
 - [Tổng quan và mục lục tài liệu](docs/project-overview.md)
 - [Game1 — Mắt Tròn](docs/done/Game1_Surveyor_3.md)
 - [Game2 — Lấp Lánh](docs/done/Game2_Apollo_11.md)
-- [Game3 — Tai Thính](docs/done/Game3_Apollo_12.md)
-- [Game4 — Bánh Lưới và bàn giao M7](docs/done/Game4_Apollo_17.md)
+- [Game3 — Tai Thính (tài liệu lịch sử)](docs/done/Game3_Apollo_12.md)
+- [Game4 — Bánh Lưới và bàn giao M7 (tài liệu lịch sử)](docs/done/Game4_Apollo_17.md)
 - [Hướng dẫn AI thiết kế màn chơi mới](docs/Huong-dan-AI-thiet-ke-man-choi-moi.md)
 - [Phong cách hình ảnh và hướng dẫn sinh ảnh cho AI](docs/visual-style.md)
 - [Quy ước thư mục ảnh](docs/image-assets.md)
