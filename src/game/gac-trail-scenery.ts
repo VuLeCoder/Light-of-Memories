@@ -21,7 +21,7 @@ function outline(path: string, x: number, y: number, scale: number) {
 }
 
 /** Entirely imagined pixel scenery. No historical equipment is placed under the tree. */
-export function drawGacTrail(scene: Phaser.Scene, phase: GameSceneId) {
+export function drawGacTrail(scene: Phaser.Scene, phase: GameSceneId, rabbitJourney = false) {
   const g = scene.add.graphics();
   g.fillStyle(0x0d1822).fillRect(0, 0, 960, 540);
   for (let i = 0; i < 50; i++) g.fillStyle(i % 4 ? 0x9baeb1 : 0xd7b875, .45).fillRect((i * 137 + 25) % 960, (i * 43 + 15) % 270, 2, 2);
@@ -39,7 +39,7 @@ export function drawGacTrail(scene: Phaser.Scene, phase: GameSceneId) {
     g.fillStyle(0x8c9792).fillPoints(outline(gacLandmarkShapes[1], 560, 350, 2.4), true);
     g.lineStyle(4,0xc9c5ac).strokePoints(outline(gacLandmarkShapes[1], 560, 350, 2.4), true);
     g.fillStyle(0x172b35).fillPoints([{x:543,y:398},{x:560,y:356},{x:579,y:398}], true);
-    g.fillStyle(0xffe3a2).fillPoints([{x:680,y:78},{x:685,y:94},{x:702,y:100},{x:685,y:106},{x:680,y:122},{x:675,y:106},{x:658,y:100},{x:675,y:94}], true);
+    if (!rabbitJourney) g.fillStyle(0xffe3a2).fillPoints([{x:680,y:78},{x:685,y:94},{x:702,y:100},{x:685,y:106},{x:680,y:122},{x:675,y:106},{x:658,y:100},{x:675,y:94}], true);
     g.fillStyle(0xffdf91,.12).fillEllipse(740,376,140,32);
     g.fillStyle(0x596b6b).fillPoints([{x:775,y:360},{x:802,y:330},{x:834,y:353},{x:846,y:409},{x:770,y:409}],true);
   } else {
@@ -50,11 +50,13 @@ export function drawGacTrail(scene: Phaser.Scene, phase: GameSceneId) {
     g.fillStyle(0x8e7b54).fillRect(719,264,9,143).fillRect(746,280,6,127);
     for (const x of [653,674,802,820]) g.fillStyle(0x8e8060).fillRect(x,254,4,125-(x%3)*12);
     g.lineStyle(5,0x796c4e).lineBetween(718,402,692,419).lineBetween(750,403,779,417);
-    drawHang(scene,phase === 'reunion');
+    if (!rabbitJourney) drawHang(scene,phase === 'reunion');
     // Open story notebook and illustrated device cards, rather than actual artefacts.
-    g.fillStyle(0xe6dcc2).fillPoints([{x:772,y:414},{x:807,y:407},{x:837,y:414},{x:837,y:434},{x:807,y:427},{x:772,y:434}],true);
-    g.lineStyle(2,0x9e8960).lineBetween(807,409,807,427);
-    g.fillStyle(0x648383).fillRect(782,418,13,6).fillRect(818,418,9,7);
+    if (!rabbitJourney) {
+      g.fillStyle(0xe6dcc2).fillPoints([{x:772,y:414},{x:807,y:407},{x:837,y:414},{x:837,y:434},{x:807,y:427},{x:772,y:434}],true);
+      g.lineStyle(2,0x9e8960).lineBetween(807,409,807,427);
+      g.fillStyle(0x648383).fillRect(782,418,13,6).fillRect(818,418,9,7);
+    }
   }
 }
 
@@ -68,8 +70,8 @@ export function drawTrailLantern(scene: Phaser.Scene) {
 }
 
 /** Two code-native pixel poses with the same foot anchor; based on the existing portrait. */
-function drawHang(scene: Phaser.Scene, greeting: boolean) {
-  const g = scene.add.graphics({x:790,y:421});
+export function drawHang(scene: Phaser.Scene, greeting: boolean, x = 790) {
+  const g = scene.add.graphics({x,y:421});
   const poly = (color:number, points:number[]) => g.fillStyle(color).fillPoints(points.reduce<{x:number;y:number}[]>((a,_,i)=>i%2?a:[...a,{x:points[i],y:points[i+1]}],[]),true);
   g.fillStyle(0x182c34,.4).fillEllipse(0,1,70,12);
   g.fillStyle(0x283136).fillRect(-20,-145,40,108).fillRect(-27,-129,12,99).fillRect(17,-125,13,94);

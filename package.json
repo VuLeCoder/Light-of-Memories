@@ -12,6 +12,7 @@
     "check:book-flow": "node scripts/check-book-flow.mjs",
     "check:gac-troi": "node scripts/check-gac-troi.mjs",
     "check:gac-rabbit": "node scripts/check-gac-rabbit.mjs",
+    "check:gac-rabbit-ui": "node scripts/check-gac-rabbit-ui.mjs",
     "check:ending-progress": "node scripts/check-ending-progress.mjs",
     "check:gac-light": "node scripts/check-gac-light.mjs",
     "check:gac-trail": "node scripts/check-gac-trail.mjs"

@@ -9,11 +9,24 @@ import { EarthDialogue } from './EarthDialogue';
 import { GacLightMap } from './GacLightMap';
 import { portraits } from '../content/assets';
 import './gac-trail.css';
+import { GacRabbitTrail } from './GacRabbitTrail';
+import { rabbitStops, type RabbitStop } from '../content/levels/gac-troi-rabbit';
 
 export const isGacTrailPhase = (phase: GacTroiPhase) => ['t04-slope', 't04-rock', 't04-banyan', 'reunion', 'cards-intro'].includes(phase);
 
-/** Local observations are not clues. A clue is committed only after the confirmed walk. */
-export function GacTroiTrail({ language, progress, onChange, onBack, onBook, paused }: {
+type TrailProps = {
+  language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void;
+  onBack: () => void; onBook: () => void; paused: boolean;
+};
+
+export function GacTroiTrail(props: TrailProps) {
+  const journey = props.progress.rabbitJourney;
+  if (journey?.active && rabbitStops.includes(journey.stage as RabbitStop)) return <GacRabbitTrail {...props}/>;
+  return <LegacyGacTroiTrail {...props}/>;
+}
+
+/** Legacy clues are committed only after the confirmed walk. */
+function LegacyGacTroiTrail({ language, progress, onChange, onBack, onBook, paused }: {
   language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void;
   onBack: () => void; onBook: () => void; paused: boolean;
 }) {

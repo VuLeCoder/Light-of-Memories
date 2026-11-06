@@ -1,0 +1,43 @@
+#main-scene .game-stage:has(.gac-rabbit) { height:auto; aspect-ratio:auto; min-height:0; }
+#main-scene .game-stage:has(.gac-rabbit) > .story-canvas { display:none; }
+.gac-rabbit { color:#eee3c9; background:#101e28; padding:12px; container-type:inline-size; }
+.gac-rabbit[hidden] { display:block; visibility:hidden; pointer-events:none; }
+.rabbit-hud,.rabbit-hud nav { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.rabbit-hud { justify-content:space-between; margin-bottom:10px; }
+.rabbit-hud > span { font:20px Lora,serif; color:#eed395; }
+.rabbit-hud nav { margin-left:auto; }
+.gac-rabbit button { min-height:44px; border:1px solid #b49a6777; border-radius:6px; background:#223b43; color:#f1e5cc; font:inherit; padding:8px 12px; cursor:pointer; }
+.gac-rabbit button:disabled { cursor:default; }
+.gac-rabbit button:focus-visible { outline:3px solid #ffe3a2; outline-offset:3px; }
+.rabbit-view { position:relative; width:100%; aspect-ratio:16/9; background:#0d1822; isolation:isolate; }
+.rabbit-backdrop,.rabbit-path { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.rabbit-backdrop canvas { display:block; width:100% !important; height:100% !important; }
+.rabbit-path { z-index:1; }
+.rabbit-cuoi { position:absolute; left:16.5%; top:50%; width:9%; height:28%; pointer-events:none; z-index:2; image-rendering:pixelated; }
+.rabbit-figure,.rabbit-star { position:absolute; transform:translate(-50%,-50%); pointer-events:none; z-index:3; }
+.rabbit-figure { width:max(8.3%,32px); }
+.rabbit-star { width:max(5.85%,32px); }
+.rabbit-figure svg,.rabbit-star svg { display:block; width:100%; height:auto; shape-rendering:crispEdges; }
+.gac-rabbit .rabbit-hit { position:absolute; transform:translate(-50%,-50%); width:max(9%,48px); height:max(19%,48px); padding:0; min-width:48px; min-height:48px; background:transparent; border:2px solid transparent; z-index:4; touch-action:manipulation; }
+.gac-rabbit .rabbit-hit:hover { border-color:#eed395; }
+.gac-rabbit .rabbit-hinted { border-color:#ffe3a2; box-shadow:0 0 0 2px #0d1822; }
+.rabbit-panel { display:grid; gap:12px; padding:14px 4px 4px; font-size:18px; line-height:1.6; }
+.rabbit-panel p { margin:0; }
+.rabbit-prompt { color:#eed395; }
+.rabbit-feedback { min-height:3.2em; }
+.rabbit-panel > button { justify-self:end; }
+.rabbit-react-found .rabbit-figure { animation:rabbit-hop .6s ease-out; }
+.rabbit-react-star .awake { animation:rabbit-stretch .7s ease-out; }
+.rabbit-react-miss .rabbit-wrong-figure,.rabbit-react-miss .rabbit-figure,.rabbit-react-miss .awake { animation:rabbit-wiggle .3s ease-out; }
+@keyframes rabbit-hop { 0%,100% { margin-top:0; } 45% { margin-top:-18px; } }
+@keyframes rabbit-stretch { 50% { scale:1.15 1.25; } }
+@keyframes rabbit-wiggle { 33% { margin-left:-3px; } 66% { margin-left:3px; } }
+@container (max-width:639px) {
+  .rabbit-panel > button { width:100%; }
+  .rabbit-hud > span { font-size:18px; }
+}
+@media (prefers-reduced-motion:reduce) { .gac-rabbit *, .gac-rabbit *::before { animation:none !important; transition:none !important; } }
+.rabbit-react-walk .rabbit-cuoi { animation:rabbit-cuoi-step .4s ease-out; }
+@keyframes rabbit-cuoi-step { from { margin-left:-24px; } to { margin-left:0; } }
+
+.rabbit-wrong-figure { position:absolute; width:max(6%,32px); transform:translate(-50%,-50%); pointer-events:none; z-index:2; shape-rendering:crispEdges; }
