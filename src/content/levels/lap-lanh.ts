@@ -64,7 +64,7 @@ export function sparkleMeetingLines(language: Language, cleaningIntro = false) {
     ['cuoi', 'Để mình giúp bạn sáng trở lại!'],
   ] : [
     ['cuoi', 'Mình tìm thấy bạn rồi! Bạn là điểm sáng phía sau những hố kia à?'],
-    ['lapLanh', 'Đố bạn đoán được mình là ai! Mình là bảng gương phản xạ laser của Apollo 11. Bạn cứ gọi mình là Lấp Lánh nhé!'],
+    ['lapLanh', 'Mình là bảng gương phản xạ laser của Apollo 11. Bạn cứ gọi mình là Lấp Lánh nhé!'],
     ['cuoi', 'Chào Lấp Lánh! Bạn bám bụi nhiều quá.'],
     ['lapLanh', 'Mình ở đây từ năm 1969 cơ! Xem này, đây là mình khi đã sẵn sàng đón ánh sáng từ Trái Đất. Tặng bạn giữ làm kỷ niệm nhé!'],
   ] : cleaningIntro ? [
@@ -73,7 +73,7 @@ export function sparkleMeetingLines(language: Language, cleaningIntro = false) {
     ['cuoi', 'Let me help you shine again!'],
   ] : [
     ['cuoi', 'I found you! Were you the glint beyond those craters?'],
-    ['lapLanh', 'Can you guess who I am? I am the Apollo 11 laser reflector. You can call me Sparkle!'],
+    ['lapLanh', 'I am the Apollo 11 laser reflector. You can call me Sparkle!'],
     ['cuoi', 'Hello, Sparkle! You are so dusty.'],
     ['lapLanh', 'I have been here since 1969! Look, this is me all ready to welcome light from Earth. Keep it as a souvenir!'],
   ]);
