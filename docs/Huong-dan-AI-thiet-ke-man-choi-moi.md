@@ -190,10 +190,10 @@ Sprite Cuội được cắt frame thủ công, không phải lưới đều. Gi
 | Đăng ký/lưu | [levels/index.ts](../src/content/levels/index.ts), [types.ts](../src/content/levels/types.ts), [progress.ts](../src/state/progress.ts) |
 | Sách/lộ trình | [JourneyMap.tsx](../src/components/JourneyMap.tsx), [BookNavigation.tsx](../src/components/BookNavigation.tsx) |
 | Nội dung từng màn | [surveyor-progress.ts](../src/content/levels/surveyor-progress.ts), [lap-lanh.ts](../src/content/levels/lap-lanh.ts), [tai-thinh-content.ts](../src/content/levels/tai-thinh-content.ts), [tai-thinh-progress.ts](../src/content/levels/tai-thinh-progress.ts) |
-| Màn/ảnh/mini-game | Các component Surveyor*, BanhLuoi*, GacTroi*; tuyến hiện tại có ba người bạn |
-| Kết và nối màn | [ending-chat.ts](../src/content/levels/ending-chat.ts), [FinalChapter.tsx](../src/components/FinalChapter.tsx), các component *Ending |
+| Màn/ảnh/mini-game | Các component Surveyor*, Sparkle*, TaiThinh* được liên kết trong tài liệu từng màn |
+| Kết và nối màn | [ending-chat.ts](../src/content/levels/ending-chat.ts), [EndingTrail.tsx](../src/components/EndingTrail.tsx), các component *Ending |
 | Cầu game và cảnh | [GameCanvas.tsx](../src/game/GameCanvas.tsx), [PreviewScene.ts](../src/game/PreviewScene.ts), các module *scenery và *layout |
-| Tư liệu bổ sung | [catalog.ts](../src/content/book/catalog.ts), [reading-order.ts](../src/content/book/reading-order.ts); kiến thức Lấp Lánh/Tai Thính nằm trong mục đọc thêm |
+| Mô hình ánh sáng | [SparkleScience.tsx](../src/components/SparkleScience.tsx), [sparkle-optics.ts](../src/game/sparkle-optics.ts), [SparkleBookClue.tsx](../src/components/SparkleBookClue.tsx) |
 | Hình ảnh/bố cục | [assets.ts](../src/content/assets.ts), [styles.css](../src/styles.css), [useWorkspaceFit.ts](../src/useWorkspaceFit.ts) |
 
 ## 11. Những điều cần chốt cho người bạn mới

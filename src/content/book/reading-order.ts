@@ -1,6 +1,8 @@
 import type { GacTroiProgress } from '../levels/gac-troi-progress';
 import { journeyStatus, journeyStops, type LevelId } from '../levels';
 import { eventOrder } from '../levels/surveyor-progress';
+import { sparkleRepairUnlocked, sparkleRangingUnlocked } from '../levels/lap-lanh';
+import { taiThinhPageIds } from '../levels/tai-thinh-progress';
 import { banhLuoiPageIds } from '../levels/ban-banh-luoi-progress';
 import type { Progress } from '../../state/progress';
 import { insertRealWorldPages } from './real-world';
@@ -27,6 +29,8 @@ export function getBrowserBookPages({ surveyor, sparkle, taiThinh, banhLuoi, gac
         ...(surveyor.found.includes(event) ? [`photo-${event}`] : []),
       ]),
     ];
+    if (id === 'lap-lanh') return [id, ...sparkle.keepsakes.map(photo => `sparkle-photo-${photo}`), ...(sparkleRepairUnlocked(sparkle) ? ['sparkle-repair-clue'] : []), ...(sparkleRangingUnlocked(sparkle) ? ['sparkle-ranging-clue'] : [])];
+    if (id === 'tai-thinh') return taiThinhPageIds(taiThinh);
     if (id === 'ban-banh-luoi') return banhLuoiPageIds(banhLuoi);
     return id ? [id] : [];
   }), 'extra-reading', ...extraReadingPages, ...(ending?.completedOnce ? ['gac-book-reunion'] : [])], id => !journeyStops.includes(id as LevelId) || status(id as LevelId) !== 'locked');
