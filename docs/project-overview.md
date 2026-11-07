@@ -91,3 +91,7 @@ Sau đó chuyển thẳng `earth`, dùng lại `earthScenery` cùng sprite An/B�
 Chị Hằng dùng hình ngồi ghế ở cảnh gặp lại và cảnh kết trên Mặt Trăng. Thân trên chuyển động thở nhẹ chu kỳ 5 giây, ghế/chân đứng yên; dừng khi mở menu và tắt khi bật giảm chuyển động.
 
 Chị Hằng dùng sprite ngồi không kèm ghế; ghế đá tại cảnh đoàn tụ và cảnh kết được vẽ bởi `drawMoonBench`, dùng chung với cảnh Cuội thức giấc.
+
+Đoạn kết An–Bà dùng lại nền `earthScenery` và nhóm nhân vật `drawEarthFamily` của cảnh mở đầu: cùng sprite, vị trí, kích thước và bóng đổ; hội thoại kết vẫn tự chạy.
+
+Cảnh kết An–Bà còn dùng cùng chế độ render với cảnh đầu (`Phaser.AUTO`, `pixelArt: true`, `antialias: false`, CSS `image-rendering: pixelated`) để giữ nguyên nét mặt từ sprite gốc khi phóng to.

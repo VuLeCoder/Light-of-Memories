@@ -149,3 +149,6 @@
 .hang-seat-breath { clip-path:inset(0 0 46%); transform-origin:50% 54%; animation:hang-seated-breathe 5s ease-in-out infinite; }
 @keyframes hang-seated-breathe { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(1.008); } }
 .gac-rabbit[data-paused="true"] .hang-seat-breath { animation-play-state:paused; }
+
+/* Preserve the opening scene’s nearest-neighbour sprite scaling in the finale. */
+.rabbit-backdrop[data-closing="earth"] canvas { image-rendering:pixelated; }

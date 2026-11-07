@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { VIEW } from './types';
+import { spriteSources } from '../content/assets';
 
 // Rasterize only static layers once, at the full game resolution. Interactive
 // objects, characters and effects remain separate and continue updating normally.
@@ -173,4 +174,18 @@ export function drawMoonBench(scene: Phaser.Scene) {
   bench.fillStyle(0xa2a8a8).fillRect(444, 402, 153, 11);
   bench.fillStyle(0x7a8690).fillRect(453, 413, 17, 23).fillRect(570, 413, 17, 23);
   return bench;
+}
+
+/** The original opening tableau, shared with An and Grandma's closing scene.
+ * Call after loading the An/Bà sprite sheets and registering their rest frames.
+ */
+export function drawEarthFamily(scene: Phaser.Scene) {
+  for (const [key, x, y, scale] of [['ba', 188, 410, .49], ['an', 313, 465, .37]] as const) {
+    if (!scene.textures.exists(key)) continue;
+    const source = spriteSources.find(item => item.key === key)!;
+    scene.add.ellipse(x, y + 2, 65, 10, 0x111c22, .24);
+    scene.add.image(x, y, key, 'rest')
+      .setOrigin(source.foot.x / source.frame.width, source.foot.y / source.frame.height)
+      .setScale(scale);
+  }
 }

@@ -18,14 +18,13 @@ export function GacRabbitBackdrop({ stop, hang, orbit = false, closing }: { clos
         }
         create() {
           if (closing === 'earth') {
-            opening.earthScenery(this);
+            opening.cacheScenery(this, opening.earthScenery);
             for (const source of spriteSources) {
               if (source.key === 'cuoi') continue;
               const f = source.frame;
               this.textures.get(source.key).add('rest', 0, f.x, f.y, f.width, f.height);
-              this.add.image(source.key === 'ba' ? 188 : 313, source.key === 'ba' ? 410 : 465, source.key, 'rest')
-                .setOrigin(source.foot.x / f.width, source.foot.y / f.height).setScale(source.key === 'ba' ? .49 : .37);
             }
+            opening.drawEarthFamily(this);
           } else if (closing === 'moon') {
             opening.moonScenery(this);
           }
@@ -38,14 +37,17 @@ export function GacRabbitBackdrop({ stop, hang, orbit = false, closing }: { clos
 
         }
       }
-      game = new Phaser.Game({ type: Phaser.CANVAS, parent: host.current!, width: 960, height: 540,
+      // Match the opening renderer as well as its artwork: smoothing changes
+      // the faces noticeably even when the same source frames are used.
+      game = new Phaser.Game({ type: closing === 'earth' ? Phaser.AUTO : Phaser.CANVAS, parent: host.current!, width: 960, height: 540,
+        ...(closing === 'earth' ? { pixelArt: true, antialias: false, backgroundColor: '#101d2b' } : {}),
         transparent: true, banner: false, audio: { noAudio: true }, scene: Backdrop,
         input: { keyboard: false, mouse: false, touch: false },
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH } });
     });
     return () => { disposed = true; game?.destroy(true); };
   }, [stop, hang, orbit, closing]);
-  return <><div className="rabbit-backdrop" ref={host} aria-hidden="true"/>{orbit && <GacCompanion large/>}{hang && <div className="rabbit-hang rabbit-hang-seated" aria-hidden="true"><img className="hang-seat-still" src={`${import.meta.env.BASE_URL}images/sprites/chi-hang-seated-stone.png`} alt=""/><img className="hang-seat-breath" src={`${import.meta.env.BASE_URL}images/sprites/chi-hang-seated-stone.png`} alt=""/></div>}</>;
+  return <><div className="rabbit-backdrop" data-closing={closing} ref={host} aria-hidden="true"/>{orbit && <GacCompanion large/>}{hang && <div className="rabbit-hang rabbit-hang-seated" aria-hidden="true"><img className="hang-seat-still" src={`${import.meta.env.BASE_URL}images/sprites/chi-hang-seated-stone.png`} alt=""/><img className="hang-seat-breath" src={`${import.meta.env.BASE_URL}images/sprites/chi-hang-seated-stone.png`} alt=""/></div>}</>;
 }
 
 export function RabbitCuoi({ lit = false }: { lit?: boolean }) {

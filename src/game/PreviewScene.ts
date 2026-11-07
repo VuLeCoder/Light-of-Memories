@@ -7,7 +7,7 @@ import { digSites } from '../content/levels/surveyor-dig';
 import type { SurveyorEvent } from '../content/levels/surveyor-progress';
 import Phaser from 'phaser';
 import { cuoiSleepFrame, cuoiWakeFrames, cuoiWalkFrames, spriteSources } from '../content/assets';
-import { cacheScenery, earthScenery, moonScenery } from './scenery';
+import { cacheScenery, drawEarthFamily, earthScenery, moonScenery } from './scenery';
 import { VIEW, type PreviewOptions } from './types';
 import { surveyorScenery, surveyorGroundY, surveyorEncounter } from './surveyor-scenery';
 import { sparkleScenery } from './sparkle-scenery';
@@ -444,9 +444,7 @@ export class PreviewScene extends Phaser.Scene {
     }
     if (this.options.scene === 'earth') {
       cacheScenery(this, earthScenery);
-      this.addCharacter('ba', 188, 410, 0.49);
-      // Align An's seated hips with the porch edge (y=425), feet on the lower step.
-      this.addCharacter('an', 313, 465, 0.37);
+      drawEarthFamily(this);
     } else {
       if (isGacTrail(this.options.scene)) {
         cacheScenery(this, scene => drawGacTrail(scene, this.options.scene));
@@ -715,12 +713,5 @@ export class PreviewScene extends Phaser.Scene {
     if (this.cuoi.frame.name !== frame) this.cuoi.setFrame(frame);
   }
 
-  private addCharacter(key: typeof spriteSources[number]['key'], x: number, y: number, scale: number) {
-    if (!this.textures.exists(key)) return;
-    const source = spriteSources.find((item) => item.key === key)!;
-    this.add.ellipse(x, y + 2, 65, 10, 0x111c22, 0.24);
-    this.add.image(x, y, key, 'rest')
-      .setOrigin(source.foot.x / source.frame.width, source.foot.y / source.frame.height)
-      .setScale(scale);
-  }
+
 }
