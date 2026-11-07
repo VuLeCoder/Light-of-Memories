@@ -7,6 +7,8 @@ export type RabbitStop = typeof rabbitStops[number];
 export const rabbitStages = ['real', 'bridge', ...rabbitStops, 'reunion', 'farewell', 'free'] as const;
 export type RabbitStage = typeof rabbitStages[number];
 export interface GacRabbitJourney {
+  gifts?: RabbitStop[];
+  guidedStops?: RabbitStop[];
   active: boolean;
   stage: RabbitStage;
   turn: number;
@@ -45,7 +47,7 @@ export function readGacRabbit(value: unknown): GacRabbitJourney {
   const starsAwake = rabbitFound && Number.isInteger(p.starsAwake) ? Math.max(0, Math.min(maxStars, Number(p.starsAwake))) : 0;
   const length = rabbitDialogueLengths[stage as keyof typeof rabbitDialogueLengths] ?? 1;
   const turn = Number.isInteger(p.turn) ? Math.max(0, Math.min(length - 1, Number(p.turn))) : 0;
-  return { active: p.active === true, stage, turn, completedStops, rabbitFound, starsAwake,
+  return { ...(Array.isArray(p.gifts) ? { gifts: rabbitStops.filter(s => p.gifts instanceof Array && p.gifts.includes(s)) } : {}), ...(Array.isArray(p.guidedStops) ? { guidedStops: rabbitStops.filter(s => p.guidedStops instanceof Array && p.guidedStops.includes(s)) } : {}), active: p.active === true, stage, turn, completedStops, rabbitFound, starsAwake,
     reunionDone: ['farewell', 'free'].includes(stage) && p.reunionDone === true,
     farewellDone: stage === 'free' && p.farewellDone === true };
 }
@@ -60,6 +62,7 @@ export function startGacRabbitJourney(p: GacTroiProgress): GacTroiProgress {
   return { ...p, rabbitJourney: { ...journey, active: true }, bookUnlocks: p.bookUnlocks.includes('gac-book-light') ? p.bookUnlocks : [...p.bookUnlocks, 'gac-book-light'] };
 }
 export type RabbitAction =
+  | { type: 'guide' | 'gift' | 'peek'; stop: RabbitStop }
   | { type: 'find'; stop: RabbitStop }
   | { type: 'wake'; stop: RabbitStop; star: number }
   | { type: 'next'; stage: RabbitStage }
@@ -69,6 +72,9 @@ export function applyGacRabbitAction(p: GacTroiProgress, action: RabbitAction): 
   const j = p.rabbitJourney;
   if (!j?.active || !p.t02Done) return p;
   let next = j;
+  if (action.type === 'guide' && j.stage === action.stop && !j.guidedStops?.includes(action.stop)) next = { ...j, guidedStops: [...(j.guidedStops ?? []), action.stop] };
+  if (action.type === 'gift' && j.stage === action.stop && !j.gifts?.includes(action.stop)) next = { ...j, gifts: [...(j.gifts ?? []), action.stop] };
+  if (action.type === 'peek' && j.stage === action.stop && !j.rabbitFound && j.guidedStops?.includes(action.stop)) next = { ...j, rabbitFound: true, starsAwake: rabbitStarCount(action.stop) };
   let completedOnce = p.completedOnce;
   let books = p.bookUnlocks;
   if (action.type === 'find' && j.stage === action.stop && rabbitObjective(j) === 'find') next = { ...j, rabbitFound: true };

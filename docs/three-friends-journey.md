@@ -39,3 +39,9 @@ Game nghỉ dưới cây đa sau khi gặp Hằng; có trò chuyện lại, sác
 - Sau cuộc trò chuyện mới về lộ trình, giữ nguyên điều kiện mở điểm đi tìm chị Hằng.
 
 - Khi Cuội sang vùng tối sau T02, hội thoại ngắn trong khung game giải thích ba ngọn đèn và cách tới gần, nhấn E (hoặc chạm đèn) để thắp theo thứ tự. Cuội tạm dừng trong hội thoại; tiến độ lời thoại được lưu. Chọn “Cùng thắp đèn nào!” để bắt đầu điều khiển; hướng dẫn thao tác vẫn ở footer chung.
+
+### Tìm chị Hằng — ú òa cùng Thỏ Ngọc
+
+Sau khi hoàn thành Gác Trời, chọn điểm Chị Hằng trên lộ trình. Cuội di chuyển bằng mũi tên/WASD hoặc chạm đất. Nhấn E (hoặc chạm Cuội) để tương tác. Gác Trời đồng hành ở trên cao, phía trước Trái Đất. Nhấn H hoặc nút “Gợi ý / Hint” để trò chuyện và nhận gợi ý nơi thỏ trốn trong ba lượt: triền đất, đá có khe, cây đa. Hỏi Gác Trời trước khi tìm thỏ; đến gần thỏ và nhấn E để chơi ú òa. Thỏ chạy đi; Cuội đi sang phải và nhấn E để tiếp tục. Ba món quà trên đường là tùy chọn, tự lưu sau khi nhặt và không chặn đoạn kết. Hội thoại đoàn tụ giữ nguyên. Hướng dẫn điều khiển nằm ở footer game.
+
+Kiểm tra trạng thái mới: `node scripts/check-rabbit-peekaboo.mjs` (có/không nhặt quà, lưu/đọc lại, gợi ý, ba lượt và đoàn tụ). Các kiểm tra cũ `check:gac-rabbit` và `check:ending-progress` còn kỳ vọng mốc farewell và t03-map của luồng trước, cần cập nhật riêng.

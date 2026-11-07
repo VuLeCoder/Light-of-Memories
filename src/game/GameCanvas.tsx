@@ -1,3 +1,4 @@
+import { GacCompanion } from '../components/GacCompanion';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { GameSceneId, MoonQuest, PreviewOptions } from './types';
 import { VIEW } from './types';
@@ -169,6 +170,7 @@ export function GameCanvas({ sparkleLantern = 'hidden', surveyorLantern = 'hidde
         event.currentTarget.focus({ preventScroll: true });
       }}
       onBlur={() => phaserScene.current?.releaseControls()} />
+    {ready && scene === 'gac-troi' && <GacCompanion large/>}
     {!ready && <div className="canvas-status" role="status">{status.kind === 'error' ? (status.assets ? `${copy[language].imageError}: ${status.assets.join(', ')}. ${copy[language].reload}` : copy[language].canvasError) : copy[language].loading}</div>}
   </div>;
 }

@@ -29,14 +29,14 @@ const lines = [
   {
     "id": "rabbit-bridge-02",
     "speaker": "gacTroi",
-    "vi": "Trong câu chuyện của mình, đèn có những đốm sáng phép thuật hình ngôi sao.",
-    "en": "In our story, the lantern has magical little lights shaped like stars."
+    "vi": "Mình sẽ đi cùng bạn! Nhấn H hoặc nút Gợi ý để hỏi mình; từ trên cao mình sẽ tìm dấu vết của Thỏ.",
+    "en": "I’ll come with you! Press H or Hint to ask me; I can spot Rabbit’s clues from above."
   },
   {
     "id": "rabbit-bridge-03",
     "speaker": "gacTroi",
-    "vi": "Các bạn sao ngủ quên trên đường rồi; mình tìm Thỏ rồi gọi sao dậy nhé!",
-    "en": "The little stars fell asleep along the path; let’s find Rabbit, then wake them up!"
+    "vi": "Đi đến gần Thỏ rồi nhấn E để chơi ú òa nhé! Trên đường có quà cho chị Hằng, thích thì mình nhặt mang theo.",
+    "en": "Walk close to Rabbit and press E for peekaboo! We can also collect presents for Hằng along the way."
   },
   {
     "id": "rabbit-reunion-01",

@@ -1,3 +1,4 @@
+import { GacCompanion } from './GacCompanion';
 import { useEffect, useRef } from 'react';
 import type { RabbitStop } from '../content/levels/gac-troi-rabbit';
 import { portraits, spriteSources } from '../content/assets';
@@ -24,7 +25,7 @@ export function GacRabbitBackdrop({ stop, hang, orbit = false }: { stop: RabbitS
     });
     return () => { disposed = true; game?.destroy(true); };
   }, [stop, hang, orbit]);
-  return <><div className="rabbit-backdrop" ref={host} aria-hidden="true"/>{hang && <img className="rabbit-hang" src={portraits.chiHang.url} alt="" aria-hidden="true"/>}</>;
+  return <><div className="rabbit-backdrop" ref={host} aria-hidden="true"/>{orbit && <GacCompanion large/>}{hang && <img className="rabbit-hang" src={portraits.chiHang.url} alt="" aria-hidden="true"/>}</>;
 }
 
 export function RabbitCuoi() {

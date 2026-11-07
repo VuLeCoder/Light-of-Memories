@@ -1,121 +1,128 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
 import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
-import { applyGacRabbitAction, rabbitObjective, type RabbitAction, type RabbitStop } from '../content/levels/gac-troi-rabbit';
-import { gacRabbitCopy } from '../content/levels/gac-rabbit-copy';
-import { GacRabbitBackdrop, RabbitCuoi } from './GacRabbitBackdrop';
+import { applyGacRabbitAction, type RabbitAction, type RabbitStop } from '../content/levels/gac-troi-rabbit';
+import { spriteSources, cuoiWalkFrames } from '../content/assets';
+import { GacCompanion } from './GacCompanion';
+import { GacRabbitBackdrop } from './GacRabbitBackdrop';
+import { Rabbit, RabbitLantern } from './GacRabbitArt';
 import './gac-rabbit.css';
-import { Rabbit, Star, RabbitLantern } from './GacRabbitArt';
 
-const positions = {
-  slope: { hidden: [725,335], shown: [650,390], stars: [[790,390]], wrong: [355,340], path: '200,430 790,430 890,410' },
-  rock: { hidden: [650,360], shown: [680,390], stars: [[510,415],[840,400]], wrong: [560,375], path: '200,450 510,470 840,450 900,420' },
-  banyan: { hidden: [675,380], shown: [600,400], stars: [[740,440]], wrong: [805,410], path: '200,450 740,465 850,420' },
-} as const;
-const at = (p: readonly number[]): CSSProperties => ({ left: `${p[0]/9.6}%`, top: `${p[1]/5.4}%` });
-
-/** GT-R2 screen. Mounted by the release renderer only for active stop stages. */
+type Point = { x: number; y: number };
+const places = {
+  slope: { x: 725, y: 400, vi: 'đôi tai trắng sau triền đất thấp', en: 'white ears behind the low slope' },
+  rock: { x: 650, y: 435, vi: 'chiếc đuôi trắng bên tảng đá có khe', en: 'a white tail beside the split rock' },
+  banyan: { x: 675, y: 450, vi: 'đôi tai đang nhúc nhích dưới cây đa', en: 'wiggling ears beneath the banyan' },
+};
+const distance = (a: Point, b: Point) => Math.hypot(a.x-b.x, a.y-b.y);
 export function GacRabbitTrail({ language, progress, onChange, onBack, paused = false }: {
   language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void; onBack: () => void; paused?: boolean;
 }) {
   const j = progress.rabbitJourney!;
-  const stop = j.stage as RabbitStop;
-  const objective = rabbitObjective(j)!;
-  const vi = language === 'vi';
-  const data = positions[stop];
-  const root = useRef<HTMLElement>(null);
-  const target = useRef<HTMLButtonElement>(null);
-  const nextButton = useRef<HTMLButtonElement>(null);
-  const busyRef = useRef(false);
-  const latest = useRef(progress); latest.current = progress;
+  const stop = j.stage as RabbitStop, vi = language === 'vi', place = places[stop];
+  const root = useRef<HTMLDivElement>(null);
+  const keys = useRef(new Set<string>());
+  const destination = useRef<Point | null>(null);
+  const position = useRef<Point>({ x: 180, y: 445 });
+  const [pose, setPose] = useState({ x: 180, y: 445, frame: -1, facing: 1 });
+  const [message, setMessage] = useState('');
+  const [running, setRunning] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const focusPending = useRef(false);
-  const [reaction, setReaction] = useState('');
-  const [feedback, setFeedback] = useState('');
-  const [hint, setHint] = useState(false);
-  const [optionalFits, setOptionalFits] = useState(false);
-  const [reduced, setReduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const [busy, setBusy] = useState(false);
-  const text = (key: string) => (gacRabbitCopy[stop] as Record<string, {vi: string; en: string}>)[key]?.[language] ?? '';
-  const wrongPoint = objective === 'find' ? data.wrong : objective === 'wake-2' ? data.stars[0] : data.shown;
-  const targetPoint = objective === 'find' ? data.hidden : (data.stars[objective === 'wake-2' ? 1 : 0] ?? data.stars[0]);
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReduced(media.matches);
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
-  useEffect(() => () => clearTimeout(timer.current), []);
-  useEffect(() => {
-    // Returning from a book/route shows the saved pose, without replaying reactions.
-    if (paused) { clearTimeout(timer.current); busyRef.current = false; setBusy(false); setReaction(''); setFeedback(''); setHint(false); focusPending.current = false; }
-  }, [paused]);
-  useEffect(() => { setFeedback(''); setHint(false); }, [stop]);
-  useLayoutEffect(() => {
-    if (!busy && focusPending.current && !paused) {
-      (objective === 'ready' ? nextButton.current : target.current)?.focus({ preventScroll: true });
-      focusPending.current = false;
+  const gift = { x: 425, y: 455 };
+  const guided = j.guidedStops?.includes(stop);
+  const collected = j.gifts?.includes(stop);
+  const latest = useRef({ progress, paused, running, stop });
+  latest.current = { progress, paused, running, stop };
+  function commit(action: RabbitAction) {
+    const p = latest.current.progress;
+    const next = applyGacRabbitAction(p, action);
+    latest.current.progress = next;
+    if (next !== p) onChange(next);
+  }
+  function askGuide() {
+    if (paused || running) return;
+    keys.current.clear(); destination.current = null;
+    commit({ type: 'guide', stop });
+    setMessage(j.rabbitFound
+      ? (vi ? 'Gác Trời: Thỏ Ngọc chạy sang phải rồi! Mình cùng theo bạn ấy nhé!' : 'Sky Watcher: Rabbit went right! Let’s follow!')
+      : (vi ? `Gác Trời: Từ trên cao mình thấy ${place.vi}! Cuội thử đến gần xem nhé!` : `Sky Watcher: I can see ${place.en} from above! Go closer and look!`));
+    root.current?.focus({ preventScroll: true });
+  }
+  const interact = useRef(() => {});
+  interact.current = () => {
+    if (paused || running) return;
+    if (!collected && distance(position.current, gift) < 65) {
+      commit({ type: 'gift', stop });
+      setMessage(vi ? 'Cuội: Mình mang món quà này tặng chị Hằng nhé!' : 'Cuội: A present for Hằng!');
+    } else if (!j.rabbitFound && distance(position.current, place) < 80 && guided) {
+      commit({ type: 'peek', stop }); setRunning(true);
+      setMessage(vi ? 'Thỏ Ngọc: Ú òa! Giỏi quá! Theo mình nào!' : 'Rabbit: Peekaboo! You found me! Follow me!');
+      timer.current = setTimeout(() => setRunning(false), 1400);
+    } else if (j.rabbitFound && pose.x > 820) {
+      // Old saves may still contain unfinished star receipts.
+      commit({ type: 'wake', stop, star: j.starsAwake+1 });
+      commit({ type: 'wake', stop, star: j.starsAwake+2 });
+      commit({ type: 'next', stage: stop });
+    } else {
+      setMessage(vi ? 'Nhấn H hoặc nút Gợi ý để hỏi Gác Trời nhé!' : 'Press H or Hint to ask Sky Watcher!');
     }
-  }, [busy, objective, paused]);
-  useLayoutEffect(() => {
-    const view = root.current?.querySelector('.rabbit-view');
-    if (!view) return;
-    const measure = () => {
-      const rect = view.getBoundingClientRect();
-      const dx = Math.abs(wrongPoint[0] - targetPoint[0]) * rect.width / 960;
-      const dy = Math.abs(wrongPoint[1] - targetPoint[1]) * rect.height / 540;
-      setOptionalFits(dx >= Math.max(48, rect.width * .09) + 8 || dy >= Math.max(48, rect.height * .19) + 8);
+  };
+  useEffect(() => {
+    position.current = { x: 180, y: 445 }; destination.current = null; keys.current.clear();
+    setPose({ x: 180, y: 445, frame: -1, facing: 1 }); setRunning(false);
+    setMessage(''); clearTimeout(timer.current); root.current?.focus({ preventScroll: true });
+  }, [stop]);
+  useEffect(() => {
+    if (paused) { keys.current.clear(); destination.current = null; }
+  }, [paused]);
+  useEffect(() => {
+    let raf = 0, last = 0, elapsed = 0, facing = 1;
+    const tick = (now: number) => {
+      const dt = Math.min((now-last)/1000 || 0, .04); last = now;
+      if (!latest.current.paused && !latest.current.running) {
+        const k = keys.current;
+        let dx = Number(k.has('arrowright') || k.has('d'))-Number(k.has('arrowleft') || k.has('a'));
+        let dy = Number(k.has('arrowdown') || k.has('s'))-Number(k.has('arrowup') || k.has('w'));
+        if (dx || dy) destination.current = null;
+        else if (destination.current) {
+          dx = destination.current.x-position.current.x; dy = destination.current.y-position.current.y;
+          if (Math.hypot(dx,dy)<5) { destination.current=null; dx=0; dy=0; }
+        }
+        const length = Math.hypot(dx,dy);
+        if (length) {
+          position.current = { x: Math.max(70,Math.min(900,position.current.x+dx/length*190*dt)), y: Math.max(360,Math.min(495,position.current.y+dy/length*130*dt)) };
+          if (dx) facing = dx < 0 ? -1 : 1;
+          elapsed += dt;
+        }
+        setPose({ ...position.current, frame: length ? Math.floor(elapsed*9)%6 : -1, facing });
+      }
+      raf=requestAnimationFrame(tick);
     };
-    const observer = new ResizeObserver(measure); observer.observe(view); measure();
-    return () => observer.disconnect();
-  }, [stop, objective, wrongPoint, targetPoint]);
-  function act(action: RabbitAction, message: string, duration: number, pose: string) {
-    if (paused || busyRef.current) return;
-    const result = applyGacRabbitAction(latest.current, action);
-    if (result === latest.current) return;
-    clearTimeout(timer.current);
-    latest.current = result; busyRef.current = true;
-    focusPending.current = true; setHint(false); setFeedback(message); setReaction(pose); setBusy(!reduced);
-    onChange(result); // Persist the receipt before any visual reaction.
-    const finish = () => { busyRef.current = false; setBusy(false); setReaction(''); };
-    if (reduced) finish(); else timer.current = setTimeout(finish, duration);
-  }
-  function next() {
-    if (paused || busyRef.current) return;
-    // No walking prerequisite: the button itself commits the next stop.
-    act({ type: 'next', stage: stop }, '', 400, 'walk');
-  }
-  const targetLabel = objective === 'find' ? (stop === 'rock' ? (vi ? 'Chiếc đuôi trắng' : 'White tail') : (vi ? 'Đôi tai trắng' : 'White ears')) : (vi ? 'Ngôi sao đang ngủ' : 'Sleepy star');
-  const wrongLabel = objective === 'find' ? (stop === 'slope' ? (vi ? 'Hòn đá' : 'Rock') : stop === 'rock' ? (vi ? 'Khe đá' : 'Rock crack') : (vi ? 'Rễ cây' : 'Tree root')) : objective === 'wake-2' ? (vi ? 'Ngôi sao đã thức' : 'Awake star') : (vi ? 'Thỏ Ngọc' : 'Moon Rabbit');
-  const miss = objective === 'find' ? 'find.miss' : stop === 'rock' ? 'wake.miss' : 'wake-1.miss';
-  return <section ref={root} className="gac-rabbit" hidden={paused} lang={language} aria-label={vi ? 'Theo Thỏ Ngọc, gọi ánh sao' : 'Follow Moon Rabbit, wake the lights'}>
-    <header className="rabbit-hud"><span>{(vi ? ['Triền đất thấp','Đá có khe','Cây đa'] : ['Low slope','Split rock','Banyan tree'])[['slope','rock','banyan'].indexOf(stop)]} · {j.completedStops + 1}/3</span><nav>
-      {objective !== 'ready' && <button disabled={busy} onClick={() => { setHint(true); setFeedback(''); }}>{vi ? 'Gợi ý' : 'Hint'}</button>}
-      <button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button>
-    </nav></header>
-    <div className={`rabbit-view ${reaction ? `rabbit-react-${reaction}` : ''}`} role="group" aria-label={vi ? 'Cảnh tìm Thỏ trong truyện' : 'Story scene: find Rabbit'}>
-      <GacRabbitBackdrop stop={stop} hang={stop === 'banyan' && objective === 'ready'}/>
-      <svg className="rabbit-path" viewBox="0 0 960 540" aria-hidden="true">
-        {objective === 'ready' && <polyline points={data.path} fill="none" stroke="#eed395" strokeWidth="6" strokeDasharray="8 14"/>}
-        {stop === 'slope' && !j.rabbitFound && [570,610,650].map((x,i) => <path key={x} fill="#c4c4ac" d={`M${x} ${385-i*10}h8v5h-8zm12-6h8v5h-8z`}/>)}
+    const clear = () => { keys.current.clear(); destination.current=null; };
+    window.addEventListener('blur',clear); raf=requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(raf); clearTimeout(timer.current); window.removeEventListener('blur',clear); };
+  }, []);
+  const frame = pose.frame < 0 ? spriteSources[2].frame : cuoiWalkFrames[pose.frame];
+  const prompt = j.rabbitFound ? (vi ? 'Đi sang phải, nhấn E để theo Thỏ Ngọc →' : 'Walk right and press E to follow Rabbit →') : guided ? (vi ? `Tìm ${place.vi}. Đến gần rồi nhấn E: Ú òa!` : `Find ${place.en}. Get close and press E!`) : (vi ? 'Nhấn H hoặc Gợi ý để hỏi Gác Trời: Thỏ Ngọc trốn ở đâu nhỉ?' : 'Press H or Hint to ask Sky Watcher where Rabbit is hiding!');
+  return <section className="gac-rabbit rabbit-play" hidden={paused} lang={language}
+    onKeyDown={e => { if (e.key.toLowerCase() === 'h') { e.preventDefault(); e.stopPropagation(); if (!e.repeat) askGuide(); } }}>
+    <header className="rabbit-hud"><span>{vi ? 'Ú òa cùng Thỏ Ngọc' : 'Peekaboo with Rabbit'} · {j.completedStops+1}/3 · {vi ? 'Quà' : 'Gifts'} {j.gifts?.length ?? 0}/3</span><nav aria-label={vi ? 'Điều khiển hành trình' : 'Journey controls'}><button onClick={askGuide} disabled={paused || running} aria-keyshortcuts="H">{vi ? 'Gợi ý · H' : 'Hint · H'}</button><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></header>
+    <div ref={root} className="rabbit-view rabbit-walk-view" tabIndex={0} role="group" aria-label={prompt}
+      onKeyDown={e => { const key=e.key.toLowerCase(); if (['arrowleft','arrowright','arrowup','arrowdown','w','a','s','d','e'].includes(key)) { e.preventDefault(); e.stopPropagation(); if (!paused) { if (key==='e') { if (!e.repeat) interact.current(); } else keys.current.add(key); } } }}
+      onKeyUp={e => keys.current.delete(e.key.toLowerCase())} onBlur={() => keys.current.clear()}
+      onPointerDown={e => { if (paused || running) return; root.current?.focus({preventScroll:true}); const r=e.currentTarget.getBoundingClientRect(); const point={x:(e.clientX-r.left)/r.width*960,y:(e.clientY-r.top)/r.height*540}; if (distance(point,position.current)<55) interact.current(); else destination.current={x:Math.max(70,Math.min(900,point.x)),y:Math.max(360,Math.min(495,point.y))}; }}>
+      <GacRabbitBackdrop stop={stop} hang={false}/>
+      <GacCompanion/>
+      <svg className="rabbit-player" viewBox="0 0 960 540" aria-hidden="true">
+        <g transform={`translate(${pose.x} ${pose.y}) scale(${pose.facing} 1)`}>
+          <svg x={-frame.width*.31} y={-frame.height*.62} width={frame.width*.62} height={frame.height*.62} viewBox={`0 0 ${frame.width} ${frame.height}`}><image href={spriteSources[2].url} x={-frame.x} y={-frame.y} width="1536" height="1024"/></svg>
+          <g transform="translate(-119 -222) scale(.55)"><RabbitLantern lit/></g>
+        </g>
       </svg>
-      <svg className="rabbit-path" viewBox="0 0 960 540" aria-hidden="true"><RabbitLantern/></svg>
-      <RabbitCuoi/>
-      {objective === 'find' && optionalFits && <svg className="rabbit-wrong-figure" style={at(data.wrong)} viewBox="0 0 64 48" aria-hidden="true"><path fill={stop === 'banyan' ? '#796c4e' : '#8c9792'} stroke="#667673" strokeWidth="3" d={stop === 'banyan' ? 'M4 40 22 22 30 4 36 24 60 38 56 44 32 32 12 46Z' : 'M4 40 12 12 34 4 54 18 60 42Z'}/></svg>}
-      {/* Decoration has no invisible hitbox; exactly one progress button below. */}
-      <div className="rabbit-figure" style={at(j.rabbitFound ? data.shown : data.hidden)}><Rabbit hidden={!j.rabbitFound} tail={stop === 'rock'} sneeze={stop === 'rock' && reaction === 'found'}/></div>
-      {j.rabbitFound && data.stars.map((p,i) => i <= j.starsAwake && <div key={i} className={`rabbit-star ${i < j.starsAwake ? 'awake' : ''}`} style={at(p)}><Star awake={i < j.starsAwake} yawning={reaction === 'star' && i === j.starsAwake-1}/></div>)}
-      {objective !== 'ready' && <button ref={target} className={`rabbit-hit rabbit-target ${hint ? 'rabbit-hinted' : ''}`} style={at(targetPoint)} disabled={busy || paused} aria-label={targetLabel}
-        onClick={() => act(objective === 'find' ? {type:'find',stop} : {type:'wake',stop,star:j.starsAwake+1}, `${objective}.success`, objective === 'find' ? 600 : stop === 'banyan' ? 1000 : 700, objective === 'find' ? 'found' : 'star')}/>}
-      {objective !== 'ready' && optionalFits && <button className="rabbit-hit rabbit-wrong" style={at(wrongPoint)} disabled={busy || paused} aria-label={wrongLabel} onClick={() => {
-        if (busyRef.current || paused) return;
-        setFeedback(miss); setReaction('miss');
-        clearTimeout(timer.current); timer.current = setTimeout(() => setReaction(''), reduced ? 0 : 300);
-      }}/ >}
+      {(!j.rabbitFound || running) && <div className={`rabbit-figure ${running ? 'rabbit-flee' : ''}`} style={{left:`${place.x/9.6}%`,top:`${(place.y-35)/5.4}%`}}><Rabbit hidden={!running} tail={stop==='rock'}/></div>}
+      {!collected && <span className="rabbit-present" style={{left:`${gift.x/9.6}%`,top:`${gift.y/5.4}%`}} aria-label={vi ? 'Quà tặng' : 'Present'}>{stop==='slope'?'🥕':stop==='rock'?'🥮':'🌼'}</span>}
+      {j.rabbitFound && !running && <span className="rabbit-exit">→</span>}
     </div>
-    <div className="rabbit-panel"><p className="rabbit-prompt">{text(`${objective}.prompt`)}</p>
-      <p className="rabbit-feedback" role="status" aria-live="polite">{feedback ? text(feedback) : hint ? text(`${objective}.hint`) : '\u00a0'}</p>
-      {objective === 'ready' && <button ref={nextButton} disabled={busy || paused} onClick={next}>{stop === 'banyan' ? (vi ? 'Gặp chị Hằng' : 'Meet Hằng') : (vi ? 'Đi tiếp' : 'Next')} →</button>}
-    </div>
+    <div className="rabbit-play-message" role="status" aria-live="polite"><strong>{prompt}</strong>{message && <p>{message}</p>}</div>
   </section>;
 }
