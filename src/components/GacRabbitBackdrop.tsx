@@ -14,7 +14,7 @@ export function GacRabbitBackdrop({ stop, hang, orbit = false }: { stop: RabbitS
       class Backdrop extends Phaser.Scene {
         create() {
           if (orbit) orbitScenery.gacTroiScenery(this);
-          else scenery.drawGacTrail(this, `t04-${stop}`, true);
+          else scenery.drawGacTrail(this, hang ? 'reunion' : `t04-${stop}`, true);
 
         }
       }

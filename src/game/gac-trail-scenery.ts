@@ -112,7 +112,21 @@ function drawRabbitLandscape(scene: Phaser.Scene, phase: GameSceneId) {
     g.fillStyle(0x33434b,.2).fillEllipse(x,y,w,14);
     g.lineStyle(2,0xc3c1b5,.35).strokeEllipse(x,y-3,w,13);
   }
-  if (phase === 't04-banyan' || phase === 'reunion') {
+  if (phase === 't04-banyan') {
+    // Low ridges keep the orbital companion clear and leave the search rocks readable.
+    polygon(0x6e7c7d,[0,213,70,201,124,178,166,194,222,211,283,207,340,222,0,239]);
+    polygon(0x87928e,[70,201,124,178,110,198,151,207,166,194,222,211,185,216]);
+    polygon(0x68787b,[535,221,589,209,642,181,682,197,720,215,779,207,830,185,874,201,921,218,960,209,960,245,535,245]);
+    polygon(0x89958f,[589,209,642,181,625,204,667,215,682,197,720,215,677,224]);
+    polygon(0x7d8b88,[779,207,830,185,817,206,851,214,874,201,921,218,858,224]);
+    g.lineStyle(2,0xa6aea0,.25).lineBetween(605,228,674,232).lineBetween(843,233,913,237);
+    // Small loose stones stay well behind the interactive foreground props.
+    for (const [x,y,w] of [[100,299,16],[395,277,12],[871,318,21]]) {
+      g.fillStyle(0x33434b,.25).fillEllipse(x,y+3,w*1.7,5);
+      polygon(0x7a8987,[x-w/2,y,x-w*.15,y-7,x+w*.3,y-4,x+w/2,y]);
+    }
+  }
+  if (phase === 'reunion') {
     g.fillStyle(0x263740,.3).fillEllipse(743,428,280,32);
     // Organic trunk and interlocking foliage echo the banyan of the opening.
     polygon(0x655b46,[683,424,710,395,722,302,709,250,731,238,747,293,759,244,777,246,758,331,769,402,806,426,751,414,735,386,723,415]);
