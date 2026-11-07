@@ -284,7 +284,7 @@ export function App() {
     else if (inSparkle && sparkleProgress.phase === 'search' && !trailWarning) gameInstructions = depthMoveHelp;
     else if (inSparkle && sparkleProgress.phase === 'arrival' || chapter === 'moon-free' && !journeyOpen && !tellingStory && !moonStory && !questDialogue) gameInstructions = moveHelp;
   }
-  if (gacTrail && gacRabbit && !menuOpen) gameInstructions = vi ? '↑ ↓ ← → / WASD để đi · H để hỏi Gác Trời · E để ú òa / nhặt quà · Chạm đất để đi, chạm Cuội để tương tác' : 'Arrows / WASD to move · H to ask Sky Watcher · E for peekaboo / collect · Tap ground to walk, tap Cuội to interact';
+  if (gacTrail && gacRabbit && !menuOpen) gameInstructions = vi ? '↑ ↓ ← → / WASD để đi · E để tìm sau đá · H để gợi ý · Chạm đất để đi, chạm đá để tìm' : 'Arrows / WASD to move · E to search rocks · H for hints · Tap ground to walk, tap rocks to search';
   const gacTogether = gacRabbit && ['reunion', 'farewell', 'free'].includes(rabbitStage!);
   const gacGround = gacRabbit && rabbitStage !== 'real';
   const current = (gacTogether || gacTrail && !gacRabbit) ? { number: '05', characters: ['cuoi', 'chiHang'] as const } : inGacTroi ? { number: '05', characters: ['cuoi', 'gacTroi'] as const } : inSparkle ? { number: '04', characters: ['cuoi', 'lapLanh'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];

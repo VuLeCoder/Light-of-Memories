@@ -40,7 +40,7 @@ React giữ trạng thái câu chuyện; Phaser xử lý chuyển động và b�
 
 Game bên trái, sách giấy kem bên phải; màn hẹp xếp sách xuống dưới. Cảnh pixel, chân dung màu vẽ, nền xanh đêm và điểm nhấn vàng. T02 xếp hai ảnh trên–dưới khi hẹp; T04 giữ cảnh 16:9 và đặt chữ/nút phía dưới trong luồng trang.
 
-A/D, mũi tên hoặc chạm đất để đi; E hoặc bấm vật để tương tác; Space/Enter tiếp tục thoại. Các bài HTML có nút riêng và hướng dẫn theo chặng. Menu tạm dừng; bấm sách hoặc ra ngoài nhả bàn phím game.
+A/D, mũi tên hoặc chạm đất để đi; E hoặc bấm vật để tương tác; Space/Enter tiếp tục thoại. Các bài HTML có nút riêng và hướng dẫn theo chặng. Menu tạm dừng; bấm sách hoặc ra ngoài nhả bàn phím game. Giữ chiều cao màn chơi ổn định khi mở/đóng menu: menu lấy đúng chiều cao game trước khi tạm dừng; phản hồi tương tác không được làm giãn màn chơi.
 
 Các khóa localStorage là `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema **v18** đọc v1–v18; Gác Trời revision 3. Save cảnh đã bỏ trở về lộ trình và giữ thành tích hợp lệ. Chơi lại Gác Trời giữ thành tích và sách đã mở, nhưng lượt chơi mới vẫn phải hoàn thành các bước của hành trình Thỏ Ngọc. Không đồng bộ giữa thiết bị.
 
@@ -62,3 +62,9 @@ Các báo cáo trình duyệt dùng Chromium, bàn phím và chạm giả lập;
 - [Sách đồng hành](../src/content/book/README.md), [hướng dẫn thiết kế màn](Huong-dan-AI-thiet-ke-man-choi-moi.md)
 - [Phong cách hình ảnh](visual-style.md), [quy ước ảnh](image-assets.md), [kiểm kê ban đầu](assets-inventory.md)
 - [Dọn kiểm thử và cập nhật tài liệu](done/test-files-cleanup.md)
+
+## Tìm chị Hằng — tương tác với đá (prompt 2)
+
+Mỗi chặng có bốn tảng đá: một giấu Thỏ Ngọc, một có quà, hai tảng còn lại phản hồi nhẹ nhàng khi tìm. Điều khiển Cuội bằng WASD/mũi tên rồi nhấn E ở tảng gần nhất; trên cảm ứng, chạm đá để Cuội đi tới và tìm. Không bắt buộc nhận gợi ý để tìm được Thỏ. Nút Gợi ý/phím H cho lời chỉ vị trí Thỏ; sau khi tìm được Thỏ, Gác Trời chỉ quà còn lại hoặc hướng đi tiếp. Thỏ cũng nhắc chỗ giấu quà khi được tìm thấy. Quà tùy chọn, lấy trước hoặc sau khi gặp Thỏ; người chơi phải đi sang phải và tương tác để sang chặng tiếp theo. Lưu vẫn dùng v18, giữ tương thích lượt chơi cũ. Hoạt ảnh chạy của Thỏ chờ prompt 3.
+
+Kiểm tra prompt 2: build và `node scripts/check-rabbit-peekaboo.mjs` đạt (gợi ý tùy chọn, quà trước/sau/bỏ qua, sự kiện lặp/sai chặng, lưu/đọc và chơi lại). Chromium kiểm tra ba chặng ở 960px/VI và 360px/EN: đá trống, tìm trực tiếp, quà, chủ động đi tiếp và chiều cao ổn định. Toàn ứng dụng kiểm tra mở/đóng menu và hiện gợi ý ở 1440/760/390px, chiều cao giữ nguyên. `check:ending-progress` còn lỗi kỳ vọng cũ tại dòng 81: chờ `t03-map` thay vì bước `t03-walk` đang có; chưa cập nhật bài kiểm tra tuyến cũ trong prompt này.

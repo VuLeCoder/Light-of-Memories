@@ -78,7 +78,7 @@ export function applyGacRabbitAction(p: GacTroiProgress, action: RabbitAction): 
   let next = j;
   if (action.type === 'guide' && j.stage === action.stop && !j.guidedStops?.includes(action.stop)) next = { ...j, guidedStops: [...(j.guidedStops ?? []), action.stop] };
   if (action.type === 'gift' && j.stage === action.stop && !j.gifts?.includes(action.stop)) next = { ...j, gifts: [...(j.gifts ?? []), action.stop] };
-  if (action.type === 'peek' && j.stage === action.stop && !j.rabbitFound && j.guidedStops?.includes(action.stop)) next = { ...j, rabbitFound: true, starsAwake: rabbitStarCount(action.stop) };
+  if (action.type === 'peek' && j.stage === action.stop && !j.rabbitFound) next = { ...j, rabbitFound: true, starsAwake: rabbitStarCount(action.stop) };
   let completedOnce = p.completedOnce;
   let books = p.bookUnlocks;
   if (action.type === 'find' && j.stage === action.stop && rabbitObjective(j) === 'find') next = { ...j, rabbitFound: true };
