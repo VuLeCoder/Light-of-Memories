@@ -79,3 +79,15 @@ Thỏ nhô ra khi được tìm thấy, đứng nghe hội thoại với tai c�
 Ở cảnh gặp chị Hằng, Thỏ đứng bên chị Hằng trong hội thoại; sang cảnh nghỉ thì nằm thở nhẹ. Menu tạm dừng cả hoạt ảnh SVG/CSS và chuyển động chạy. Chế độ giảm chuyển động bỏ nhấp nhô, co giãn và các hoạt ảnh trang trí. Không thay đổi dữ liệu lưu hay kích thước màn chơi/menu.
 
 Kiểm tra: build, `node scripts/check-rabbit-peekaboo.mjs`; Chromium kiểm tra gợi ý/H, Space/Enter, trả focus, chờ hội thoại mới chạy và tạm dừng giữa bước nhảy. Cảnh gặp/nghỉ kiểm tra ở 960/360px, gồm giảm chuyển động.
+
+### Đoạn kết Cuội–Hằng và An–Bà
+
+Sau `reunion`, chuyển `farewell`: dùng lại `moonScenery` của cảnh Cuội thức giấc, đèn sáng đủ năm cánh. Người chơi chuyển hội thoại bằng nút, Space hoặc Enter. Thông điệp ghi nhận đóng góp của thiết bị ở lại Mặt Trăng và giữ gìn nơi con người khám phá.
+
+Sau đó chuyển thẳng `earth`, dùng lại `earthScenery` cùng sprite An/Bà và vị trí mở đầu. Bốn lượt thoại tự chạy sau khi chữ hiện đủ, chờ ít nhất 6 giây (90 ms/ký tự, tăng theo độ dài), chữ xuất hiện mỗi 55 ms. Không có nút tiếp tục; Space/Enter không bỏ qua lời thoại. Mở menu dừng cả chữ và bộ đếm tự chuyển. Tiến trình lưu từng lượt ở cả hai cảnh.
+
+`free` nay là màn thông điệp cuối trên nền Trái Đất dịu xuống. Ngay khi kết thúc hội thoại An–Bà, hiện thông điệp cùng Xem lại đoạn kết, Mở sách, Chơi lại tìm chị Hằng; Về lộ trình vẫn có sẵn. Xem lại bắt đầu từ `farewell`, chơi lại bắt đầu từ `bridge`; giữ tiến trình các người bạn và sách. Nội dung hỗ trợ Việt/Anh. Save `free` cũ vẫn mở được màn kết mới.
+
+Chị Hằng dùng hình ngồi ghế ở cảnh gặp lại và cảnh kết trên Mặt Trăng. Thân trên chuyển động thở nhẹ chu kỳ 5 giây, ghế/chân đứng yên; dừng khi mở menu và tắt khi bật giảm chuyển động.
+
+Chị Hằng dùng sprite ngồi không kèm ghế; ghế đá tại cảnh đoàn tụ và cảnh kết được vẽ bởi `drawMoonBench`, dùng chung với cảnh Cuội thức giấc.

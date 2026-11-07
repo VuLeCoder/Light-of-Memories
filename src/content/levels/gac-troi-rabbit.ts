@@ -4,7 +4,7 @@ import type { GacTroiProgress } from './gac-troi-progress';
 export const gacRabbitReleased: boolean = true;
 export const rabbitStops = ['slope', 'rock', 'banyan'] as const;
 export type RabbitStop = typeof rabbitStops[number];
-export const rabbitStages = ['real', 'bridge', ...rabbitStops, 'reunion', 'farewell', 'free'] as const;
+export const rabbitStages = ['real', 'bridge', ...rabbitStops, 'reunion', 'farewell', 'earth', 'free'] as const;
 export type RabbitStage = typeof rabbitStages[number];
 export interface GacRabbitJourney {
   gifts?: RabbitStop[];
@@ -20,7 +20,7 @@ export interface GacRabbitJourney {
   farewellDone: boolean;
 }
 export const rabbitStarCount = (stop: RabbitStop): number => stop === 'rock' ? 2 : 1;
-export const rabbitDialogueLengths = { real: 3, bridge: 3, reunion: 4, farewell: 5 } as const;
+export const rabbitDialogueLengths = { real: 3, bridge: 3, reunion: 4, farewell: 5, earth: 4 } as const;
 export function freshGacRabbit(): GacRabbitJourney {
   return { active: false, stage: 'real', turn: 0, completedStops: 0, rabbitFound: false, starsAwake: 0, reunionDone: false, farewellDone: false };
 }
@@ -38,8 +38,8 @@ export function readGacRabbit(value: unknown): GacRabbitJourney {
   const count = typeof p.completedStops === 'number' && Number.isInteger(p.completedStops) ? Math.max(0, Math.min(3, p.completedStops)) : 0;
   let stage: RabbitStage = rabbitStages.includes(p.stage as RabbitStage) ? p.stage as RabbitStage : 'real';
   const stopIndex = rabbitStops.indexOf(stage as RabbitStop);
-  if (stopIndex >= 0 && stopIndex !== count || ['reunion', 'farewell', 'free'].includes(stage) && count < 3) stage = rabbitStops[count] ?? 'reunion';
-  if (stage === 'farewell' && p.reunionDone !== true) stage = 'reunion';
+  if (stopIndex >= 0 && stopIndex !== count || ['reunion', 'farewell', 'earth', 'free'].includes(stage) && count < 3) stage = rabbitStops[count] ?? 'reunion';
+  if (['farewell', 'earth'].includes(stage) && p.reunionDone !== true) stage = 'reunion';
   if (stage === 'free' && (p.reunionDone !== true || p.farewellDone !== true)) stage = p.reunionDone === true ? 'farewell' : 'reunion';
   const completedStops = ['real', 'bridge'].includes(stage) ? 0 : count;
   const rabbitFound = !['real', 'bridge'].includes(stage) && p.rabbitFound === true;
@@ -48,7 +48,7 @@ export function readGacRabbit(value: unknown): GacRabbitJourney {
   const length = rabbitDialogueLengths[stage as keyof typeof rabbitDialogueLengths] ?? 1;
   const turn = Number.isInteger(p.turn) ? Math.max(0, Math.min(length - 1, Number(p.turn))) : 0;
   return { ...(Array.isArray(p.gifts) ? { gifts: rabbitStops.filter(s => p.gifts instanceof Array && p.gifts.includes(s)) } : {}), ...(Array.isArray(p.guidedStops) ? { guidedStops: rabbitStops.filter(s => p.guidedStops instanceof Array && p.guidedStops.includes(s)) } : {}), active: p.active === true, stage, turn, completedStops, rabbitFound, starsAwake,
-    reunionDone: ['farewell', 'free'].includes(stage) && p.reunionDone === true,
+    reunionDone: ['farewell', 'earth', 'free'].includes(stage) && p.reunionDone === true,
     farewellDone: stage === 'free' && p.farewellDone === true };
 }
 export function rabbitObjective(j: GacRabbitJourney): 'find' | 'wake-1' | 'wake-2' | 'ready' | null {
@@ -79,7 +79,7 @@ export function applyGacRabbitAction(p: GacTroiProgress, action: RabbitAction): 
   if (action.type === 'guide' && j.stage === action.stop && !j.guidedStops?.includes(action.stop)) next = { ...j, guidedStops: [...(j.guidedStops ?? []), action.stop] };
   if (action.type === 'gift' && j.stage === action.stop && !j.gifts?.includes(action.stop)) next = { ...j, gifts: [...(j.gifts ?? []), action.stop] };
   if (action.type === 'peek' && j.stage === action.stop && !j.rabbitFound) next = { ...j, rabbitFound: true, starsAwake: rabbitStarCount(action.stop) };
-  let completedOnce = p.completedOnce;
+  const completedOnce = p.completedOnce;
   let books = p.bookUnlocks;
   if (action.type === 'find' && j.stage === action.stop && rabbitObjective(j) === 'find') next = { ...j, rabbitFound: true };
   if (action.type === 'wake' && j.stage === action.stop && j.rabbitFound && action.star === j.starsAwake + 1 && action.star <= rabbitStarCount(action.stop)) next = { ...j, starsAwake: action.star };
@@ -91,12 +91,11 @@ export function applyGacRabbitAction(p: GacTroiProgress, action: RabbitAction): 
     const length = rabbitDialogueLengths[action.stage];
     if (j.turn < length - 1) {
       next = { ...j, turn: j.turn + 1 };
-      if (j.stage === 'farewell' && j.turn === 2) completedOnce = true;
     } else {
-      const stage = ({ real: 'bridge', bridge: 'slope', reunion: 'free', farewell: 'free' } as const)[action.stage];
-      next = { ...j, stage, turn: 0, reunionDone: j.reunionDone || j.stage === 'reunion', farewellDone: j.stage === 'farewell' || j.stage === 'reunion' };
+      const stage = ({ real: 'bridge', bridge: 'slope', reunion: 'farewell', farewell: 'earth', earth: 'free' } as const)[action.stage];
+      next = { ...j, stage, turn: 0, reunionDone: j.reunionDone || j.stage === 'reunion', farewellDone: stage === 'free' };
       if (stage === 'slope' && !books.includes('gac-book-map')) books = [...books, 'gac-book-map'];
     }
   }
-  return next === j ? p : { ...p, rabbitJourney: next, completedOnce, bookUnlocks: books };
+  return next === j ? p : { ...p, rabbitJourney: next, completedOnce, storyCompletedOnce: p.storyCompletedOnce || j.stage === 'earth' && next.stage === 'free', bookUnlocks: books };
 }

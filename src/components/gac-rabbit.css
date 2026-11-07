@@ -125,3 +125,27 @@
 .moon-rabbit.is-hopping > g > ellipse:first-child { visibility:hidden; }
 .rabbit-ground-shadow { position:absolute; width:5.8%; height:1.2%; border-radius:50%; background:#263740; transform:translate(-50%,-50%); z-index:2; pointer-events:none; }
 .gac-rabbit[data-paused="true"] *, .gac-rabbit[hidden] * { animation-play-state:paused !important; }
+
+/* Closing scenes reuse the opening artwork and keep one reserved dialogue area. */
+.story-finale[data-ending="farewell"] .rabbit-cuoi { left:30%; }
+.story-finale[data-ending="farewell"] .rabbit-hang { left:47%; }
+.story-finale[data-ending="farewell"] .rabbit-rest-art { display:none; }
+.story-finale[data-ending="earth"] .rabbit-view,
+.story-finale[data-ending="farewell"] .rabbit-view { animation:finale-arrive .8s ease-out; }
+.story-finale[data-ending="free"] .rabbit-view { filter:brightness(.65); transition:filter 1s; }
+@keyframes finale-arrive { from { opacity:0; } to { opacity:1; } }
+.game-stage .story-finale[data-ending="earth"] > .dialogue,
+.game-stage .story-finale[data-ending="free"] > .rabbit-panel { margin-left:auto; margin-right:18px; width:57%; }
+@container (max-width:800px) {
+  .game-stage .story-finale[data-ending="farewell"] > .dialogue,
+  .game-stage .story-finale[data-ending="earth"] > .dialogue,
+  .game-stage .story-finale[data-ending="free"] > .rabbit-panel { height:290px; overflow:auto; width:auto; margin:4px 10px 10px; }
+}
+
+/* Seated Hằng: feet and chair stay planted; only her upper body breathes. */
+.rabbit-hang-seated { aspect-ratio: 2 / 3; height:26%; bottom:16.5%; transform:scaleX(-1); }
+.rabbit-hang-seated img { display:block; position:absolute; inset:0; width:100%; height:100%; }
+.hang-seat-still { clip-path:inset(54% 0 0); }
+.hang-seat-breath { clip-path:inset(0 0 46%); transform-origin:50% 54%; animation:hang-seated-breathe 5s ease-in-out infinite; }
+@keyframes hang-seated-breathe { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(1.008); } }
+.gac-rabbit[data-paused="true"] .hang-seat-breath { animation-play-state:paused; }

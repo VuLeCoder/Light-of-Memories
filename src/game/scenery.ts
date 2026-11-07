@@ -154,6 +154,17 @@ export function moonScenery(scene: Phaser.Scene) {
   for (let i = 0; i < 9; i++) {
     tree.fillStyle(i % 2 ? 0x685d45 : 0x4e5743).fillRect(52 + i * 38, 192 + i % 3 * 9, 3, 73 + i % 4 * 23);
   }
+  const bench = drawMoonBench(scene);
+  const tracks = scene.add.graphics();
+  for (let i = 0; i < 9; i++) {
+    tracks.fillStyle(0x404f65, 0.55).fillRect(659 + i * 29, 435 - i * 3 + i % 2 * 10, 10, 5);
+    tracks.fillStyle(0x46556a, 0.45).fillRect(698 + i * 29, 421 - i * 3, 13, 2).fillRect(698 + i * 29, 412 - i * 3, 13, 2);
+  }
+  return { tree, bench, tracks };
+}
+
+/** Shared stone bench from Cuội’s awakening scene, in its original coordinates. */
+export function drawMoonBench(scene: Phaser.Scene) {
   const bench = scene.add.graphics();
   bench.fillStyle(0x3d4a5b, 0.35).fillEllipse(520, 438, 170, 18);
   bench.fillStyle(0x92989b).fillRect(451, 350, 139, 14).fillRect(456, 363, 129, 26);
@@ -161,10 +172,5 @@ export function moonScenery(scene: Phaser.Scene) {
   bench.fillStyle(0x6d7882).fillRect(460, 388, 10, 17).fillRect(570, 388, 10, 17);
   bench.fillStyle(0xa2a8a8).fillRect(444, 402, 153, 11);
   bench.fillStyle(0x7a8690).fillRect(453, 413, 17, 23).fillRect(570, 413, 17, 23);
-  const tracks = scene.add.graphics();
-  for (let i = 0; i < 9; i++) {
-    tracks.fillStyle(0x404f65, 0.55).fillRect(659 + i * 29, 435 - i * 3 + i % 2 * 10, 10, 5);
-    tracks.fillStyle(0x46556a, 0.45).fillRect(698 + i * 29, 421 - i * 3, 13, 2).fillRect(698 + i * 29, 412 - i * 3, 13, 2);
-  }
-  return { tree, bench, tracks };
+  return bench;
 }

@@ -1,21 +1,40 @@
 import { GacCompanion } from './GacCompanion';
 import { useEffect, useRef } from 'react';
 import type { RabbitStop } from '../content/levels/gac-troi-rabbit';
-import { portraits, spriteSources } from '../content/assets';
+import { spriteSources } from '../content/assets';
 import { RabbitLantern } from './GacRabbitArt';
 
 /** Static scenery only; accessible input and reactions live in GacRabbitTrail. */
-export function GacRabbitBackdrop({ stop, hang, orbit = false }: { stop: RabbitStop; hang: boolean; orbit?: boolean }) {
+export function GacRabbitBackdrop({ stop, hang, orbit = false, closing }: { closing?: 'moon' | 'earth'; stop: RabbitStop; hang: boolean; orbit?: boolean }) {
   const host = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let disposed = false;
     let game: import('phaser').Game | undefined;
-    void Promise.all([import('phaser'), import('../game/gac-trail-scenery'), import('../game/gac-troi-scenery')]).then(([{ default: Phaser }, scenery, orbitScenery]) => {
+    void Promise.all([import('phaser'), import('../game/gac-trail-scenery'), import('../game/gac-troi-scenery'), import('../game/scenery')]).then(([{ default: Phaser }, scenery, orbitScenery, opening]) => {
       if (disposed) return;
       class Backdrop extends Phaser.Scene {
+        preload() {
+          if (closing === 'earth') for (const source of spriteSources) if (source.key !== 'cuoi') this.load.image(source.key, source.url);
+        }
         create() {
+          if (closing === 'earth') {
+            opening.earthScenery(this);
+            for (const source of spriteSources) {
+              if (source.key === 'cuoi') continue;
+              const f = source.frame;
+              this.textures.get(source.key).add('rest', 0, f.x, f.y, f.width, f.height);
+              this.add.image(source.key === 'ba' ? 188 : 313, source.key === 'ba' ? 410 : 465, source.key, 'rest')
+                .setOrigin(source.foot.x / f.width, source.foot.y / f.height).setScale(source.key === 'ba' ? .49 : .37);
+            }
+          } else if (closing === 'moon') {
+            opening.moonScenery(this);
+          }
+          else
           if (orbit) orbitScenery.gacTroiScenery(this);
-          else scenery.drawGacTrail(this, hang ? 'reunion' : `t04-${stop}`, true);
+          else {
+            scenery.drawGacTrail(this, hang ? 'reunion' : `t04-${stop}`, true);
+            if (hang) opening.drawMoonBench(this).setPosition(326.4, 0);
+          }
 
         }
       }
@@ -25,8 +44,8 @@ export function GacRabbitBackdrop({ stop, hang, orbit = false }: { stop: RabbitS
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH } });
     });
     return () => { disposed = true; game?.destroy(true); };
-  }, [stop, hang, orbit]);
-  return <><div className="rabbit-backdrop" ref={host} aria-hidden="true"/>{orbit && <GacCompanion large/>}{hang && <img className="rabbit-hang" src={portraits.chiHang.url} alt="" aria-hidden="true"/>}</>;
+  }, [stop, hang, orbit, closing]);
+  return <><div className="rabbit-backdrop" ref={host} aria-hidden="true"/>{orbit && <GacCompanion large/>}{hang && <div className="rabbit-hang rabbit-hang-seated" aria-hidden="true"><img className="hang-seat-still" src={`${import.meta.env.BASE_URL}images/sprites/chi-hang-seated-stone.png`} alt=""/><img className="hang-seat-breath" src={`${import.meta.env.BASE_URL}images/sprites/chi-hang-seated-stone.png`} alt=""/></div>}</>;
 }
 
 export function RabbitCuoi({ lit = false }: { lit?: boolean }) {

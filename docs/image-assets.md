@@ -62,3 +62,17 @@ Cập nhật 06/11/2026: tuyến hiện tại gồm Mắt Tròn, Lấp Lánh và
 ## Cảnh lấy mẫu T03 Bánh Lưới (30/10/2026)
 
 Nền hai điểm dừng, búa, đá, mảng đất, hạt phóng đại và bóng tiếp xúc được vẽ bằng mã trong `src/game/banh-luoi-rock.ts`, `banh-luoi-soil.ts`, `banh-luoi-guide.ts` và `src/components/BanhLuoiGuide.tsx`. Không có bitmap NASA mới cho hai trò nhỏ. Hình hạt là minh họa; hai ảnh thưởng vẫn là VIP Site và ảnh quỹ đạo. Chi tiết luồng và nguồn ở [Game4](done/Game4_Apollo_17.md).
+
+## Chị Hằng ngồi ghế (07/11/2026)
+
+- Asset: `public/images/sprites/chi-hang-seated.png`, PNG RGBA tạo bằng built-in imagegen, tham chiếu `public/images/portraits/chi-hang.webp`. Giữ chân dung cũ dùng trong hội thoại.
+- CSS lật ngang để nhìn về Cuội và tách phần thân trên chuyển động thở nhẹ; phần ghế/chân cố định.
+- Prompt:
+
+> Create a transparent game sprite based on this reference of Vietnamese moon fairy chị Hằng. Preserve her face, black long hair and jade hair ornament, cream traditional dress with pale jade floral pattern and hand-painted children's storybook style. Change pose: seated comfortably on a small rustic wooden chair, both feet on ground, hands resting together in lap, gentle smiling face looking to LEFT toward Cuội. Full seated body and entire chair visible including legs. Three-quarter view, clean silhouette, no background, no glow, no shadow outside sprite, no text, no additional characters. One single pose only. This will be used as seated idle game artwork.
+
+### Chị Hằng ngồi ghế đá
+
+- Asset đang dùng: `public/images/sprites/chi-hang-seated-stone.png`, tạo bằng imagegen tích hợp, nền trong suốt.
+- Prompt: Remove the entire wooden chair from the seated Hằng sprite; preserve her seated pose, face, clothes, framing and shoes. Character only, no furniture, ground, shadow or glow, transparent background.
+- Ghế đá dùng chung hàm `drawMoonBench` với cảnh Cuội thức giấc; cảnh đoàn tụ dịch ghế sang phải, cảnh kết giữ vị trí gốc. Chỉ thân trên chuyển động thở nhẹ.

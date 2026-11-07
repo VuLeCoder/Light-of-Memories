@@ -20,6 +20,17 @@ try {
   p=act(p,{type:'next',stage:stop});
  }
  assert.equal(p.rabbitJourney.stage,'reunion');
+ for (const [stage,length,next] of [['reunion',4,'farewell'],['farewell',5,'earth'],['earth',4,'free']]) {
+  for(let turn=0;turn<length;turn++) {
+   assert.equal(p.rabbitJourney.stage,stage);
+   p=act(p,{type:'dialogue',stage,turn});
+   assert.equal(act(p,{type:'dialogue',stage,turn}),p);
+   p=readGacTroi(p);
+  }
+  assert.equal(p.rabbitJourney.stage,next);
+ }
+ assert.equal(p.storyCompletedOnce,true);
+
  assert.equal(p.rabbitJourney.gifts?.length??0,mode === 'none'?0:3);
  assert.equal(p.completedOnce,true);
  const replay = replayGacRabbitJourney(p);

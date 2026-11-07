@@ -3,7 +3,8 @@ import { dialogueReducer, type StoryLine } from '../content/earth-dialogue';
 import { portraits } from '../content/assets';
 import { copy, type Language } from '../content/i18n';
 
-export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0, managedFocus = false }: {
+export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0, managedFocus = false, autoAdvance = false }: {
+  autoAdvance?: boolean;
   managedFocus?: boolean;
   initialIndex?: number; finalLabel?: string;
   language: Language; finalAction: 'earth' | 'moon' | 'lantern';
@@ -28,22 +29,28 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
   }, [language]);
   useEffect(() => {
     // App restores focus only while the game owns it; legacy scenes keep their default.
-    if (!paused && !managedFocus) nextButton.current?.focus({ preventScroll: true });
-  }, [paused, managedFocus]);
+    if (!paused && !managedFocus && !autoAdvance) nextButton.current?.focus({ preventScroll: true });
+  }, [paused, managedFocus, autoAdvance]);
   useEffect(() => {
     if (paused || full || state.finished) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       dispatch('reveal');
       return;
     }
-    const timer = window.setInterval(() => dispatch('tick'), 35);
+    const timer = window.setInterval(() => dispatch('tick'), autoAdvance ? 55 : 35);
     return () => window.clearInterval(timer);
-  }, [paused, full, state.index, state.finished]);
+  }, [paused, full, state.index, state.finished, autoAdvance]);
   useEffect(() => {
     if (!state.finished || completed.current) return;
     completed.current = true;
     onComplete();
   }, [state.finished, onComplete]);
+
+  useEffect(() => {
+    if (!autoAdvance || paused || !full || state.finished) return;
+    const timer = window.setTimeout(() => dispatch('advance'), Math.max(6000, line.text.length * 90));
+    return () => window.clearTimeout(timer);
+  }, [autoAdvance, paused, full, state.finished, state.index, line.text]);
 
   return <section className="dialogue" hidden={paused} aria-label={title} data-line={line.id} data-complete={full}
     onKeyDown={(event) => {
@@ -53,7 +60,7 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
       // and ignore held keys so one physical press performs one action.
       event.preventDefault();
       event.stopPropagation();
-      if (!event.repeat && !paused) dispatch('advance');
+      if (!event.repeat && !paused && !autoAdvance) dispatch('advance');
     }}
     onKeyUp={(event) => {
       if (event.code.startsWith('Arrow') || ['Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
@@ -69,10 +76,10 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
         <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (language === 'en' && line.speaker === 'chiHang' ? 'Hằng' : language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : language === 'en' && line.speaker === 'taiThinh' ? 'Keen Ears' : language === 'en' && line.speaker === 'banhLuoi' ? 'Mesh Wheels' : language === 'en' && line.speaker === 'gacTroi' ? 'Sky Watcher' : portrait.name) : t.narrator}: {line.text}</p>
       </div>
     </div>
-    <div className="dialogue-footer">
+    {!autoAdvance && <div className="dialogue-footer">
       <button ref={nextButton} className={full ? 'dialogue-next is-ready' : 'dialogue-next'} onClick={() => dispatch('advance')}>
         {full ? (state.index === lines.length - 1 ? (finalLabel ?? (finalAction === 'earth' ? t.followMoon : finalAction === 'lantern' ? t.receiveLantern : t.explore)) : t.next) : t.reveal} <span aria-hidden="true">→</span>
       </button>
-    </div>
+    </div>}
   </section>;
 }

@@ -59,39 +59,39 @@ const lines = [
   {
     "id": "rabbit-reunion-04",
     "speaker": "chiHang",
-    "vi": "Chiếc đèn giữ kỷ niệm của cả ba người bạn. Mình nghỉ dưới cây đa nhé!",
-    "en": "Your lantern holds memories of all three friends. Let’s rest beneath the banyan!"
+    "vi": "Chiếc đèn giữ kỷ niệm của cả ba người bạn. Mình trở lại nơi em thức giấc nhé!",
+    "en": "Your lantern holds memories of all three friends. Let’s return to where you woke up!"
   },
   {
     "id": "rabbit-farewell-01",
     "speaker": "cuoi",
-    "vi": "Gác Trời ơi, mình gặp chị Hằng rồi; cảm ơn bạn nhé!",
-    "en": "Sky Watcher, I found Hằng; thank you!"
-  },
+    "vi": "Lúc mới đến, em tưởng nơi này chẳng có ai. Hóa ra em đã gặp được bao nhiêu người bạn!",
+    "en": "When I arrived, I thought no one was here. But I have made so many friends!"
+},
   {
     "id": "rabbit-farewell-02",
     "speaker": "chiHang",
-    "vi": "Cảm ơn bạn đã giúp Cuội biết nhìn kỹ những dấu hiệu quanh mình.",
-    "en": "Thank you for helping Cuội look closely at the clues around him."
-  },
+    "vi": "Những thiết bị ở lại đây từng giúp con người hiểu thêm về Mặt Trăng. Có bạn đã nghỉ ngơi, có bạn vẫn đang làm việc.",
+    "en": "The devices left here have helped people learn about the Moon. Some are resting now, while others are still working."
+},
   {
     "id": "rabbit-farewell-03",
-    "speaker": "gacTroi",
-    "vi": "Mình vui lắm; gửi Cuội một chút sáng làm kỷ niệm nhé!",
-    "en": "I’m so happy; here’s a little light to remember our adventure!"
-  },
+    "speaker": "cuoi",
+    "vi": "Về nhà, em sẽ kể chuyện của các bạn. Để mọi người nhớ các bạn đã giúp chúng mình thế nào!",
+    "en": "Back home, I will tell their stories, so everyone remembers how much they have helped us!"
+},
   {
     "id": "rabbit-farewell-04",
-    "speaker": "cuoi",
-    "vi": "Đèn sáng đủ rồi, có kỷ niệm của cả ba người bạn!",
-    "en": "All the lantern’s lights are shining, with memories of all three friends!"
-  },
+    "speaker": "chiHang",
+    "vi": "Và mỗi lần đi khám phá, chúng mình hãy biết giữ gìn nơi mình đặt chân đến nhé.",
+    "en": "And whenever we explore, let’s take care of the places we visit."
+},
   {
     "id": "rabbit-farewell-05",
-    "speaker": "gacTroi",
-    "vi": "Mình tiếp tục ngắm Mặt Trăng từ trên cao; hẹn gặp lại nhé!",
-    "en": "I’ll keep watching the Moon from above; see you again!"
-  },
+    "speaker": "cuoi",
+    "vi": "Em sẽ nhớ! Cảm ơn Mắt Tròn, Lấp Lánh và Gác Trời đã cùng em đi hết chuyến này!",
+    "en": "I will! Thank you, Round Eyes, Sparkle and Sky Watcher, for sharing this adventure!"
+},
   {
     "id": "rabbit-chat-01",
     "speaker": "gacTroi",
@@ -109,9 +109,13 @@ const lines = [
     "speaker": "gacTroi",
     "vi": "Những câu chuyện của chúng mình vẫn ở trong sách, bạn mở xem nhé!",
     "en": "Our stories are still in the book, ready for you to read!"
-  }
+  },
+{"id": "rabbit-earth-01", "speaker": "an", "vi": "Bà ơi, những thiết bị ấy vẫn ở trên Mặt Trăng thật ạ?", "en": "Grandma, are those devices really still on the Moon?"},
+{"id": "rabbit-earth-02", "speaker": "ba", "vi": "Ừ. Có chiếc đã hoàn thành nhiệm vụ, có chiếc vẫn đang giúp chúng ta khám phá.", "en": "Yes. Some have finished their missions, and others are still helping us explore."},
+{"id": "rabbit-earth-03", "speaker": "an", "vi": "Vậy chúng mình vẫn nhớ những điều chúng đã làm, bà nhỉ?", "en": "So we still remember what they have done, don’t we, Grandma?"},
+{"id": "rabbit-earth-04", "speaker": "ba", "vi": "Đúng rồi. Và khi đi đến những nơi mới, mình cũng cần nghĩ xem sẽ để lại điều gì.", "en": "That’s right. And when we visit new places, we should think about what we will leave behind."},
 ] as const;
-export type RabbitDialogue = 'real' | 'bridge' | 'reunion' | 'farewell' | 'chat';
+export type RabbitDialogue = 'real' | 'bridge' | 'reunion' | 'farewell' | 'chat' | 'earth';
 export function gacRabbitDialogue(stage: RabbitDialogue, language: Language): StoryLine[] {
   return lines.filter(line => line.id.startsWith(`rabbit-${stage}-`)).map(line => ({ id: line.id, speaker: line.speaker, text: line[language] }));
 }
