@@ -22,7 +22,7 @@ in the existing progress helpers and `JourneyMap`; it never filters this catalog
 
 The reading edition includes the laser answer, original and cropped archive
 photos, three Surveyor sketch IDs, corner/ranging diagrams, route and safe-route
-variants, and the camera diagram. M4 must render every `image` and `diagram`,
+variants, and the camera diagram. The PDF renderer must render every current `image` and `diagram`,
 including `reveal: hint/detail`; these flags describe browser visibility, not
 export filters. Reused portraits/photos are published once with cross-references
 rather than copied each time the browser displays them.
@@ -31,7 +31,7 @@ Sources marked `recorded` reproduce existing project provenance, not independent
 fact checking. `needs-review` marks the Surveyor image attribution gap, and the legacy citation. Apollo 17 walkback now cites NASA’s Apollo 17 Press Kit.
 Do not fabricate missing Surveyor photo codes/credits. Preserve date precision
 (`1969`, `1972-12`, etc.) in PDF captions. Source/credit review is required before
-publishing the M4 sample.
+publishing a fact-checked edition; the current export preserves these review flags in its references.
 
 Run `npm run check:book` for page coverage, bilingual paragraph conservation,
 classification, chronological photo ordering, local assets, source coverage,
@@ -73,12 +73,27 @@ Short character introductions use `book-prose--intro`: centred illustration abov
 
 ## Remaining work (2026-11-06)
 
-The publication model is ready for a renderer, but PDF download is not implemented.
+PDF download is implemented in `src/export/book-pdf.ts` and exposed by the shared
+`BookTopline` button at the right edge of the book heading, including before the
+journey starts. It dynamically loads jsPDF and local DejaVu Serif fonts (license:
+`public/fonts/pdf/LICENSE.txt`) only on request. It downloads an A4 PDF in the
+selected language with a light paper background, linked contents, page numbers,
+archive images, image annotations, all current diagrams and source references.
+Text remains searchable/selectable; diagrams are rasterized independently of the
+game canvas. Reused images are cross-referenced. Missing fonts/images abort the
+download and expose a retry message rather than produce an incomplete book.
+
+The renderer uses `getReadingBook` directly: all 49 blocks are included without
+reading progress or changing the save. Factual blocks precede the appendix;
+game/fiction blocks, including hidden clues/answers, are grouped in the appendix.
+For mixed browser pages, each block follows its own classification. Browser unlock
+rules and pagination are unchanged.
+
 Gác Trời T02/T03 and the T04 map hint are integrated. Add the M5 story cards
 and M6 journey conclusion when implemented; reaching `cards-intro` does not yet
 add those unpublished pages to the catalog. The full
-PDF must include locked content independently of the save, with factual content in
-the main section and game/fiction in the appendix, in the selected language.
+PDF continues to include locked content independently of the save, with factual
+content in the main section and game/fiction in the appendix, in the selected language.
 
 The browser has a contents selector for the pages available in the current journey.
 A dedicated reading view and persisted reading position remain proposals. See `docs/project-overview.md` for product scope
@@ -94,3 +109,5 @@ and verification limits.
 - Reserve the Gác Trời portrait and centred prose for its introduction. Other pages use normal prose and independently paginated paragraphs/figures.
 - The contents selector uses canonical page identity and existing availability, never unlocks pages, and does not modify the save. Visible leaf numbers still depend on measured layout.
 - Observe native disclosure toggles so expanding an answer recalculates pagination.
+
+PDF layout uses illustrated panels with Vietnamese left-to-right/top-to-bottom reading order, an illustrated cover and searchable Vietnamese text. Each panel is measured before drawing so its narration, illustration and credit stay together; short chapter endings share space with the next chapter where possible. Fiction/game labels remain in the appendix. Fonts and illustrations time out after 30 seconds so a stalled asset can be retried instead of leaving the button busy indefinitely.

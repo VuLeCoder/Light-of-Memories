@@ -44,9 +44,11 @@ A/D, mũi tên hoặc chạm đất để đi; E hoặc bấm vật để tươn
 
 Các khóa localStorage là `cuoi.language`, `cuoi.sound`, `cuoi.progress`. Schema **v18** đọc v1–v18; Gác Trời revision 3. Save cảnh đã bỏ trở về lộ trình và giữ thành tích hợp lệ. Chơi lại Gác Trời giữ thành tích và sách đã mở, nhưng lượt chơi mới vẫn phải hoàn thành các bước của hành trình Thỏ Ngọc. Không đồng bộ giữa thiết bị.
 
+Nút **Tải PDF** ở mép phải dòng “Trang sách bên bạn” tải toàn bộ 26 trang nội dung gốc (49 khối, số trang PDF tùy cách dàn), kể cả nội dung chưa mở, theo ngôn ngữ đang chọn. Phần kiến thức ở trước; trò chơi, hư cấu, gợi ý và đáp án ở phụ lục, sau đó là nguồn tham khảo. PDF dàn theo khung hình–lời dẫn, đọc từ trái sang phải và từ trên xuống, có bìa minh họa, ảnh, sơ đồ, mục lục và số trang. Mỗi khung giữ liền lời dẫn, hình và chú thích. Thao tác này không đổi tiến độ hoặc các trang sách đã mở; bộ tạo PDF và font chỉ tải khi bấm nút.
+
 ## Công việc còn lại và giới hạn
 
-M5 triển khai thẻ câu chuyện; M6 khép lại hành trình và cảnh An–bà. Các hàm dữ liệu cho checkpoint sau M4 đã có, nhưng giao diện chưa mở. Xem lại kết truyện mới có con trỏ dữ liệu riêng. Chưa có tải PDF; công tắc âm thanh chỉ lưu lựa chọn, chưa phát nhạc/hiệu ứng. Build còn cảnh báo kích thước chunk Phaser.
+M5 triển khai thẻ câu chuyện; M6 khép lại hành trình và cảnh An–bà. Các hàm dữ liệu cho checkpoint sau M4 đã có, nhưng giao diện chưa mở. Xem lại kết truyện mới có con trỏ dữ liệu riêng. Công tắc âm thanh chỉ lưu lựa chọn, chưa phát nhạc/hiệu ứng. Build còn cảnh báo kích thước chunk Phaser và bộ tạo PDF tải riêng.
 
 Các báo cáo trình duyệt dùng Chromium, bàn phím và chạm giả lập; chưa thay cho thử với trẻ em, thiết bị thật, Safari/Firefox hoặc trình đọc màn hình. Kết quả lịch sử trong hồ sơ từng milestone không phải lượt kiểm tra mới cho mọi thay đổi sau đó.
 

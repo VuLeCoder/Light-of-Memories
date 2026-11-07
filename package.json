@@ -19,6 +19,7 @@
     "check:gac-rabbit-release": "node scripts/check-gac-rabbit-release.mjs"
   },
   "dependencies": {
+    "jspdf": "^4.2.1",
     "phaser": "^3.90.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

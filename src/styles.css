@@ -1104,3 +1104,12 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .book-navigation-position option { background: #14232c; color: #f0eadc; }
 
 .journey-route .stop-ready .stop-orb{border:2px solid #ffe0a0;box-shadow:0 0 18px #efd39b44}
+
+/* Keep the export action inside the existing book header row. */
+.book-topline { width: 100%; position: relative; bottom: auto; left: auto; }
+.book-topline > span:nth-child(2) { min-width: 0; }
+.book-download { margin-left: auto; flex-shrink: 0; padding: 6px 9px; border: 1px solid #c3ac7955; border-radius: 5px; background: #c3ac7912; color: #e5d4af; font: inherit; font-size: 12px; line-height: 1.5; letter-spacing: 0; }
+.book-download:hover { background: #c3ac7928; }
+.book-download:disabled { opacity: .65; cursor: wait; }
+.book-download-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.book-download-status.has-error { width: auto; height: auto; max-width: 100%; top: 100%; right: 0; z-index: 5; clip-path: none; white-space: normal; padding: 7px 10px; border: 1px solid #c3ac7955; border-radius: 5px; background: #21313a; color: #f0d7a8; font-size: 12px; letter-spacing: 0; }

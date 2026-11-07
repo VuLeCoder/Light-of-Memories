@@ -1,3 +1,4 @@
+import { BookTopline } from './components/BookTopline';
 import { startGacRabbitJourney, rabbitStops, type RabbitStop } from './content/levels/gac-troi-rabbit';
 import { GacTroiTrail, isGacTrailPhase } from './components/GacTroiTrail';
 import { gacMatchingIntroLength } from './content/levels/gac-troi-matching';
@@ -33,7 +34,7 @@ import { useWorkspaceFit } from './useWorkspaceFit';
 function BookPlaceholder({ language }: { language: Language }) {
   const t = copy[language];
   return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{t.bookTop}</span></div>
+    <BookTopline language={language} />
     <aside className="book-panel" lang={language} aria-labelledby="book-title">
       <div className="book-sheet">
         <div className="page-corner" aria-hidden="true" />

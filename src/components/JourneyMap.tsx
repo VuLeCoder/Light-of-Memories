@@ -1,3 +1,4 @@
+import { BookTopline } from './BookTopline';
 import { portraits } from '../content/assets';
 import { impactCredit, impactDate } from '../content/levels/gac-troi-impact';
 import { GacLightMap } from './GacLightMap';
@@ -20,7 +21,6 @@ import { challengeCopy } from '../content/levels/surveyor-challenges';
 import { memoryCount } from '../content/levels/surveyor-progress';
 import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
-import { copy } from '../content/i18n';
 import { getLevel, journeyStops, journeyStatus, type LevelId } from '../content/levels';
 import { SurveyorLevel, surveyorPlayCopy } from './SurveyorLevel';
 import type { SurveyorProgress } from '../content/levels/surveyor-progress';
@@ -148,7 +148,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   const ct = challengeCopy[language];
   const st = surveyorPlayCopy[language];
   if (level && status(level.id) === 'locked') return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <BookTopline language={language} />
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
       <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · {t.waiting}</span>
@@ -159,7 +159,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   if (pages[page]?.startsWith('gac-')) {
     const entry = getBookPage(pages[page])!;
     return <>
-      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <BookTopline language={language} />
       <aside className="book-panel" lang={language} aria-labelledby="gac-book-title"><div tabIndex={0} className="book-sheet journey-book">
         <BookPageLabel pageId={entry.id} language={language}/><div className="page-corner" aria-hidden="true"/>
         <span className="book-kicker">03 · LRO</span><h2 id="gac-book-title" tabIndex={-1}>{entry.title[language]}</h2>
@@ -187,7 +187,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   }
   const reality = realWorldPages.find(entry => entry.id === pages[page]);
   if (reality) return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <BookTopline language={language} />
     <aside className="book-panel" lang={language} aria-labelledby="reality-book-title">
       <div tabIndex={0} className="book-sheet journey-book book-reality">
         <div className="page-corner" aria-hidden="true" />
@@ -203,7 +203,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   </>;
   const archive = bookArchiveImages[pages[page] as keyof typeof bookArchiveImages];
   if (pages[page] === 'sparkle-repair-clue' || pages[page] === 'sparkle-ranging-clue') return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <BookTopline language={language} />
     <aside className="book-panel" lang={language} aria-labelledby="sparkle-clue-title"><div tabIndex={0} className={`book-sheet journey-book sparkle-science-book${pages[page] === 'sparkle-repair-clue' ? ' sparkle-repair-book' : ''}`}>
       <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" />
@@ -215,7 +215,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   if (sparklePhotoId !== undefined) {
     const photo = sparkleKeepsakes[sparklePhotoId];
     return <>
-      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <BookTopline language={language} />
       <aside className="book-panel" lang={language} aria-labelledby="sparkle-photo-title"><div tabIndex={0} className="book-sheet journey-book">
       <BookPageLabel pageId={pages[page]} language={language}/>
         <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{language === 'vi' ? 'Kỷ niệm cùng Lấp Lánh' : 'Memories with Sparkle'} · {sparklePhotoId + 1}/2</span>
@@ -227,7 +227,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
   if (clue || photo) {
     const id = (clue ?? photo)!;
     return <>
-      <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+      <BookTopline language={language} />
       <aside className="book-panel" lang={language} aria-labelledby="field-book-title"><div tabIndex={0} className="book-sheet journey-book field-book">
       <BookPageLabel pageId={pages[page]} language={language}/>
         <span className="book-kicker">{clue ? dt.book : dt.found} · {surveyorProgress.found.length}/3</span>
@@ -245,7 +245,7 @@ function JourneyBookPages({ gacTroiProgress, sparkleProgress, language, activeLe
     </>;
   }
   return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{copy[language].bookTop}</span></div>
+    <BookTopline language={language} />
     <aside className="book-panel" lang={language} aria-labelledby="book-title"><div tabIndex={0} className="book-sheet journey-book">
       <BookPageLabel pageId={pages[page]} language={language}/>
       <div className="page-corner" aria-hidden="true" /><span className="book-kicker">{b01 ? `B0${entry + 1} · Surveyor 3` : level && detail ? `${String(journeyStops.indexOf(level.id) + 1).padStart(2, '0')} · ${level.label}` : t.title}</span>
