@@ -2,7 +2,7 @@ import { migrateGacRabbit, readGacRabbit, type GacRabbitJourney } from './gac-tr
 import { gacMatchingIntroLength, gacSummaryLength, gacMemories, type GacFriend, type GacSite } from './gac-troi-matching';
 import { gacTroiMeetingLength } from './gac-troi-content';
 
-export const gacTroiPhases = ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-walk', 't03-map', 't03-story', 'gac-farewell', 'gac-free', 't04-slope', 't04-rock', 't04-banyan', 'reunion', 'cards-intro', 'cards', 'reflection', 'return-home', 'home', 'story-end'] as const;
+export const gacTroiPhases = ['meeting', 'matching', 'stories', 't02-intro', 't02-search', 't02-story', 't03-intro', 't03-walk', 't03-dark-intro', 't03-map', 't03-story', 'gac-farewell', 'gac-free', 't04-slope', 't04-rock', 't04-banyan', 'reunion', 'cards-intro', 'cards', 'reflection', 'return-home', 'home', 'story-end'] as const;
 export type GacTroiPhase = typeof gacTroiPhases[number];
 export const gacTroiFriends = ['surveyor', 'lap-lanh'] as const;
 export const gacRouteLandmarks = ['low-slope', 'split-rock', 'banyan-shadow'] as const;
@@ -38,7 +38,7 @@ function prefixOf<T extends string>(value: unknown, ids: readonly T[]): T[] {
 // Number of persisted dialogue turns, matching the finalized M0 script.
 export const gacDialogueLengths: Partial<Record<GacTroiPhase, number>> = {
   meeting: gacTroiMeetingLength, matching: gacMatchingIntroLength + 1, stories: gacSummaryLength,
-  't02-intro': 2, 't02-story': 4, 't03-intro': 3, 't03-story': 2, 'gac-farewell': 4,
+  't02-intro': 2, 't02-story': 4, 't03-intro': 3, 't03-dark-intro': 3, 't03-story': 2, 'gac-farewell': 4,
   reunion: 5, 'cards-intro': 1, reflection: 3, 'return-home': 1, home: 4,
 };
 function turnFor(p: Record<string, unknown>, phase: GacTroiPhase, matched: Friend[]): number {

@@ -65,3 +65,14 @@
 
 .rest-controls { justify-content:center; text-align:center; }
 .rest-controls > span { width:100%; }
+
+/* Keep the arrival conversation inside the scenery, above the touch surface. */
+.gac-rest > .dialogue { position:absolute; inset:auto 12px 12px; z-index:700; max-height:calc(100% - 24px); overflow:auto; padding:14px; border:1px solid #d2ba8155; border-radius:10px; }
+.gac-rest > .dialogue .dialogue-text { min-height:0; font-size:clamp(14px, 2cqw, 18px); line-height:1.5; }
+.gac-rest > .dialogue .dialogue-portrait { width:52px; height:66px; }
+.gac-rest > .dialogue .dialogue-footer { margin-top:8px; }
+@container (max-width:500px) {
+  .gac-rest > .dialogue { inset:auto 6px 6px; padding:8px; max-height:calc(100% - 12px); }
+  .gac-rest > .dialogue .dialogue-portrait { display:none; }
+  .gac-rest > .dialogue .dialogue-next { min-height:36px; padding:6px 10px; font-size:14px; }
+}

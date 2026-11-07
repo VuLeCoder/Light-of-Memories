@@ -35,6 +35,11 @@ const lines = {
     ['t03-intro-02', 'gacTroi', 'Các nhà khoa học dùng ảnh LROC để lập bản đồ ánh sáng và bóng tối gần cực nam Mặt Trăng.', 'Scientists use LROC pictures to map light and shadow near the Moon’s south pole.'],
     ['t03-intro-03', 'gacTroi', 'Mình dẫn Cuội một đoạn đi tìm chị Hằng nhé! Đi sang phải nào. Phía trước có ba ngọn đèn đang chờ Cuội thắp sáng.', 'Let me guide you part of the way to Hằng! Walk to the right. Three lanterns ahead are waiting for you to light them.'],
   ],
+  't03-dark-intro': [
+    ['t03-dark-01', 'cuoi', 'Ôi, dưới này tối quá! Gác Trời ơi, mình đi đâu bây giờ?', 'Oh, it is so dark down here! Sky Watcher, where should I go?'],
+    ['t03-dark-02', 'gacTroi', 'Cuội thấy ba đốm sáng nhỏ không? Đó là những ngọn đèn đang ngủ. Mình cùng đánh thức chúng nhé!', 'Can you see three tiny glimmers? Those are sleeping lanterns. Let’s wake them up!'],
+    ['t03-dark-03', 'gacTroi', 'Đi tới đèn số 1, rồi nhấn E để thắp nhé. Nếu dùng màn hình cảm ứng, chạm đất để đi, tới gần rồi chạm đèn. Thắp lần lượt cả ba, con đường sẽ sáng lên!', 'Walk to lantern 1 and press E to light it. On a touchscreen, tap the ground to walk, then tap the lantern when you are close. Light all three in order and the path will shine!'],
+  ],
   't03-story': [
     ['t03-done-01', 'cuoi', 'Qua triền đất thấp, tới tảng đá có khe, rồi tìm bóng cây đa.', 'Past the low slope, to the split rock, then look for the banyan’s shadow.'],
     ['t03-done-02', 'gacTroi', 'Đúng rồi. Mình gửi bản đồ ấy vào đèn của Cuội nhé.', 'That’s it. I’ll tuck the map into your lantern.'],

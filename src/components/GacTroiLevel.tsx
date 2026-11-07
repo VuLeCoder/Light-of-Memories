@@ -19,7 +19,7 @@ export function GacTroiLevel({ language, progress, onChange, onBack, onBook, onC
 }) {
   const vi = language === 'vi';
   const [mapVisible, setMapVisible] = useState(false);
-  const light = ['t03-walk', 't03-map', 't03-story'].includes(progress.phase);
+  const light = ['t03-walk', 't03-dark-intro', 't03-map', 't03-story'].includes(progress.phase);
   const lightDialogue = ['t03-intro', 'gac-farewell'].includes(progress.phase);
   const free = progress.phase === 'gac-free';
   const intro = progress.phase === 'matching' && progress.turn < gacMatchingIntroLength;

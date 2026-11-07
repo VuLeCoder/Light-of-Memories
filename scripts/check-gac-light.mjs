@@ -11,6 +11,10 @@ try {
   assert.equal(walk.phase, 't03-walk');
   assert.equal(readGacTroi(walk).phase, 't03-walk');
   assert.equal(gacPhaseAvailable('t03-walk'), true);
+  const dark = { ...walk, phase: 't03-dark-intro', turn: 1 };
+  assert.deepEqual(readGacTroi(dark), dark, 'Dark arrival conversation resumes at its saved turn');
+  assert.equal(gacPhaseAvailable(dark.phase), true);
+  assert.equal(advance({ ...dark, turn: 2 }).phase, 't03-map');
   assert.ok(p.bookUnlocks.includes('gac-book-light'));
   assert.equal(enter(p), p);
   for (const [i, item] of gacLightSections.entries()) {
@@ -38,7 +42,7 @@ try {
   assert.equal(replay.completedOnce, true); assert.equal(replay.farewellDone, false);
   assert.deepEqual(replay.routeLandmarks, []); assert.deepEqual(replay.bookUnlocks, p.bookUnlocks);
   assert.equal(enter(replay), replay, 'Earned light never bypasses the new farewell');
-  for (const phase of ['t03-intro', 't03-story', 'gac-farewell']) for (const language of ['vi', 'en']) {
+  for (const phase of ['t03-intro', 't03-dark-intro', 't03-story', 'gac-farewell']) for (const language of ['vi', 'en']) {
     assert.equal(gacLightDialogue(phase, language).length, gacDialogueLengths[phase]);
   }
   console.log('T03 verified: branch lighting, ordered landmark saves, farewell transactions, replay, dialogue lengths and T04 gate.');

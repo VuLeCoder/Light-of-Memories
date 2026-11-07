@@ -37,3 +37,5 @@ Game nghỉ dưới cây đa sau khi gặp Hằng; có trò chuyện lại, sác
 - `t03-map`: bầu trời và Gác Trời giữ sáng; nền chuyển mượt từ sáng qua tối tới đen ở nửa dưới. Cuội và ba đèn hiện mờ, ánh đèn dao động nhẹ chu kỳ 5 giây (tắt hiệu ứng khi giảm chuyển động).
 - Thắp đủ ba đèn: cảnh sáng dần trong 1,8 giây, tự mở `gac-farewell` sau 2,2 giây, không cần bấm nút tiếp. Mở menu sẽ tạm dừng chuyển hội thoại.
 - Sau cuộc trò chuyện mới về lộ trình, giữ nguyên điều kiện mở điểm đi tìm chị Hằng.
+
+- Khi Cuội sang vùng tối sau T02, hội thoại ngắn trong khung game giải thích ba ngọn đèn và cách tới gần, nhấn E (hoặc chạm đèn) để thắp theo thứ tự. Cuội tạm dừng trong hội thoại; tiến độ lời thoại được lưu. Chọn “Cùng thắp đèn nào!” để bắt đầu điều khiển; hướng dẫn thao tác vẫn ở footer chung.
