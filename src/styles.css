@@ -1102,3 +1102,5 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .book-sheet .book-hint-toggle { border: 1px solid #aa9873; border-radius: 5px; padding: 5px 12px; background: #e3d9bc; color: #574322; font-size: 14px; }
 .book-navigation-position select:focus-visible { outline: 2px solid #edc77e; outline-offset: 3px; }
 .book-navigation-position option { background: #14232c; color: #f0eadc; }
+
+.journey-route .stop-ready .stop-orb{border:2px solid #ffe0a0;box-shadow:0 0 18px #efd39b44}

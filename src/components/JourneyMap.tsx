@@ -1,3 +1,4 @@
+import { portraits } from '../content/assets';
 import { impactCredit, impactDate } from '../content/levels/gac-troi-impact';
 import { GacLightMap } from './GacLightMap';
 import { Fragment } from 'react';
@@ -36,6 +37,10 @@ export function JourneyMap({ onFindHang, gacTroiProgress, sparkleProgress, langu
   const detail = level?.text[language];
   const [selectedStop, setSelectedStop] = useState(0);
   const [entryFriend, setEntryFriend] = useState<LevelId>('surveyor');
+  const hangUnlocked = gacTroiProgress.completedOnce;
+  const selectedHang = hangUnlocked && selectedStop === journeyStops.length;
+  const hangLabel = language === 'vi' ? 'Chị Hằng' : 'Hằng';
+  const hangEnter = language === 'vi' ? 'Đi tìm chị Hằng' : 'Find Hằng';
   const selectedFriend = journeyStops[selectedStop];
   const selectedLevel = status(selectedFriend) === 'locked' ? undefined : getLevel(selectedFriend);
   const entryLevel = selectedLevel ?? getLevel(entryFriend)!;
@@ -50,14 +55,14 @@ export function JourneyMap({ onFindHang, gacTroiProgress, sparkleProgress, langu
   };
   if (activeLevel === 'surveyor') return <SurveyorLevel language={language} progress={surveyorProgress} onChange={onSurveyorChange} onReplay={onReplay} onBack={onBack} />;
   return <section className={`journey-view${level ? '' : ' journey-overview'}`} aria-labelledby="journey-title">
-    <header><span>{`★ ${Object.values(completed).filter(Boolean).length}`}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : t.title}</h2></header>
+    <header><span>{`★ ${Object.values(completed).filter(Boolean).length}`}/{journeyStops.length}</span><h2 id="journey-title">{level && detail ? detail.chapter : hangUnlocked ? (language === 'vi' ? 'Lộ trình của Cuội' : 'Cuội’s journey') : t.title}</h2></header>
     {level && detail ? <>
       <div className="surveyor-meeting"><img src={level.portrait} alt={detail.friend} /><div><p><b>Cuội:</b> {detail.intro}</p><p><b>{detail.friend}:</b> {detail.reply}</p><p>{detail.invitation}</p></div></div>
       <button onClick={onBack}>{t.back}</button>
     </> : <>
-      <p className="journey-lead">{t.lead}</p>
-      <div className="journey-route">
-        <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M133 110 Q267 20 400 65 T667 110" /></svg>
+      <p className="journey-lead">{hangUnlocked ? (language === 'vi' ? 'Đèn đã sáng đủ năm cánh! Cùng Cuội đi tìm chị Hằng nhé.' : 'All five points are shining! Join Cuội to find Hằng.') : t.lead}</p>
+      <div className={`journey-route${hangUnlocked ? ' journey-route-four' : ''}`}>
+        <svg viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d={hangUnlocked ? "M100 110 Q200 20 300 65 T500 110 T700 65" : "M133 110 Q267 20 400 65 T667 110"} /></svg>
         {journeyStops.map((id, index) => {
           const state = status(id);
           const friend = state === 'locked' ? undefined : getLevel(id);
@@ -71,13 +76,17 @@ export function JourneyMap({ onFindHang, gacTroiProgress, sparkleProgress, langu
             <small style={{ visibility: selectedStop === index ? 'visible' : 'hidden' }}>Cuội ✦</small>
           </button>;
         })}
+        {hangUnlocked && <button className="journey-stop stop-3 stop-ready" onClick={() => { setSelectedStop(journeyStops.length); setLocked(false); }} aria-pressed={selectedHang} aria-label={`4. ${hangLabel}. ${t.ready}`}>
+          <span className="stop-orb"><img src={portraits.chiHang.url} alt="" /></span>
+          <span>04 · {hangLabel}</span>
+          <small style={{ visibility: selectedHang ? 'visible' : 'hidden' }}>Cuội ✦</small>
+        </button>}
       </div>
-      <div className="journey-entry-action">{gacTroiProgress.completedOnce && <button className="journey-primary" onClick={onFindHang}>{language === 'vi' ? '04 · Đi tìm chị Hằng →' : '04 · Find Hằng →'}</button>}</div>
       <p className="journey-message" role="status">{[t.guide, t.prerequisite, t.locked].map((message, index) => {
         const visible = index === (locked ? selectedFriend ? 1 : 2 : 0);
-        return <span key={index} style={{ visibility: visible ? 'visible' : 'hidden' }} aria-hidden={!visible}>{message}</span>;
+        return <span key={index} style={{ visibility: visible ? 'visible' : 'hidden' }} aria-hidden={!visible}>{selectedHang && index === 0 ? (language === 'vi' ? 'Theo ánh đèn ông sao để tìm chị Hằng dưới cây đa.' : 'Follow the star lantern to find Hằng beneath the banyan.') : message}</span>;
       })}</p>
-      <div className="journey-entry-action"><button className="journey-primary" style={{ visibility: selectedLevel ? 'visible' : 'hidden' }} disabled={!selectedLevel} onClick={() => { if (selectedLevel) enterFriend(selectedLevel.id); }}>{entryLevel.text[language].enter} →</button></div>
+      <div className="journey-entry-action"><button className="journey-primary" style={{ visibility: selectedHang || selectedLevel ? 'visible' : 'hidden' }} disabled={!selectedHang && !selectedLevel} onClick={() => { if (selectedHang) onFindHang(); else if (selectedLevel) enterFriend(selectedLevel.id); }}>{selectedHang ? hangEnter : entryLevel.text[language].enter} →</button></div>
     </>}
   </section>;
 }
