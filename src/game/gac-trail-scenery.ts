@@ -112,19 +112,7 @@ function drawRabbitLandscape(scene: Phaser.Scene, phase: GameSceneId) {
     g.fillStyle(0x33434b,.2).fillEllipse(x,y,w,14);
     g.lineStyle(2,0xc3c1b5,.35).strokeEllipse(x,y-3,w,13);
   }
-  if (phase === 't04-slope') {
-    polygon(0x43545b,[600,416,632,387,670,374,706,347,750,352,794,384,836,416]);
-    polygon(0x9eaaa1,[620,408,670,374,706,347,750,352,779,380,713,369,684,394]);
-    polygon(0x758780,[684,394,713,369,779,380,836,416,730,414]);
-    g.lineStyle(2,0xc4c4ac,.6).lineBetween(670,374,706,347).lineBetween(706,347,750,352);
-  } else if (phase === 't04-rock') {
-    g.fillStyle(0x263740,.3).fillEllipse(647,421,225,24);
-    polygon(0x52656c,[546,416,558,346,590,303,629,291,672,311,710,371,725,417]);
-    polygon(0xa5ada5,[558,346,590,303,629,291,651,314,617,349,582,361]);
-    polygon(0x82928d,[617,349,651,314,672,311,710,371,725,417,647,408]);
-    polygon(0x263740,[629,297,617,346,636,367,625,416,646,416,648,363,630,342,642,309]);
-    g.lineStyle(2,0xc5c8b5,.55).lineBetween(590,303,629,291).lineBetween(651,314,672,311);
-  } else {
+  if (phase === 't04-banyan' || phase === 'reunion') {
     g.fillStyle(0x263740,.3).fillEllipse(743,428,280,32);
     // Organic trunk and interlocking foliage echo the banyan of the opening.
     polygon(0x655b46,[683,424,710,395,722,302,709,250,731,238,747,293,759,244,777,246,758,331,769,402,806,426,751,414,735,386,723,415]);

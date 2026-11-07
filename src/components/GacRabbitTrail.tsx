@@ -5,21 +5,17 @@ import { applyGacRabbitAction, type RabbitAction, type RabbitStop } from '../con
 import { spriteSources, cuoiWalkFrames } from '../content/assets';
 import { GacCompanion } from './GacCompanion';
 import { GacRabbitBackdrop } from './GacRabbitBackdrop';
-import { Rabbit, RabbitLantern } from './GacRabbitArt';
+import { Rabbit, RabbitLantern, TrailRock, TrailGift } from './GacRabbitArt';
 import './gac-rabbit.css';
+import { rabbitTrailLayouts } from '../content/levels/gac-rabbit-layout';
 
 type Point = { x: number; y: number };
-const places = {
-  slope: { x: 725, y: 400, vi: 'đôi tai trắng sau triền đất thấp', en: 'white ears behind the low slope' },
-  rock: { x: 650, y: 435, vi: 'chiếc đuôi trắng bên tảng đá có khe', en: 'a white tail beside the split rock' },
-  banyan: { x: 675, y: 450, vi: 'đôi tai đang nhúc nhích dưới cây đa', en: 'wiggling ears beneath the banyan' },
-};
 const distance = (a: Point, b: Point) => Math.hypot(a.x-b.x, a.y-b.y);
 export function GacRabbitTrail({ language, progress, onChange, onBack, paused = false }: {
   language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void; onBack: () => void; paused?: boolean;
 }) {
   const j = progress.rabbitJourney!;
-  const stop = j.stage as RabbitStop, vi = language === 'vi', place = places[stop];
+  const stop = j.stage as RabbitStop, vi = language === 'vi', layout = rabbitTrailLayouts[stop], place = layout.rabbit;
   const root = useRef<HTMLDivElement>(null);
   const keys = useRef(new Set<string>());
   const destination = useRef<Point | null>(null);
@@ -28,7 +24,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const [message, setMessage] = useState('');
   const [running, setRunning] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const gift = { x: 425, y: 455 };
+  const gift = layout.gift;
   const guided = j.guidedStops?.includes(stop);
   const collected = j.gifts?.includes(stop);
   const latest = useRef({ progress, paused, running, stop });
@@ -103,6 +99,19 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     return () => { cancelAnimationFrame(raf); clearTimeout(timer.current); window.removeEventListener('blur',clear); };
   }, []);
   const frame = pose.frame < 0 ? spriteSources[2].frame : cuoiWalkFrames[pose.frame];
+  // Same trimmed-frame fist anchors and wrist angles as PreviewScene.syncLanternGrip.
+  const hands = [[139,132],[114,130],[132,132],[139,130],[119,132],[132,134]];
+  const hand = pose.frame < 0 ? [106,154] : hands[pose.frame];
+  const angle = (pose.frame < 0 ? .68 : [.62,.48,.52,.64,.48,.54][pose.frame]) * 180 / Math.PI;
+  const player = <g key="cuoi" transform={`translate(${pose.x} ${pose.y}) scale(${pose.facing} 1)`}>
+    <g transform={`translate(${(hand[0]-frame.width/2)*.62} ${(hand[1]-frame.height)*.62}) rotate(${angle}) translate(0 -27)`}><RabbitLantern lit local/></g>
+    <svg x={-frame.width*.31} y={-frame.height*.62} width={frame.width*.62} height={frame.height*.62} viewBox={`0 0 ${frame.width} ${frame.height}`}><image href={spriteSources[2].url} x={-frame.x} y={-frame.y} width="1536" height="1024"/></svg>
+  </g>;
+  const foreground = [
+    ...layout.rocks.map(rock => ({ id: rock.id, y: rock.y, art: <TrailRock key={rock.id} rock={rock}/> })),
+    { id: 'cuoi', y: pose.y, art: player },
+    ...(!collected ? [{ id: 'gift', y: gift.y, art: <g key="gift" className="rabbit-gift-art" transform={`translate(${gift.x} ${gift.y})`}><TrailGift kind={stop}/></g> }] : []),
+  ].sort((a,b) => a.y-b.y);
   const prompt = j.rabbitFound ? (vi ? 'Đi sang phải, nhấn E để theo Thỏ Ngọc →' : 'Walk right and press E to follow Rabbit →') : guided ? (vi ? `Tìm ${place.vi}. Đến gần rồi nhấn E: Ú òa!` : `Find ${place.en}. Get close and press E!`) : (vi ? 'Nhấn H hoặc Gợi ý để hỏi Gác Trời: Thỏ Ngọc trốn ở đâu nhỉ?' : 'Press H or Hint to ask Sky Watcher where Rabbit is hiding!');
   return <section className="gac-rabbit rabbit-play" hidden={paused} lang={language}
     onKeyDown={e => { if (e.key.toLowerCase() === 'h') { e.preventDefault(); e.stopPropagation(); if (!e.repeat) askGuide(); } }}>
@@ -114,13 +123,10 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       <GacRabbitBackdrop stop={stop} hang={false}/>
       <GacCompanion/>
       <svg className="rabbit-player" viewBox="0 0 960 540" aria-hidden="true">
-        <g transform={`translate(${pose.x} ${pose.y}) scale(${pose.facing} 1)`}>
-          <svg x={-frame.width*.31} y={-frame.height*.62} width={frame.width*.62} height={frame.height*.62} viewBox={`0 0 ${frame.width} ${frame.height}`}><image href={spriteSources[2].url} x={-frame.x} y={-frame.y} width="1536" height="1024"/></svg>
-          <g transform="translate(-119 -222) scale(.55)"><RabbitLantern lit/></g>
-        </g>
+        {foreground.map(item => item.art)}
       </svg>
-      {(!j.rabbitFound || running) && <div className={`rabbit-figure ${running ? 'rabbit-flee' : ''}`} style={{left:`${place.x/9.6}%`,top:`${(place.y-35)/5.4}%`}}><Rabbit hidden={!running} tail={stop==='rock'}/></div>}
-      {!collected && <span className="rabbit-present" style={{left:`${gift.x/9.6}%`,top:`${gift.y/5.4}%`}} aria-label={vi ? 'Quà tặng' : 'Present'}>{stop==='slope'?'🥕':stop==='rock'?'🥮':'🌼'}</span>}
+      {(!j.rabbitFound || running) && <div className={`rabbit-figure ${running ? 'rabbit-flee' : ''}`} style={{left:`${place.x/9.6}%`,top:`${(place.y-65)/5.4}%`}}><Rabbit hidden={!running} tail={false}/></div>}
+
       {j.rabbitFound && !running && <span className="rabbit-exit">→</span>}
     </div>
     <div className="rabbit-play-message" role="status" aria-live="polite"><strong>{prompt}</strong>{message && <p>{message}</p>}</div>

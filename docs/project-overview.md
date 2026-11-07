@@ -54,6 +54,7 @@ Các báo cáo trình duyệt dùng Chromium, bàn phím và chạm giả lập;
 
 ## Tài liệu chính
 
+- [Kế hoạch âm thanh bằng nhạc cụ truyền thống Việt Nam](plan/am-thanh-nhac-cu-viet-nam.md) — ý tưởng và milestones AT-0–AT-3, chưa triển khai.
 - [Tuyến ba người bạn](three-friends-journey.md)
 - [M1: tiến trình](done/M1_Gac_Troi_progress.md), [M2: T02 ban đầu](done/M2_T02.md), [T02 hiện tại](done/T02_CACH_CHOI_MOI.md)
 - [M3: T03 và kết Gác Trời](done/M3_T03.md), [M4: T04 và gặp chị Hằng](done/M4_T04.md)
