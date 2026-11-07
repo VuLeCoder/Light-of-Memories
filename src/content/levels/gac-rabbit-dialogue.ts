@@ -23,8 +23,8 @@ const lines = [
   {
     "id": "rabbit-bridge-01",
     "speaker": "cuoi",
-    "vi": "Ơ, Thỏ Ngọc đang trốn sau triền đất kìa!",
-    "en": "Oh, Moon Rabbit is hiding behind the slope!"
+    "vi": "Ơ, Thỏ Ngọc vừa chạy vào bãi đá kia rồi! Mình đi tìm bạn ấy nhé!",
+    "en": "Oh, Moon Rabbit just ran into those rocks! Let’s go find our friend!"
   },
   {
     "id": "rabbit-bridge-02",
@@ -35,8 +35,8 @@ const lines = [
   {
     "id": "rabbit-bridge-03",
     "speaker": "gacTroi",
-    "vi": "Đi đến gần Thỏ rồi nhấn E để chơi ú òa nhé! Trên đường có quà cho chị Hằng, thích thì mình nhặt mang theo.",
-    "en": "Walk close to Rabbit and press E for peekaboo! We can also collect presents for Hằng along the way."
+    "vi": "Đi gần tảng đá rồi nhấn E để tìm Thỏ và chơi ú òa nhé! Trên đường có quà cho chị Hằng, thích thì mình nhặt mang theo.",
+    "en": "Walk close to a rock and press E to find Rabbit and play peekaboo! We can also collect presents for Hằng along the way."
   },
   {
     "id": "rabbit-reunion-01",

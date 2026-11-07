@@ -91,12 +91,10 @@
 .rabbit-play-message { grid-area:1/1; align-self:start; z-index:5; margin:75px 18px 0; padding:10px 14px; max-width:65%; background:#182c34ed; border:1px solid #d2ba8155; border-radius:10px; pointer-events:none; font-size:clamp(12px,1.8cqw,17px); }
 .rabbit-play-message p { margin:6px 0 0; }
 .rabbit-exit { position:absolute; right:4%; bottom:19%; font-size:42px; color:#ffe3a2; }
-.rabbit-flee { animation:rabbit-flee 1.4s ease-in forwards; }
-@keyframes rabbit-flee { 25% { translate:35px -20px; } 50% { translate:90px 0; } 75% { translate:160px -20px; } 100% { translate:320px 0; opacity:0; } }
 @container (max-width:800px) { .rabbit-play .rabbit-hud { grid-area:1/1; } .rabbit-play .rabbit-play-message { grid-area:2/1; max-width:none; margin:4px 10px; } .rabbit-play .rabbit-walk-view { grid-area:3/1; } }
 /* Rocks and Cuội share a ground-depth layer; ears peek from behind its stones. */
 .rabbit-play .rabbit-figure { z-index:2; }
-.rabbit-play .rabbit-figure.rabbit-flee { z-index:4; }
+.rabbit-play .rabbit-figure.rabbit-revealed { z-index:4; }
 .rabbit-player { overflow:visible; }
 
 /* Feedback never changes the playfield height; long dialogue scrolls in its card. */

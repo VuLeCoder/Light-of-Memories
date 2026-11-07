@@ -6,7 +6,9 @@ import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { EarthDialogue } from './EarthDialogue';
 import { GacRabbitBackdrop, RabbitCuoi } from './GacRabbitBackdrop';
 import './gac-rabbit.css';
-import { Rabbit, RabbitLantern } from './GacRabbitArt';
+import { Rabbit, TrailRock } from './GacRabbitArt';
+import { GacCompanion } from './GacCompanion';
+import { rabbitTrailLayouts } from '../content/levels/gac-rabbit-layout';
 
 /** Dialogue and repeatable rest scene share the saved journey, never the legacy cursor. */
 export function GacRabbitStory({ language, progress, onChange, onBack, onBook, paused }: {
@@ -45,10 +47,11 @@ export function GacRabbitStory({ language, progress, onChange, onBack, onBook, p
   return <section className="ending-scene gac-rabbit rabbit-story" hidden={paused} lang={language} aria-label={vi ? 'Câu chuyện Gác Trời' : 'Sky Watcher’s story'}>
     <div className="rabbit-hud"><span>{vi ? 'Gác Trời · Tín hiệu từ quỹ đạo' : 'Sky Watcher · A signal from orbit'}</span><nav><button onClick={onBack} disabled={paused}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></div>
     <div className="rabbit-view">
-      <GacRabbitBackdrop stop={together ? 'banyan' : 'slope'} hang={together} orbit={stage === 'real'}/><RabbitCuoi/>
+      <GacRabbitBackdrop stop={together ? 'banyan' : 'slope'} hang={together} orbit={stage === 'real'}/><RabbitCuoi lit={lit}/>
+      {stage === 'bridge' && <GacCompanion/>}
       <svg className="rabbit-rest-art" viewBox="0 0 960 540" aria-hidden="true">
-        {stage !== 'real' && <foreignObject x={together ? 565 : 695} y={together ? 350 : 270} width="80" height="104"><Rabbit sleeping={together} hidden={!together}/></foreignObject>}
-        <RabbitLantern lit={lit}/>
+        {stage === 'bridge' && rabbitTrailLayouts.slope.rocks.map(rock => <TrailRock key={rock.id} rock={rock}/>)}
+        {together && <foreignObject x="565" y="350" width="80" height="104"><Rabbit sleeping/></foreignObject>}
         {stage === 'farewell' && j.turn >= 2 && <path className={lit ? 'rabbit-gift is-lit' : 'rabbit-gift'} fill="#ffe3a2" d="m295 345 5 10 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2Z"/>}
       </svg>
     </div>

@@ -27,7 +27,8 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const [running, setRunning] = useState(false);
   const [dialogue, setDialogue] = useState(false);
   const [rabbitWaiting, setRabbitWaiting] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const flight = useRef(0);
+  const [flightPose, setFlightPose] = useState({ x: 0, lift: 0, squash: 1 });
   const gift = layout.gift;
   const collected = j.gifts?.includes(stop);
   const latest = useRef({ progress, paused: paused || dialogue, running, stop });
@@ -66,9 +67,14 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     } else if (nearby?.id === layout.rabbitRock && !j.rabbitFound) {
       commit({ type: 'peek', stop }); setRabbitWaiting(true); setDialogue(true);
       const giftRock = layout.rocks.find(rock => rock.id === layout.giftRock)!;
+      const greetings = {
+        slope: vi ? 'Ú òa! Bạn tìm thấy mình rồi! Thử tìm mình ở chỗ tiếp theo nhé!' : 'Peekaboo! You found me! Try my next hiding spot!',
+        rock: vi ? 'Ôi, Cuội tinh mắt quá! Mình còn một chỗ trốn nữa cơ!' : 'Wow, sharp eyes, Cuội! I have one more hiding spot!',
+        banyan: vi ? 'Ú òa! Cuội tìm được mình cả ba lần rồi! Giờ mình dẫn bạn đến gặp chị Hằng nhé!' : 'Peekaboo! You found me all three times! Now I’ll take you to Hằng!',
+      };
       setMessage(vi
-        ? `Thỏ Ngọc: Ú òa! Bạn tìm thấy mình rồi! ${collected ? 'Bạn đã lấy quà rồi, giỏi quá!' : `Mình còn giấu quà ở ${giftRock.vi} đấy!`} Theo mình sang phải nhé!`
-        : `Rabbit: Peekaboo! You found me! ${collected ? 'You found the gift too! Well done!' : `I hid a gift at ${giftRock.en}!`} Follow me to the right!`);
+        ? `Thỏ Ngọc: ${greetings[stop]} ${collected ? 'Bạn đã nhặt quà rồi, giỏi quá!' : `Có quà ở ${giftRock.vi}, bạn có thể nhặt mang theo nhé!`} Đi sang mép phải rồi nhấn E để theo mình nhé!`
+        : `Rabbit: ${greetings[stop]} ${collected ? 'You found the gift too! Well done!' : `There is a gift at ${giftRock.en}; you can bring it along!`} Walk to the right edge and press E to follow me!`);
 
     } else if (j.rabbitFound && position.current.x > 820) {
       // Old saves may still contain unfinished star receipts.
@@ -88,7 +94,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   useEffect(() => {
     position.current = { x: 180, y: 445 }; destination.current = null; pendingRock.current = null; keys.current.clear();
     setPose({ x: 180, y: 445, frame: -1, facing: 1 }); setRunning(false);
-    setMessage(''); setDialogue(false); setRabbitWaiting(false); clearTimeout(timer.current); root.current?.focus({ preventScroll: true });
+    setMessage(''); setDialogue(false); setRabbitWaiting(false); flight.current = 0; setFlightPose({ x: 0, lift: 0, squash: 1 }); root.current?.focus({ preventScroll: true });
   }, [stop]);
   useEffect(() => {
     if (paused || dialogue) { keys.current.clear(); destination.current = null; pendingRock.current = null; }
@@ -103,13 +109,23 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     setDialogue(false); setMessage('');
     if (rabbitWaiting) {
       setRabbitWaiting(false); setRunning(true);
-      timer.current = setTimeout(() => setRunning(false), 1400);
+      flight.current = 0;
     }
   }
   useEffect(() => {
     let raf = 0, last = 0, elapsed = 0, facing = 1;
     const tick = (now: number) => {
       const dt = Math.min((now-last)/1000 || 0, .04); last = now;
+      if (!latest.current.paused && latest.current.running) {
+        flight.current += dt;
+        const t = Math.min(1, flight.current / 2.2);
+        const travel = Math.max(0, (t - .1) / .9);
+        const hop = (travel * 4) % 1;
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        setFlightPose({ x: travel, lift: reduced ? 0 : Math.sin(hop * Math.PI) * 28,
+          squash: reduced ? 1 : t < .1 ? 1 - Math.sin(t / .1 * Math.PI) * .15 : 1 - Math.pow(Math.abs(hop - .5) * 2, 8) * .12 });
+        if (t >= 1) setRunning(false);
+      }
       if (!latest.current.paused && !latest.current.running) {
         const k = keys.current;
         let dx = Number(k.has('arrowright') || k.has('d'))-Number(k.has('arrowleft') || k.has('a'));
@@ -131,7 +147,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     };
     const clear = () => { keys.current.clear(); destination.current=null; pendingRock.current=null; };
     window.addEventListener('blur',clear); raf=requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); clearTimeout(timer.current); window.removeEventListener('blur',clear); };
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('blur',clear); };
   }, []);
   const frame = pose.frame < 0 ? spriteSources[2].frame : cuoiWalkFrames[pose.frame];
   // Same trimmed-frame fist anchors and wrist angles as PreviewScene.syncLanternGrip.
@@ -166,7 +182,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       <svg className="rabbit-player" viewBox="0 0 960 540" aria-hidden="true">
         {foreground.map(item => item.art)}
       </svg>
-      {(!j.rabbitFound || rabbitWaiting || running) && <div className={`rabbit-figure ${running ? 'rabbit-flee' : ''}`} style={{left:`${place.x/9.6}%`,top:`${(place.y-65)/5.4}%`}}><Rabbit hidden={!running} tail={false}/></div>}
+      {(!j.rabbitFound || rabbitWaiting || running) && <div className={`rabbit-figure ${running || rabbitWaiting ? 'rabbit-revealed' : ''}`} style={{left:`${(place.x + (running ? flightPose.x * (1030-place.x) : 0))/9.6}%`,top:`${(place.y-(running || rabbitWaiting ? 45 : 65)-(running ? flightPose.lift : 0))/5.4}%`}}><div style={{ transform: `scaleY(${running ? flightPose.squash : 1})`, transformOrigin: 'bottom' }}><Rabbit hidden={!running && !rabbitWaiting} tail={false}/></div></div>}
 
       {nearbyPrompt && !running && !dialogue && <span className="rabbit-nearby">{nearbyPrompt}</span>}
       {j.rabbitFound && !running && <span className="rabbit-exit">→</span>}
