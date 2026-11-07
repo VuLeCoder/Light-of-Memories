@@ -108,7 +108,7 @@ Cập nhật 06/11/2026: **M4: T04 và gặp lại chị Hằng đã triển kha
 - M5–M6 sẽ triển khai thẻ câu chuyện và cảnh An–bà. Các checkpoint đã có nhưng màn chưa hoàn thiện chưa mở trong game.
 - Xem lại kết truyện đã có con trỏ dữ liệu tạm riêng; giao diện xem lại được nối khi nội dung kết truyện hoàn thành.
 - Sách đã có dữ liệu phân loại và thứ tự xuất bản; chưa có chức năng tải PDF.
-- Công tắc âm thanh hiện chỉ lưu lựa chọn, chưa phát nhạc hoặc hiệu ứng.
+- Có nhạc nền và hiệu ứng tự tổng hợp, lấy cảm hứng từ nhạc cụ Việt Nam. Dùng nút Âm thanh trong menu; nhạc bắt đầu sau thao tác và dừng theo menu/tab. Đây là âm mô phỏng, chưa dùng bản thu nhạc cụ thật.
 - Bản build còn cảnh báo kích thước gói Phaser.
 
 ### Tài liệu tham khảo
@@ -122,3 +122,5 @@ Cập nhật 06/11/2026: **M4: T04 và gặp lại chị Hằng đã triển kha
 - [Phong cách hình ảnh và hướng dẫn sinh ảnh cho AI](docs/visual-style.md)
 - [Quy ước thư mục ảnh](docs/image-assets.md)
 - [Kiểm kê ảnh và thông tin sprite](docs/assets-inventory.md)
+
+Chi tiết đợt cập nhật: [Âm thanh và đoạn tìm chị Hằng](docs/done/am-thanh-va-doan-ket.md).

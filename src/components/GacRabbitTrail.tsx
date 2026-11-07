@@ -1,3 +1,4 @@
+import { gameAudio } from '../audio/game-audio';
 import { useEffect, useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
 import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
@@ -27,6 +28,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const [running, setRunning] = useState(false);
   const [dialogue, setDialogue] = useState(false);
   const [rabbitWaiting, setRabbitWaiting] = useState(false);
+  useEffect(() => { gameAudio.setNarration(dialogue); return () => gameAudio.setNarration(false); }, [dialogue]);
   const flight = useRef(0);
   const [flightPose, setFlightPose] = useState({ x: 0, lift: 0, squash: 1, stride: 0 });
   const gift = layout.gift;
@@ -37,7 +39,11 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     const p = latest.current.progress;
     const next = applyGacRabbitAction(p, action);
     latest.current.progress = next;
-    if (next !== p) onChange(next);
+    if (next !== p) {
+      if (action.type === 'gift') gameAudio.cue('gift');
+      if (action.type === 'peek') gameAudio.cue('rabbit');
+      onChange(next);
+    }
   }
   const rockPoint = (rock: RabbitRock): Point => ({ x: rock.x, y: Math.min(495, rock.y + 24) });
   const nearestRock = layout.rocks.map(rock => ({ rock, distance: distance(pose, rockPoint(rock)) }))
@@ -45,11 +51,12 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   function askGuide() {
     if (paused || running || dialogue) return;
     keys.current.clear(); destination.current = null; pendingRock.current = null;
+    gameAudio.cue('hint');
     commit({ type: 'guide', stop });
     setDialogue(true);
     const giftRock = layout.rocks.find(rock => rock.id === layout.giftRock)!;
     setMessage(!j.rabbitFound
-      ? (vi ? `Gác Trời: Mình thấy ${place.vi}! Đến gần tảng đá rồi nhấn E nhé!` : `Sky Watcher: I see ${place.en}! Go to the rock and press E!`)
+      ? (vi ? `Gác Trời: Mình thấy ${place.vi}. Có đôi tai vừa động đậy!` : `Sky Watcher: I see ${place.en}. Those ears just moved!`)
       : !collected
         ? (vi ? `Gác Trời: Còn quà ở ${giftRock.vi}. Cuội có thể lấy quà hoặc đi sang phải theo Thỏ nhé!` : `Sky Watcher: A gift is at ${giftRock.en}. Collect it or head right after Rabbit!`)
         : (vi ? 'Gác Trời: Thỏ Ngọc chạy sang phải rồi! Mình cùng theo bạn ấy nhé!' : 'Sky Watcher: Rabbit went right! Let’s follow!'));
@@ -68,13 +75,11 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       commit({ type: 'peek', stop }); setRabbitWaiting(true); setDialogue(true);
       const giftRock = layout.rocks.find(rock => rock.id === layout.giftRock)!;
       const greetings = {
-        slope: vi ? 'Ú òa! Bạn tìm thấy mình rồi! Thử tìm mình ở chỗ tiếp theo nhé!' : 'Peekaboo! You found me! Try my next hiding spot!',
-        rock: vi ? 'Ôi, Cuội tinh mắt quá! Mình còn một chỗ trốn nữa cơ!' : 'Wow, sharp eyes, Cuội! I have one more hiding spot!',
-        banyan: vi ? 'Ú òa! Cuội tìm được mình cả ba lần rồi! Giờ mình dẫn bạn đến gặp chị Hằng nhé!' : 'Peekaboo! You found me all three times! Now I’ll take you to Hằng!',
+        slope: vi ? 'Ú òa! Cuội tinh mắt thật. Theo dấu chân mình tới khe đá nhé!' : 'Peekaboo! Sharp eyes, Cuội. Follow my footprints to the split rock!',
+        rock: vi ? 'Đôi tai lại làm lộ mình rồi! Chị Hằng đang đợi gần bóng cây đa đấy.' : 'My ears gave me away again! Hằng is waiting by the banyan’s shadow.',
+        banyan: vi ? 'Bạn tìm tới rồi! Sau tán lá kia là chị Hằng. Mình cùng đến chào chị nhé.' : 'You made it! Hằng is just beyond those leaves. Let’s say hello.',
       };
-      setMessage(vi
-        ? `Thỏ Ngọc: ${greetings[stop]} ${collected ? 'Bạn đã nhặt quà rồi, giỏi quá!' : `Có quà ở ${giftRock.vi}, bạn có thể nhặt mang theo nhé!`} Đi sang mép phải rồi nhấn E để theo mình nhé!`
-        : `Rabbit: ${greetings[stop]} ${collected ? 'You found the gift too! Well done!' : `There is a gift at ${giftRock.en}; you can bring it along!`} Walk to the right edge and press E to follow me!`);
+      setMessage(`${vi ? 'Thỏ Ngọc' : 'Moon Rabbit'}: ${greetings[stop]}`);
 
     } else if (j.rabbitFound && position.current.x > 820) {
       // Old saves may still contain unfinished star receipts.
@@ -82,6 +87,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       commit({ type: 'wake', stop, star: j.starsAwake+2 });
       commit({ type: 'next', stage: stop });
     } else {
+      if (nearby) gameAudio.cue('retry');
       setMessage(nearby
         ? (vi ? 'Cuội: Sau tảng đá này không còn gì. Mình thử tảng khác nhé!' : 'Cuội: Nothing else behind this rock. Let’s try another!')
         : (vi ? 'Cuội: Mình đến gần một tảng đá rồi nhấn E nhé. Cần giúp thì nhấn H!' : 'Cuội: Let’s get close to a rock and press E. Press H for help!'));
@@ -163,6 +169,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     { id: 'cuoi', y: pose.y, art: player },
     ...(!collected ? [{ id: 'gift', y: gift.y, art: <g key="gift" className="rabbit-gift-art" transform={`translate(${gift.x} ${gift.y})`}><TrailGift kind={stop}/></g> }] : []),
   ].sort((a,b) => a.y-b.y);
+  const placeName = vi ? ({ slope: 'Vệt chân bên triền đất', rock: 'Đôi tai sau khe đá', banyan: 'Bóng đa ở cuối đường' })[stop] : ({ slope: 'Footprints on the slope', rock: 'Ears behind the rocks', banyan: 'The banyan at the end' })[stop];
   const prompt = j.rabbitFound
     ? (vi ? 'Có thể tìm quà, hoặc sang phải và nhấn E để theo Thỏ →' : 'Find a gift, or walk right and press E to follow Rabbit →')
     : (vi ? 'Đi gần đá rồi nhấn E, hoặc chạm tảng đá để Cuội tìm. Gợi ý: H.' : 'Walk to a rock and press E, or tap a rock to search. Hint: H.');
@@ -172,13 +179,14 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
 
   return <section className="gac-rabbit rabbit-play" hidden={paused} lang={language} data-paused={paused}
     onKeyDown={e => { if (e.key.toLowerCase() === 'h') { e.preventDefault(); e.stopPropagation(); if (!e.repeat) askGuide(); } }}>
-    <header className="rabbit-hud"><span>{vi ? 'Ú òa cùng Thỏ Ngọc' : 'Peekaboo with Rabbit'} · {j.completedStops+1}/3 · {vi ? 'Quà' : 'Gifts'} {j.gifts?.length ?? 0}/3</span><nav aria-label={vi ? 'Điều khiển hành trình' : 'Journey controls'}><button onClick={askGuide} disabled={paused || running || dialogue} aria-keyshortcuts="H">{vi ? 'Gợi ý' : 'Hint'}</button><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></header>
+    <header className="rabbit-hud"><div className="rabbit-chapter"><small>{vi ? 'ĐƯỜNG TỚI CHỊ HẰNG' : 'THE WAY TO HẰNG'} · {j.completedStops+1}/3</small><strong>{placeName}</strong></div><nav aria-label={vi ? 'Điều khiển hành trình' : 'Journey controls'}><button onClick={askGuide} disabled={paused || running || dialogue} aria-keyshortcuts="H">{vi ? 'Gợi ý' : 'Hint'}</button><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></header>
     <div ref={root} className="rabbit-view rabbit-walk-view" tabIndex={0} role="group" aria-label={prompt}
       onKeyDown={e => { const key=e.key.toLowerCase(); if (['arrowleft','arrowright','arrowup','arrowdown','w','a','s','d','e'].includes(key)) { e.preventDefault(); e.stopPropagation(); if (!paused && !dialogue) { if (key==='e') { if (!e.repeat) interact.current(); } else keys.current.add(key); } } }}
       onKeyUp={e => keys.current.delete(e.key.toLowerCase())} onBlur={() => keys.current.clear()}
       onPointerDown={e => { if (paused || running || dialogue) return; root.current?.focus({preventScroll:true}); const r=e.currentTarget.getBoundingClientRect(); const point={x:(e.clientX-r.left)/r.width*960,y:(e.clientY-r.top)/r.height*540}; const tappedRock=layout.rocks.find(rock => Math.abs(point.x-rock.x)<rock.width*.6 && point.y>=rock.y-rock.height && point.y<=rock.y+28); pendingRock.current=null; if (tappedRock) { pendingRock.current=tappedRock.id; destination.current=rockPoint(tappedRock); } else if (distance(point,position.current)<55) interact.current(); else destination.current={x:Math.max(70,Math.min(900,point.x)),y:Math.max(360,Math.min(495,point.y))}; }}>
       <GacRabbitBackdrop stop={stop} hang={false}/>
       <GacCompanion/>
+      <svg className="rabbit-clue-path" viewBox="0 0 960 540" aria-hidden="true">{Array.from({length:5},(_,i)=><g key={i} transform={`translate(${place.x-110+i*18} ${place.y+32+(i%2)*6}) rotate(-15)`}><ellipse rx="4" ry="2"/><ellipse cx="7" cy="-3" rx="4" ry="2"/></g>)}</svg>
       <svg className="rabbit-player" viewBox="0 0 960 540" aria-hidden="true">
         {foreground.map(item => item.art)}
       </svg>
@@ -186,8 +194,9 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       {(!j.rabbitFound || rabbitWaiting || running) && <div className={`rabbit-figure ${running || rabbitWaiting ? 'rabbit-revealed' : ''}`} style={{left:`${(place.x + (running ? flightPose.x * (1030-place.x) : 0))/9.6}%`,top:`${(place.y-(running || rabbitWaiting ? 45 : 65)-(running ? flightPose.lift : 0))/5.4}%`}}><div className={rabbitWaiting ? 'rabbit-pop' : undefined} style={{ transform: `scale(${running ? 1 / flightPose.squash : 1}, ${running ? flightPose.squash : 1})`, transformOrigin: 'bottom' }}><Rabbit hidden={!running && !rabbitWaiting} hopping={running} stride={flightPose.stride}/></div></div>}
 
       {nearbyPrompt && !running && !dialogue && <span className="rabbit-nearby">{nearbyPrompt}</span>}
-      {j.rabbitFound && !running && <span className="rabbit-exit">→</span>}
+      {j.rabbitFound && !running && !dialogue && <button className="rabbit-follow" onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.stopPropagation();commit({type:'next',stage:stop});}}>{stop==='banyan'?(vi?'Gặp chị Hằng':'Meet Hằng'):(vi?'Theo Thỏ Ngọc':'Follow Rabbit')} →</button>}
     </div>
+    <div className="rabbit-pocket" aria-label={vi?'Giỏ quà cho chị Hằng':'Gifts for Hằng'}><span>{vi?'Giỏ quà':'Gift basket'}</span>{(['slope','rock','banyan'] as const).map(kind=><svg key={kind} viewBox="-28 -50 56 64" className={j.gifts?.includes(kind)?'is-kept':''} role="img" aria-label={`${vi?({slope:'Cà rốt',rock:'Bánh trăng',banyan:'Hoa nhỏ'})[kind]:kind}: ${j.gifts?.includes(kind)?'✓':'—'}`}><TrailGift kind={kind}/></svg>)}<small>{vi?'Có thể mang theo':'Optional keepsakes'}</small></div>
     <div className={`rabbit-play-message${!message ? ' is-empty' : ''}`} role="status" aria-live="polite"
       onKeyDown={event => {
         if (!dialogue || !['Space', 'Enter', 'NumpadEnter'].includes(event.code)) return;

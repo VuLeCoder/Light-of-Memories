@@ -4,6 +4,11 @@ export function focusGame(stage: HTMLElement | null) {
   const selectors = [
     '.dialogue .dialogue-next',
     '[data-gac-continue]',
+    '.rabbit-play-message button',
+    '.rabbit-memory-cards button',
+    '.rabbit-primary',
+    '.rabbit-follow',
+    '.rabbit-walk-view',
     '.gac-light-times button[aria-pressed="true"]',
     '.gac-impact-switch button[aria-pressed="true"]',
     '.gac-friends button[aria-pressed="true"]',

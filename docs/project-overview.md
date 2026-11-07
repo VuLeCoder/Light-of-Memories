@@ -48,13 +48,13 @@ Nút **Tải PDF** ở mép phải dòng “Trang sách bên bạn” tải toà
 
 ## Công việc còn lại và giới hạn
 
-M5 triển khai thẻ câu chuyện; M6 khép lại hành trình và cảnh An–bà. Các hàm dữ liệu cho checkpoint sau M4 đã có, nhưng giao diện chưa mở. Xem lại kết truyện mới có con trỏ dữ liệu riêng. Công tắc âm thanh chỉ lưu lựa chọn, chưa phát nhạc/hiệu ứng. Build còn cảnh báo kích thước chunk Phaser và bộ tạo PDF tải riêng.
+M5 triển khai thẻ câu chuyện; M6 khép lại hành trình và cảnh An–bà. Các hàm dữ liệu cho checkpoint sau M4 đã có, nhưng giao diện chưa mở. Xem lại kết truyện mới có con trỏ dữ liệu riêng. Công tắc âm thanh điều khiển nhạc nền và hiệu ứng Web Audio tự tổng hợp; xem [bản triển khai](done/am-thanh-va-doan-ket.md). Build còn cảnh báo kích thước chunk Phaser và bộ tạo PDF tải riêng.
 
 Các báo cáo trình duyệt dùng Chromium, bàn phím và chạm giả lập; chưa thay cho thử với trẻ em, thiết bị thật, Safari/Firefox hoặc trình đọc màn hình. Kết quả lịch sử trong hồ sơ từng milestone không phải lượt kiểm tra mới cho mọi thay đổi sau đó.
 
 ## Tài liệu chính
 
-- [Kế hoạch âm thanh bằng nhạc cụ truyền thống Việt Nam](plan/am-thanh-nhac-cu-viet-nam.md) — ý tưởng và milestones AT-0–AT-3, chưa triển khai.
+- [Kế hoạch âm thanh bằng nhạc cụ truyền thống Việt Nam](plan/am-thanh-nhac-cu-viet-nam.md) — kế hoạch AT-0–AT-3; bản tối thiểu dùng âm tổng hợp đã triển khai, xem ghi chú trong tài liệu done.
 - [Tuyến ba người bạn](three-friends-journey.md)
 - [M1: tiến trình](done/M1_Gac_Troi_progress.md), [M2: T02 ban đầu](done/M2_T02.md), [T02 hiện tại](done/T02_CACH_CHOI_MOI.md)
 - [M3: T03 và kết Gác Trời](done/M3_T03.md), [M4: T04 và gặp chị Hằng](done/M4_T04.md)

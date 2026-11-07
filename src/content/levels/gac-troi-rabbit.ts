@@ -7,6 +7,7 @@ export type RabbitStop = typeof rabbitStops[number];
 export const rabbitStages = ['real', 'bridge', ...rabbitStops, 'reunion', 'farewell', 'earth', 'free'] as const;
 export type RabbitStage = typeof rabbitStages[number];
 export interface GacRabbitJourney {
+  memory?: 'surveyor' | 'sparkle' | 'gac';
   gifts?: RabbitStop[];
   guidedStops?: RabbitStop[];
   active: boolean;
@@ -47,7 +48,7 @@ export function readGacRabbit(value: unknown): GacRabbitJourney {
   const starsAwake = rabbitFound && Number.isInteger(p.starsAwake) ? Math.max(0, Math.min(maxStars, Number(p.starsAwake))) : 0;
   const length = rabbitDialogueLengths[stage as keyof typeof rabbitDialogueLengths] ?? 1;
   const turn = Number.isInteger(p.turn) ? Math.max(0, Math.min(length - 1, Number(p.turn))) : 0;
-  return { ...(Array.isArray(p.gifts) ? { gifts: rabbitStops.filter(s => p.gifts instanceof Array && p.gifts.includes(s)) } : {}), ...(Array.isArray(p.guidedStops) ? { guidedStops: rabbitStops.filter(s => p.guidedStops instanceof Array && p.guidedStops.includes(s)) } : {}), active: p.active === true, stage, turn, completedStops, rabbitFound, starsAwake,
+  return { ...(['surveyor','sparkle','gac'].includes(String(p.memory)) ? {memory: p.memory as GacRabbitJourney['memory']} : {}), ...(Array.isArray(p.gifts) ? { gifts: rabbitStops.filter(s => p.gifts instanceof Array && p.gifts.includes(s)) } : {}), ...(Array.isArray(p.guidedStops) ? { guidedStops: rabbitStops.filter(s => p.guidedStops instanceof Array && p.guidedStops.includes(s)) } : {}), active: p.active === true, stage, turn, completedStops, rabbitFound, starsAwake,
     reunionDone: ['farewell', 'earth', 'free'].includes(stage) && p.reunionDone === true,
     farewellDone: stage === 'free' && p.farewellDone === true };
 }
@@ -66,6 +67,7 @@ export function replayGacRabbitJourney(p: GacTroiProgress): GacTroiProgress {
   return { ...p, rabbitJourney: { ...freshGacRabbit(), active: true, stage: 'bridge' } };
 }
 export type RabbitAction =
+  | { type: 'memory'; friend: NonNullable<GacRabbitJourney['memory']> }
   | { type: 'guide' | 'gift' | 'peek'; stop: RabbitStop }
   | { type: 'find'; stop: RabbitStop }
   | { type: 'wake'; stop: RabbitStop; star: number }
@@ -76,6 +78,7 @@ export function applyGacRabbitAction(p: GacTroiProgress, action: RabbitAction): 
   const j = p.rabbitJourney;
   if (!j?.active || !p.t02Done) return p;
   let next = j;
+  if (action.type === 'memory' && j.stage === 'farewell' && j.turn === 0 && !j.memory && ['surveyor','sparkle','gac'].includes(action.friend)) next = { ...j, memory: action.friend };
   if (action.type === 'guide' && j.stage === action.stop && !j.guidedStops?.includes(action.stop)) next = { ...j, guidedStops: [...(j.guidedStops ?? []), action.stop] };
   if (action.type === 'gift' && j.stage === action.stop && !j.gifts?.includes(action.stop)) next = { ...j, gifts: [...(j.gifts ?? []), action.stop] };
   if (action.type === 'peek' && j.stage === action.stop && !j.rabbitFound) next = { ...j, rabbitFound: true, starsAwake: rabbitStarCount(action.stop) };

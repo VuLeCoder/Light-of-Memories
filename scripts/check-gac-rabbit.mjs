@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
-const server = await createServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' });
+const server = await createServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
 try {
   const state = await server.ssrLoadModule('/src/content/levels/gac-troi-progress.ts');
   const rabbit = await server.ssrLoadModule('/src/content/levels/gac-troi-rabbit.ts');
@@ -70,10 +70,16 @@ try {
   dialogue('reunion');
   assert.equal(p.rabbitJourney.reunionDone, true);
   assert.equal(p.completedOnce, false);
+  action({ type: 'memory', friend: 'sparkle' });
+  assert.equal(p.rabbitJourney.memory, 'sparkle');
+  assert.equal(rabbit.applyGacRabbitAction(p, {type:'memory', friend:'gac'}), p, 'A selected story is not overwritten by a stale choice');
   for (let turn = 0; turn < 5; turn++) {
     action({ type: 'dialogue', stage: 'farewell', turn });
-    assert.equal(p.completedOnce, turn >= 2, 'Reward on farewell-03 → farewell-04');
+    assert.equal(p.completedOnce, false, 'The search ending never awards Gác Trời stars');
   }
+  assert.equal(p.rabbitJourney.stage, 'earth');
+  dialogue('earth');
+  assert.equal(p.storyCompletedOnce, true);
   assert.equal(p.rabbitJourney.stage, 'free');
   assert.equal(p.rabbitJourney.farewellDone, true);
   assert.equal(rabbit.applyGacRabbitAction(p, { type: 'find', stop: 'slope' }), p);
@@ -81,5 +87,5 @@ try {
   assert.equal(corrupt.stage, 'rock');
   assert.equal(corrupt.starsAwake, 0);
   assert.deepEqual(rabbit.readGacRabbit(corrupt), corrupt);
-  console.log('GT-R1: migration, release gate, 3 rabbits/4 stars, reload per action, duplicate/stale events, reward timing, replay and late-ending preservation passed.');
+  console.log('GT-R1: migration, release gate, 3 rabbits/4 stars, reload per action, duplicate/stale events, remembered story, home dialogue, replay and late-ending preservation passed.');
 } finally { await server.close(); delete globalThis.localStorage; }

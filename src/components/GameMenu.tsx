@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { copy, type Language } from '../content/i18n';
 
-export function GameMenu({ language, canContinue, onStart, onContinue, sound, onToggleSound, soundUnavailable }: {
+export function GameMenu({ language, canContinue, onStart, onContinue, sound, onToggleSound, soundUnavailable, audioUnavailable = false }: {
+  audioUnavailable?: boolean;
   sound: boolean; onToggleSound: () => void; soundUnavailable: boolean;
   language: Language; canContinue: boolean; onStart: () => void; onContinue: () => void;
 }) {
@@ -25,7 +26,7 @@ export function GameMenu({ language, canContinue, onStart, onContinue, sound, on
           <button onClick={() => setScreen('help')}>{t.help}</button>
           <button aria-pressed={sound} onClick={onToggleSound}>{t.sound}: {sound ? t.on : t.off}</button>
         </div>
-        <p className="menu-hint">{t.noMusic}</p>
+        <p className="menu-hint">{audioUnavailable ? (language === 'vi' ? 'Trình duyệt chưa phát được âm thanh. Bạn vẫn có thể chơi bình thường.' : 'Audio is unavailable in this browser. You can still play.') : (language === 'vi' ? 'Nhạc nhẹ lấy cảm hứng từ nhạc cụ Việt Nam.' : 'Gentle music inspired by Vietnamese instruments.')}</p>
         {soundUnavailable && <p className="menu-hint" role="status">{t.soundNotice}</p>}
       </> : screen === 'help' ? <>
         <ul className="menu-help">{t.helpSteps.map((step) => <li key={step}>{step}</li>)}</ul>

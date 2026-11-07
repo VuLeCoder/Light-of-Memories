@@ -152,3 +152,57 @@
 
 /* Preserve the opening scene’s nearest-neighbour sprite scaling in the finale. */
 .rabbit-backdrop[data-closing="earth"] canvas { image-rendering:pixelated; }
+
+/* A small storybook journey: the scene stays visible above short, readable text. */
+.rabbit-chapter { display:flex; flex-direction:column; gap:5px; }
+.rabbit-chapter small,.rabbit-kicker { color:#cbb681; font-size:11px; line-height:1.5; letter-spacing:1.5px; }
+.rabbit-chapter strong { color:#f0dfb8; font:500 clamp(17px,2.3cqw,23px)/1.35 Lora,serif; }
+.rabbit-play .rabbit-hud { grid-area:1/1; position:relative; background:#142833; padding:14px 18px; }
+.rabbit-play .rabbit-walk-view { grid-area:2/1; }
+.rabbit-play .rabbit-play-message { grid-area:4/1; width:auto; max-width:none; height:auto; min-height:112px; max-height:none; overflow:visible; margin:0; padding:14px 18px; border:0; border-top:1px solid #d2ba8133; border-radius:0; background:#1a3039; display:flex; align-items:center; gap:16px; font-size:clamp(15px,1.9cqw,18px); line-height:1.6; }
+.rabbit-play-message p { margin:0; flex:1; }.rabbit-play-message button { float:none; flex-shrink:0; margin:0; }
+.rabbit-play-message.is-empty { visibility:visible; background:#142833; }
+.rabbit-play-message.is-empty::before { content:'✦'; color:#d2bc8566; margin:auto; }
+.rabbit-clue-path { position:absolute; inset:0; width:100%; height:100%; fill:#d5d0ae; opacity:.55; pointer-events:none; z-index:1; }
+.rabbit-pocket { grid-area:3/1; display:flex; justify-content:center; align-items:center; gap:12px; padding:7px 12px; background:#142833; border-top:1px solid #bbac7926; font-size:13px; color:#d5c59d; }
+.rabbit-pocket svg { width:32px; height:38px; opacity:.2; filter:grayscale(1); }.rabbit-pocket svg.is-kept { opacity:1; filter:none; }.rabbit-pocket small { color:#98b0ae; font-size:11px; }
+.gac-rabbit .rabbit-follow { position:absolute; right:3%; bottom:3%; z-index:6; background:#dfc18a; color:#25343a; border-color:#f0d5a2; box-shadow:0 6px 20px #09141c66; font-size:clamp(14px,1.8cqw,17px); }
+.game-stage .ending-scene.rabbit-story.story-finale { display:grid; grid-template-rows:auto auto auto; background:#132732; }
+.story-finale .rabbit-hud { grid-area:1/1; background:#142833; }
+.story-finale .rabbit-view { grid-area:2/1; }
+.game-stage .rabbit-story.story-finale > .dialogue,
+.game-stage .rabbit-story.story-finale > .rabbit-panel { grid-area:3/1; width:auto; margin:0; min-height:0; height:auto; max-height:none; overflow:visible; border-radius:0; border:0; border-top:1px solid #d2ba8155; padding:20px 24px; background:linear-gradient(120deg,#223b43,#142a34); }
+.game-stage .rabbit-story.story-finale .dialogue-text { font-size:clamp(17px,2.1cqw,21px); line-height:1.65; min-height:3.3em; }
+.game-stage .rabbit-story.story-finale .dialogue-portrait { width:64px; height:80px; }
+.game-stage .rabbit-story.story-finale .dialogue-footer { margin-top:14px; }
+.game-stage .rabbit-story.story-finale .dialogue-footer>span { display:none; }
+.game-stage .rabbit-story.story-finale .dialogue-next { margin-left:auto; min-height:44px; font-size:16px; }
+.story-finale[data-ending="free"] .rabbit-view { filter:none; }
+.rabbit-panel h2 { margin:0; font:500 clamp(22px,3cqw,30px)/1.35 Lora,serif; color:#f4e6c5; }
+.rabbit-memory-choice,.finale-message { text-align:center; }
+.rabbit-memory-cards { display:flex; justify-content:center; gap:12px; }
+.rabbit-memory-cards button { flex:1; max-width:175px; display:flex; flex-direction:column; align-items:center; gap:10px; background:#eadfc6; border-color:#d7c18e; color:#35463f; padding:14px 10px; }
+.rabbit-memory-cards img { width:72px; height:72px; object-fit:contain; border-radius:50%; background:#233b44; }
+.rabbit-memory-choice > p { font-size:15px; color:#b9cdc6; }
+.finale-message { gap:14px; }
+.finale-message > p { max-width:620px; margin:0 auto; font-size:17px; line-height:1.65; }
+.finale-message blockquote { margin:0 auto; padding:14px 18px; max-width:620px; border-left:2px solid #dec68e; background:#dfc18a0b; text-align:left; font-size:16px; line-height:1.65; }
+.finale-message blockquote b { display:block; color:#e4c792; margin-bottom:4px; }.finale-message blockquote span { display:block; }
+.finale-message .rabbit-rest-actions { justify-content:center; }
+.gac-rabbit .rabbit-primary { background:#dfc18a; color:#25343a; border-color:#f0d5a2; }
+@container (max-width:560px) {
+  .rabbit-play .rabbit-hud,.story-finale .rabbit-hud { padding:10px 12px; gap:10px; }
+  .rabbit-hud nav { gap:6px; }.rabbit-hud nav button { font-size:13px; padding:7px 10px; }
+  .rabbit-pocket { gap:8px; }.rabbit-pocket small { display:none; }
+  .rabbit-play .rabbit-play-message { flex-direction:column; align-items:stretch; min-height:152px; gap:10px; padding:14px; font-size:16px; }
+  .rabbit-play-message button { align-self:flex-end; }
+  .game-stage .rabbit-story.story-finale > .dialogue,.game-stage .rabbit-story.story-finale > .rabbit-panel { padding:16px; }
+  .game-stage .rabbit-story.story-finale .dialogue-portrait { width:48px; height:60px; }
+  .game-stage .rabbit-story.story-finale .dialogue-text { min-height:5em; font-size:17px; }
+  .rabbit-memory-cards { gap:7px; }.rabbit-memory-cards button { padding:10px 5px; font-size:14px; }.rabbit-memory-cards img { width:52px; height:52px; }
+  .finale-message .rabbit-rest-actions { flex-direction:column; }
+}
+.story-finale[data-ending="reunion"] .rabbit-cuoi,
+.story-finale[data-ending="farewell"] .rabbit-cuoi { left:59%; bottom:20%; }
+.story-finale[data-ending="farewell"] .rabbit-hang { left:81%; }
+.story-finale[data-ending="farewell"] .rabbit-rest-art { display:block; }

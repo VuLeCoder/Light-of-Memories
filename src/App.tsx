@@ -1,3 +1,4 @@
+import { useGameAudio } from './audio/useGameAudio';
 import { BookTopline } from './components/BookTopline';
 import { startGacRabbitJourney, rabbitStops, type RabbitStop } from './content/levels/gac-troi-rabbit';
 import { GacTroiTrail, isGacTrailPhase } from './components/GacTroiTrail';
@@ -165,6 +166,12 @@ export function App() {
   };
   const questLocked = chattingAtEnd || ( inSparkle ? (!sparkleWalking || trailWarning) : questDialogue || (journeyOpen && !surveyorMeeting && !excavating && !endingFreeRoam && !gacWalking) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat);
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
+  const audioUnavailable = useGameAudio({ enabled: sound, paused: menuOpen,
+    mood: gacRabbit && ['reunion','farewell','earth','free'].includes(rabbitStage!) ? 'reunion' : gacTrail ? 'rabbit' : 'explore',
+    duck: (questLocked && !gacTrail) || tellingStory || moonStory || surveyorChat, stars: litStars,
+  }, { scope: `${journey}:${activeLevel ?? scene}`, stars: litStars,
+    memories: surveyorProgress.found.length + surveyorProgress.matched.length + gacTroiProgress.matched.length + sparkleProgress.keepsakes.length + Number(sparkleProgress.measured) + Number(sparkleProgress.calculation),
+    lamps: gacTroiProgress.routeLandmarks.length, digging: surveyorProgress.phase === 'digging' });
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
   const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
@@ -370,7 +377,7 @@ export function App() {
             {inSparkle && <SparkleLevel onBook={openFieldBook} language={language} progress={sparkleProgress} onChange={setSparkleProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {chattingAtEnd && activeLevel && <section className="ending-scene ending-chat" hidden={menuOpen}><EarthDialogue managedFocus language={language} paused={menuOpen} title={language === 'vi' ? 'Trò chuyện cùng bạn' : 'A chat with your friend'} lines={endingChatLines[activeLevel][language]} onTurn={noopTurn} onComplete={closeEndingChat} finalAction="moon" finalLabel={language === 'vi' ? 'Mình đi xem nhé!' : 'Let’s take a look!'} /></section>}
             {journeyOpen && !inGacTroi && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap onFindHang={() => { if (gacTroiProgress.completedOnce) { setGacTroiProgress(p => startGacRabbitJourney({ ...p, t02Done: true })); setActiveLevel('gac-troi'); } }} gacTroiProgress={gacTroiProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={id => { if (id === 'gac-troi') setGacTroiProgress(p => ({ ...p, rabbitJourney: p.rabbitJourney ? { ...p.rabbitJourney, active: false } : null })); setActiveLevel(id); }} onBack={() => setActiveLevel(null)} />}
-            {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
+            {menuOpen && <GameMenu audioUnavailable={audioUnavailable} sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
           <p className="chapter-arrival game-instructions">{gameInstructions}</p>
         </div>
