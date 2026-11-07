@@ -28,7 +28,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const [dialogue, setDialogue] = useState(false);
   const [rabbitWaiting, setRabbitWaiting] = useState(false);
   const flight = useRef(0);
-  const [flightPose, setFlightPose] = useState({ x: 0, lift: 0, squash: 1 });
+  const [flightPose, setFlightPose] = useState({ x: 0, lift: 0, squash: 1, stride: 0 });
   const gift = layout.gift;
   const collected = j.gifts?.includes(stop);
   const latest = useRef({ progress, paused: paused || dialogue, running, stop });
@@ -94,7 +94,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   useEffect(() => {
     position.current = { x: 180, y: 445 }; destination.current = null; pendingRock.current = null; keys.current.clear();
     setPose({ x: 180, y: 445, frame: -1, facing: 1 }); setRunning(false);
-    setMessage(''); setDialogue(false); setRabbitWaiting(false); flight.current = 0; setFlightPose({ x: 0, lift: 0, squash: 1 }); root.current?.focus({ preventScroll: true });
+    setMessage(''); setDialogue(false); setRabbitWaiting(false); flight.current = 0; setFlightPose({ x: 0, lift: 0, squash: 1, stride: 0 }); root.current?.focus({ preventScroll: true });
   }, [stop]);
   useEffect(() => {
     if (paused || dialogue) { keys.current.clear(); destination.current = null; pendingRock.current = null; }
@@ -120,9 +120,9 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
         flight.current += dt;
         const t = Math.min(1, flight.current / 2.2);
         const travel = Math.max(0, (t - .1) / .9);
-        const hop = (travel * 4) % 1;
+        const hop = travel >= 1 ? 0 : (travel * 4) % 1;
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        setFlightPose({ x: travel, lift: reduced ? 0 : Math.sin(hop * Math.PI) * 28,
+        setFlightPose({ x: travel, stride: reduced ? 0 : hop, lift: reduced ? 0 : Math.sin(hop * Math.PI) * 28,
           squash: reduced ? 1 : t < .1 ? 1 - Math.sin(t / .1 * Math.PI) * .15 : 1 - Math.pow(Math.abs(hop - .5) * 2, 8) * .12 });
         if (t >= 1) setRunning(false);
       }
@@ -170,7 +170,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     ? (vi ? `E · Tìm sau ${nearestRock.vi}` : `E · Search behind ${nearestRock.en}`)
     : j.rabbitFound && pose.x > 820 ? (vi ? 'E · Theo Thỏ Ngọc →' : 'E · Follow Rabbit →') : '';
 
-  return <section className="gac-rabbit rabbit-play" hidden={paused} lang={language}
+  return <section className="gac-rabbit rabbit-play" hidden={paused} lang={language} data-paused={paused}
     onKeyDown={e => { if (e.key.toLowerCase() === 'h') { e.preventDefault(); e.stopPropagation(); if (!e.repeat) askGuide(); } }}>
     <header className="rabbit-hud"><span>{vi ? 'Ú òa cùng Thỏ Ngọc' : 'Peekaboo with Rabbit'} · {j.completedStops+1}/3 · {vi ? 'Quà' : 'Gifts'} {j.gifts?.length ?? 0}/3</span><nav aria-label={vi ? 'Điều khiển hành trình' : 'Journey controls'}><button onClick={askGuide} disabled={paused || running || dialogue} aria-keyshortcuts="H">{vi ? 'Gợi ý' : 'Hint'}</button><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></header>
     <div ref={root} className="rabbit-view rabbit-walk-view" tabIndex={0} role="group" aria-label={prompt}
@@ -182,7 +182,8 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       <svg className="rabbit-player" viewBox="0 0 960 540" aria-hidden="true">
         {foreground.map(item => item.art)}
       </svg>
-      {(!j.rabbitFound || rabbitWaiting || running) && <div className={`rabbit-figure ${running || rabbitWaiting ? 'rabbit-revealed' : ''}`} style={{left:`${(place.x + (running ? flightPose.x * (1030-place.x) : 0))/9.6}%`,top:`${(place.y-(running || rabbitWaiting ? 45 : 65)-(running ? flightPose.lift : 0))/5.4}%`}}><div style={{ transform: `scaleY(${running ? flightPose.squash : 1})`, transformOrigin: 'bottom' }}><Rabbit hidden={!running && !rabbitWaiting} tail={false}/></div></div>}
+      {running && <div className="rabbit-ground-shadow" style={{ left: `${(place.x + flightPose.x * (1030 - place.x)) / 9.6}%`, top: `${(place.y + 5) / 5.4}%`, opacity: .3 - flightPose.lift / 220, scale: String(1 - flightPose.lift / 120) }}/>}
+      {(!j.rabbitFound || rabbitWaiting || running) && <div className={`rabbit-figure ${running || rabbitWaiting ? 'rabbit-revealed' : ''}`} style={{left:`${(place.x + (running ? flightPose.x * (1030-place.x) : 0))/9.6}%`,top:`${(place.y-(running || rabbitWaiting ? 45 : 65)-(running ? flightPose.lift : 0))/5.4}%`}}><div className={rabbitWaiting ? 'rabbit-pop' : undefined} style={{ transform: `scale(${running ? 1 / flightPose.squash : 1}, ${running ? flightPose.squash : 1})`, transformOrigin: 'bottom' }}><Rabbit hidden={!running && !rabbitWaiting} hopping={running} stride={flightPose.stride}/></div></div>}
 
       {nearbyPrompt && !running && !dialogue && <span className="rabbit-nearby">{nearbyPrompt}</span>}
       {j.rabbitFound && !running && <span className="rabbit-exit">→</span>}

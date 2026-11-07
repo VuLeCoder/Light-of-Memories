@@ -65,8 +65,17 @@ Các báo cáo trình duyệt dùng Chromium, bàn phím và chạm giả lập;
 
 ## Tìm chị Hằng — tương tác với đá (prompt 2)
 
-Mỗi chặng có bốn tảng đá: một giấu Thỏ Ngọc, một có quà, hai tảng còn lại phản hồi nhẹ nhàng khi tìm. Điều khiển Cuội bằng WASD/mũi tên rồi nhấn E ở tảng gần nhất; trên cảm ứng, chạm đá để Cuội đi tới và tìm. Không bắt buộc nhận gợi ý để tìm được Thỏ. Nút Gợi ý/phím H cho lời chỉ vị trí Thỏ; sau khi tìm được Thỏ, Gác Trời chỉ quà còn lại hoặc hướng đi tiếp. Thỏ cũng nhắc chỗ giấu quà khi được tìm thấy. Quà tùy chọn, lấy trước hoặc sau khi gặp Thỏ; người chơi phải đi sang phải và tương tác để sang chặng tiếp theo. Lưu vẫn dùng v18, giữ tương thích lượt chơi cũ. Hoạt ảnh chạy của Thỏ chờ prompt 3.
+Mỗi chặng có bốn tảng đá: một giấu Thỏ Ngọc, một có quà, hai tảng còn lại phản hồi nhẹ nhàng khi tìm. Điều khiển Cuội bằng WASD/mũi tên rồi nhấn E ở tảng gần nhất; trên cảm ứng, chạm đá để Cuội đi tới và tìm. Không bắt buộc nhận gợi ý để tìm được Thỏ. Nút Gợi ý/phím H cho lời chỉ vị trí Thỏ; sau khi tìm được Thỏ, Gác Trời chỉ quà còn lại hoặc hướng đi tiếp. Thỏ cũng nhắc chỗ giấu quà khi được tìm thấy. Quà tùy chọn, lấy trước hoặc sau khi gặp Thỏ; người chơi phải đi sang phải và tương tác để sang chặng tiếp theo. Lưu vẫn dùng v18, giữ tương thích lượt chơi cũ. Hoạt ảnh Thỏ đã cập nhật ở prompt 3 (xem bên dưới).
 
 Kiểm tra prompt 2: build và `node scripts/check-rabbit-peekaboo.mjs` đạt (gợi ý tùy chọn, quà trước/sau/bỏ qua, sự kiện lặp/sai chặng, lưu/đọc và chơi lại). Chromium kiểm tra ba chặng ở 960px/VI và 360px/EN: đá trống, tìm trực tiếp, quà, chủ động đi tiếp và chiều cao ổn định. Toàn ứng dụng kiểm tra mở/đóng menu và hiện gợi ý ở 1440/760/390px, chiều cao giữ nguyên. `check:ending-progress` còn lỗi kỳ vọng cũ tại dòng 81: chờ `t03-map` thay vì bước `t03-walk` đang có; chưa cập nhật bài kiểm tra tuyến cũ trong prompt này.
 
 Hướng dẫn tìm sau đá nằm ở footer; nút Gợi ý (phím H) mở hội thoại Gác Trời. Khi tìm thấy Thỏ, người chơi đọc lời Thỏ rồi nhấn Tiếp tục để Thỏ chạy; Cuội tạm dừng trong hội thoại. Giữ hàng hội thoại trên màn hình nhỏ để chiều cao game/menu không đổi.
+
+
+## Hoạt ảnh Thỏ Ngọc (prompt 3)
+
+Thỏ nhô ra khi được tìm thấy, đứng nghe hội thoại với tai cử động và chớp mắt. Chỉ khi người chơi đóng hội thoại, Thỏ mới lấy đà rồi nhảy bốn nhịp sang phải; chân, tai và thân phối hợp theo nhịp nhảy, bóng ở trên mặt đất thay vì bay theo thân. Chuyển động dùng tọa độ tương đối trong sân chơi hiện có, không đổi vị trí tương tác của đá hoặc luồng nhận quà/đi tiếp.
+
+Ở cảnh gặp chị Hằng, Thỏ đứng bên chị Hằng trong hội thoại; sang cảnh nghỉ thì nằm thở nhẹ. Menu tạm dừng cả hoạt ảnh SVG/CSS và chuyển động chạy. Chế độ giảm chuyển động bỏ nhấp nhô, co giãn và các hoạt ảnh trang trí. Không thay đổi dữ liệu lưu hay kích thước màn chơi/menu.
+
+Kiểm tra: build, `node scripts/check-rabbit-peekaboo.mjs`; Chromium kiểm tra gợi ý/H, Space/Enter, trả focus, chờ hội thoại mới chạy và tạm dừng giữa bước nhảy. Cảnh gặp/nghỉ kiểm tra ở 960/360px, gồm giảm chuyển động.

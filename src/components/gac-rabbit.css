@@ -105,3 +105,23 @@
 /* Keep the reserved dialogue row when idle so opening hints never resizes the game. */
 .rabbit-play-message.is-empty { visibility:hidden; }
 .rabbit-play-message button { float:right; margin-top:8px; }
+
+/* Rabbit motion stays inside the existing playfield and never drives layout. */
+.rabbit-pop { animation:rabbit-peek-out .48s cubic-bezier(.2,.8,.3,1) both; }
+@keyframes rabbit-peek-out {
+  0% { translate:0 22%; scale:.85 .7; opacity:0; }
+  65% { translate:0 -5%; scale:1.04 1.04; opacity:1; }
+  100% { translate:0 0; scale:1 1; opacity:1; }
+}
+.moon-rabbit .rabbit-ears { transform-origin:40px 46px; }
+.moon-rabbit.is-alert .rabbit-ears { animation:rabbit-ear-listen 4.6s ease-in-out infinite; }
+.moon-rabbit.is-hiding > g { transform-origin:40px 100px; animation:rabbit-hidden-listen 5s ease-in-out infinite; }
+.moon-rabbit.is-alert .rabbit-eyes { transform-box:fill-box; transform-origin:center; animation:rabbit-blink 5.3s linear infinite; }
+.moon-rabbit .rabbit-breath { transform-origin:40px 98px; animation:rabbit-rest-breathe 3.4s ease-in-out infinite; }
+@keyframes rabbit-ear-listen { 0%,60%,100% { rotate:0deg; } 68% { rotate:-7deg; } 78% { rotate:5deg; } 88% { rotate:-3deg; } }
+@keyframes rabbit-hidden-listen { 0%,65%,100% { rotate:0deg; } 76% { rotate:-4deg; } 86% { rotate:3deg; } }
+@keyframes rabbit-blink { 0%,44%,48%,100% { scale:1 1; } 46% { scale:1 .08; } }
+@keyframes rabbit-rest-breathe { 0%,100% { scale:1 1; } 50% { scale:1.018 1.035; } }
+.moon-rabbit.is-hopping > g > ellipse:first-child { visibility:hidden; }
+.rabbit-ground-shadow { position:absolute; width:5.8%; height:1.2%; border-radius:50%; background:#263740; transform:translate(-50%,-50%); z-index:2; pointer-events:none; }
+.gac-rabbit[data-paused="true"] *, .gac-rabbit[hidden] * { animation-play-state:paused !important; }
