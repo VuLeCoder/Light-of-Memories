@@ -103,3 +103,7 @@
 .rabbit-play-message { box-sizing:border-box; max-height:128px; overflow:auto; pointer-events:auto; }
 @container (max-width:800px) { .rabbit-play .rabbit-play-message { height:128px; } }
 .rabbit-nearby { position:absolute; z-index:5; bottom:3%; left:50%; transform:translateX(-50%); width:max-content; max-width:90%; box-sizing:border-box; padding:6px 10px; border-radius:6px; background:#182c34ed; color:#ffe3a2; text-align:center; font-size:clamp(12px,1.7cqw,16px); pointer-events:none; }
+
+/* Keep the reserved dialogue row when idle so opening hints never resizes the game. */
+.rabbit-play-message.is-empty { visibility:hidden; }
+.rabbit-play-message button { float:right; margin-top:8px; }

@@ -17,6 +17,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const j = progress.rabbitJourney!;
   const stop = j.stage as RabbitStop, vi = language === 'vi', layout = rabbitTrailLayouts[stop], place = layout.rabbit;
   const root = useRef<HTMLDivElement>(null);
+  const continueButton = useRef<HTMLButtonElement>(null);
   const keys = useRef(new Set<string>());
   const destination = useRef<Point | null>(null);
   const pendingRock = useRef<string | null>(null);
@@ -24,11 +25,13 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const [pose, setPose] = useState({ x: 180, y: 445, frame: -1, facing: 1 });
   const [message, setMessage] = useState('');
   const [running, setRunning] = useState(false);
+  const [dialogue, setDialogue] = useState(false);
+  const [rabbitWaiting, setRabbitWaiting] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const gift = layout.gift;
   const collected = j.gifts?.includes(stop);
-  const latest = useRef({ progress, paused, running, stop });
-  latest.current = { progress, paused, running, stop };
+  const latest = useRef({ progress, paused: paused || dialogue, running, stop });
+  latest.current = { progress, paused: paused || dialogue, running, stop };
   function commit(action: RabbitAction) {
     const p = latest.current.progress;
     const next = applyGacRabbitAction(p, action);
@@ -39,9 +42,10 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   const nearestRock = layout.rocks.map(rock => ({ rock, distance: distance(pose, rockPoint(rock)) }))
     .filter(item => item.distance < 78).sort((a, b) => a.distance - b.distance)[0]?.rock;
   function askGuide() {
-    if (paused || running) return;
+    if (paused || running || dialogue) return;
     keys.current.clear(); destination.current = null; pendingRock.current = null;
     commit({ type: 'guide', stop });
+    setDialogue(true);
     const giftRock = layout.rocks.find(rock => rock.id === layout.giftRock)!;
     setMessage(!j.rabbitFound
       ? (vi ? `Gác Trời: Mình thấy ${place.vi}! Đến gần tảng đá rồi nhấn E nhé!` : `Sky Watcher: I see ${place.en}! Go to the rock and press E!`)
@@ -52,7 +56,7 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
   }
   const interact = useRef(() => {});
   interact.current = () => {
-    if (paused || running) return;
+    if (paused || running || dialogue) return;
     keys.current.clear(); destination.current = null; pendingRock.current = null;
     const nearby = layout.rocks.map(rock => ({ rock, distance: distance(position.current, rockPoint(rock)) }))
       .filter(item => item.distance < 78).sort((a, b) => a.distance - b.distance)[0]?.rock;
@@ -60,12 +64,12 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
       commit({ type: 'gift', stop });
       setMessage(vi ? 'Cuội: Có quà sau tảng đá này! Mình mang tặng chị Hằng nhé!' : 'Cuội: A gift behind this rock! Let’s bring it to Hằng!');
     } else if (nearby?.id === layout.rabbitRock && !j.rabbitFound) {
-      commit({ type: 'peek', stop }); setRunning(true);
+      commit({ type: 'peek', stop }); setRabbitWaiting(true); setDialogue(true);
       const giftRock = layout.rocks.find(rock => rock.id === layout.giftRock)!;
       setMessage(vi
         ? `Thỏ Ngọc: Ú òa! Bạn tìm thấy mình rồi! ${collected ? 'Bạn đã lấy quà rồi, giỏi quá!' : `Mình còn giấu quà ở ${giftRock.vi} đấy!`} Theo mình sang phải nhé!`
         : `Rabbit: Peekaboo! You found me! ${collected ? 'You found the gift too! Well done!' : `I hid a gift at ${giftRock.en}!`} Follow me to the right!`);
-      timer.current = setTimeout(() => setRunning(false), 1400);
+
     } else if (j.rabbitFound && position.current.x > 820) {
       // Old saves may still contain unfinished star receipts.
       commit({ type: 'wake', stop, star: j.starsAwake+1 });
@@ -78,17 +82,30 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
     }
   };
   useEffect(() => {
-    if (pendingRock.current && !destination.current && !paused && !running) interact.current();
-  }, [pose, paused, running]);
+    if (pendingRock.current && !destination.current && !paused && !running && !dialogue) interact.current();
+  }, [pose, paused, running, dialogue]);
 
   useEffect(() => {
     position.current = { x: 180, y: 445 }; destination.current = null; pendingRock.current = null; keys.current.clear();
     setPose({ x: 180, y: 445, frame: -1, facing: 1 }); setRunning(false);
-    setMessage(''); clearTimeout(timer.current); root.current?.focus({ preventScroll: true });
+    setMessage(''); setDialogue(false); setRabbitWaiting(false); clearTimeout(timer.current); root.current?.focus({ preventScroll: true });
   }, [stop]);
   useEffect(() => {
-    if (paused) { keys.current.clear(); destination.current = null; pendingRock.current = null; }
-  }, [paused]);
+    if (paused || dialogue) { keys.current.clear(); destination.current = null; pendingRock.current = null; }
+  }, [paused, dialogue]);
+  useEffect(() => {
+    if (paused) return;
+    if (dialogue) continueButton.current?.focus({ preventScroll: true });
+    else root.current?.focus({ preventScroll: true });
+  }, [paused, dialogue]);
+  function finishDialogue() {
+    if (paused || !dialogue) return;
+    setDialogue(false); setMessage('');
+    if (rabbitWaiting) {
+      setRabbitWaiting(false); setRunning(true);
+      timer.current = setTimeout(() => setRunning(false), 1400);
+    }
+  }
   useEffect(() => {
     let raf = 0, last = 0, elapsed = 0, facing = 1;
     const tick = (now: number) => {
@@ -139,21 +156,34 @@ export function GacRabbitTrail({ language, progress, onChange, onBack, paused = 
 
   return <section className="gac-rabbit rabbit-play" hidden={paused} lang={language}
     onKeyDown={e => { if (e.key.toLowerCase() === 'h') { e.preventDefault(); e.stopPropagation(); if (!e.repeat) askGuide(); } }}>
-    <header className="rabbit-hud"><span>{vi ? 'Ú òa cùng Thỏ Ngọc' : 'Peekaboo with Rabbit'} · {j.completedStops+1}/3 · {vi ? 'Quà' : 'Gifts'} {j.gifts?.length ?? 0}/3</span><nav aria-label={vi ? 'Điều khiển hành trình' : 'Journey controls'}><button onClick={askGuide} disabled={paused || running} aria-keyshortcuts="H">{vi ? 'Gợi ý · H' : 'Hint · H'}</button><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></header>
+    <header className="rabbit-hud"><span>{vi ? 'Ú òa cùng Thỏ Ngọc' : 'Peekaboo with Rabbit'} · {j.completedStops+1}/3 · {vi ? 'Quà' : 'Gifts'} {j.gifts?.length ?? 0}/3</span><nav aria-label={vi ? 'Điều khiển hành trình' : 'Journey controls'}><button onClick={askGuide} disabled={paused || running || dialogue} aria-keyshortcuts="H">{vi ? 'Gợi ý' : 'Hint'}</button><button onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button></nav></header>
     <div ref={root} className="rabbit-view rabbit-walk-view" tabIndex={0} role="group" aria-label={prompt}
-      onKeyDown={e => { const key=e.key.toLowerCase(); if (['arrowleft','arrowright','arrowup','arrowdown','w','a','s','d','e'].includes(key)) { e.preventDefault(); e.stopPropagation(); if (!paused) { if (key==='e') { if (!e.repeat) interact.current(); } else keys.current.add(key); } } }}
+      onKeyDown={e => { const key=e.key.toLowerCase(); if (['arrowleft','arrowright','arrowup','arrowdown','w','a','s','d','e'].includes(key)) { e.preventDefault(); e.stopPropagation(); if (!paused && !dialogue) { if (key==='e') { if (!e.repeat) interact.current(); } else keys.current.add(key); } } }}
       onKeyUp={e => keys.current.delete(e.key.toLowerCase())} onBlur={() => keys.current.clear()}
-      onPointerDown={e => { if (paused || running) return; root.current?.focus({preventScroll:true}); const r=e.currentTarget.getBoundingClientRect(); const point={x:(e.clientX-r.left)/r.width*960,y:(e.clientY-r.top)/r.height*540}; const tappedRock=layout.rocks.find(rock => Math.abs(point.x-rock.x)<rock.width*.6 && point.y>=rock.y-rock.height && point.y<=rock.y+28); pendingRock.current=null; if (tappedRock) { pendingRock.current=tappedRock.id; destination.current=rockPoint(tappedRock); } else if (distance(point,position.current)<55) interact.current(); else destination.current={x:Math.max(70,Math.min(900,point.x)),y:Math.max(360,Math.min(495,point.y))}; }}>
+      onPointerDown={e => { if (paused || running || dialogue) return; root.current?.focus({preventScroll:true}); const r=e.currentTarget.getBoundingClientRect(); const point={x:(e.clientX-r.left)/r.width*960,y:(e.clientY-r.top)/r.height*540}; const tappedRock=layout.rocks.find(rock => Math.abs(point.x-rock.x)<rock.width*.6 && point.y>=rock.y-rock.height && point.y<=rock.y+28); pendingRock.current=null; if (tappedRock) { pendingRock.current=tappedRock.id; destination.current=rockPoint(tappedRock); } else if (distance(point,position.current)<55) interact.current(); else destination.current={x:Math.max(70,Math.min(900,point.x)),y:Math.max(360,Math.min(495,point.y))}; }}>
       <GacRabbitBackdrop stop={stop} hang={false}/>
       <GacCompanion/>
       <svg className="rabbit-player" viewBox="0 0 960 540" aria-hidden="true">
         {foreground.map(item => item.art)}
       </svg>
-      {(!j.rabbitFound || running) && <div className={`rabbit-figure ${running ? 'rabbit-flee' : ''}`} style={{left:`${place.x/9.6}%`,top:`${(place.y-65)/5.4}%`}}><Rabbit hidden={!running} tail={false}/></div>}
+      {(!j.rabbitFound || rabbitWaiting || running) && <div className={`rabbit-figure ${running ? 'rabbit-flee' : ''}`} style={{left:`${place.x/9.6}%`,top:`${(place.y-65)/5.4}%`}}><Rabbit hidden={!running} tail={false}/></div>}
 
-      {nearbyPrompt && !running && <span className="rabbit-nearby">{nearbyPrompt}</span>}
+      {nearbyPrompt && !running && !dialogue && <span className="rabbit-nearby">{nearbyPrompt}</span>}
       {j.rabbitFound && !running && <span className="rabbit-exit">→</span>}
     </div>
-    <div className="rabbit-play-message" role="status" aria-live="polite"><strong>{prompt}</strong>{message && <p>{message}</p>}</div>
+    <div className={`rabbit-play-message${!message ? ' is-empty' : ''}`} role="status" aria-live="polite"
+      onKeyDown={event => {
+        if (!dialogue || !['Space', 'Enter', 'NumpadEnter'].includes(event.code)) return;
+        event.preventDefault(); event.stopPropagation();
+        if (!event.repeat) finishDialogue();
+      }}
+      onKeyUp={event => {
+        if (['Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
+          event.preventDefault(); event.stopPropagation();
+        }
+      }}>
+      {message && <p>{message}</p>}
+      {dialogue && <button ref={continueButton} disabled={paused} onClick={finishDialogue}>{vi ? 'Tiếp tục' : 'Continue'}</button>}
+    </div>
   </section>;
 }
