@@ -1,7 +1,7 @@
 #main-scene .game-stage:has(.gac-rabbit) { height:auto; aspect-ratio:auto; min-height:0; }
 #main-scene .game-stage:has(.gac-rabbit) > .story-canvas { display:none; }
 .gac-rabbit { color:#eee3c9; background:#101e28; padding:0; container-type:inline-size; position:relative; isolation:isolate; display:grid; grid-template-columns:minmax(0,1fr); }
-.gac-rabbit[hidden] { display:block; visibility:hidden; pointer-events:none; }
+.gac-rabbit[hidden] { display:grid; visibility:hidden; pointer-events:none; }
 .rabbit-hud,.rabbit-hud nav { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
 .rabbit-hud { justify-content:space-between; margin:0; padding:12px 16px; position:relative; z-index:6; grid-area:1/1; align-self:start; background:linear-gradient(#101e28ed,#101e2800); }
 .rabbit-hud > span { font:20px Lora,serif; color:#eed395; }

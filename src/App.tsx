@@ -99,6 +99,15 @@ export function App() {
   }
   const [scene, setScene] = useState<SceneId>(saved.progress.scene);
   const [menuOpen, setMenuOpen] = useState(true);
+  const [menuStageHeight, setMenuStageHeight] = useState<number | null>(null);
+  function openMenu() {
+    // Some paused scenes hide their content or change layout. Preserve the
+    // current stage's layout height before those pause updates are applied.
+    // Computed CSS pixels stay correct inside the workspace's CSS zoom.
+    const stage = gameStage.current;
+    setMenuStageHeight(stage ? parseFloat(getComputedStyle(stage).height) : null);
+    setMenuOpen(true);
+  }
   const [started, setStarted] = useState(saved.progress.started);
   const [chapter, setChapter] = useState<Chapter>(saved.progress.chapter);
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
@@ -299,12 +308,13 @@ export function App() {
         </div>
         <div className="story-controls">
           {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>{t.skip}</button>}
-          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || revealing} onClick={() => setMenuOpen(true)}>{t.menu}</button>
+          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || revealing} onClick={openMenu}>{t.menu}</button>
         </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
           <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle || inGacTroi ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
+            style={menuOpen && menuStageHeight !== null ? { height: menuStageHeight, minHeight: 0, maxHeight: 'none' } : undefined}
             onFocusCapture={() => { gameOwnsFocus.current = true; }}
             onPointerDownCapture={() => { gameOwnsFocus.current = true; }}
             onBlurCapture={(event) => {
