@@ -33,7 +33,6 @@ export class PreviewScene extends Phaser.Scene {
   private keys?: Record<'left' | 'right' | 'up' | 'down' | 'w' | 's' | 'a' | 'd', Phaser.Input.Keyboard.Key>;
   private walkTarget?: number;
   private earnedLight?: Phaser.GameObjects.Graphics;
-  private sparkleGiftLight?: Phaser.GameObjects.Graphics;
   private digTarget?: { x: number; y: number };
   private digNear: SurveyorEvent | null = null;
   private digMarks?: Phaser.GameObjects.Graphics;
@@ -185,14 +184,21 @@ export class PreviewScene extends Phaser.Scene {
     this.syncLanternGrip();
   }
   private drawTaiLight() {
-    if ((!['tai-thinh', 'ban-banh-luoi', 'gac-troi'].includes(this.options.scene) && !isGacTrail(this.options.scene)) || !this.earnedLight) return;
+    if (!this.earnedLight) return;
     const g = this.earnedLight.clear();
-    const count = this.options.taiStars ?? 0;
-    for (let i = 0; i < count; i++) {
-      const at = (n: number, r: number) => ({ x: Math.cos(-Math.PI / 2 + n * Math.PI / 5) * r, y: Math.sin(-Math.PI / 2 + n * Math.PI / 5) * r });
-      const tip = at(i * 2, 21), before = at(i * 2 - 1, 9), after = at(i * 2 + 1, 9);
-      g.fillStyle(0xffe6a2).fillTriangle(0, 0, before.x, before.y, tip.x, tip.y).fillTriangle(0, 0, tip.x, tip.y, after.x, after.y);
-    }
+    const count = Math.min(5, Math.max(this.options.taiStars ?? 0,
+      this.options.scene === 'surveyor' && this.options.surveyorLantern === 'lit' ? 1 : 0,
+      this.options.scene === 'lap-lanh' ? this.options.sparkleLantern === 'lit' ? 3 : 1 : 0));
+    for (let i = 0; i < count; i++) this.drawLitLanternPoint(g, i);
+  }
+  private drawLitLanternPoint(g: Phaser.GameObjects.Graphics, index: number) {
+    const at = (n: number, r: number) => ({ x: Math.cos(-Math.PI / 2 + n * Math.PI / 5) * r, y: Math.sin(-Math.PI / 2 + n * Math.PI / 5) * r });
+    const tip = at(index * 2, 21), before = at(index * 2 - 1, 9), after = at(index * 2 + 1, 9);
+    // Bright paper stays inside this point, leaving unearned points visibly dark.
+    g.fillStyle(0xffe6a2, 1).fillTriangle(0, 0, before.x, before.y, tip.x, tip.y);
+    g.fillStyle(0xf2be63, 1).fillTriangle(0, 0, tip.x, tip.y, after.x, after.y);
+    g.lineStyle(1, 0xffefbd, .95).lineBetween(before.x, before.y, tip.x, tip.y).lineBetween(tip.x, tip.y, after.x, after.y);
+    g.lineStyle(1, 0xa67c3e, .85).lineBetween(0, 0, tip.x, tip.y);
   }
   private updateTaiGift(delta: number) {
     if (!['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene) || !this.taiGiftLight) return;
@@ -495,15 +501,16 @@ export class PreviewScene extends Phaser.Scene {
         return { x: Math.cos(a) * r, y: Math.sin(a) * r };
       });
       // Unlit paper: no halo or luminous hub before a friend lights a point.
-      const paper = [0x69533f, 0x584437, 0x746044, 0x604938, 0x796348];
+      const paper = [0x716650, 0x615744, 0x554c3e, 0x665a45, 0x796b51];
       for (let i = 0; i < 10; i++) {
         const a = points[i], b = points[(i + 1) % 10];
         this.lantern.fillStyle(paper[Math.floor(i / 2)], .95).fillTriangle(0, 0, a.x, a.y, b.x, b.y);
       }
-      this.lantern.lineStyle(3, 0x624226).strokePoints(points, true);
-      this.lantern.lineStyle(1.2, 0xa58b60).strokePoints(points, true);
+      this.lantern.lineStyle(2.5, 0x745336).strokePoints(points, true);
+      this.lantern.lineStyle(.8, 0xc5a36a).strokePoints(points, true);
+      this.lantern.lineStyle(1, 0x9c7d4e);
       for (let i = 0; i < 10; i += 2) this.lantern.lineBetween(0, 0, points[i].x, points[i].y);
-      this.lantern.fillStyle(0x8c714c).fillCircle(0, 0, 3);
+      this.lantern.fillStyle(0x9c8050).fillCircle(0, 0, 3);
       this.lantern.lineStyle(3, 0x805634).lineBetween(0, 9, 0, 35);
       for (const x of [-12, 12]) {
         this.lantern.lineStyle(1, 0x9d855c).lineBetween(x, 15, x, 23);
@@ -511,14 +518,7 @@ export class PreviewScene extends Phaser.Scene {
         this.lantern.lineStyle(1, 0xa77b4b).lineBetween(x, 23, x, 33);
       }
       this.earnedLight = this.add.graphics();
-      this.earnedLight.fillStyle(0xffdf91, .14).fillCircle(0, -12, 20);
-      this.earnedLight.fillStyle(0xffe6a2).fillTriangle(0, 0, points[9].x, points[9].y, points[0].x, points[0].y);
-      this.earnedLight.fillTriangle(0, 0, points[0].x, points[0].y, points[1].x, points[1].y);
-      if (this.options.scene === 'lap-lanh') {
-        this.sparkleGiftLight = this.add.graphics().fillStyle(0xffe6a2);
-        this.sparkleGiftLight.fillTriangle(0, 0, points[1].x, points[1].y, points[2].x, points[2].y);
-        this.sparkleGiftLight.fillTriangle(0, 0, points[2].x, points[2].y, points[3].x, points[3].y);
-      }
+      this.drawTaiLight();
       if (['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene)) {
         this.taiGiftLight = this.add.graphics();
         this.drawTaiLight();
@@ -633,11 +633,13 @@ export class PreviewScene extends Phaser.Scene {
 
   setSparkleLantern(state: PreviewOptions['sparkleLantern']) {
     this.options.sparkleLantern = state;
+    this.drawTaiLight();
     this.syncLanternGrip();
   }
 
   setSurveyorLantern(state: PreviewOptions['surveyorLantern']) {
     this.options.surveyorLantern = state;
+    this.drawTaiLight();
     this.syncLanternGrip();
   }
 
@@ -647,7 +649,6 @@ export class PreviewScene extends Phaser.Scene {
     if ((['tai-thinh', 'ban-banh-luoi'].includes(this.options.scene) && (!this.options.taiEnding || this.options.taiEnding === 'none')) || (this.options.scene === 'lap-lanh' && !this.options.freeRoam && (!this.options.sparkleLantern || this.options.sparkleLantern === 'hidden'))) {
       lantern.setVisible(false);
       this.earnedLight?.setVisible(false);
-      this.sparkleGiftLight?.setVisible(false);
       return;
     }
     // Fist centers in each trimmed sprite frame (original image pixels).
@@ -657,19 +658,21 @@ export class PreviewScene extends Phaser.Scene {
     if (!hand) return;
     const facing = c.flipX ? -1 : 1;
     const scale = c.scaleX / .62;
-    const angle = facing * .3;
+    // Hold the wooden shaft, not an added side hook. Tilt outwards so the
+    // star clears the forearm; each walking pose follows the wrist angle.
+    const walkingAngles = [.62, .48, .52, .64, .48, .54];
+    const angle = facing * (frame.startsWith('walk-') ? walkingAngles[Number(frame.slice(5))] : .68);
     const handX = c.x + facing * (hand[0] - c.frame.realWidth / 2) * c.scaleX;
     const handY = c.y + (hand[1] - c.frame.realHeight) * c.scaleY;
-    // The grip is 27px below the star: place that point in the fist,
-    // with the sprite drawn in front so its fingers cover the wooden shaft.
-    lantern.setScale(scale).setRotation(angle)
-      .setPosition(handX + Math.sin(angle) * 27 * scale, handY - Math.cos(angle) * 27 * scale)
+    // Anchor inside the shaft (9..35), leaving a short end below the fist.
+    // Recompute after animation updates so direction and perspective match.
+    const gripX = 0, gripY = 27 * scale;
+    lantern.setScale(facing * scale, scale).setRotation(angle)
+      .setPosition(handX - (gripX * Math.cos(angle) - gripY * Math.sin(angle)), handY - (gripX * Math.sin(angle) + gripY * Math.cos(angle)))
       .setDepth(c.depth - .1)
       .setVisible(this.options.scene === 'surveyor' ? (!!this.options.freeRoam || this.options.surveyorLantern === 'unlit' || this.options.surveyorLantern === 'lit') : this.options.scene === 'lap-lanh' ? true : ['lantern', 'trail', 'complete'].includes(this.options.quest));
-    this.earnedLight?.setVisible(isGacTrail(this.options.scene) || ['tai-thinh', 'ban-banh-luoi', 'gac-troi', 'lap-lanh'].includes(this.options.scene) || !!this.options.freeRoam || (this.options.scene === 'surveyor' && this.options.surveyorLantern === 'lit'))
-      .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .05);
-    this.sparkleGiftLight?.setVisible(!!this.options.freeRoam || this.options.sparkleLantern === 'lit')
-      .setPosition(lantern.x, lantern.y).setScale(scale).setRotation(angle).setDepth(c.depth - .04);
+    this.earnedLight?.setVisible(lantern.visible && (isGacTrail(this.options.scene) || ['tai-thinh', 'ban-banh-luoi', 'gac-troi', 'lap-lanh'].includes(this.options.scene) || !!this.options.freeRoam || (this.options.scene === 'surveyor' && this.options.surveyorLantern === 'lit')))
+      .setPosition(lantern.x, lantern.y).setScale(facing * scale, scale).setRotation(angle).setDepth(c.depth - .05);
   }
 
   private get rightEdge() { return this.options.freeRoam || this.options.scene === 'surveyor' || isGacTrail(this.options.scene) ? 895 : this.options.quest === 'trail' ? 908 : 830; }

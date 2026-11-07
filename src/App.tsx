@@ -121,7 +121,7 @@ export function App() {
   const journeyOpen = quest === 'complete';
   const completedFriends = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce };
   const inGacTroi = journeyOpen && activeLevel === 'gac-troi' && journeyStatus('gac-troi', completedFriends) !== 'locked';
-  const litStars = [0, 1, 3, 5][Number(surveyorProgress.completedOnce) + Number(sparkleProgress.completedOnce) + Number(gacTroiProgress.completedOnce)];
+  const litStars = Number(surveyorProgress.completedOnce) + 2 * Number(sparkleProgress.completedOnce) + 2 * Number(gacTroiProgress.completedOnce);
   const inSparkle = journeyOpen && activeLevel === 'lap-lanh';
   const sparkleTrail = inSparkle && ['route', 'search-intro', 'search'].includes(sparkleProgress.phase);
   const sparkleWalking = inSparkle && ['arrival', 'search', 'finished'].includes(sparkleProgress.phase);
