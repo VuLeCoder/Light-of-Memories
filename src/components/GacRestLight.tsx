@@ -10,9 +10,9 @@ const stops: Point[] = [{ x: 320, y: 470 }, { x: 550, y: 400 }, { x: 790, y: 490
 const clamp = (p: Point): Point => ({ x: Math.max(65, Math.min(895, p.x)), y: Math.max(395, Math.min(510, p.y)) });
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
 const scaleAt = (y: number) => .65 + (y - 395) / 115 * .45;
-const controls = [{ x: -1, y: 0, icon: '←', vi: 'Đi sang trái', en: 'Move left' }, { x: 0, y: -1, icon: '↑', vi: 'Đi lên', en: 'Move up' }, { x: 0, y: 1, icon: '↓', vi: 'Đi xuống', en: 'Move down' }, { x: 1, y: 0, icon: '→', vi: 'Đi sang phải', en: 'Move right' }];
 
-export function GacRestLight({ language, progress, onChange, onBack, paused }: {
+
+export function GacRestLight({ language, progress, onChange, paused }: {
   language: Language; progress: GacTroiProgress; onChange: (p: GacTroiProgress) => void;
   onBack: () => void; paused: boolean;
 }) {
@@ -24,7 +24,6 @@ export function GacRestLight({ language, progress, onChange, onBack, paused }: {
   const [moving, setMoving] = useState(false);
   const [frame, setFrame] = useState(0);
   const [facing, setFacing] = useState(1);
-  const [hint, setHint] = useState(false);
   const root = useRef<HTMLElement>(null);
   const position = useRef(point);
   const keys = useRef(new Set<string>());
@@ -32,13 +31,12 @@ export function GacRestLight({ language, progress, onChange, onBack, paused }: {
   const destination = useRef<Point | null>(null);
   const latest = useRef({ progress, onChange, paused });
   latest.current = { progress, onChange, paused };
-  const near = !approach && !done && distance(point, stops[count]) < 43;
   const stop = () => { keys.current.clear(); direction.current = { x: 0, y: 0 }; destination.current = null; };
   const light = () => {
     const { progress: p, onChange: change, paused: frozen } = latest.current;
     const n = p.routeLandmarks.length;
     if (frozen || p.phase === 't03-walk' || n >= stops.length || distance(position.current, stops[n]) >= 43) return;
-    stop(); setMoving(false); setHint(false);
+    stop(); setMoving(false);
     const next = { ...p, routeLandmarks: gacRouteLandmarks.slice(0, n + 1) };
     latest.current = { ...latest.current, progress: next };
     change(next);
@@ -100,10 +98,6 @@ export function GacRestLight({ language, progress, onChange, onBack, paused }: {
     }}
     onKeyUp={event => keys.current.delete(event.key.length === 1 ? event.key.toLowerCase() : event.key)}
     onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) { stop(); setMoving(false); } }}>
-    <header className="rest-hud"><span>{vi ? 'Gác Trời · Theo bước ánh sáng' : 'Sky Watcher · Follow the light'}</span><nav>
-      <button disabled={paused} onClick={() => setHint(v => !v)} aria-expanded={hint}>{vi ? 'Gợi ý' : 'Hint'}</button>
-      <button disabled={paused} onClick={onBack}>{vi ? 'Về lộ trình' : 'Back to route'}</button>
-    </nav></header>
     <div className="rest-world">
       <GacRabbitBackdrop stop="slope" hang={false} orbit/>
       <div className="rest-darkness" aria-hidden="true"/>
@@ -123,23 +117,11 @@ export function GacRestLight({ language, progress, onChange, onBack, paused }: {
         onPointerDown={event => {
           if (event.button !== 0 || paused || done) return;
           const rect = event.currentTarget.parentElement!.getBoundingClientRect();
+          const tapped = { x: (event.clientX - rect.left) / rect.width * 960, y: (event.clientY - rect.top) / rect.height * 540 };
+          if (!approach && count < stops.length && distance(tapped, stops[count]) < 55 && distance(position.current, stops[count]) < 43) { light(); return; }
           stop(); destination.current = clamp({ x: (event.clientX - rect.left) / rect.width * 960, y: (event.clientY - rect.top) / rect.height * 540 });
           root.current?.focus({ preventScroll: true });
         }}/>
     </div>
-    <div className="rest-card">
-      <h2>{approach ? (vi ? 'Đi cùng Gác Trời' : 'Follow Sky Watcher') : done ? (vi ? 'Ba ngọn đèn đã sáng!' : 'All three lanterns are shining!') : (vi ? 'Cùng Cuội thắp đèn dẫn đường' : 'Help Cuội light the path')}</h2>
-      <p role="status">{approach ? (vi ? 'Điều khiển Cuội sang mép phải màn hình để đi tiếp nhé!' : 'Move Cuội to the right edge to continue!') : done ? (vi ? 'Đường đã sáng rồi! Gác Trời có lời nhắn cho Cuội…' : 'The path is bright! Sky Watcher has a message for Cuội…') : hint ? (vi ? `Đi tới đèn sáng mờ số ${count + 1}, rồi bấm “Thắp đèn” hoặc phím E nhé.` : `Walk to dim lantern ${count + 1}, then press “Light lantern” or E.`) : (vi ? `Đến gần và nhấn E để thắp đèn ${count + 1}/3 nhé!` : `Walk closer and press E to light lantern ${count + 1}/3!`)}</p>
-    </div>
-    <footer className="rest-controls">
-      {done ? <span role="status">{vi ? 'Ánh sáng đang lan khắp lối đi…' : 'Light is spreading across the path…'}</span> : <>
-        <div className="rest-directions">{controls.map(control => <button key={control.icon} disabled={paused} aria-label={vi ? control.vi : control.en}
-          onPointerDown={event => { if (paused || event.button !== 0) return; stop(); direction.current = control; event.currentTarget.setPointerCapture(event.pointerId); }}
-          onPointerUp={() => { direction.current = { x: 0, y: 0 }; }} onPointerCancel={() => { direction.current = { x: 0, y: 0 }; }} onLostPointerCapture={() => { direction.current = { x: 0, y: 0 }; }}
-          onClick={event => { if (event.detail === 0 && !paused) destination.current = clamp({ x: position.current.x + control.x * 60, y: position.current.y + control.y * 40 }); }}>{control.icon}</button>)}</div>
-        <span>{vi ? '↑ ↓ ← → / W A S D để đi · E để thắp đèn' : '↑ ↓ ← → / W A S D to walk · E to light'}</span>
-        {!approach && <button className="rest-action" disabled={paused || !near} onClick={light}>{vi ? 'Thắp đèn' : 'Light lantern'} · E · {count}/3</button>}
-      </>}
-    </footer>
   </section>;
 }

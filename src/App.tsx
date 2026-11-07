@@ -261,7 +261,15 @@ export function App() {
   // Task and dialogue instructions already appear beside their controls.
   let gameInstructions = '';
   if (!menuOpen && !transitioning && !moonWaking && !revealing && !chattingAtEnd) {
-    if (endingExploring) gameInstructions = inSurveyor ? depthMoveHelp : moveHelp;
+    if (inGacTroi && ['t03-walk', 't03-map', 't03-story'].includes(gacTroiProgress.phase)) {
+      const count = gacTroiProgress.routeLandmarks.length;
+      gameInstructions = count === 3
+        ? (vi ? 'Đường đã sáng rồi! Cùng nghe lời nhắn của Gác Trời…' : 'The path is bright! Let’s hear Sky Watcher’s message…')
+        : gacTroiProgress.phase === 't03-walk'
+          ? (vi ? 'Di chuyển: WASD, phím mũi tên hoặc chạm mặt đất. Đi sang mép phải để tiếp tục.' : 'Move: WASD, arrow keys, or tap the ground. Walk to the right edge to continue.')
+          : (vi ? `Di chuyển: WASD, phím mũi tên hoặc chạm mặt đất. Đến gần đèn và nhấn E hoặc chạm đèn để thắp · ${count}/3` : `Move: WASD, arrow keys, or tap the ground. Approach a lantern and press E or tap it to light · ${count}/3`);
+    }
+    else if (endingExploring) gameInstructions = inSurveyor ? depthMoveHelp : moveHelp;
     else if (inSurveyor && (surveyorMeeting || excavating && surveyorProgress.phase !== 'soil-memory')) gameInstructions = depthMoveHelp;
     else if (inSparkle && sparkleProgress.phase === 'search' && !trailWarning) gameInstructions = depthMoveHelp;
     else if (inSparkle && sparkleProgress.phase === 'arrival' || chapter === 'moon-free' && !journeyOpen && !tellingStory && !moonStory && !questDialogue) gameInstructions = moveHelp;

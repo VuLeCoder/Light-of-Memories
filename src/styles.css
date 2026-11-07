@@ -850,7 +850,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 
 /* Friends use the same quiet controls as Keen Ears. Interactive pictures
    keep their own hit areas, selection borders and wiping surfaces. */
-.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell)) {
+.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell, .rest-ground)) {
   min-height: 42px;
   padding: 8px 12px;
   border: 1px solid #a9957080;
@@ -867,7 +867,7 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   background: #dfc18a;
   color: #20313a;
 }
-.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell)):hover:not(:disabled) {
+.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell, .rest-ground)):hover:not(:disabled) {
   border-color: #ead4a4;
   background: #354b52;
 }

@@ -32,7 +32,6 @@
   .rest-card { grid-area:2/1; width:auto; margin:0 10px 8px; padding:10px; }
   .rest-card h2 { font-size:17px; margin-bottom:4px; }
   .rest-card p { font-size:14px; }
-  .rest-world { grid-area:3/1; }
   .rest-controls { flex-wrap:wrap; gap:8px; padding:10px; }
   .rest-controls > span { order:3; width:100%; text-align:center; }
 }
@@ -63,3 +62,6 @@
   .rest-lamp:not(.is-lit) .rest-lamp-glow { animation:none; }
   .rest-darkness, .rest-cuoi { transition:none; }
 }
+
+.rest-controls { justify-content:center; text-align:center; }
+.rest-controls > span { width:100%; }
