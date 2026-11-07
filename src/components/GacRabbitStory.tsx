@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import type { Language } from '../content/i18n';
 import { gacRabbitDialogue, type RabbitDialogue } from '../content/levels/gac-rabbit-dialogue';
-import { applyGacRabbitAction, type rabbitDialogueLengths } from '../content/levels/gac-troi-rabbit';
-import { replayGacTroi, type GacTroiProgress } from '../content/levels/gac-troi-progress';
+import { applyGacRabbitAction, replayGacRabbitJourney, type rabbitDialogueLengths } from '../content/levels/gac-troi-rabbit';
+import type { GacTroiProgress } from '../content/levels/gac-troi-progress';
 import { EarthDialogue } from './EarthDialogue';
 import { GacRabbitBackdrop, RabbitCuoi } from './GacRabbitBackdrop';
 import './gac-rabbit.css';
@@ -54,7 +54,7 @@ export function GacRabbitStory({ language, progress, onChange, onBack, onBook, p
     </div>
     {free && !chat ? <div className="rabbit-panel">
       <p>{vi ? 'Cuội và chị Hằng nghỉ dưới cây đa, Thỏ Ngọc nằm bên chiếc đèn sáng.' : 'Cuội and Hằng rest beneath the banyan, with Moon Rabbit beside the glowing lantern.'}</p>
-      <nav className="rabbit-rest-actions"><button onClick={() => setChat(true)}>{vi ? 'Trò chuyện' : 'Chat'}</button><button onClick={onBook}>{vi ? 'Mở sách' : 'Open book'}</button><button onClick={() => onChange(replayGacTroi(progress))}>{vi ? 'Chơi lại Gác Trời' : 'Replay Sky Watcher'}</button></nav>
+      <nav className="rabbit-rest-actions"><button onClick={() => setChat(true)}>{vi ? 'Trò chuyện' : 'Chat'}</button><button onClick={onBook}>{vi ? 'Mở sách' : 'Open book'}</button><button onClick={() => { if (!paused) onChange(replayGacRabbitJourney(progress)); }}>{vi ? 'Chơi lại tìm chị Hằng' : 'Replay the search for Hằng'}</button></nav>
     </div> : <EarthDialogue key={dialogue} language={language} paused={paused} managedFocus title={titles[dialogue]} lines={gacRabbitDialogue(dialogue, language)} initialIndex={chat ? 0 : j.turn}
       onTurn={turn => { if (!chat && turn === latest.current.rabbitJourney!.turn + 1) advance(turn - 1); }}
       onComplete={() => { if (paused) return; if (chat) setChat(false); else advance(j.turn); }} finalAction="moon" finalLabel={finalLabels[dialogue]}/>}

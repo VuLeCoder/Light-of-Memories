@@ -61,6 +61,10 @@ export function startGacRabbitJourney(p: GacTroiProgress): GacTroiProgress {
   const journey = p.rabbitJourney ?? { ...freshGacRabbit(), stage: 'bridge' as const };
   return { ...p, rabbitJourney: { ...journey, active: true }, bookUnlocks: p.bookUnlocks.includes('gac-book-light') ? p.bookUnlocks : [...p.bookUnlocks, 'gac-book-light'] };
 }
+/** Replay only the search, retaining Gác Trời progress and earned book entries. */
+export function replayGacRabbitJourney(p: GacTroiProgress): GacTroiProgress {
+  return { ...p, rabbitJourney: { ...freshGacRabbit(), active: true, stage: 'bridge' } };
+}
 export type RabbitAction =
   | { type: 'guide' | 'gift' | 'peek'; stop: RabbitStop }
   | { type: 'find'; stop: RabbitStop }
