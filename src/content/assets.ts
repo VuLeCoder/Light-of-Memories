@@ -1,4 +1,4 @@
-// Project image URLs respect the deployment base path. Conversion details live in docs/image-assets.md.
+// Project image URLs respect the deployment base path. Conversion details live in docs/design/image-assets.md.
 const imageUrl = (path: string) => `${import.meta.env.BASE_URL}images/${path}`;
 
 export const brandLogo = imageUrl('branding/light-of-memories-primary.webp');
@@ -14,27 +14,13 @@ const baSheet = imageUrl('sprites/ba-spritesheet.webp');
 const cuoiSheet = imageUrl('sprites/cuoi-spritesheet.webp');
 
 export const portraits = {
+  gacTroi: { name: 'Gác Trời', url: imageUrl('portraits/gac-troi.webp') },
   banhLuoi: { name: 'Bánh Lưới', url: imageUrl('portraits/ban-banh-luoi.webp') },
   taiThinh: { name: 'Tai Thính', url: imageUrl('portraits/tai-thinh.webp') },
   lapLanh: { name: 'Lấp Lánh', url: imageUrl('portraits/lap-lanh.webp') },
   an: { name: 'An', url: anPortrait }, ba: { name: 'Bà', url: baPortrait },
   cuoi: { name: 'Cuội', url: cuoiPortrait }, cayDa: { name: 'Cây Đa', url: cayDaPortrait },
   matTron: { name: 'Mắt Tròn', url: matTronPortrait }, chiHang: { name: 'Chị Hằng', url: chiHangPortrait },
-} as const;
-
-// M0–M1 art preparation; chapter registration and saves are handled in M2.
-export const taiThinhPhotos = {
-  pse: imageUrl('memories/tai-thinh/apollo-12-as12-47-6916.webp'),
-  station: imageUrl('memories/tai-thinh/apollo-12-as12-47-6918.webp'),
-  magnetometer: imageUrl('memories/tai-thinh/apollo-12-as12-47-6921.webp'),
-} as const;
-
-// Bánh Lưới M0 photo preparation; chapter registration follows in M1–M2.
-export const banBanhLuoiPhotos = {
-  vip: imageUrl('memories/ban-banh-luoi/apollo-17-as17-143-21933.webp'),
-  vipDetail: imageUrl('memories/ban-banh-luoi/apollo-17-wheel-detail.webp'),
-  orbit: imageUrl('memories/ban-banh-luoi/apollo-17-orbit-m168000580lr.webp'),
-  orbitDetail: imageUrl('memories/ban-banh-luoi/apollo-17-orbit-detail.webp'),
 } as const;
 
 // Hand-inspected rectangles in ORIGINAL image pixels, not an assumed uniform grid.
@@ -71,3 +57,17 @@ export const cuoiWalkFrames = [
   { x: 1104, y: 239, width: 148, height: 226 },
   { x: 1339, y: 239, width: 156, height: 226 },
 ] as const;
+
+export const taiThinhPhotos = {
+  pse: imageUrl('memories/tai-thinh/apollo-12-as12-47-6916.webp'),
+  station: imageUrl('memories/tai-thinh/apollo-12-as12-47-6918.webp'),
+  magnetometer: imageUrl('memories/tai-thinh/apollo-12-as12-47-6921.webp'),
+} as const;
+
+// Archive images; vip keeps its legacy save ID while showing Apollo 15.
+export const banBanhLuoiPhotos = {
+  vip: imageUrl('memories/ban-banh-luoi/apollo-15-scott-7022567.webp'),
+  vipDetail: imageUrl('memories/ban-banh-luoi/apollo-15-wheel-detail.webp'),
+  orbit: imageUrl('memories/ban-banh-luoi/apollo-15-orbit-m175252641lr.webp'),
+  orbitDetail: imageUrl('memories/ban-banh-luoi/apollo-15-orbit-detail.webp'),
+} as const;

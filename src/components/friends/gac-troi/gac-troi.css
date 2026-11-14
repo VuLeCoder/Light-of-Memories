@@ -1,0 +1,199 @@
+/* Scoped activity layout: real photographs stay separate from the story text. */
+.gac-meeting.gac-activity { pointer-events:auto; background:#101e28; display:flex; flex-direction:column; padding:10px 14px; gap:6px; box-sizing:border-box; }
+.gac-activity[hidden] { display:none; }
+#main-scene .gac-later button { min-height:44px; }
+.gac-light { flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; color:#eee3c9; }
+.gac-light header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.gac-light h2 { margin:0; font:500 clamp(16px,2.2cqw,22px)/1.3 Lora,serif; }
+.gac-light p { margin:0; font-size:16px; line-height:1.4; }
+.gac-light header > span { white-space:nowrap; font-size:16px; color:#d7b875; }
+.gac-light-picture { flex:1; min-height:60px; display:flex; background:#101e28; }
+.gac-light-map { display:block; width:100%; height:100%; min-height:0; object-fit:contain; }
+.gac-light-times { display:flex; gap:6px; }
+.gac-light-times button { flex:1; }
+.gac-light-times button,.gac-light-branches button,.gac-light-feedback button { min-height:44px; padding:5px 8px; font-size:16px; }
+#main-scene .gac-light button { min-height:44px; padding:5px 8px; font-size:16px; }
+#main-scene .gac-light button[aria-pressed=true] { background:#e2c58d; color:#25313b; }
+.gac-light-branches { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.gac-light-branches button { min-width:0; }
+.gac-light-branches span { display:block; font-size:14px; line-height:1.4; margin-top:3px; }
+.gac-light-feedback { min-height:4.2em; display:flex; align-items:center; gap:8px; }
+.gac-light-feedback p { flex:1; }
+.gac-light-feedback button { max-width:45%; }
+.gac-light-story .dialogue { position:static; width:auto; flex:none; padding:10px; margin:0; border:1px solid #d2ba8155; border-radius:8px; background:#192e37; pointer-events:auto; }
+.gac-light-story .dialogue-footer { margin-top:6px; }
+.gac-light-story .dialogue-next { min-height:44px; padding:5px 10px; }
+.gac-free-scene .surveyor-scene-hud { justify-content:flex-end; }
+.book-gac-map { margin:8px 0; width:100%; aspect-ratio:16/9; }
+@container (max-width:520px) {
+  #main-scene .gac-light button { font-size:16px; padding:4px; }
+  .gac-light-times button,.gac-light-branches button,.gac-light-feedback button { font-size:16px; padding:4px; }
+  .gac-light-branches span { font-size:14px; }
+  .gac-light-feedback { min-height:5.6em; }
+  .gac-light-story .dialogue-text { font-size:16px; }
+}
+.gac-activity .surveyor-scene-hud { position:static; flex:none; align-items:center; gap:8px; }
+.gac-activity .surveyor-scene-hud > span { padding:6px 8px; }
+.gac-activity .surveyor-scene-hud button { padding:6px 10px; }
+.gac-match,.gac-memory { flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; color:#eee3c9; }
+.gac-match header,.gac-memory header { display:flex; align-items:center; justify-content:space-between; gap:8px; flex:none; }
+.gac-match h2,.gac-memory h2 { font-family:Lora,serif; font-size:clamp(16px,2.1cqw,22px); line-height:1.3; margin:0; }
+.gac-match p,.gac-memory p { margin:0; }
+.gac-match-instruction,.gac-match-response { font-size:16px; line-height:1.4; }
+.gac-friends { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+.gac-friends button { display:flex; align-items:center; justify-content:center; gap:6px; padding:4px; font-size:16px; line-height:1.25; }
+.gac-friends button.gac-friend-complete { background:#152129; color:#a0a7a5; border-color:#65716e; }
+.gac-friends button.gac-friend-complete img { filter:grayscale(.8) brightness(.5); }
+.gac-friends img { width:40px; height:44px; object-fit:contain; }
+.gac-activity button[aria-pressed=true] { background:#e2c58d; color:#25313b; box-shadow:inset 0 0 0 2px #f5e3b7; }
+.gac-activity button:disabled { opacity:.5; cursor:default; }
+.gac-sites { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+.gac-sites button { padding:4px 6px; font-size:16px; line-height:1.3; }
+.gac-sites span { display:block; font-size:14px; margin-top:2px; }
+.gac-site-photo,.gac-memory figure { flex:1; min-height:60px; margin:0; display:flex; flex-direction:column; gap:3px; }
+.gac-archive-image { position:relative; flex:1; min-height:0; display:flex; align-items:center; justify-content:center; background:#0a131b; border:1px solid #cdb77b55; border-radius:6px; }
+.gac-archive-image img { display:block; position:absolute; width:100%; height:100%; object-fit:contain; image-rendering:auto; }
+.gac-archive-image > span { position:absolute; padding:4px 8px; background:#101e28; font-size:16px; }
+.gac-archive-image > div { padding:6px; font-size:16px; text-align:center; }
+.gac-activity figcaption { font-size:14px; line-height:1.3; color:#b8c4c6; }
+.gac-activity a { color:#d7b875; }
+.gac-match-response { min-height:2.8em; display:flex; align-items:center; }
+.gac-match-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.gac-match-actions button { padding:6px 10px; font-size:16px; }
+.gac-match-actions .journey-primary { margin-left:auto; }
+.gac-memory header { flex-direction:column; align-items:flex-start; }
+.gac-memory header > span { font-size:16px; color:#d7b875; }
+.gac-memory-copy { display:grid; gap:8px; font-size:clamp(16px,1.8cqw,17px); line-height:1.5; }
+.gac-memory-copy > a { font-size:16px; }
+.gac-memory-copy > button { justify-self:end; font-size:16px; }
+@container (max-width: 520px) {
+  .gac-meeting.gac-activity { padding:8px; }
+  .gac-friends button { flex-direction:column; gap:2px; font-size:16px; }
+  .gac-friends img { width:32px; height:32px; }
+  .gac-sites span { font-size:14px; }
+  .gac-match-actions { gap:4px; }
+  .gac-match-actions button { padding:6px; font-size:16px; }
+}
+@container (min-width: 640px) {
+  .gac-match { display:grid; grid-template-columns:minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows:auto auto auto 1fr auto auto; grid-template-areas:"title title" "instruction instruction" "friends sites" "friends photo" "response photo" "actions actions"; column-gap:14px; }
+  .gac-match > header { grid-area:title; }
+  .gac-match-instruction { grid-area:instruction; }
+  .gac-friends { grid-area:friends; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .gac-friends button { flex-direction:column; }
+  .gac-friends img { width:64px; height:64px; }
+  .gac-sites { grid-area:sites; }
+  .gac-site-photo { grid-area:photo; }
+  .gac-match-response { grid-area:response; }
+  .gac-match-actions { grid-area:actions; }
+}
+
+.gac-impact { flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; color:#eee3c9; }
+.gac-impact header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.gac-impact h2 { margin:0; font:500 clamp(16px,2.2cqw,22px)/1.3 Lora,serif; }
+.gac-impact header > span { font-size:16px; white-space:nowrap; color:#c7c5ae; }
+.gac-impact p { margin:0; }
+.gac-impact-instruction,.gac-impact-response { font-size:16px; line-height:1.4; }
+.gac-impact figure { flex:1; min-height:0; margin:0; display:flex; flex-direction:column; gap:4px; }
+.gac-impact-frame { position:relative; flex:1; min-height:60px; background:#091219; container-type:size; cursor:crosshair; }
+.gac-impact-photo { position:relative; width:100%; aspect-ratio:16/9; background:#091219; overflow:hidden; }
+.gac-impact-photo img { display:block; width:100%; height:100%; object-fit:contain; image-rendering:auto; }
+.gac-impact-frame > .gac-impact-photo { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(100cqw,177.77778cqh); height:min(56.25cqw,100cqh); }
+.gac-impact-answer,.gac-impact-hint,.gac-impact-region { position:absolute; pointer-events:none; box-sizing:border-box; border:2px solid #ffe3a2; box-shadow:0 0 0 1px #1d2935; }
+.gac-impact-answer { transform:translate(-50%,-50%); border-radius:50%; }
+.gac-impact-hint { left:36%; top:30%; width:30%; height:40%; border-style:dashed; }
+.gac-impact-region { left:calc(var(--region) * 100% / 3); top:0; width:calc(100% / 3); height:100%; }
+.gac-impact-error { position:absolute; inset:0; display:grid; place-content:center; padding:10px; text-align:center; font-size:16px; }
+.gac-impact figcaption { display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 12px; font-size:14px; line-height:1.3; }
+.gac-impact figcaption > span { color:#eee3c9; }
+.gac-impact-switch,.gac-impact-regions { display:flex; gap:6px; }
+.gac-impact-switch button,.gac-impact-regions button { flex:1; padding:6px 10px; font-size:16px; min-height:44px; }
+.gac-impact-switch button:last-child { margin-left:12px; }
+.gac-impact-response { min-height:2.8em; }
+.gac-impact .dialogue { position:static; width:100%; max-height:none; flex:none; padding:10px; border:1px solid #d2ba8155; border-radius:8px; background:#192f39; }
+.gac-impact .dialogue-body { gap:10px; }
+.gac-impact .dialogue-text { font-size:16px; line-height:1.5; }
+.gac-impact .dialogue-footer { margin-top:6px; }
+.gac-impact .dialogue-next { font-size:16px; padding:6px 10px; }
+.gac-impact-story .gac-impact-frame { cursor:default; }
+.book-impact-photo { margin:10px 0; clear:both; }
+.book-impact-photo figcaption { font:14px/1.4 'Be Vietnam Pro',sans-serif; margin-top:4px; }
+@container (max-width:520px) {
+  .gac-impact header { flex-direction:column; align-items:flex-start; gap:2px; }
+  .gac-impact .dialogue-portrait { width:36px; height:46px; }
+  .gac-impact .dialogue-text { font-size:16px; }
+  .gac-impact figcaption { font-size:14px; }
+}
+
+/* T02: compare without remembering or switching the earlier picture. */
+.gac-impact-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.gac-impact-pair figure { min-width:0; }
+.gac-impact-pair figure > strong { font-size:16px; color:#ffe3a2; }
+.gac-impact-pair .gac-impact-frame { flex:none; aspect-ratio:16/9; cursor:default; }
+.gac-impact-grid { position:absolute; inset:0; display:grid; grid-template-columns:repeat(3,1fr); pointer-events:none; }
+.gac-impact-grid span { border-right:1px dashed #ffe3a299; padding:4px; color:#fff3ce; font-size:16px; font-weight:700; text-shadow:0 1px 3px #000,0 0 4px #000; }
+.gac-impact-grid span:last-child { border-right:0; }
+.gac-impact-result { flex:1; min-height:100px; display:flex; }
+.gac-impact-result figure > strong { display:none; }
+.gac-impact-credit { font-size:14px; line-height:1.4; }
+.gac-impact-help { min-height:44px; }
+#main-scene .game-stage:has(.gac-impact:not(.gac-impact-story)) { height:auto; aspect-ratio:auto; min-height:480px; }
+#main-scene .game-stage:has(.gac-impact:not(.gac-impact-story)) > .story-canvas { display:none; }
+.gac-meeting:has(.gac-impact:not(.gac-impact-story)) { position:relative; min-height:480px; }
+@container (max-width:480px) {
+  .gac-impact-pair { grid-template-columns:1fr; gap:8px; }
+}
+
+/* T03: a compact shadow observation watch. */
+#main-scene .game-stage:has(.gac-map-puzzle) { height:clamp(520px,56.25cqw,600px); aspect-ratio:auto; min-height:0; }
+#main-scene .game-stage:has(.gac-map-puzzle) > .story-canvas { display:none; }
+#main-scene .gac-map-puzzle {
+  position:absolute; inset:0; min-height:0; display:grid;
+  grid-template-rows:auto minmax(0,1fr) 86px;
+  padding:16px 20px; gap:12px; color:#eee3c9;
+  background:radial-gradient(ellipse at 45% 40%,#203943 0%,#101e28 75%);
+}
+#main-scene .gac-map-puzzle[hidden] { display:none; }
+.gac-map-puzzle .surveyor-scene-hud { position:static; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.gac-map-puzzle .surveyor-scene-hud > span { flex:1; border:0; background:none; padding:0; font:500 18px/1.4 Lora,serif; }
+.gac-map-puzzle .surveyor-scene-hud button { font-size:16px; }
+/* The diagram and observation controls share the existing, fixed T03 frame. */
+.gac-watch-workspace { min-height:0; height:100%; width:100%; max-width:740px; margin:0 auto; display:grid; grid-template-rows:minmax(0,1fr) auto; gap:12px; }
+.gac-watch-figure { margin:0; min-width:0; min-height:0; display:grid; grid-template-rows:minmax(0,1fr) auto; gap:4px; }
+.gac-watch-figure svg { display:block; width:100%; height:100%; min-height:0; }
+.gac-watch-figure figcaption { font-size:14px; line-height:1.5; text-align:center; color:#bdcecb; margin-top:8px; }
+.gac-watch-regions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+#main-scene .gac-watch-regions button { min-width:0; min-height:64px; padding:8px 4px; background:#101e28; color:#eee3c9; border:1px solid #bdcecb55; border-radius:6px; font-size:16px; }
+#main-scene .gac-watch-regions button:disabled { opacity:1; }
+#main-scene .gac-watch-regions button[aria-pressed=true] { border-color:#efce85; background:#d7b87518; }
+.gac-watch-regions small { display:block; font-size:14px; color:#bdcecb; margin-top:4px; }
+.gac-watch-observe { width:min(100%,420px); justify-self:center; display:grid; gap:8px; }
+.gac-watch-observe label { text-align:center; font-size:16px; color:#e2c58d; }
+.gac-watch-observe input { display:block; width:100%; margin:0; height:36px; min-height:36px; accent-color:#d7b875; cursor:pointer; pointer-events:auto; touch-action:none; }
+.gac-watch-log { display:flex; justify-content:space-between; gap:8px; font-size:14px; color:#bdcecb; }
+.gac-watch-log [data-seen=true] { color:#efce85; }
+.gac-map-feedback { display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid #bdcecb22; }
+.gac-map-status { min-width:0; margin:0; font-size:16px; line-height:1.5; color:#e2c58d; }
+.gac-map-action { flex-shrink:0; }
+.gac-map-action button { padding:8px 12px; font-size:16px; }
+.gac-map-puzzle button:focus-visible { outline:3px solid #ffe3a2; outline-offset:-3px; }
+@container (max-width:520px) {
+  #main-scene .gac-map-puzzle { padding:12px; gap:10px; grid-template-rows:auto minmax(0,1fr) 112px; }
+  .gac-map-puzzle .surveyor-scene-hud > span { flex-basis:100%; font-size:17px; }
+  .gac-map-puzzle .surveyor-scene-hud button { font-size:16px; }
+  .gac-watch-workspace { gap:10px; }
+  #main-scene .gac-watch-regions button { font-size:16px; }
+  .gac-map-feedback { flex-wrap:wrap; align-content:center; gap:6px; }
+  .gac-map-status { flex-basis:100%; font-size:16px; }
+  .gac-map-action { margin-left:auto; }
+}
+
+#main-scene .gac-watch-regions button > span { color:#eee3c9; }
+
+/* Reuse the friends' recollection layout within the existing game frame. */
+@media (max-width: 540px) {
+  .game-stage .gac-recollection .surveyor-ending { grid-template-columns: 1fr; gap: 10px; }
+  #main-scene .game-stage .gac-recollection .ending-photo img { height: 120px; }
+  .gac-recollection .ending-story-copy { gap: 8px; }
+  .gac-recollection .ending-story-copy h3 { font-size: 20px; }
+  .gac-recollection .ending-actions { gap: 8px; }
+}

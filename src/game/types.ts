@@ -1,10 +1,12 @@
-import type { SurveyorEvent } from '../content/levels/surveyor-progress';
-import type { SceneId } from '../content/scenes';
+import type { SurveyorEvent } from '../content/friends/surveyor/progress';
+import type { SceneId } from '../content/story/opening/scenes';
 import type { Language } from '../content/i18n';
 export type MoonQuest = 'bench' | 'tree' | 'lantern' | 'trail' | 'complete';
-export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh' | 'tai-thinh' | 'ban-banh-luoi';
+export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh' | 'tai-thinh' | 'ban-banh-luoi' | 'gac-troi' | 't04-slope' | 't04-rock' | 't04-banyan' | 'reunion';
 export interface PreviewOptions {
-  banhLuoiGuide?: import('./banh-luoi-guide').BanhLuoiGuideOptions;
+  surveyorLantern?: 'hidden' | 'unlit' | 'lit';
+  sparkleLantern?: 'hidden' | 'unlit' | 'lit';
+  banhLuoiGuide?: import('./scenes/ban-banh-luoi/guide').BanhLuoiGuideOptions;
   taiEnding?: 'none' | 'thanks' | 'gifting' | 'lit' | 'free';
   taiStars?: number;
   onTaiGift?: () => void;

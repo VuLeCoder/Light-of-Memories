@@ -1,0 +1,82 @@
+/* Let in-flow activities grow with the page; the game frame never scrolls. */
+.game-panel { container-type: inline-size; }
+#main-scene .game-stage {
+  height: auto;
+  min-height: clamp(480px, 56.25cqw, 720px);
+  max-height: none;
+  aspect-ratio: auto;
+  overflow: clip;
+  scrollbar-gutter: auto;
+  overscroll-behavior: contain;
+}
+#main-scene .game-instructions {
+  box-sizing: border-box;
+  height: auto;
+  min-height: 96px;
+  flex-shrink: 0;
+  padding: 10px 18px;
+  font-size: 16px;
+  align-items: safe center;
+  overflow: clip;
+}
+
+/* Absolute task panels need their own scroll area for their bottom controls. */
+#main-scene .tai-task-panel { overflow: auto; }
+
+/* Full-page activities start with their controls, rather than a canvas-sized gap. */
+#main-scene .game-stage:has(.tai-phase-rhythm, .tai-phase-photoC, .tai-recollection, .ban-recollection) > .story-canvas {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  #main-scene .game-stage { height: auto; min-height: clamp(480px, 68svh, 600px); }
+  #main-scene .game-stage:has(.sparkle-card, .tai-task-panel, .tai-memory-photo, .tai-identify, .ban-panel, .ban-memory-photo, .ban-recollection) > .story-canvas {
+    display: none;
+  }
+}
+
+/* Keep the orbit above and Cuội beside the ground projection visible. */
+.gac-meeting .dialogue-portrait-gacTroi img { object-fit: contain; transform: none; }
+
+/* Help uses the whole frame; its content determines height instead of scrolling. */
+#main-scene .game-stage:has(.game-menu--help) {
+  height: auto !important;
+  min-height: 480px !important;
+  aspect-ratio: auto;
+}
+#main-scene .game-stage:has(.game-menu--help) > .story-canvas { position: absolute; inset: 0; }
+.game-menu.game-menu--help {
+  position: relative; inset: auto; min-height: 480px;
+  grid-template-columns: minmax(0, 1fr); align-content: center;
+  gap: 20px; padding: 26px; overflow: visible;
+  background: #142730;
+}
+.game-menu--help .menu-eyebrow { font-size: 14px; }
+.game-menu--help .menu-story h2 { font-size: 28px; margin: 6px 0; }
+.game-menu--help .menu-story > p { font-size: 16px; line-height: 1.6; margin: 0; max-width: 65ch; }
+.game-menu--help .menu-actions { min-width: 0; gap: 18px; }
+.game-menu--help .menu-help {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px; list-style: none; padding: 0; margin: 0;
+  font-size: 16px; line-height: 1.6;
+}
+.game-menu--help .menu-help li {
+  display: flex; align-items: flex-start; gap: 10px;
+  min-width: 0; margin: 0; padding-top: 12px; border-top: 1px solid #cfb77e40;
+}
+.menu-help-number { color: #cfb77e; font-size: 14px; padding-top: 3px; }
+.menu-help strong { display: block; color: #f0d6a2; font-weight: 600; margin-bottom: 4px; }
+.menu-help p { margin: 0; }
+.menu-help-bottom { display: flex; align-items: center; gap: 24px; border-top: 1px solid #cfb77e40; padding-top: 16px; }
+.game-menu--help .menu-help-bottom .menu-hint { flex: 1; font-size: 14px; line-height: 1.6; }
+.game-menu--help .menu-help-bottom button { flex-shrink: 0; font-size: 16px; }
+@container (max-width: 480px) {
+  .game-menu.game-menu--help { padding: 18px; gap: 16px; }
+  .game-menu--help .menu-help { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .menu-help-bottom { flex-direction: column; align-items: stretch; gap: 12px; }
+}
+@media (max-width: 800px) {
+  .gac-meeting > .dialogue { left: 8px; right: 8px; width: auto; }
+  .gac-meeting .dialogue-portrait { display: block; width: 44px; height: 56px; }
+  .gac-meeting > .ending-farewell { left: 8px; right: 8px; max-height: calc(100% - 70px); overflow: auto; }
+}

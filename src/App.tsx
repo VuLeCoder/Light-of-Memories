@@ -1,39 +1,53 @@
-import { BanhLuoiLevel } from './components/BanhLuoiLevel';
-import { EndingTrail } from './components/EndingTrail';
-import { freshBanhLuoi } from './content/levels/ban-banh-luoi-progress';
-import { banBanhLuoiCopy as banCopy } from './content/levels/ban-banh-luoi-content';
-import { endingChatLines } from './content/levels/ending-chat';
+import { TaiThinhLevel } from './components/friends/tai-thinh/TaiThinhLevel';
+import { TaiThinhSceneLabels } from './components/friends/tai-thinh/TaiThinhChallenges';
+import { BanhLuoiLevel } from './components/friends/ban-banh-luoi/BanhLuoiLevel';
+import { freshTaiThinh } from './content/friends/tai-thinh/progress';
+import { banhLuoiGiftPending, freshBanhLuoi } from './content/friends/ban-banh-luoi/progress';
+import { banBanhLuoiCopy as banCopy } from './content/friends/ban-banh-luoi/dialogue';
+import { playInstructions } from './content/play-instructions';
+import { selectMusicMood } from './audio/music-score';
+import { gameAudio } from './audio/game-audio';
+import { useGameAudio } from './audio/useGameAudio';
+import { readAudioSettings, saveAudioSetting, type AudioSettings } from './audio/settings';
+import { sparkleHoleWarningLines } from './content/friends/lap-lanh/dialogue';
+import { HangFinale } from './components/ending/HangFinale';
+import { BookTopline } from './components/book/BookTopline';
+import { GacTroiTrail, isGacTrailPhase } from './components/friends/gac-troi/GacTroiTrail';
+import { gacMatchingIntroLength } from './content/friends/gac-troi/challenges/matching';
+import { GacTroiLevel } from './components/friends/gac-troi/GacTroiLevel';
+
+import { freshGacTroi } from './content/friends/gac-troi/progress';
+import { endingChatLines } from './content/story/ending/friend-dialogue';
 import { focusGame } from './focus/game-focus';
-import { TaiThinhSceneLabels } from './components/TaiThinhChallenges';
-import { TaiThinhLevel } from './components/TaiThinhLevel';
-import { freshTaiThinh } from './content/levels/tai-thinh-progress';
-import { SparkleLevel } from './components/SparkleLevel';
-import { freshSparkle } from './content/levels/lap-lanh';
-import { SurveyorEnding } from './components/SurveyorEnding';
-import { SurveyorExcavation } from './components/SurveyorExcavation';
-import type { SurveyorEvent } from './content/levels/surveyor-progress';
+import { SparkleLevel } from './components/friends/lap-lanh/SparkleLevel';
+import { freshSparkle } from './content/friends/lap-lanh/progress';
+import { SurveyorEnding } from './components/friends/surveyor/SurveyorEnding';
+import { SurveyorExcavation } from './components/friends/surveyor/SurveyorExcavation';
+import type { SurveyorEvent } from './content/friends/surveyor/progress';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { JourneyMap, JourneyBook, journeyCopy } from './components/JourneyMap';
-import { BookNavigation } from './components/BookNavigation';
-import { EarthDialogue } from './components/EarthDialogue';
-import { GameMenu } from './components/GameMenu';
-import { VisitorCounter } from './components/VisitorCounter';
+import { JourneyMap, JourneyBook, journeyCopy } from './components/journey/JourneyMap';
+import { BookNavigation } from './components/book/BookNavigation';
+import { BookLabelGuide } from './components/book/BookContentLabel';
+import { EarthDialogue } from './components/shared/EarthDialogue';
+import { GameMenu } from './components/shell/GameMenu';
+import { VisitorCounter } from './components/shell/VisitorCounter';
 import { GameCanvas } from './game/GameCanvas';
-import { scenes, type SceneId } from './content/scenes';
+import { scenes, type SceneId } from './content/story/opening/scenes';
 import { brandLogo, portraits } from './content/assets';
-import { copy, languageOptions, readLanguage, storyLines, type Language } from './content/i18n';
-import { readProgress, saveProgress, readSound, type Chapter } from './state/progress';
-import { surveyorEncounterCopy, surveyorEncounterLines } from './content/levels/surveyor-encounter';
-import { challengeCopy, challengeLines } from './content/levels/surveyor-challenges';
-import { freshSurveyor, replaySurveyor } from './content/levels/surveyor-progress';
-import { journeyStatus, type LevelId } from './content/levels';
+import { copy, languageOptions, readLanguage, type Language } from './content/i18n';
+import { storyLines } from './content/story/opening/dialogue';
+import { readProgress, saveProgress, type Chapter } from './state/progress';
+import { surveyorEncounterCopy, surveyorEncounterLines } from './content/friends/surveyor/dialogue';
+import { challengeCopy, challengeLines } from './content/friends/surveyor/challenges/journal';
+import { freshSurveyor, replaySurveyor } from './content/friends/surveyor/progress';
+import { journeyStatus, type LevelId } from './content/friends/index';
 import type { MoonQuest } from './game/types';
-import { useWorkspaceFit } from './useWorkspaceFit';
+import { useWorkspaceFit } from './hooks/useWorkspaceFit';
 
 function BookPlaceholder({ language }: { language: Language }) {
   const t = copy[language];
   return <>
-    <div className="book-topline"><span className="book-icon" aria-hidden="true">▤</span><span>{t.bookTop}</span></div>
+    <BookTopline language={language} />
     <aside className="book-panel" lang={language} aria-labelledby="book-title">
       <div className="book-sheet">
         <div className="page-corner" aria-hidden="true" />
@@ -88,27 +102,56 @@ export function App() {
   const [saved] = useState(readProgress);
   const [saveUnavailable, setSaveUnavailable] = useState(saved.unavailable);
   const [completed, setCompleted] = useState(saved.progress.completed);
-  const [sound, setSound] = useState(readSound);
-  const [soundUnavailable, setSoundUnavailable] = useState(false);
-  function toggleSound() {
-    const next = !sound;
-    setSound(next);
-    try { localStorage.setItem('cuoi.sound', next ? 'on' : 'off'); setSoundUnavailable(false); }
-    catch { setSoundUnavailable(true); }
+  const [audio, setAudio] = useState(readAudioSettings);
+  const [audioSaveFailures, setAudioSaveFailures] = useState<Record<keyof AudioSettings, boolean>>({ music: false, effects: false });
+  function toggleAudio(kind: keyof AudioSettings) {
+    const next = !audio[kind];
+    setAudio({ ...audio, [kind]: next });
+    // Apply the independent toggle immediately, including while the menu is open.
+    gameAudio.update({ ...audioScene, [kind === 'music' ? 'musicEnabled' : 'effectsEnabled']: kind === 'music' ? next && !inTaiThinh : next });
+    if (next) void gameAudio.unlock();
+    const failed = !saveAudioSetting(kind, next);
+    setAudioSaveFailures(previous => ({ ...previous, [kind]: failed }));
   }
   const [scene, setScene] = useState<SceneId>(saved.progress.scene);
   const [menuOpen, setMenuOpen] = useState(true);
+  const [menuStageHeight, setMenuStageHeight] = useState<number | null>(null);
+  function openMenu() {
+    // Some paused scenes hide their content or change layout. Preserve the
+    // current stage's layout height before those pause updates are applied.
+    // Computed CSS pixels stay correct inside the workspace's CSS zoom.
+    const stage = gameStage.current;
+    setMenuStageHeight(stage ? parseFloat(getComputedStyle(stage).height) : null);
+    setMenuOpen(true);
+  }
   const [started, setStarted] = useState(saved.progress.started);
   const [chapter, setChapter] = useState<Chapter>(saved.progress.chapter);
   const [quest, setQuest] = useState<MoonQuest>(saved.progress.quest);
   const [activeLevel, setActiveLevel] = useState<LevelId | null>(saved.progress.activeLevel);
   const [surveyorProgress, setSurveyorProgress] = useState(saved.progress.surveyor);
-  const [banhLuoiProgress, setBanhLuoiProgress] = useState(saved.progress.banhLuoi);
+  const [gacTroiProgress, setGacTroiProgress] = useState(() => saved.progress.gacTroi);
+  const [hangOpen, setHangOpen] = useState(saved.progress.gacTroi.hangArrival === true && saved.progress.activeLevel === 'gac-troi');
+  const [starTravel, setStarTravel] = useState(false);
+  const previousFarewell = useRef(gacTroiProgress.farewellDone);
+  useEffect(() => {
+    if (!previousFarewell.current && gacTroiProgress.farewellDone && !gacTroiProgress.completedOnce) return;
+    if (!previousFarewell.current && gacTroiProgress.farewellDone && !gacTroiProgress.hangArrival) {
+      setStarTravel(true);
+      setGacTroiProgress(p => ({ ...p, hangArrival: true }));
+    }
+    previousFarewell.current = gacTroiProgress.farewellDone;
+  }, [gacTroiProgress]);
+  useEffect(() => {
+    if (!starTravel || menuOpen) return;
+    const timer = window.setTimeout(() => { gameAudio.cue('gift'); setHangOpen(true); }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 800);
+    return () => window.clearTimeout(timer);
+  }, [starTravel, menuOpen]);
   const [taiThinhProgress, setTaiThinhProgress] = useState(saved.progress.taiThinh);
+  const [banhLuoiProgress, setBanhLuoiProgress] = useState(saved.progress.banhLuoi);
   const [sparkleProgress, setSparkleProgress] = useState(saved.progress.sparkle);
   useEffect(() => {
-    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, taiThinhProgress, banhLuoiProgress));
-  }, [chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, taiThinhProgress, banhLuoiProgress]);
+    if (chapter !== 'idle') setSaveUnavailable(!saveProgress(chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, gacTroiProgress, taiThinhProgress, banhLuoiProgress));
+  }, [chapter, quest, completed, activeLevel, surveyorProgress, sparkleProgress, gacTroiProgress, taiThinhProgress, banhLuoiProgress]);
   const [trailWarning, setTrailWarning] = useState(false);
   const [treeTurn, setTreeTurn] = useState(0);
   const [revealing, setRevealing] = useState(false);
@@ -120,14 +163,15 @@ export function App() {
   const moonWaking = chapter === 'moon-waking';
   const questDialogue = quest === 'tree' || quest === 'lantern';
   const journeyOpen = quest === 'complete';
-  const completedFriends = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
+  const completedFriends = { surveyor: surveyorProgress.completedOnce, 'lap-lanh': sparkleProgress.completedOnce, 'gac-troi': gacTroiProgress.completedOnce, 'tai-thinh': taiThinhProgress.completedOnce, 'ban-banh-luoi': banhLuoiProgress.completedOnce };
+  const inGacTroi = journeyOpen && activeLevel === 'gac-troi' && journeyStatus('gac-troi', completedFriends) !== 'locked';
+  const litStars = Object.values(completedFriends).filter(Boolean).length;
   const inBanhLuoi = journeyOpen && activeLevel === 'ban-banh-luoi' && journeyStatus('ban-banh-luoi', completedFriends) !== 'locked';
   const inTaiThinh = journeyOpen && activeLevel === 'tai-thinh' && journeyStatus('tai-thinh', completedFriends) !== 'locked';
-  const litStars = Number(surveyorProgress.completedOnce) + Number(sparkleProgress.completedOnce) + Number(taiThinhProgress.completedOnce) + Number(banhLuoiProgress.completedOnce);
   const [banPreview, setBanPreview] = useState(false);
   const [banPreviewProgress, setBanPreviewProgress] = useState(banhLuoiProgress);
   const displayedBan = banPreview ? banPreviewProgress : banhLuoiProgress;
-  const banGiftPending = displayedBan.phase === 'gift' && (banPreview ? displayedBan.turn === 0 : !displayedBan.completedOnce);
+  const banGiftPending = banhLuoiGiftPending(displayedBan);
   const banStars = banPreview && (displayedBan.phase !== 'gift' || banGiftPending) ? 3 : litStars;
   useEffect(() => { setBanPreview(false); }, [activeLevel]);
   const banEnding = displayedBan.phase === 'finished' ? 'free' : displayedBan.phase === 'gift' ? (banGiftPending ? 'gifting' : 'lit') : displayedBan.phase === 'farewell' || banPreview ? 'thanks' : 'none';
@@ -144,14 +188,16 @@ export function App() {
   const excavating = inSurveyor && ['soil', 'digging', 'soil-memory'].includes(surveyorProgress.phase);
   useEffect(() => { setDigNear(null); }, [excavating]);
   const excavation = excavating ? { found: surveyorProgress.found, clues: surveyorProgress.clues, digging: surveyorProgress.phase === 'digging' } : undefined;
-  const openFieldBook = () => { setBookRequest(n => n + 1); };
+  const openFieldBook = () => { gameAudio.cue('hint'); setBookRequest(n => n + 1); };
   const surveyorMeeting = inSurveyor && (surveyorProgress.phase === 'arrival' || surveyorProgress.phase === 'dialogue');
   const surveyorEnding = inSurveyor && surveyorProgress.phase === 'complete';
   const endingFreeRoam = surveyorEnding && surveyorProgress.turn >= 10;
   const surveyorDigIntro = inSurveyor && surveyorProgress.phase === 'soil-intro';
   const surveyorChat = surveyorMeeting && surveyorProgress.phase === 'dialogue';
   const encounterText = surveyorEncounterCopy[language];
-  const endingExploring = (inBanhLuoi && banhLuoiProgress.phase === 'finished' && !banPreview) || endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished') || (inTaiThinh && taiThinhProgress.phase === 'finished');
+  const gacTrail = inGacTroi && isGacTrailPhase(gacTroiProgress.phase);
+  const gacWalking = inGacTroi && gacTroiProgress.phase === 'gac-free';
+  const endingExploring = (inTaiThinh && taiThinhProgress.phase === 'finished') || (inBanhLuoi && banhLuoiProgress.phase === 'finished' && !banPreview) || gacWalking || endingFreeRoam || (inSparkle && sparkleProgress.phase === 'finished');
   const [endingChat, setEndingChat] = useState<LevelId | null>(null);
   const chattingAtEnd = endingExploring && endingChat === activeLevel;
   useEffect(() => { setEndingChat(null); }, [activeLevel, endingExploring]);
@@ -159,8 +205,19 @@ export function App() {
     setEndingChat(null);
     gameStage.current?.querySelector<HTMLElement>('.game-host')?.focus({ preventScroll: true });
   };
-  const questLocked = chattingAtEnd || ( inBanhLuoi ? banPreview || !['approach','finished'].includes(banhLuoiProgress.phase) : inTaiThinh ? !['approach', 'finished'].includes(taiThinhProgress.phase) : inSparkle ? (!sparkleWalking || trailWarning) : questDialogue || (journeyOpen && !surveyorMeeting && !excavating && !endingFreeRoam) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat);
+  const questLocked = hangOpen || starTravel || chattingAtEnd || ( inBanhLuoi ? banPreview || !['approach','finished'].includes(banhLuoiProgress.phase) : inTaiThinh ? !['approach', 'finished'].includes(taiThinhProgress.phase) : inSparkle ? (!sparkleWalking || trailWarning) : questDialogue || (journeyOpen && !surveyorMeeting && !excavating && !endingFreeRoam && !gacWalking) || (excavating && surveyorProgress.phase !== 'soil') || surveyorChat);
   const moonMode = menuOpen ? 'paused' : questLocked ? 'story' : chapter === 'moon-waking' ? 'wake' : moonStory ? 'story' : chapter === 'moon-free' ? 'free' : 'sleep';
+  const [replayEndingMusic, setReplayEndingMusic] = useState(false);
+  const audioScene = {
+    endingSuspended: menuOpen,
+    endingMusic: tellingStory || (hangOpen && ([3, 5].includes(gacTroiProgress.finale?.stage ?? 0) || replayEndingMusic)),
+    musicEnabled: audio.music && !inTaiThinh, effectsEnabled: audio.effects, paused: false, effectsPaused: menuOpen || !started,
+    mood: selectMusicMood({ menuOpen, hangOpen, inSurveyor: inSurveyor || inBanhLuoi, inSparkle, inGacTroi }),
+    duck: !menuOpen && (tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || chattingAtEnd || transitioning || hangOpen
+      || (surveyorEnding && !endingFreeRoam) || (inSparkle && !sparkleWalking) || (inBanhLuoi && !['approach', 'finished'].includes(displayedBan.phase)) || (inGacTroi && !gacWalking)),
+  };
+  const audioUnavailable = useGameAudio(audioScene);
+
   const finishEarth = useCallback(() => { gameOwnsFocus.current = true; setChapter('departing'); }, []);
   const finishMoonStory = useCallback(() => setChapter('moon-free'), []);
   const onCuoiAwake = useCallback(() => setChapter((value) => value === 'moon-waking' ? 'moon-story' : value), []);
@@ -174,7 +231,7 @@ export function App() {
     setRevealing(true);
     setQuest('complete');
   }, [quest]);
-  const receiveLantern = useCallback(() => setQuest((value) => value === 'tree' ? 'lantern' : value), []);
+  const receiveLantern = useCallback(() => { gameAudio.cue('gift'); setQuest(value => value === 'tree' ? 'lantern' : value); }, []);
   const followTracks = useCallback(() => setQuest('trail'), []);
   useEffect(() => {
     if (!revealing || menuOpen) return;
@@ -184,14 +241,14 @@ export function App() {
   // A new scene starts at the top of the shared scroll viewport.
   useLayoutEffect(() => {
     gameStage.current?.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [chapter, quest, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, displayedBan.phase, banPreview, menuOpen]);
+  }, [chapter, quest, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, displayedBan.phase, banPreview, gacTroiProgress.phase, menuOpen]);
   // Keep focus on a persistent element while the canvas is inert or dialogue unmounts.
   useLayoutEffect(() => {
     if (menuOpen || !gameOwnsFocus.current) return;
     const stage = gameStage.current;
     if (transitioning || moonWaking) stage?.focus({ preventScroll: true });
     else focusGame(stage);
-  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, banhLuoiProgress.phase, displayedBan.phase, banPreview, trailWarning, chattingAtEnd, canvasReady]);
+  }, [chapter, quest, menuOpen, transitioning, moonWaking, revealing, activeLevel, surveyorProgress.phase, sparkleProgress.phase, taiThinhProgress.phase, displayedBan.phase, banPreview, gacTroiProgress.phase, trailWarning, chattingAtEnd, canvasReady]);
   // Removal, disabling and inert updates do not consistently emit focusout.
   // Recover after the DOM settles, for every scene, without taking focus from
   // another game control, the companion book, or the rest of the page.
@@ -238,6 +295,7 @@ export function App() {
     setCompleted(false);
     setSurveyorProgress(freshSurveyor());
     setSparkleProgress(freshSparkle());
+    setGacTroiProgress(freshGacTroi());
     setTaiThinhProgress(freshTaiThinh());
     setBanhLuoiProgress(freshBanhLuoi());
     setActiveLevel(null);
@@ -263,50 +321,57 @@ export function App() {
     gameOwnsFocus.current = true;
   }
   const vi = language === 'vi';
-  const dialogueHelp = vi ? 'Nhấn Space / Enter hoặc bấm nút trong khung thoại để hiện hết câu và tiếp tục.' : 'Press Space / Enter or use the dialogue button to reveal the full line and continue.';
-  const moveHelp = vi ? 'Di chuyển bằng A/D, ←/→ hoặc bấm vào mặt đất.' : 'Move with A/D, ←/→, or click the ground.';
-  const depthMoveHelp = vi ? 'Di chuyển: WASD / phím mũi tên hoặc chạm mặt đất.' : 'Move: WASD / arrow keys or tap the ground.';
-  let gameInstructions = '';
-  if (!menuOpen && !transitioning && !moonWaking && !revealing) {
-    if (inBanhLuoi) {
+  const moveHelp = vi ? 'Di chuyển: A/D, ←/→ hoặc chạm mặt đất.' : 'Move: A/D, ←/→, or tap the ground.';
+  const depthMoveHelp = vi ? 'Di chuyển: WASD, phím mũi tên hoặc chạm mặt đất.' : 'Move: WASD, arrow keys, or tap the ground.';
+  const instruction = (key: keyof typeof playInstructions) => playInstructions[key][vi ? 0 : 1];
+  let gameInstructions: string = instruction('dialogue');
+  if (endingExploring && !chattingAtEnd) gameInstructions = inSurveyor ? depthMoveHelp : moveHelp;
+  else if (inSurveyor) {
+    const phase = surveyorProgress.phase;
+    if (phase === 'arrival') gameInstructions = `${depthMoveHelp} ${vi ? 'Bấm Mắt Tròn để tới trò chuyện.' : 'Click Round Eye to walk over and talk.'}`;
+    else if (phase === 'tools') gameInstructions = instruction('tools');
+    else if (phase === 'memory' || phase === 'soil-memory') gameInstructions = instruction('photo');
+    else if (phase === 'soil') gameInstructions = instruction('dig');
+    else if (phase === 'digging') gameInstructions = instruction('digging');
+    else if (phase === 'timeline') gameInstructions = instruction('journal');
+    else if (phase === 'complete' && surveyorProgress.turn >= 3 && surveyorProgress.turn <= 5) gameInstructions = instruction('photo');
+  } else if (inSparkle) {
+    const phase = sparkleProgress.phase;
+    if (phase === 'search' && !trailWarning) gameInstructions = instruction('search');
+    else if (phase === 'arrival') gameInstructions = `${moveHelp} ${vi ? 'Bấm Lấp Lánh để tới trò chuyện.' : 'Click Twinkle to walk over and talk.'}`;
+    else if (phase === 'cleaning') gameInstructions = instruction('cleaning');
+    else if (phase === 'repair') gameInstructions = instruction('repair');
+    else if (phase === 'ranging') gameInstructions = instruction('ranging');
+    else if (phase === 'finished') gameInstructions = `${moveHelp} ${vi ? 'Đi tới những vòng rung bên phải để về lộ trình và gặp Tai Thính.' : 'Walk to the ground ripples on the right to return to the route and meet Sharp Ear.'}`;
+    else if (phase === 'dust-photo' || phase === 'clean-photo' || phase === 'farewell' && [1, 2].includes(sparkleProgress.turn)) gameInstructions = instruction('photo');
+  } else if (inGacTroi) {
+    const phase = gacTroiProgress.phase;
+    if (phase === 'matching' && gacTroiProgress.turn >= gacMatchingIntroLength) gameInstructions = instruction('matching');
+    else if (phase === 't02-search') gameInstructions = instruction('impact');
+    else if (['t03-walk', 't03-dark-intro', 't03-map'].includes(phase)) gameInstructions = instruction('shadow');
+    else if (phase === 't03-story' && gacTroiProgress.turn >= 2) gameInstructions = instruction('photo');
+    else if (['t04-slope', 't04-rock', 't04-banyan'].includes(phase)) gameInstructions = instruction('trail');
+  } else if (journeyOpen) gameInstructions = instruction('route');
+  else if (chapter === 'moon-free' && !questDialogue) {
+    gameInstructions = `${moveHelp} ${quest === 'bench' ? t.benchHint : t.trailHint}`;
+  }
+  if (inBanhLuoi) {
       gameInstructions = displayedBan.phase === 'wheels' ? banCopy['footer.wheels'][language] : (displayedBan.phase === 'photoA' || displayedBan.phase === 'photoB' && displayedBan.turn === 1) ? banCopy['footer.photo'][language] : displayedBan.phase === 'routePuzzle' ? banCopy['footer.route'][language] : displayedBan.phase === 'guiding' ? banCopy['footer.guide'][language] : ['recallA','recallB'].includes(displayedBan.phase) ? banCopy['footer.recall'][language] : displayedBan.phase === 'finished' ? `${moveHelp} ${banCopy['footer.finished'][language]}` : banGiftPending ? banCopy['footer.gift'][language] : banCopy[displayedBan.phase === 'approach' ? 'footer.walk' : 'footer.dialogue'][language];
     } else if (inTaiThinh) {
-      gameInstructions = taiThinhProgress.phase === 'gift' && taiThinhProgress.turn === 0 ? (vi ? 'Ánh sáng đang tới chiếc đèn. Bạn có thể mở menu để tạm dừng.' : 'The light is reaching the lantern. Open the menu to pause.') : ['recallA', 'recallB', 'recallC'].includes(taiThinhProgress.phase) ? (vi ? 'Dùng nút Trang trước / Trang tiếp bằng chuột, chạm hoặc Tab và Enter/Space.' : 'Use Previous / Next with mouse, touch, or Tab and Enter/Space.') : taiThinhProgress.phase === 'finished' ? `${moveHelp} ${vi ? 'Theo dấu bánh xe bên phải để về lộ trình.' : 'Follow the wheel tracks on the right to return to the route.'}` : taiThinhProgress.phase === 'approach' ? `${moveHelp} ${vi ? 'Đến gần cụm thiết bị rồi nhấn E, hoặc bấm vào cụm thiết bị.' : 'Approach the instruments and press E, or click the instruments.'}` : ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro', 'afterRinging', 'rhythmIntro', 'afterRhythm', 'afterPhotoC', 'memoriesIntro', 'farewell', 'gift'].includes(taiThinhProgress.phase) ? dialogueHelp : taiThinhProgress.phase === 'identify' ? (vi ? 'Bấm thiết bị để xem manh mối, rồi xác nhận lựa chọn. Dùng Tab và Enter/Space hoặc bấm “Gợi ý” để đọc sách.' : 'Inspect an instrument, then confirm your choice. Use Tab and Enter/Space, or select “Hint” to read the book.') : taiThinhProgress.phase === 'records' ? (vi ? 'Chọn bản ghi, đọc ghi chú rồi chọn nhãn. Dùng chuột/chạm hoặc Tab và Enter/Space; các cặp đúng được giữ lại.' : 'Choose a record, read its note, then select a label. Use mouse/touch or Tab and Enter/Space; correct matches stay in place.') : ['graph', 'duration'].includes(taiThinhProgress.phase) ? (vi ? 'Chọn đồ thị, rồi chọn thời lượng. Sai ở bước sau vẫn giữ bước trước; bấm “Gợi ý” để đọc sách.' : 'Choose a graph, then a duration. Correct steps stay saved; select “Hint” to read the book.') : taiThinhProgress.phase === 'rhythm' ? (vi ? 'Xem mẫu và nhịp từng phiến đá, rồi chọn chuỗi trùng khớp. Không cần âm thanh hoặc bấm theo nhịp.' : 'Watch the sample and each stone, then choose the matching sequence. No sound or timed tapping needed.') : ['photoA', 'photoB', 'photoC'].includes(taiThinhProgress.phase) ? (vi ? 'Bấm “Cất ảnh và tiếp tục” để thêm ảnh vào sách.' : 'Select “Keep the photo and continue” to add it to the book.') : (vi ? 'Tiến trình đã được lưu. Bạn có thể quay lại lộ trình.' : 'Your progress is saved. You can return to the route.');
-    } else if (inSparkle) {
-      const phase = sparkleProgress.phase;
-      if (phase === 'search' && !trailWarning) gameInstructions = `${depthMoveHelp} ${vi ? 'Đi vòng qua các hố đến vầng sáng bên phải.' : 'Go around the craters toward the glow on the right.'}`;
-      else if (phase === 'arrival') gameInstructions = `${moveHelp} ${vi ? 'Đến gần Lấp Lánh rồi nhấn E, hoặc bấm vào bạn ấy.' : 'Approach Sparkle and press E, or click the reflector.'}`;
-      else if (phase === 'cleaning') gameInstructions = vi
-        ? 'Giữ chuột hoặc kéo ngón tay qua các ô kính để lau bụi. Có thể dùng Tab chọn ô, Enter để lau. Lau sạch rồi nhận ảnh.'
-        : 'Hold the mouse button or drag your finger across the glass to wipe dust. You can also select a panel with Tab and wipe with Enter. Clean every panel to receive the picture.';
-      else if (phase === 'dust-photo') gameInstructions = vi ? 'Bấm “Cất ảnh và tiếp tục” để trò chuyện với Lấp Lánh.' : 'Select “Keep the picture and continue” to talk to Sparkle.';
-      else if (phase === 'clean-photo') gameInstructions = vi ? 'Cất ảnh và tiếp tục để mở thử thách khôi phục đường sáng.' : 'Keep the picture and continue to restore the light path.';
-      else if (phase === 'repair') gameInstructions = vi ? 'Kéo gương 2, căn góc so với gương 1 rồi chọn “Thử tia sáng”. Có thể dùng thanh góc xoay hoặc Tab và phím mũi tên; bấm “Gợi ý” để mở manh mối trong sách.' : 'Rotate mirror 2 relative to mirror 1 and try the light. You can also use the rotation slider or Tab and arrow keys; select “Hint” to open the book clue.';
-      else if (phase === 'ranging') gameInstructions = vi ? 'Gửi xung sáng, bấm “Gợi ý” khi cần, nhập các số và chọn dấu. Bấm Nộp kết quả hoặc nhấn Enter để trả lời.' : 'Send a pulse, select “Hint” if needed, enter the numbers and choose operators. Click Submit answer or press Enter.';
-      else if (phase === 'finished') gameInstructions = `${moveHelp} ${vi ? 'Đến những vòng gợn bên phải để về lộ trình.' : 'Reach the ripples on the right to return to the route.'}`;
-      else gameInstructions = dialogueHelp;
+      gameInstructions = taiThinhProgress.phase === 'gift' && taiThinhProgress.turn === 0 ? (vi ? 'Ánh sáng đang tới chiếc đèn. Bạn có thể mở menu để tạm dừng.' : 'The light is reaching the lantern. Open the menu to pause.') : ['recallA', 'recallB', 'recallC'].includes(taiThinhProgress.phase) ? (vi ? 'Dùng nút Trang trước / Trang tiếp bằng chuột, chạm hoặc Tab và Enter/Space.' : 'Use Previous / Next with mouse, touch, or Tab and Enter/Space.') : taiThinhProgress.phase === 'finished' ? `${moveHelp} ${vi ? 'Đi tới dấu bánh xe bên phải để về lộ trình và gặp Bánh Lưới.' : 'Walk to the wheel tracks on the right to return to the route and meet Mesh Wheels.'}` : taiThinhProgress.phase === 'approach' ? `${moveHelp} ${vi ? 'Đến gần cụm thiết bị rồi nhấn E, hoặc bấm vào cụm thiết bị.' : 'Approach the instruments and press E, or click the instruments.'}` : ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro', 'afterRinging', 'rhythmIntro', 'afterRhythm', 'afterPhotoC', 'memoriesIntro', 'farewell', 'gift'].includes(taiThinhProgress.phase) ? instruction('dialogue') : taiThinhProgress.phase === 'identify' ? (vi ? 'Bấm thiết bị để xem manh mối, rồi xác nhận lựa chọn. Dùng Tab và Enter/Space hoặc bấm “Gợi ý” để đọc sách.' : 'Inspect an instrument, then confirm your choice. Use Tab and Enter/Space, or select “Hint” to read the book.') : taiThinhProgress.phase === 'records' ? (vi ? 'Chọn bản ghi, đọc ghi chú rồi chọn nhãn. Dùng chuột/chạm hoặc Tab và Enter/Space; các cặp đúng được giữ lại.' : 'Choose a record, read its note, then select a label. Use mouse/touch or Tab and Enter/Space; correct matches stay in place.') : ['graph', 'duration'].includes(taiThinhProgress.phase) ? (vi ? 'Chọn đồ thị, rồi chọn thời lượng. Sai ở bước sau vẫn giữ bước trước; bấm “Gợi ý” để đọc sách.' : 'Choose a graph, then a duration. Correct steps stay saved; select “Hint” to read the book.') : taiThinhProgress.phase === 'rhythm' ? (vi ? 'Xem mẫu và nhịp từng phiến đá, rồi chọn chuỗi trùng khớp. Không cần âm thanh hoặc bấm theo nhịp.' : 'Watch the sample and each stone, then choose the matching sequence. No sound or timed tapping needed.') : ['photoA', 'photoB', 'photoC'].includes(taiThinhProgress.phase) ? (vi ? 'Bấm “Cất ảnh và tiếp tục” để thêm ảnh vào sách.' : 'Select “Keep the photo and continue” to add it to the book.') : (vi ? 'Tiến trình đã được lưu. Bạn có thể quay lại lộ trình.' : 'Your progress is saved. You can return to the route.');
     }
-    else if (tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro) gameInstructions = dialogueHelp;
-    else if (inSurveyor) {
-      const phase = surveyorProgress.phase;
-      if (surveyorMeeting) gameInstructions = `${moveHelp} ${vi ? 'Đến gần Mắt Tròn rồi nhấn E, hoặc bấm vào Mắt Tròn để trò chuyện.' : 'Approach Round Eyes and press E, or click Round Eyes to talk.'}`;
-      else if (excavating) gameInstructions = phase === 'soil-memory'
-        ? (vi ? 'Bấm nút bên cạnh ảnh để tiếp tục.' : 'Click the button beside the photo to continue.')
-        : `${depthMoveHelp} ${vi ? 'Nhấn E để đào; bấm “Gợi ý” khi cần.' : 'Press E to dig. Click “Hint” to check the book if you need help.'}`;
-      else if (phase === 'tools') gameInstructions = vi ? 'Bấm chọn công dụng, rồi bấm dụng cụ phù hợp trên hình. Bấm riêng dụng cụ để xem gợi ý.' : 'Choose a purpose, then click the matching tool. Click a tool first to see a hint.';
-      else if (phase === 'timeline') gameInstructions = vi ? 'Bấm các ảnh theo thứ tự xảy ra trước đến sau. Bấm lại để bỏ chọn, rồi bấm nút ghép nhật ký khi đủ ba ảnh.' : 'Select the photos from earliest to latest. Select again to undo, then click the journal button when all three are selected.';
-      else if (phase === 'timeline-intro') gameInstructions = dialogueHelp;
-      else if (endingFreeRoam) gameInstructions = `${depthMoveHelp} ${vi ? 'Đến điểm sáng hoặc bấm “Về lộ trình”.' : 'Walk to the distant light or click “View the route” to return to the route.'}`;
-      else if (surveyorEnding) gameInstructions = surveyorProgress.turn >= 3 && surveyorProgress.turn <= 5
-        ? (vi ? 'Bấm mũi tên để xem các trang, rồi bấm nút để trở lại Mắt Tròn.' : 'Click the arrows to read the pages, then use the button to return to Round Eyes.')
-        : dialogueHelp;
-      else gameInstructions = vi ? 'Bấm nút tiếp tục để sang thử thách tiếp theo.' : 'Click the continue button to start the next challenge.';
-    } else if (journeyOpen) gameInstructions = vi ? 'Bấm chọn một người bạn, rồi bấm nút bên dưới để đến gặp.' : 'Select a friend, then click the button below to visit.';
-    else if (chapter === 'moon-free') gameInstructions = `${moveHelp} ${quest === 'bench' ? t.benchHint : t.trailHint}`;
+  if (chattingAtEnd) gameInstructions = instruction('dialogue');
+  if (hangOpen) {
+    const stage = gacTroiProgress.finale?.stage ?? 0;
+    gameInstructions = instruction(stage === 1 ? 'cards' : stage === 3 ? 'automatic' : stage === 5 ? 'credits' : stage === 4 ? 'closing' : 'dialogue');
   }
-  const current = inBanhLuoi ? { number: '06', characters: ['cuoi', 'banhLuoi'] as const } : inTaiThinh ? { number: '05', characters: ['cuoi', 'taiThinh'] as const } : inSparkle ? { number: '04', characters: ['cuoi', 'lapLanh'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
-  const currentText = inBanhLuoi ? { title: banCopy['identity.name'][language], subtitle: banCopy['identity.location'][language], description: vi ? 'Xe Apollo 17 đã chở hai phi hành gia qua thung lũng Taurus–Littrow vào tháng 12/1972.' : 'The Apollo 17 rover carried two astronauts across Taurus–Littrow in December 1972.' } : inTaiThinh ? { title: vi ? 'Bạn Tai Thính' : 'Keen Ears', subtitle: vi ? 'Đại Dương Bão · Apollo 12, 1969' : 'Ocean of Storms · Apollo 12, 1969', description: vi ? 'Địa chấn kế PSE đo những chuyển động rất nhỏ của mặt đất Mặt Trăng.' : 'The PSE seismometer measures tiny movements of the lunar ground.' } : inSparkle ? { title: vi ? 'Bạn Lấp Lánh' : 'A sparkling friend', subtitle: vi ? 'Biển Yên Tĩnh · Apollo 11, 1969' : 'Sea of Tranquility · Apollo 11, 1969', description: vi ? 'Gương phản xạ laser không cần pin hay động cơ: nó trả ánh sáng về phía nguồn.' : 'A laser retroreflector needs no batteries or motor: it returns light toward its source.' } : inSurveyor ? encounterText : t[scene];
-  const characterName = (id: keyof typeof portraits) => language === 'en' ? ({ banhLuoi: 'Mesh Wheels', taiThinh: 'Keen Ears', lapLanh: 'Sparkle', an: 'An', ba: 'Grandma', cuoi: 'Cuội', cayDa: 'Banyan tree', matTron: 'Round Eyes', chiHang: 'Hằng' } as const)[id] : portraits[id].name;
+  if (menuOpen) gameInstructions = vi ? 'Chọn Tiếp tục để trở về cảnh. Mở Hướng dẫn trong menu để xem các chức năng chung.' : 'Choose Continue to return to the scene. Open How to play in the menu for general controls.';
+  else if (transitioning || moonWaking || revealing) gameInstructions = vi ? 'Đang chuyển cảnh, bạn chờ một chút nhé.' : 'The scene is changing. Please wait a moment.';
+  const endingEarth = (hangOpen && (gacTroiProgress.finale?.stage ?? 0) >= 3);
+  const meetingHang = hangOpen && !endingEarth;
+  const current = inTaiThinh ? { number: '05', characters: ['cuoi', 'taiThinh'] as const } : inBanhLuoi ? { number: '06', characters: ['cuoi', 'banhLuoi'] as const } : endingEarth ? { number: '08', characters: ['an', 'ba'] as const } : (meetingHang || gacTrail) ? { number: '07', characters: ['cuoi', 'chiHang'] as const } : inGacTroi ? { number: '07', characters: ['cuoi', 'gacTroi'] as const } : inSparkle ? { number: '04', characters: ['cuoi', 'lapLanh'] as const } : inSurveyor ? { number: '03', characters: ['cuoi', 'matTron'] as const } : scenes[scene];
+  const currentText = inTaiThinh ? { title: vi ? 'Bạn Tai Thính' : 'Sharp Ear', subtitle: 'Apollo 12 · 1969', description: vi ? 'Địa chấn kế đo những rung động rất nhỏ của đất.' : 'A seismometer measures tiny ground vibrations.' } : inBanhLuoi ? { title: vi ? 'Bạn Bánh Lưới' : 'Mesh Wheels', subtitle: 'Apollo 15 · Hadley–Apennine', description: vi ? 'Xe có người lái giúp phi hành gia khảo sát và mang mẫu về tàu.' : 'A crewed rover helped astronauts explore and bring samples back.' } : endingEarth ? { title: vi ? 'An và Bà' : 'An and Grandma', subtitle: vi ? 'Dưới ánh trăng quê nhà' : 'Under the moon at home', description: vi ? 'Câu chuyện khép lại, những đóng góp vẫn được nhớ đến.' : 'The story ends; their contributions are remembered.' } : meetingHang ? { title: vi ? 'Cuội và chị Hằng' : 'Cuội and Hằng', subtitle: vi ? 'Dưới gốc đa · Chuyện tưởng tượng' : 'Beneath the banyan · An imagined story', description: vi ? 'Cuội gặp chị Hằng, kể lại hành trình và cùng nhớ những đóng góp của các người bạn.' : 'Cuội meets Hằng, shares his journey and remembers his friends’ contributions.' } : gacTrail ? { title: vi ? 'Tìm chị Hằng' : 'Finding Hằng', subtitle: vi ? 'Dưới bóng cây đa · Chuyện tưởng tượng' : 'Beneath the banyan · An imagined story', description: vi ? 'Cuội theo bản đồ trong đèn, nhìn kỹ từng manh mối để tìm chị Hằng.' : 'Cuội follows the map in his lantern, looking closely at each clue to find Hằng.' } : inGacTroi ? { title: vi ? 'Bạn Gác Trời' : 'Sky Watcher', subtitle: vi ? 'LRO · Quỹ đạo Mặt Trăng' : 'LRO · Lunar orbit', description: vi ? 'LRO quan sát bề mặt Mặt Trăng từ quỹ đạo. Cuội trò chuyện qua tín hiệu trong câu chuyện tưởng tượng.' : 'LRO observes the lunar surface from orbit. Cuội speaks through a signal in the imagined story.' } : inSparkle ? { title: vi ? 'Bạn Lấp Lánh' : 'A sparkling friend', subtitle: vi ? 'Biển Yên Tĩnh · Apollo 11, 1969' : 'Sea of Tranquility · Apollo 11, 1969', description: vi ? 'Gương phản xạ laser không cần pin hay động cơ: nó trả ánh sáng về phía nguồn.' : 'A laser retroreflector needs no batteries or motor: it returns light toward its source.' } : inSurveyor ? encounterText : t[scene];
+  const characterName = (id: keyof typeof portraits) => language === 'en' ? ({ gacTroi: 'Sky Watcher', banhLuoi: 'Mesh Wheels', taiThinh: 'Sharp Ear', lapLanh: 'Twinkle', an: 'An', ba: 'Grandma', cuoi: 'Cuội', cayDa: 'Banyan tree', matTron: 'Round Eye', chiHang: 'Hằng' } as const)[id] : portraits[id].name;
 
   return <main className="app-shell">
     <header className="site-header">
@@ -325,12 +390,13 @@ export function App() {
         </div>
         <div className="story-controls">
           {tellingStory && !menuOpen && <button className="skip-story" onClick={finishEarth}>{t.skip}</button>}
-          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || revealing} onClick={() => setMenuOpen(true)}>{t.menu}</button>
+          <button className="open-menu" disabled={menuOpen || transitioning || moonWaking || revealing} onClick={openMenu}>{t.menu}</button>
         </div>
       </div>
       <section className="game-panel" id="main-scene" aria-label={t.sceneArea}>
         <div className="scene-frame">
-          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle || inBanhLuoi ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
+          <div ref={gameStage} tabIndex={-1} className={`game-stage ${inSurveyor || inSparkle || inTaiThinh || inBanhLuoi || inGacTroi ? 'classic-friend-scene' : ''} ${menuOpen ? 'has-menu' : ''} ${chattingAtEnd ? 'has-ending-chat' : ''}`}
+            style={menuOpen && menuStageHeight !== null ? { height: menuStageHeight, minHeight: 0, maxHeight: 'none' } : undefined}
             onFocusCapture={() => { gameOwnsFocus.current = true; }}
             onPointerDownCapture={() => { gameOwnsFocus.current = true; }}
             onBlurCapture={(event) => {
@@ -350,18 +416,17 @@ export function App() {
             }}
             onClick={(event) => {
               if (transitioning || moonWaking) { event.currentTarget.focus({ preventScroll: true }); return; }
-              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inBanhLuoi && ((banPreview || ['route', 'meeting', 'routeIntro', 'guideIntro', 'memoriesIntro', 'farewell', 'gift'].includes(banhLuoiProgress.phase)) || banhLuoiProgress.phase === 'photoB' && banhLuoiProgress.turn === 0)) || (inTaiThinh && ['route', 'arrival', 'meeting', 'recordsIntro', 'afterRecords', 'ringingIntro', 'afterRinging', 'rhythmIntro', 'afterRhythm', 'afterPhotoC', 'memoriesIntro', 'farewell', 'gift'].includes(taiThinhProgress.phase)))) return;
+              if (menuOpen || !(tellingStory || moonStory || questDialogue || surveyorChat || surveyorDigIntro || (inGacTroi && (['meeting', 'stories', 't02-intro', 't02-story', 't03-intro', 't03-story', 'gac-farewell'].includes(gacTroiProgress.phase) || gacTroiProgress.phase === 'matching' && gacTroiProgress.turn < gacMatchingIntroLength)))) return;
               if ((event.target as Element).closest('button, select, input, a')) return;
               // The scenery is inert during dialogue; clicking it resumes keyboard dialogue control.
               event.currentTarget.querySelector<HTMLButtonElement>('.dialogue:not([hidden]) .dialogue-next')?.focus({ preventScroll: true });
             }}>
             <div className={`story-canvas ${revealing ? 'journey-revealing' : ''} ${chapter === 'departing' ? 'is-departing' : ''} ${chapter === 'arriving' ? 'is-arriving' : ''}`} inert={menuOpen || tellingStory || moonStory || transitioning || moonWaking || questLocked}>
-              {!(inBanhLuoi && banhLuoiProgress.phase === 'guiding') && <GameCanvas taiEnding={inBanhLuoi ? banEnding : taiEnding} taiStars={inBanhLuoi ? banStars : litStars} onTaiGift={() => inBanhLuoi ? banPreview ? setBanPreviewProgress(p => p.phase === 'gift' && p.turn === 0 ? { ...p, turn: 1 } : p) : setBanhLuoiProgress(p => p.phase === 'gift' && !p.completedOnce && !banPreview ? { ...p, turn: 1, completedOnce: true } : p) : setTaiThinhProgress(p => p.phase === 'gift' && p.turn === 0 ? { ...p, turn: 1, completedOnce: true } : p)} onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingExploring} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={endingExploring ? () => setEndingChat(activeLevel) : inBanhLuoi ? () => setBanhLuoiProgress(p => p.phase === 'approach' ? { ...p, phase: 'meeting', turn: 0 } : p) : inTaiThinh ? () => setTaiThinhProgress(p => p.phase === 'approach' ? { ...p, phase: 'arrival', turn: 0 } : p) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={endingExploring ? () => setActiveLevel(null) : onExit} scene={inBanhLuoi ? 'ban-banh-luoi' : inTaiThinh ? 'tai-thinh' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inBanhLuoi ? !['route', 'approach'].includes(banhLuoiProgress.phase) : inTaiThinh ? !['route', 'approach'].includes(taiThinhProgress.phase) : inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />}
-              {inTaiThinh && ['lit', 'free'].includes(taiEnding) && <EndingTrail language={language} tracks />}
-              {inTaiThinh && taiThinhProgress.phase === 'identify' && <TaiThinhSceneLabels language={language}/>}
+              {!gacTrail && !(inBanhLuoi && displayedBan.phase === 'guiding') && <GameCanvas taiEnding={inBanhLuoi ? banEnding : taiEnding} onTaiGift={() => { if (inBanhLuoi) { if (banPreview) setBanPreviewProgress(p => ({ ...p, turn: 1 })); else setBanhLuoiProgress(p => ({ ...p, turn: 1, completedOnce: true })); } else if (inTaiThinh) setTaiThinhProgress(p => ({ ...p, turn: 1, completedOnce: true })); }} sparkleLantern={inSparkle && sparkleProgress.phase === 'farewell' && sparkleProgress.turn >= 4 ? sparkleProgress.turn >= 5 ? 'lit' : 'unlit' : 'hidden'} surveyorLantern={surveyorEnding && surveyorProgress.turn >= 6 ? surveyorProgress.turn >= 7 ? 'lit' : 'unlit' : 'hidden'} taiStars={Math.max(inBanhLuoi ? banStars : litStars, inGacTroi && gacTroiProgress.phase === 'gac-farewell' && gacTroiProgress.turn >= 2 ? 5 : 0)} onReady={onCanvasReady} sparkleEnding={inSparkle && ['farewell', 'finished'].includes(sparkleProgress.phase)} sparkleDust={inSparkle && ['arrival', 'meeting', 'dust-photo', 'cleaning-intro', 'cleaning'].includes(sparkleProgress.phase)} onTrailHole={() => setTrailWarning(true)} sparkleTrail={sparkleTrail} freeRoam={endingExploring} excavation={excavation} onDigNear={setDigNear} key={`${journey}-${surveyorEnding ? 'ending' : 'play'}`} initiallyAwake={chapter === 'moon-story' || chapter === 'moon-free'} quest={quest} treeSpeaking={quest === 'tree' && treeTurn >= 2 && !menuOpen} onInteract={endingExploring ? () => setEndingChat(activeLevel) : inBanhLuoi ? () => setBanhLuoiProgress(p => p.phase === 'approach' ? { ...p, phase: 'meeting', turn: 0 } : p) : inTaiThinh ? () => setTaiThinhProgress(p => p.phase === 'approach' ? { ...p, phase: 'arrival', turn: 0 } : p) : inSparkle ? () => setSparkleProgress(p => p.phase === 'search' ? { ...p, phase: 'arrival', turn: 0 } : p.phase === 'arrival' ? { ...p, phase: 'meeting', turn: 0 } : p) : surveyorMeeting ? onSurveyorInteract : onBench} onExit={gacWalking ? () => setActiveLevel(null) : endingExploring ? () => setActiveLevel(null) : onExit} scene={inBanhLuoi ? 'ban-banh-luoi' : inTaiThinh ? 'tai-thinh' : inGacTroi ? 'gac-troi' : inSparkle ? 'lap-lanh' : inSurveyor ? 'surveyor' : scene} encounterStarted={inTaiThinh ? !['route', 'approach'].includes(taiThinhProgress.phase) : inBanhLuoi ? !['route', 'approach'].includes(displayedBan.phase) : inSparkle ? !['route', 'search-intro', 'search'].includes(sparkleProgress.phase) : surveyorProgress.phase !== 'arrival'} moonMode={moonMode} language={language} onAwake={onCuoiAwake} />}
               {tellingStory && turn === 5 && !menuOpen && <span className="an-lantern-glow" aria-hidden="true" />}
             </div>
-            {tellingStory && <EarthDialogue key={journey} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
+            {inTaiThinh && taiThinhProgress.phase === 'approach' && !menuOpen && <TaiThinhSceneLabels language={language}/>}
+            {tellingStory && <EarthDialogue key={journey} autoAdvance autoAdvanceDelay={1100} language={language} lines={storyLines[language].earth} title={t.earthDialogueTitle} finalAction="earth" paused={menuOpen} onComplete={finishEarth} onTurn={setTurn} />}
             {moonStory && <EarthDialogue key={`moon-${journey}`} language={language} lines={storyLines[language].moon} title={t.moonDialogueTitle} finalAction="moon" paused={menuOpen} onComplete={finishMoonStory} onTurn={noopTurn} />}
             {scene === 'moon' && chapter === 'moon-free' && !journeyOpen && !menuOpen && <div className="quest-hud" aria-live="polite">
               <span>{quest === 'bench' ? t.benchGoal : quest === 'tree' ? t.treeTitle : t.trailGoal}</span>
@@ -380,20 +445,24 @@ export function App() {
             {surveyorDigIntro && <EarthDialogue key={`surveyor-dig-intro-${journey}`} language={language} lines={challengeLines(language, false)} initialIndex={surveyorProgress.turn} title={challengeCopy[language].soilTitle} finalAction="moon" finalLabel={challengeCopy[language].begin} paused={menuOpen} onTurn={turn => { if (turn !== surveyorProgress.turn) setSurveyorProgress({ ...surveyorProgress, turn }); }} onComplete={() => setSurveyorProgress({ ...surveyorProgress, phase: 'soil', turn: 0 })} />}
             {revealing && !menuOpen && <div className="journey-light" role="status">✦<p>{journeyCopy[language].reveal}</p></div>}
             {excavating && <SurveyorExcavation paused={menuOpen} language={language} progress={surveyorProgress} near={digNear} onChange={setSurveyorProgress} onBack={() => setActiveLevel(null)} onBook={openFieldBook} />}
-            {surveyorEnding && <SurveyorEnding language={language} progress={surveyorProgress} onChange={setSurveyorProgress} onReplay={playSurveyorAgain} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
-            {inSparkle && sparkleProgress.phase === 'search' && trailWarning && <EarthDialogue language={language} paused={menuOpen} title={language === 'vi' ? 'Cuội' : 'Cuội'} lines={[{ id: 'sparkle-hole-warning', speaker: 'cuoi', text: language === 'vi' ? 'Hố này sâu quá, mình đi vào là ngã, đau lắm.' : 'This crater is so deep. If I walk in, I will fall and hurt myself.' }]} onTurn={noopTurn} finalAction="moon" finalLabel={language === 'vi' ? 'Tìm lối khác' : 'Find another way'} onComplete={() => setTrailWarning(false)} />}
+            {surveyorEnding && <SurveyorEnding stars={litStars} language={language} progress={surveyorProgress} onChange={setSurveyorProgress} onReplay={playSurveyorAgain} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
+            {inSparkle && sparkleProgress.phase === 'search' && trailWarning && <EarthDialogue language={language} paused={menuOpen} title={language === 'vi' ? 'Cuội' : 'Cuội'} lines={sparkleHoleWarningLines(language)} onTurn={noopTurn} finalAction="moon" finalLabel={language === 'vi' ? 'Tìm lối khác' : 'Find another way'} onComplete={() => setTrailWarning(false)} />}
+            {gacTrail && <GacTroiTrail key={gacTroiProgress.phase} language={language} progress={gacTroiProgress} onChange={setGacTroiProgress} onBook={openFieldBook} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
+            {inGacTroi && !gacTrail && !hangOpen && <GacTroiLevel litStars={litStars} language={language} progress={gacTroiProgress} onChange={setGacTroiProgress} onBook={openFieldBook} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {inBanhLuoi && <BanhLuoiLevel stars={banStars} previewProgress={banPreviewProgress} onPreviewChange={setBanPreviewProgress} preview={banPreview} onPreview={setBanPreview} onHint={openFieldBook} language={language} progress={banhLuoiProgress} onChange={setBanhLuoiProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
             {inTaiThinh && <TaiThinhLevel stars={litStars} onBook={openFieldBook} language={language} progress={taiThinhProgress} onChange={setTaiThinhProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
-            {inSparkle && <SparkleLevel onBook={openFieldBook} language={language} progress={sparkleProgress} onChange={setSparkleProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
-            {chattingAtEnd && activeLevel && <section className="ending-scene ending-chat" hidden={menuOpen}><EarthDialogue managedFocus={inBanhLuoi} language={language} paused={menuOpen} title={language === 'vi' ? 'Trò chuyện cùng bạn' : 'A chat with your friend'} lines={endingChatLines[activeLevel][language]} onTurn={noopTurn} onComplete={closeEndingChat} finalAction="moon" finalLabel={language === 'vi' ? 'Mình đi xem nhé!' : 'Let’s take a look!'} /></section>}
-            {journeyOpen && !inBanhLuoi && !inTaiThinh && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={setActiveLevel} onBack={() => setActiveLevel(null)} />}
-            {menuOpen && <GameMenu sound={sound} onToggleSound={toggleSound} soundUnavailable={soundUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
+            {inSparkle && <SparkleLevel stars={litStars} onBook={openFieldBook} language={language} progress={sparkleProgress} onChange={setSparkleProgress} onBack={() => setActiveLevel(null)} paused={menuOpen} />}
+            {hangOpen && <HangFinale onReplayCreditsChange={setReplayEndingMusic} language={language} progress={gacTroiProgress} onChange={setGacTroiProgress} paused={menuOpen} onBack={() => { setHangOpen(false); setActiveLevel(null); }} onBook={openFieldBook}/>}
+            {starTravel && <div className="star-travel" style={{ animationPlayState: menuOpen ? 'paused' : 'running' }} onAnimationEnd={() => { setStarTravel(false); }} />}
+            {chattingAtEnd && activeLevel && <section className="ending-scene ending-chat" hidden={menuOpen}><EarthDialogue managedFocus language={language} paused={menuOpen} title={language === 'vi' ? 'Trò chuyện cùng bạn' : 'A chat with your friend'} lines={endingChatLines[activeLevel][language]} onTurn={noopTurn} onComplete={closeEndingChat} finalAction="moon" finalLabel={language === 'vi' ? 'Mình đi xem nhé!' : 'Let’s take a look!'} /></section>}
+            {journeyOpen && !inTaiThinh && !inBanhLuoi && !inGacTroi && !inSparkle && !surveyorEnding && !excavating && !surveyorMeeting && !surveyorDigIntro && !revealing && !menuOpen && <JourneyMap taiThinhProgress={taiThinhProgress} banhLuoiProgress={banhLuoiProgress} onFindHang={() => { if (gacTroiProgress.completedOnce) { if (!gacTroiProgress.hangArrival) gameAudio.cue('gift'); setGacTroiProgress(p => ({ ...p, hangArrival: true })); setHangOpen(true); setActiveLevel('gac-troi'); } }} gacTroiProgress={gacTroiProgress} sparkleProgress={sparkleProgress} language={language} surveyorProgress={surveyorProgress} onSurveyorChange={setSurveyorProgress} onReplay={playSurveyorAgain} activeLevel={activeLevel} onEnter={id => { setHangOpen(false); setActiveLevel(id); }} onBack={() => setActiveLevel(null)} />}
+            {menuOpen && <GameMenu audio={audio} onToggleAudio={toggleAudio} audioSaveUnavailable={audioSaveFailures.music || audioSaveFailures.effects} audioUnavailable={audioUnavailable} language={language} canContinue={started} onStart={startJourney} onContinue={closeMenu} />}
           </div>
-          <p className="chapter-arrival game-instructions">{chattingAtEnd ? dialogueHelp : endingExploring ? `${gameInstructions} ${language === 'vi' ? 'Đến gần bạn rồi nhấn E, hoặc bấm vào bạn để trò chuyện.' : 'Approach your friend and press E, or click your friend to chat.'}` : inBanhLuoi && displayedBan.phase === 'guiding' ? <span id="ban-guide-instructions" role="status"/> : gameInstructions}</p>
+          <p className="chapter-arrival game-instructions" aria-label={vi ? 'Hướng dẫn cảnh hiện tại' : 'Current scene instructions'}>{inBanhLuoi && displayedBan.phase === 'guiding' && !menuOpen ? <span id="ban-guide-instructions" role="status"/> : gameInstructions}</p>
         </div>
         {saveUnavailable && <p className="save-notice" role="status">{t.saveNotice}</p>}
       </section>
-      {journeyOpen && !revealing ? <JourneyBook banhLuoiProgress={banhLuoiProgress} taiThinhProgress={taiThinhProgress} sparkleProgress={sparkleProgress} key={journey} bookRequest={bookRequest} onSurveyorChange={setSurveyorProgress} language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
+      {journeyOpen && !revealing ? <JourneyBook taiThinhProgress={taiThinhProgress} banhLuoiProgress={banhLuoiProgress} gacTroiProgress={gacTroiProgress} sparkleProgress={sparkleProgress} key={journey} bookRequest={bookRequest} onSurveyorChange={setSurveyorProgress} language={language} surveyorProgress={surveyorProgress} activeLevel={activeLevel} /> : <BookPlaceholder language={language} />}
     </div>
     </div>
     <section className="characters-section" aria-labelledby="characters-title">
@@ -403,6 +472,7 @@ export function App() {
           <p>{currentText.description}{inSurveyor && <> <a className="scenery-source" href="https://www.nasa.gov/humans-in-space/lunar-encore-leads-to-first-precision-extraterrestrial-landing/" target="_blank" rel="noreferrer">NASA ↗</a></>}</p>
         </div>
     </section>
+    <BookLabelGuide language={language}/>
       <section className="introduction" id="introduction" aria-labelledby="introduction-title">
         <div className="introduction-copy">
           <div className="chapter-label"><span className="small-star" aria-hidden="true">✦</span> {t.introLabel} <span className="label-line" /></div>

@@ -1,0 +1,331 @@
+.banh-luoi-scene { position: absolute; inset: 0; pointer-events: none; }
+.banh-luoi-scene[hidden] { display: none; }
+.banh-luoi-scene button { pointer-events: auto; cursor: pointer; }
+.banh-luoi-hud > span { min-width: 0; }
+.banh-luoi-scene .dialogue { position: absolute; top: 12%; left: 2.5%; right: 2.5%; padding: 12px 16px; border: 1px solid #a9957080; border-radius: 10px; background: #142831f5; pointer-events: auto; }
+.banh-luoi-scene .dialogue-portrait img { object-fit: contain; }
+.banh-luoi-scene .dialogue-text { font-size: clamp(14px,1.9cqw,18px); line-height: 1.55; }
+.banh-luoi-scene .dialogue-portrait { width: 55px; height: 68px; }
+.game-stage:not(:has(.game-host[data-ready="true"])) .banh-luoi-scene { visibility: hidden; }
+@container (max-width: 640px) {
+  .banh-luoi-hud { top: 8px; left: 10px; right: 10px; font-size: 14px; }
+  .banh-luoi-hud span { max-width: 55%; }
+  .banh-luoi-scene .dialogue { top: 62px; }
+}
+/* Let the text grow below the scene when the actual game column is narrow. */
+.game-stage:has(.banh-luoi-scene) { aspect-ratio: auto; }
+.game-stage:has(.banh-luoi-scene) > .story-canvas { aspect-ratio: 16 / 9; }
+@container (max-width: 720px) {
+  .banh-luoi-scene { position: relative; }
+  .banh-luoi-scene > .banh-luoi-hud { position: relative; inset: auto; padding: 8px 10px; background: #142831; font-size: 15px; }
+  .banh-luoi-scene .dialogue { position: relative; inset: auto; border-radius: 0; }
+  .banh-luoi-scene .dialogue-text { font-size: 18px; }
+}
+.ban-panel { position: absolute; top: 13%; left: 2.5%; right: 2.5%; margin: auto; padding: clamp(12px,2cqw,20px); border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #eee5d1; font-size: clamp(13px,1.7cqw,17px); pointer-events: auto; }
+.ban-panel h2 { font-family: inherit; font-size: inherit; font-weight: 600; line-height: 1.4; color: #f0d49a; margin: 0 0 10px; }
+.ban-panel p { margin: 8px 0; line-height: 1.5; }
+.ban-feedback { color: #ead4a4; }
+/* T01 owns the whole fixed stage; the trial never pushes controls below it. */
+.game-stage:has(.banh-luoi-scene:not([hidden]) .ban-wheels) > .story-canvas { display: none; }
+.banh-luoi-scene:has(.ban-wheels) { position: relative; min-height: 100%; display: flow-root; background: #142831; }
+.banh-luoi-scene[hidden]:has(.ban-wheels) { display: none; }
+.banh-luoi-scene:has(.ban-wheels) .banh-luoi-hud { position: relative; inset: auto; padding: 8px 12px; gap: 8px; font-size: 16px; }
+.banh-luoi-scene .ban-wheels { position: relative; inset: auto; margin: 0 12px 12px; padding: 12px; font-size: 16px; }
+.ban-wheels .ban-wheel-instruction { margin: 0 0 12px; line-height: 1.4; }
+.ban-wheel-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; align-items: center; }
+.ban-wheel-options { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.game-stage.classic-friend-scene .ban-wheels button { min-height: 44px; font-size: 16px; padding: 6px 8px; }
+.game-stage.classic-friend-scene .ban-wheels .ban-wheel-options button { display: flex; min-height: 88px; flex-direction: column; justify-content: center; align-items: center; gap: 4px; }
+.ban-wheel-options svg { display: block; width: 70px; max-width: 100%; height: 44px; }
+.game-stage.classic-friend-scene .ban-wheels .ban-wheel-options button[aria-pressed=true] { color: #20313a; background: #dfc18a; border-color: #ead4a4; box-shadow: 0 0 0 2px #ead4a4; }
+.game-stage.classic-friend-scene .ban-wheels .ban-wheel-options button[aria-pressed=true]:hover { background: #ead4a4; }
+.ban-wheel-workbench { min-width: 0; }
+.ban-wheel-track { position: relative; height: 108px; border-bottom: 3px solid #9aa49a; background: linear-gradient(0deg,#71807b 12px,#10212a 12px); border-radius: 6px; }
+.ban-wheel-track small { position: absolute; top: 4px; right: 6px; color: #bdcecb; font-size: 14px; line-height: 1.2; }
+.ban-wheel-run { position: absolute; bottom: 4px; left: 0; width: 84px; height: 60px; }
+.ban-wheel-run svg { width: 100%; height: 100%; }
+.ban-wheel-run.is-tried { left: calc(100% - 84px); animation: ban-wheel-roll 1.2s ease-in-out; }
+.ban-wheel-run.is-tried svg { animation: ban-wheel-spin 1.2s ease-in-out; animation-play-state: inherit; }
+.ban-wheel-closeup { position: absolute; left: 4px; bottom: 14px; width: calc(100% - 88px); max-width: 220px; height: 76px; animation: ban-wheel-inspect 1.2s ease-out both; animation-play-state: inherit; }
+.ban-wheel-closeup svg { display: block; width: 100%; height: 100%; }
+.ban-wheels:not(:focus-within) :is(.ban-wheel-run,.ban-wheel-closeup) { animation-play-state: paused; }
+@keyframes ban-wheel-inspect { 0%, 85% { opacity: 0; transform: scale(.85); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes ban-wheel-roll { from { left: 0; } to { left: calc(100% - 84px); } }
+@keyframes ban-wheel-spin { from { transform: rotate(-360deg); } to { transform: rotate(0deg); } }
+.ban-wheels .ban-feedback { min-height: 96px; margin: 8px 0; line-height: 1.5; }
+.ban-wheel-actions { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.5fr); gap: 8px; }
+@container (max-width: 720px) {
+  .banh-luoi-scene:has(.ban-wheels) .banh-luoi-hud { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,2fr); padding: 6px 8px; }
+  .banh-luoi-scene:has(.ban-wheels) .banh-luoi-hud > span { grid-column: 1 / -1; max-width: none; font-size: 16px; padding: 4px 8px; }
+  .banh-luoi-scene .ban-wheels { margin: 0 8px 8px; padding: 8px; border-radius: 8px; }
+  .ban-wheel-layout { grid-template-columns: minmax(0,1fr); gap: 8px; }
+  .ban-wheels .ban-wheel-instruction { margin-bottom: 8px; }
+  .ban-wheel-track { height: 100px; }
+  .ban-wheels .ban-feedback { min-height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ban-wheel-run.is-tried, .ban-wheel-run.is-tried svg, .ban-wheel-closeup { animation: none; }
+}
+.ban-photo-view figure { margin: 0 0 8px; }
+.ban-photo-view img { display: block; width: 100%; height: 230px; object-fit: contain; background: #10212a; }
+.ban-photo-view button, .ban-photo-error button { min-height: 42px; padding: 8px 12px; border: 1px solid #a9957080; border-radius: 8px; background: #293e46; color: #eee5d1; font: inherit; cursor: pointer; }
+.ban-photo-view button:focus-visible { outline: 3px solid #dfc18a; outline-offset: 3px; }
+.game-stage:has(.banh-luoi-scene:not([hidden]) :is(.ban-memory-photo)) > .story-canvas { position: absolute; inset: 0; }
+.banh-luoi-scene:has(.ban-memory-photo) { position: relative; }
+.banh-luoi-scene:has(.ban-memory-photo) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
+.game-stage .ban-memory-photo { position: relative; inset: auto; margin: 0 16px 16px; overflow: visible; border-color: #c3a96e80; background: #142831f5; }
+.ban-memory-photo > .ban-photo-view { min-width: 0; }
+.ban-memory-photo .ban-photo-view figure { margin-bottom: 12px; }
+.ban-memory-photo a { color: #dfc18a; pointer-events: auto; font-size: 14px; }
+.ban-memory-photo small { overflow-wrap: anywhere; }
+.banh-luoi-scene .ban-memory-photo .journey-primary { background: #dfc18a; color: #20313a; border-color: #ead4a4; }
+.book-sheet .ban-photo-view img { height: 160px; }
+.book-sheet .ban-photo-view button { font-size: 14px; }
+@container (max-width: 720px) {
+  .ban-panel { position: relative; inset: auto; padding: 16px; border-radius: 0; }
+  .game-stage .ban-memory-photo { margin: 0; border-radius: 0; grid-template-columns: minmax(0,1fr); }
+  .ban-panel { font-size: 16px; }
+  .ban-panel h2 { font-size: 16px; }
+}
+.book-panel .book-sheet.ban-book-study { padding-block: 18px; }
+.book-panel .book-sheet.ban-book-study h2 { font-size: 28px; line-height: 1.2; margin: 6px 0; }
+.book-panel .book-sheet.ban-book-study p { font-size: 17px; line-height: 1.4; margin: 6px 0; }
+.book-panel .book-sheet.ban-book-study .sparkle-book-source { font-size: 14px; margin: 5px 0; }
+.book-panel .book-sheet.ban-book-study small { font-size: 12px; line-height: 1.4; }
+.book-panel .book-sheet.ban-book-wheels { padding-block: 12px; }
+.book-panel .book-sheet.ban-book-wheels p { margin-block: 4px; }
+.book-panel .book-sheet.ban-book-study .ban-photo-view { flex-shrink: 0; }
+@container companion-book (max-height: 550px) {
+  .book-panel .book-sheet.ban-book-study { padding-block: 10px; }
+  .book-panel .book-sheet.ban-book-study .ban-photo-view img { height: 120px; }
+}
+@media (max-width: 1000px) {
+  .book-panel .book-sheet.ban-book-study .ban-photo-view img { height: 110px; }
+}
+/* Route activity fills the shared stage with an opaque background. */
+.game-stage:has(.banh-luoi-scene:not([hidden]) .ban-route-panel) > .story-canvas { display: none; }
+.banh-luoi-scene:has(.ban-route-panel) { position: relative; min-height: 100%; display: flow-root; background: #142831; }
+.banh-luoi-scene[hidden]:has(.ban-route-panel) { display: none; }
+.banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud { position: relative; inset: auto; padding: 12px 16px; }
+.ban-route-panel { position: relative; inset: auto; margin: 0 2.5% 16px; padding: clamp(12px,2cqw,20px); }
+.ban-route-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(230px, 1fr); gap: 20px; }
+.ban-route-map { position: relative; display: grid; grid-template-columns: repeat(var(--map-columns),minmax(0,1fr)); gap: 4px; width: 100%; aspect-ratio: var(--map-columns) / var(--map-rows); grid-template-rows: repeat(var(--map-rows),minmax(0,1fr)); isolation: isolate; }
+.ban-route-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.banh-luoi-scene .ban-route-cell, .ban-route-cell { position: relative; display: grid; place-items: center; min-width: 0; min-height: 0; padding: 0; border: 1px solid #8c9f9b; border-radius: 4px; background: #344b51; color: #eee5d1; font: 600 17px sans-serif; }
+.ban-route-cell > span { position: relative; z-index: 3; padding: 2px; background: #344b51; border-radius: 3px; }
+.ban-route-cell.is-crater, .ban-route-cell.is-crater > span { background: #10212a; color: #9ba5a0; }
+.ban-route-cell.is-safe { outline: 2px dotted #dfc18a; outline-offset: -5px; }
+.ban-route-cell.is-visited { border-color: #ead4a4; }
+.ban-route-cell.is-violation { border: 2px dashed #f2b094; }
+.ban-route-cell b, .ban-route-cell em { position: absolute; z-index: 3; top: 0; right: 2px; font-size: 13px; font-style: normal; color: #ffe0a0; }
+.ban-route-cell em { top: auto; bottom: 0; color: #ffc1a5; }
+.ban-panel .ban-route-legend { font-size: 13px; line-height: 1.5; margin-top: 8px; }
+.ban-panel .ban-route-rule { margin-bottom: 14px; }
+.ban-route-controls { display: flex; flex-direction: column; min-width: 0; gap: 8px; align-items: stretch; overflow-wrap: anywhere; }
+.ban-route-meters { border-left: 3px solid #dfc18a; padding-left: 10px; }
+.ban-route-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.banh-luoi-scene button:disabled { opacity: .45; cursor: default; }
+.ban-route-feedback { color: #f3c9ae; }
+.ban-route-controls small { color: #bdcecb; line-height: 1.4; }
+.ban-route-map-static { width: 145px; height: auto; flex-shrink: 0; margin: 6px auto; }
+.ban-route-map-static .ban-route-cell { font-size: 12px; }
+.ban-route-map-static .ban-route-cell b { font-size: 9px; }
+@container (max-width: 720px) {
+  .ban-route-layout { grid-template-columns: minmax(0,1fr); }
+  .ban-route-map:not(.ban-route-map-static) { max-width: 370px; margin-inline: auto; }
+  .ban-route-controls { gap: 6px; }
+  .ban-route-panel { padding: 14px; }
+}
+.ban-route-map:not(.ban-route-map-static) { width: calc(100% - 18px); margin-top: 18px; margin-left: 18px; }
+.ban-map-columns, .ban-map-rows { position: absolute; display: grid; color: #bdcecb; font-size: 11px; pointer-events: none; }
+.ban-map-columns { top: -18px; left: 0; right: 0; grid-template-columns: repeat(var(--map-columns),1fr); text-align: center; }
+.ban-map-rows { left: -18px; top: 0; bottom: 0; width: 14px; grid-template-rows: repeat(var(--map-rows),1fr); align-items: center; }
+@media (max-width: 1000px) {
+  .book-sheet .ban-route-map-static { width: 115px; height: auto; }
+}
+.ban-route-map-static .ban-route-cell > span { font-size: 10px; line-height: 1; padding: 0; }
+.ban-route-map-static .ban-route-cell b { display: none; }
+/* Historical camera diagram. */
+.ban-camera-diagram { min-width: 0; }
+.ban-camera-diagram svg { display: block; width: 100%; height: auto; border: 1px solid #8c9f9b; border-radius: 6px; }
+.ban-camera-diagram > span { display: block; margin: 10px 0 6px; font-size: 14px; }
+.book-panel .book-sheet .ban-camera-diagram { width: 100%; max-width: 230px; margin: 6px auto; flex-shrink: 0; }
+.ban-photo-detail-caption { font-size: 14px; }
+/* Match Tai Thinh's full-frame journal and responsive archive layout. */
+.ban-recollection { position: absolute; inset: 0; pointer-events: auto; }
+.ban-recollection a { color: #dfc18a; }
+.banh-luoi-scene .journey-primary { background: #e2c58d; color: #25313b; font-weight: 600; }
+.banh-luoi-scene .ban-ending-scene > .dialogue { inset: 12% 2.5% auto; width: 95%; padding: 12px 16px; background: linear-gradient(120deg,#21343bf5,#152831f5); }
+.ban-ending-scene .dialogue-text { font-size: clamp(14px,1.9cqw,18px); }
+.banh-luoi-scene .ban-ending-scene.is-exploring .ending-farewell { inset: 13% auto auto 2.5%; width: 32%; }
+.ban-ending-scene.is-exploring .ending-actions button { font-size: clamp(14px,1.7cqw,17px); }
+.ban-gift-status { position: absolute; top: 13%; left: 2.5%; width: 70%; margin: 0; padding: 16px; border: 1px solid #c3a96e80; border-radius: 10px; background: #142831f5; color: #edd9ac; font-size: clamp(14px,1.9cqw,18px); }
+.has-ending-chat .ban-ending-actions, .has-ending-chat .banh-luoi-hud { display: none; }
+.game-panel:has(.ban-ending) .game-instructions { height: auto; min-height: 96px; overflow: visible; }
+@container (max-width: 860px) {
+  .banh-luoi-scene:has(.ban-recollection), .banh-luoi-scene > .ban-recollection { position: relative; inset: auto; }
+  .game-stage .ban-recollection .surveyor-ending { grid-template-columns: minmax(0,1fr); }
+  .game-stage .ban-recollection.ending-recollection .ending-photo img { height: 240px; }
+  .ban-recollection .ending-speech { font-size: 16px; }
+}
+@container (max-width: 720px) {
+  .banh-luoi-scene .ban-ending-scene { position: relative; inset: auto; background: #142831; }
+  .ban-ending-scene .surveyor-scene-hud { position: relative; inset: auto; padding: 8px 10px; font-size: 15px; }
+  .ban-ending-scene .surveyor-scene-hud > span { font-size: inherit; }
+  .banh-luoi-scene .ban-ending-scene > .dialogue,
+  .banh-luoi-scene .ban-ending-scene.is-exploring .ending-farewell,
+  .ban-gift-status { position: relative; inset: auto; width: auto; border-radius: 0; }
+  .ban-ending-scene .dialogue-text { font-size: 18px; }
+  .ban-ending-scene.is-exploring .ending-actions button { font-size: 16px; }
+}
+.game-stage:has(.ban-ending) .ending-chat > .dialogue { inset: 64px 18px auto; width: auto; max-height: none; overflow: visible; }
+@container (max-width: 720px) {
+  .game-stage:has(.ban-ending) .ending-chat { position: relative; inset: auto; }
+  .game-stage:has(.ban-ending) .ending-chat > .dialogue { position: relative; inset: auto; width: auto; max-height: none; overflow: visible; padding: 14px 18px; }
+  .game-stage:has(.ban-ending) .ending-chat .dialogue-text { font-size: 18px; }
+}
+
+/* Compact controls retain the same reading size as the earlier friends. */
+@container (max-width: 720px) {
+  .banh-luoi-hud { flex-wrap: wrap; }
+  .banh-luoi-scene > .banh-luoi-hud > span { flex: 1 0 100%; max-width: none; font-size: 14px; }
+  .banh-luoi-hud > button { flex: 1; }
+  .game-stage.classic-friend-scene .banh-luoi-scene button:not(.ban-route-cell) { min-height: 44px; font-size: 16px; }
+  .ban-route-panel { margin: 0; }
+}
+
+/* T02 keeps 44px cells and all controls within the shared 480px stage. */
+.banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud { padding: 8px 12px; gap: 8px; font-size: 16px; }
+.banh-luoi-scene .ban-route-panel { margin: 0 12px 12px; padding: 12px; font-size: 16px; }
+.ban-route-panel h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.ban-route-panel .ban-route-rule { margin: 0 0 12px; line-height: 1.4; }
+.ban-route-panel .ban-route-layout { grid-template-columns: minmax(264px, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ban-route-board { min-width: 0; }
+.ban-route-panel .ban-route-map { width: 100%; max-width: 336px; height: 230px; aspect-ratio: auto; margin: 0 auto; gap: 2px; }
+.ban-route-panel .ban-map-columns, .ban-route-panel .ban-map-rows { display: none; }
+.ban-route-panel .ban-route-legend { font-size: 16px; line-height: 1.4; margin: 8px 0 0; }
+.ban-route-panel .ban-route-controls { gap: 8px; }
+.ban-route-controls p { margin: 0; }
+.ban-route-controls small { font-size: 14px; }
+.ban-route-panel .ban-route-meters p + p { margin-top: 6px; }
+.ban-route-stop-status span { display: block; color: #bdcecb; }
+.ban-route-panel .ban-route-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.game-stage.classic-friend-scene .ban-route-panel button:not(.ban-route-cell) { font-size: 16px; min-height: 44px; padding: 6px 10px; }
+.ban-route-notices { position: absolute; z-index: 5; bottom: 8px; right: 8px; max-width: calc(100% - 16px); pointer-events: auto; }
+.ban-route-notices.is-open { width: 440px; padding: 14px; border: 1px solid #dfc18a; border-radius: 10px; background: #20353e; box-shadow: 0 6px 24px #0008; }
+.ban-route-notices .ban-route-feedback p { margin: 0 0 10px; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+.ban-route-notice-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.ban-route-rule-short { display: none; }
+@container (max-width: 720px) {
+  .banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,2fr); padding: 4px 8px; gap: 4px; }
+  .banh-luoi-scene:has(.ban-route-panel) .banh-luoi-hud > span { grid-column: 1 / -1; max-width: none; font-size: 16px; padding: 0 4px; }
+  .banh-luoi-scene .ban-route-panel { margin: 0 8px 8px; padding: 6px; }
+  .ban-route-panel .ban-route-layout { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .ban-route-panel .ban-route-map { width: 264px; max-width: none; height: 220px; gap: 0; margin: 0 auto; }
+  .ban-route-panel .ban-route-legend, .ban-route-rule-full { display: none; }
+  .ban-route-rule-short { display: inline; }
+  .ban-route-panel .ban-route-rule { margin-bottom: 6px; line-height: 1.3; }
+  .ban-route-panel .ban-route-meters { display: flex; justify-content: space-between; gap: 4px; border: 0; padding: 0; }
+  .ban-route-panel .ban-route-meters p, .ban-route-panel .ban-route-meters p + p { margin: 0; }
+  .ban-route-panel .ban-route-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .ban-route-meters, .ban-route-stop-status { grid-column: 1 / -1; }
+  .ban-route-panel .ban-route-stop-status { display: flex; justify-content: space-between; gap: 8px; font-size: 16px; line-height: 1.4; }
+  .ban-route-controls > small { display: none; }
+  .game-stage.classic-friend-scene .ban-route-panel button:not(.ban-route-cell) { padding: 4px 6px; }
+}
+
+/* Same small obstacle, different qualitative compliance. No failure is inevitable. */
+.ban-wheel-rock { position: absolute; left: calc(50% - 10px); bottom: 10px; width: 20px; height: 12px; background: #a9ada0; clip-path: polygon(0 100%,25% 25%,60% 0,100% 100%); }
+.ban-wheel-run.is-tried[data-kind="stone"] { animation-name: ban-wheel-rigid; }
+.ban-wheel-run.is-tried[data-kind="rubber"] { animation-name: ban-wheel-rubber; }
+.ban-wheel-run.is-tried[data-kind="mesh"] { animation-name: ban-wheel-mesh; }
+@keyframes ban-wheel-rigid { 0% { left: 0; } 43% { transform: translateY(0); } 50% { transform: translateY(-12px); } 60% { transform: translateY(0); } 70% { transform: translateY(-3px); } 100% { left: calc(100% - 84px); transform: none; } }
+@keyframes ban-wheel-rubber { 0% { left: 0; } 50% { transform: translateY(-7px) scaleY(.94); } 100% { left: calc(100% - 84px); transform: none; } }
+@keyframes ban-wheel-mesh { 0% { left: 0; } 50% { transform: translateY(-4px) scale(1.08,.88); } 100% { left: calc(100% - 84px); transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ban-wheel-run.is-tried[data-kind] { animation: none; }
+}
+
+/* T02 terrain uses the same muted pixel palette as the lunar scenes. */
+.ban-route-cell .ban-map-terrain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.ban-route-cell .ban-map-stop { align-self: end; padding: 0 3px; font-size: 16px; line-height: 1; background: #20353ee6; }
+.ban-route-cell .ban-map-cost { position: absolute; top: 1px; left: 2px; z-index: 3; display: flex; align-items: center; gap: 2px; padding: 0 2px; font-size: 16px; line-height: 1; background: #20353ee6; }
+.ban-map-battery { width: 8px; height: 11px; border: 1px solid #ead4a4; border-top-width: 3px; background: linear-gradient(to top,#ead4a4 60%,transparent 60%); }
+.ban-route-cell .ban-map-rover { top: 1px; right: 3px; font-size: 17px; line-height: 1; text-shadow: 1px 1px #142831; }
+.ban-map-rover::after { content: ''; position: absolute; bottom: -2px; left: 2px; width: 4px; height: 4px; background: #ead4a4; box-shadow: 8px 0 #ead4a4; }
+.ban-route-cell.is-slope .ban-map-rover { animation: ban-map-climb .85s ease-out; }
+.ban-route-cell .ban-map-pulse { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; background: #243c43e8; color: #ffe4a4; font-size: 20px; pointer-events: none; animation: ban-map-pulse 1.2s forwards; }
+.ban-route-cell .ban-map-pulse.is-slope { inset: auto 1px 1px auto; width: 26px; height: 20px; font-size: 16px; }
+.ban-route-cell .ban-map-pulse.is-blocked { background: #4d3535bb; color: #ffd1b6; outline: 2px solid #ffd1b6; outline-offset: -3px; }
+.ban-route-map-static .ban-map-cost { display: none; }
+.ban-route-map-static .ban-map-stop { font-size: 10px; }
+@keyframes ban-map-climb { 0% { transform: translate(-12px,7px) rotate(-15deg); } 65% { transform: translate(-3px,-2px) rotate(-10deg); } 100% { transform: none; } }
+@keyframes ban-map-pulse { 0%,60% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .ban-route-cell.is-slope .ban-map-rover { animation: none; } }
+
+/* T03 keeps the pixel stage, map and controls inside the shared viewport. */
+.game-stage:has(.ban-guide) > .story-canvas { display: none; }
+.banh-luoi-scene:has(.ban-guide) { position: absolute; inset: 0; display: flex; flex-direction: column; background: #142831; pointer-events: auto; }
+.banh-luoi-scene[hidden]:has(.ban-guide) { display: none; }
+.banh-luoi-scene:has(.ban-guide) > .banh-luoi-hud { position: relative; inset: auto; flex: none; padding: 8px; gap: 8px; font-size: 16px; }
+.banh-luoi-scene:has(.ban-guide) .banh-luoi-hud > span { max-width: none; }
+.ban-guide { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 0 8px 8px; gap: 4px; color: #eee5d1; font-size: 16px; }
+.ban-guide-play { display: flex; flex: 1; min-height: 0; flex-direction: column; gap: 4px; }
+.ban-guide-view { position: relative; flex: 1; min-height: 0; background: #0d141c; }
+.ban-guide-view .canvas-wrap, .ban-guide-view .game-host { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; min-height: 0; }
+.game-stage.classic-friend-scene .ban-guide button { min-height: 44px; padding: 6px 12px; font-size: 16px; touch-action: none; }
+.ban-guide-message { min-height: 44px; margin: 0; display: flex; align-items: center; line-height: 1.25; }
+.ban-guide-hint { position: absolute; inset: 0; z-index: 8; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; padding: 24px; background: #142831fa; }
+.ban-guide-hint p { max-width: 440px; line-height: 1.6; }
+@container (max-width: 560px) {
+  .banh-luoi-scene:has(.ban-guide) > .banh-luoi-hud { display: grid; grid-template-columns: 1fr 2fr; gap: 4px; padding: 6px 8px; }
+  .banh-luoi-scene:has(.ban-guide) .banh-luoi-hud > span { grid-column: 1 / -1; padding: 2px 0; }
+  .game-stage.classic-friend-scene .ban-guide button { padding: 6px 8px; }
+}
+
+.ban-guide-view { container-type: size; }
+.ban-guide-scene-box { position: absolute; width: min(100cqw,177.777cqh); height: min(56.25cqw,100cqh); left: 50%; top: 50%; transform: translate(-50%,-50%); }
+.banh-luoi-scene:has(.ban-guide) .banh-luoi-hud > span { font-size: 16px; }
+.ban-route-submit { display: flex; gap: 4px; }
+.ban-route-submit > button { flex: 1; }
+@container (max-width: 720px) {
+  .ban-route-controls:has(.has-resume) { grid-template-columns: 1fr; }
+  .ban-route-controls:has(.has-resume) .ban-route-actions { grid-column: 1; grid-row: 3; width: 42%; }
+  .ban-route-controls:has(.has-resume) .ban-route-submit { grid-column: 1; grid-row: 3; margin-left: 44%; }
+  .game-stage.classic-friend-scene .ban-route-submit.has-resume button { padding-inline: 3px; }
+}
+.banh-luoi-scene.ban-guide-intro { position: absolute; inset: 0; }
+.banh-luoi-scene.ban-guide-intro .dialogue { position: absolute; top: auto; bottom: 12px; left: 12px; right: 12px; }
+.banh-luoi-scene.ban-guide-intro .dialogue-text { font-size: 18px; }
+
+/* A node is a visit, not a unique cell: retain turnarounds and intermediate LM. */
+.ban-trip-timeline { height: 56px; flex: none; overflow: hidden; border-radius: 8px; background: #21373e; box-shadow: inset 0 0 0 1px #72817555; }
+.ban-trip-timeline > svg { display: block; }
+@container (max-width: 639px) {
+  .banh-luoi-scene:has(.ban-guide) > .banh-luoi-hud { display: grid; grid-template-columns: 1fr 2fr; gap: 4px; padding: 6px 8px; }
+  .banh-luoi-scene:has(.ban-guide) .banh-luoi-hud > span { grid-column: 1 / -1; padding: 2px 0; }
+}
+
+.ban-rock-meter { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: min(280px, 90%); display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #142831ed; border-radius: 8px; font-size: 16px; }
+.ban-rock-meter > span { flex: none; }
+.ban-rock-track { position: relative; height: 18px; flex: 1; background: #677673; border: 1px solid #c7c4ab; }
+.ban-rock-track i { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, #dcca97 0 4px, #ab9866 4px 6px); border-inline: 2px solid #f5e4b6; }
+.ban-rock-track b { position: absolute; width: 3px; top: -4px; bottom: -4px; background: #fff9df; transform: translateX(-50%); }
+
+
+.ban-soil-dialog { position: absolute; inset: 60px 8px 8px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: #142831; border: 1px solid #b9aa7d; border-radius: 10px; text-align: center; }
+.ban-soil-dialog strong { font-size: 18px; }
+.ban-soil-grains { width: min(320px, 100%); flex: 1; min-height: 0; max-height: 130px; }
+.ban-soil-dialog p { margin: 0; max-width: 540px; line-height: 1.3; }
+.ban-soil-dialog small { font-size: 14px; max-width: 520px; line-height: 1.25; color: #c3c9bf; }
+.ban-soil-choices { display: flex; justify-content: center; gap: 8px; flex: none; }
+.ban-soil-progress { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); padding: 8px; border-radius: 8px; background: #142831ed; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.ban-soil-progress progress { width: 70px; accent-color: #dec68e; }
+
+/* Only the T01 companion hint list; game controls and other pages retain their layout. */
+.book-panel .book-prose .ban-wheel-hints { margin: 0; padding-left: 22px; }
+.book-panel .book-prose .ban-wheel-hints li { padding: 4px 6px; margin-bottom: 8px; }
+.book-panel .book-prose .ban-wheel-hints p { margin: 0; }
+.book-panel .book-prose .ban-wheel-hints .ban-wheel-answer {
+  border: 2px solid #806b43; border-radius: 5px; background: #dfc18a20;
+}

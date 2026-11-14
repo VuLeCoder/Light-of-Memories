@@ -1,11 +1,9 @@
+import { GacCompanion } from '../components/friends/gac-troi/GacCompanion';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { GameSceneId, MoonQuest, PreviewOptions } from './types';
 import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
-import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
-
-const canvasLabel = (scene: GameSceneId, language: Language, guiding = false) => guiding ? (language === 'vi' ? 'Cuội dẫn Bánh Lưới theo lộ trình trong chuyến đi tưởng tượng.' : 'Cuội guides Mesh Wheels along the planned imaginary trip.') : scene === 'ban-banh-luoi' ? (language === 'vi' ? 'Cuội cạnh xe Apollo 17 đỗ yên giữa thung lũng Taurus–Littrow.' : 'Cuội beside the parked Apollo 17 rover in the Taurus–Littrow valley.') : scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
-  ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
+import { canvasLabel } from '../content/scene-copy';
 
 function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'NumpadEnter'].includes(event.code)) return;
@@ -14,7 +12,10 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ sparkleLantern = 'hidden', surveyorLantern = 'hidden', banhLuoiGuide, walkDestination, walkCommand, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  walkDestination?: number; walkCommand?: number;
+  sparkleLantern?: PreviewOptions['sparkleLantern'];
+  surveyorLantern?: PreviewOptions['surveyorLantern'];
   banhLuoiGuide?: PreviewOptions['banhLuoiGuide'];
   onReady?: () => void;
   taiEnding?: PreviewOptions['taiEnding']; taiStars?: number; onTaiGift?: () => void;
@@ -28,8 +29,8 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
   readyRef.current = onReady;
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
-  progressRef.current = { banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
+  const progressRef = useRef({ sparkleLantern, surveyorLantern, banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
+  progressRef.current = { sparkleLantern, surveyorLantern, banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -37,7 +38,7 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
   moonModeRef.current = moonMode;
   const languageRef = useRef(language);
   languageRef.current = language;
-  const phaserScene = useRef<import('./PreviewScene').PreviewScene | null>(null);
+  const phaserScene = useRef<import('./scenes/preview-scene').PreviewScene | null>(null);
   const [status, setStatus] = useState<{ kind: 'loading' | 'error'; assets?: string[] }>({ kind: 'loading' });
   const [ready, setReady] = useState(false);
 
@@ -53,7 +54,7 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
     // Import after mount; cancellation prevents duplicate instances in StrictMode.
     // Canvas text keeps its rasterized fallback unless the font loads before creation.
     const textFont = document.fonts.load('400 22px "Be Vietnam Pro"', 'Đến gần để trò chuyện').catch(() => []);
-    void Promise.all([import('phaser'), import('./PreviewScene'), textFont]).then(([{ default: Phaser }, { PreviewScene }]) => {
+    void Promise.all([import('phaser'), import('./scenes/preview-scene'), textFont]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
         banhLuoiGuide: progressRef.current.banhLuoiGuide ? { ...progressRef.current.banhLuoiGuide, onEvent: e => progressRef.current.banhLuoiGuide?.onEvent(e) } : undefined,
@@ -61,6 +62,8 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
         taiEnding: progressRef.current.taiEnding,
         taiStars: progressRef.current.taiStars,
         onTaiGift: () => { if (!cancelled) progressRef.current.onTaiGift?.(); },
+        sparkleLantern: progressRef.current.sparkleLantern,
+        surveyorLantern: progressRef.current.surveyorLantern,
         sparkleEnding: progressRef.current.sparkleEnding,
         sparkleDust: progressRef.current.sparkleDust,
         sparkleTrail: progressRef.current.sparkleTrail,
@@ -130,8 +133,11 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.walkToDestination(walkDestination); }, [walkDestination, walkCommand, ready]);
   useEffect(() => { phaserScene.current?.setBanhLuoiGuide(banhLuoiGuide); }, [banhLuoiGuide]);
   useEffect(() => { phaserScene.current?.setTaiEnding(taiEnding, taiStars); }, [taiEnding, taiStars]);
+  useEffect(() => { phaserScene.current?.setSparkleLantern(sparkleLantern); }, [sparkleLantern]);
+  useEffect(() => { phaserScene.current?.setSurveyorLantern(surveyorLantern); }, [surveyorLantern]);
   useEffect(() => { phaserScene.current?.setSparkleEnding(sparkleEnding); }, [sparkleEnding]);
   useEffect(() => { phaserScene.current?.setSparkleDust(sparkleDust); }, [sparkleDust]);
   useEffect(() => { phaserScene.current?.setSparkleTrail(sparkleTrail); }, [sparkleTrail]);
@@ -161,6 +167,7 @@ export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding =
         event.currentTarget.focus({ preventScroll: true });
       }}
       onBlur={() => phaserScene.current?.releaseControls()} />
+    {ready && scene === 'gac-troi' && <GacCompanion large/>}
     {!ready && <div className="canvas-status" role="status">{status.kind === 'error' ? (status.assets ? `${copy[language].imageError}: ${status.assets.join(', ')}. ${copy[language].reload}` : copy[language].canvasError) : copy[language].loading}</div>}
   </div>;
 }

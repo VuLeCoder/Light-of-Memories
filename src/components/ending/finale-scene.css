@@ -1,0 +1,29 @@
+#main-scene .game-stage:has(.finale-scene) { height:auto; aspect-ratio:auto; min-height:0; }
+#main-scene .game-stage:has(.finale-scene) > .story-canvas { display:none; }
+.finale-scene { color:#eee3c9; background:#101e28; padding:0; container-type:inline-size; position:relative; isolation:isolate; display:grid; grid-template-columns:minmax(0,1fr); }
+.finale-scene[hidden] { display:grid; visibility:hidden; pointer-events:none; }
+.finale-scene button { min-height:44px; border:1px solid #b49a6777; border-radius:6px; background:#223b43; color:#f1e5cc; font:inherit; padding:8px 12px; cursor:pointer; }
+.finale-scene button:disabled { cursor:default; }
+.finale-scene button:focus-visible { outline:3px solid #ffe3a2; outline-offset:3px; }
+.finale-view { grid-area:1/1; position:relative; width:100%; aspect-ratio:16/9; background:#0d1822; isolation:isolate; }
+.finale-backdrop canvas { display:block; width:100% !important; height:100% !important; }
+.finale-cuoi { position:absolute; left:16.5%; top:50%; width:9%; height:28%; pointer-events:none; z-index:2; image-rendering:pixelated; }
+@media (prefers-reduced-motion:reduce) { .finale-scene *, .finale-scene *::before { animation:none !important; transition:none !important; } }
+.finale-hang { position:absolute; left:81%; bottom:21%; height:32%; width:auto; pointer-events:none; z-index:2; }
+.finale-cuoi { top:auto; bottom:21%; height:25.3%; width:8.72%; }
+.finale-scene[data-paused="true"] *, .finale-scene[hidden] * { animation-play-state:paused !important; }
+@keyframes finale-arrive { from { opacity:0; } to { opacity:1; } }
+.finale-hang-seated { aspect-ratio:3 / 4; height:30%; left:80.4%; bottom:15%; overflow:hidden; transform:none; }
+.finale-hang-seated[data-closing="moon"] { left:46.4%; }
+.finale-hang-seated img { display:block; width:400%; height:100%; max-width:none; animation:hang-seated-idle 5s step-end infinite; }
+@keyframes hang-seated-idle {
+  0%,88%,100% { transform:translateX(0); }
+  90%,96% { transform:translateX(-25%); }
+  92% { transform:translateX(-50%); }
+  98% { transform:translateX(-75%); }
+}
+
+/* Preserve the opening scene’s nearest-neighbour sprite scaling in the finale. */
+.finale-backdrop[data-closing="earth"] canvas { image-rendering:pixelated; }
+
+.finale-backdrop { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }

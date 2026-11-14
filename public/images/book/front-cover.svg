@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" fill="none">
+  <defs>
+    <radialGradient id="night"><stop stop-color="#29444c"/><stop offset="1" stop-color="#122832"/></radialGradient>
+    <radialGradient id="glow"><stop stop-color="#ead3a0" stop-opacity=".2"/><stop offset="1" stop-color="#ead3a0" stop-opacity="0"/></radialGradient>
+  </defs>
+  <path fill="url(#night)" d="M0 0h210v297H0z"/>
+  <rect x="10" y="10" width="190" height="277" rx="2" stroke="#c8ac73" stroke-opacity=".7" stroke-width=".5"/>
+  <rect x="13" y="13" width="184" height="271" rx="1" stroke="#c8ac73" stroke-opacity=".22" stroke-width=".3"/>
+  <circle cx="105" cy="165" r="70" fill="url(#glow)"/>
+  <circle cx="105" cy="162" r="38" fill="#dbc18a" fill-opacity=".06" stroke="#dbc18a" stroke-width=".6"/>
+  <circle cx="105" cy="162" r="43" stroke="#dbc18a" stroke-opacity=".2" stroke-width=".4"/>
+  <path d="M121 127a35 35 0 0 1-47 47 38 38 0 1 0 47-47Z" fill="#dbc18a" fill-opacity=".12"/>
+  <path d="M37 180c-8-34 13-65 45-76m42-2c30 8 52 34 51 63" stroke="#c8ac73" stroke-opacity=".35" stroke-width=".4" stroke-dasharray="1 3"/>
+  <g stroke="#e5c886" stroke-linejoin="round">
+    <path d="m105 138 7.2 14.6 16.1 2.4-11.6 11.4 2.7 16.1-14.4-7.6-14.4 7.6 2.7-16.1-11.6-11.4 16.1-2.4Z" fill="#e5c886" fill-opacity=".12" stroke-width=".8"/>
+    <path d="M105 138v37m-23.3-20 37.7 27.5m8.9-27.5-37.7 27.5M105 183v33" stroke-opacity=".5" stroke-width=".4"/>
+  </g>
+  <g fill="#e5c886"><circle cx="40" cy="141" r=".8"/><circle cx="165" cy="181" r=".9"/><circle cx="67" cy="208" r=".6"/><circle cx="143" cy="113" r=".6"/>
+    <path d="m57 111 .8 2.6 2.6.8-2.6.8-.8 2.6-.8-2.6-2.6-.8 2.6-.8Zm104 20 .7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7Z"/>
+  </g>
+  <path d="M27 256q40-15 78 0t78 0M27 260q40-15 78 0t78 0" stroke="#c8ac73" stroke-opacity=".2" stroke-width=".4"/>
+</svg>

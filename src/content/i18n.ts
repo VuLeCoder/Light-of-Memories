@@ -1,46 +1,8 @@
-import { earthDialogue } from './earth-dialogue';
-import { moonAwakeningDialogue, moonTreeDialogue, moonDepartureDialogue } from './moon-dialogue';
-
 export type Language = 'vi' | 'en';
 export const languageOptions = [
   { value: 'vi', label: 'Tiếng Việt' },
   { value: 'en', label: 'English' },
 ] as const;
-
-const englishEarth: Record<(typeof earthDialogue)[number]['id'], string> = {
-  'earth-01': 'On the full moon of the eighth lunar month, the moon shone like a silver plate.',
-  'earth-02': 'An sat on the porch, holding a star lantern and looking up at the sky.',
-  'earth-03': 'Grandma, Cuội has been sitting under the banyan tree for so long. Is he lonely?',
-  'earth-04': 'Long ago, he was not lonely, dear, because Hằng was by his side.',
-  'earth-05': 'But I heard that one night Cuội woke up… and Hằng was no longer there.',
-  'earth-06': "The lantern in An's hand flickered softly. And that is where our story begins.",
-};
-const englishMoon: Record<(typeof moonAwakeningDialogue)[number]['id'], string> = {
-  'moon-01': 'Cuội woke up. The Moon was strangely quiet.',
-  'moon-02': 'The stone bench was still beside him, but Hằng was gone.',
-};
-
-const englishTree = [
-  'Hằng! Where are you?',
-  'Cuội waited. Hằng was nowhere to be seen.',
-  'She has not gone far, my child. But the Moon has changed.',
-  'While you slept, new friends arrived. They have stories to tell. Go and meet them!',
-  'Each friend will light one point of your lantern. When all five points shine, its light will lead you to Hằng.',
-];
-const englishDeparture = [
-  'Cuội looked at the unlit five-pointed star lantern, then at the strange footprints in the grey dust.',
-  'All right. Let’s go.',
-];
-
-export const storyLines = {
-  vi: { earth: earthDialogue, moon: moonAwakeningDialogue, tree: moonTreeDialogue, departure: moonDepartureDialogue },
-  en: {
-    tree: moonTreeDialogue.map((line, i) => ({ ...line, text: englishTree[i] })),
-    departure: moonDepartureDialogue.map((line, i) => ({ ...line, text: englishDeparture[i] })),
-    earth: earthDialogue.map((line) => ({ ...line, text: englishEarth[line.id] })),
-    moon: moonAwakeningDialogue.map((line) => ({ ...line, text: englishMoon[line.id] })),
-  },
-};
 
 export const copy = {
   vi: {
@@ -52,9 +14,9 @@ export const copy = {
     benchGoal: 'Quan sát chiếc ghế đá', benchHint: 'Đến gần ghế rồi nhấn E, hoặc bấm vào ghế.', interactBench: 'E · Quan sát ghế', treeTitle: 'Lời nhắn của Cây Đa', receiveLantern: 'Nhận đèn', lantern: 'Đèn ông sao', trailGoal: 'Đi theo dấu vết để tìm người bạn đầu tiên', trailMarker: 'Theo dấu chân →', trailHint: 'Đi về phía bên phải theo những dấu chân được viền sáng.', openingEnd: 'Hành trình tiếp theo: Người bạn Mắt Tròn', openingEndNote: 'Bạn đã hoàn thành phần mở đầu. Hành trình tìm Mắt Tròn sẽ được tiếp nối sau.', stayExplore: 'Ở lại khám phá',
     skip: 'Bỏ qua mở đầu', menu: '☰ Menu', moonWaking: 'Cuội đang thức dậy dưới gốc đa…', moonMove: 'Tiến lại gần chiếc ghế đá. Di chuyển bằng A/D, ←/→ hoặc bấm vào mặt đất.',
     cast: 'Nhân vật trong cảnh',
-    bookTop: 'TRANG SÁCH BÊN BẠN', bookKicker: 'MỘT CÂU CHUYỆN DƯỚI TRĂNG', bookTitle: ['Sách', 'đồng hành'], bookComing: 'Cùng Cuội lên đường nhé! Những câu chuyện mới sẽ được ghi vào đây.', bookFirst: 'TRANG ĐẦU TIÊN', bookNote: 'Trang sách đang chờ câu chuyện của bạn.',
+    bookTop: 'TRANG SÁCH BÊN BẠN', bookKicker: 'Chuyện kể dưới trăng', bookTitle: ['Sách', 'đồng hành'], bookComing: 'Cùng Cuội lên đường nhé! Những câu chuyện mới sẽ được ghi vào đây.', bookFirst: 'TRANG ĐẦU TIÊN', bookNote: 'Trang sách đang chờ câu chuyện của bạn.',
     introLabel: 'KHỞI ĐẦU MỘT HÀNH TRÌNH', heroOne: 'Chú Cuội, chị Hằng', heroTwo: 'và những người bạn bị lãng quên', teamLabel: 'NHÓM THỰC HIỆN', footerOne: 'MỖI CÂU CHUYỆN BẮT ĐẦU TỪ MỘT ÁNH TRĂNG', footerTwo: 'Khung cảnh mở đầu',
-    menuHelpTitle: 'Cùng bắt đầu nhé!', menuRestartTitle: 'Bắt đầu lại từ hiên nhà?', menuHelpLead: 'Chọn một nút bằng chuột, hoặc nhấn Tab rồi Enter.', menuRestartLead: 'Tiến trình đã lưu sẽ được thay bằng một hành trình mới từ đêm Trung Thu cùng An và bà.', menuLead: 'Một đêm trăng tròn. Một câu chuyện đang chờ bạn khám phá.', start: 'Bắt đầu hành trình', continue: 'Tiếp tục', continueHint: 'Tiếp nối hành trình từ mốc đã lưu.', startHint: 'Bắt đầu hành trình để mở nút này.', help: 'Hướng dẫn', sound: 'Âm thanh', on: 'Bật', off: 'Tắt', noMusic: 'Chưa có nhạc trong bản hiện tại.', soundNotice: 'Chưa lưu được cài đặt âm thanh. Lựa chọn vẫn được giữ trong phiên chơi.', helpSteps: ['Bắt đầu hành trình: đọc câu chuyện An và bà ở hiên nhà.', 'Bấm Hiện hết câu hoặc nhấn Space / Enter để hiện đủ chữ. Bấm thêm lần nữa để sang câu tiếp theo.', 'Nhấn Menu để tạm dừng, Tiếp tục để đọc tiếp. Bỏ qua mở đầu đưa bạn tới Cuội đang ngủ.', 'Sau khi Cuội thức dậy và bạn đọc hết lời dẫn, dùng A/D, ←/→ hoặc bấm vào mặt đất để di chuyển.'], helpNote: 'Đến gần ghế rồi nhấn E, hoặc bấm ghế để Cuội tự đi tới quan sát. Sau khi nhận đèn, đi theo dấu chân bên phải. Tiến trình tự lưu theo từng chặng. Sau khi tải lại, chọn Tiếp tục; đoạn thoại đang dở sẽ bắt đầu lại từ đầu đoạn.', backMenu: 'Về menu', restart: 'Bắt đầu lại', keepScene: 'Giữ cảnh hiện tại',
+    menuHelpTitle: 'Cùng bắt đầu nhé!', menuRestartTitle: 'Bắt đầu lại từ hiên nhà?', menuHelpLead: 'Xem hướng dẫn ngay dưới khung game. Nội dung luôn thay đổi theo cảnh và thử thách đang chơi.', menuRestartLead: 'Tiến trình đã lưu sẽ được thay bằng một hành trình mới từ đêm Trung Thu cùng An và bà.', menuLead: 'Một đêm trăng tròn. Một câu chuyện đang chờ bạn khám phá.', start: 'Bắt đầu hành trình', continue: 'Tiếp tục', continueHint: 'Tiếp nối hành trình từ mốc đã lưu.', startHint: 'Bắt đầu hành trình để mở nút này.', help: 'Hướng dẫn', sound: 'Âm thanh', on: 'Bật', off: 'Tắt', music: 'Nhạc nền', effects: 'Hiệu ứng âm thanh', audioHint: 'Nhạc nền phát cả trong menu sau khi bạn tương tác. Hiệu ứng âm thanh phát khi chơi.', audioUnavailable: 'Chưa phát được âm thanh. Bạn vẫn có thể tiếp tục chơi; hãy thử bật lại âm thanh hoặc tải lại trang.', soundNotice: 'Chưa lưu được cài đặt âm thanh. Lựa chọn vẫn được giữ trong phiên chơi.', helpSteps: ['Điều khiển: Bấm/chạm để chọn. Dùng Tab chuyển nút, Enter/Space xác nhận. Phím riêng của từng cảnh nằm dưới khung game.', 'Hội thoại: Chọn Hiện hết câu, rồi Tiếp theo; hoặc dùng Space/Enter trong khung thoại. Đoạn mở đầu và đoạn kết An và bà tự chạy.', 'Sách của Cuội: Mở mục lục, lật trang để đọc truyện, xem ảnh và tìm manh mối. Nút Gợi ý mở trang sách liên quan.', 'Menu & cài đặt: Tạm dừng, tiếp tục và bật/tắt riêng nhạc nền, hiệu ứng. Đổi Việt/Anh ở đầu trang.'], helpNote: 'Tự lưu theo chặng trên trình duyệt này. Tiếp tục mở mốc đã lưu; thoại dở có thể chạy lại. Bắt đầu lại thay tiến trình cũ.', backMenu: 'Về menu', restart: 'Bắt đầu lại', keepScene: 'Giữ cảnh hiện tại',
     earthDialogueTitle: 'Câu chuyện An và bà', moonDialogueTitle: 'Cuội tỉnh giấc', narrator: 'Người dẫn truyện', dialogueHint: 'Nhấn Space / Enter hoặc bấm nút bên cạnh', reveal: 'Hiện hết câu', next: 'Tiếp theo', followMoon: 'Theo ánh trăng', explore: 'Bắt đầu khám phá', portraitAlt: 'Chân dung',
     saveNotice: 'Chưa lưu được tiến trình trên trình duyệt này. Bạn vẫn có thể chơi, nhưng tải lại trang có thể mất tiến trình.',
     loading: 'Đang chuẩn bị cảnh…', canvasEarth: 'Cảnh pixel An và bà trên hiên nhà', canvasMoon: 'Cảnh pixel Cuội dưới gốc đa trên Mặt Trăng', canvasError: 'Không khởi tạo được cảnh. Hãy tải lại trang hoặc dùng trình duyệt hỗ trợ canvas.', imageError: 'Không tải được ảnh', reload: 'Hãy tải lại trang.', ground: 'Nền cảnh', bench: 'Ghế đá', tree: 'Cây Đa',
@@ -65,12 +27,12 @@ export const copy = {
     brandCaption: 'TALES BENEATH THE MOON', sceneControls: 'Scene information and controls', sceneArea: 'Game scene', goToScene: 'Go to game scene',
     earth: { tab: 'The porch', title: 'Full Moon · An and Grandma', subtitle: 'A little porch. A full moon night.', description: 'An and Grandma under the porch roof on Mid-Autumn night.' },
     moon: { tab: 'The Moon', title: 'Under the Banyan Tree', subtitle: 'The other side of a story.', description: 'Cuội beside the banyan tree and stone bench. Examine the bench, listen to the Banyan Tree, and set off with the star lantern.' },
-    benchGoal: 'Examine the stone bench', benchHint: 'Walk near the bench and press E, or click the bench.', interactBench: 'E · Examine bench', treeTitle: 'The Banyan Tree’s message', receiveLantern: 'Receive lantern', lantern: 'Star lantern', trailGoal: 'Follow the tracks to find your first friend', trailMarker: 'Follow the footprints →', trailHint: 'Follow the highlighted footprints to the right.', openingEnd: 'Next adventure: Round Eyes', openingEndNote: 'You have completed the opening. The search for Round Eyes will continue in a future chapter.', stayExplore: 'Keep exploring',
+    benchGoal: 'Examine the stone bench', benchHint: 'Walk near the bench and press E, or click the bench.', interactBench: 'E · Examine bench', treeTitle: 'The Banyan Tree’s message', receiveLantern: 'Receive lantern', lantern: 'Star lantern', trailGoal: 'Follow the tracks to find your first friend', trailMarker: 'Follow the footprints →', trailHint: 'Follow the highlighted footprints to the right.', openingEnd: 'Next adventure: Round Eye', openingEndNote: 'You have completed the opening. The search for Round Eye will continue in a future chapter.', stayExplore: 'Keep exploring',
     skip: 'Skip opening', menu: '☰ Menu', moonWaking: 'Cuội is waking beneath the banyan tree…', moonMove: 'Walk toward the stone bench. Move with A/D, ←/→, or click the ground.',
     cast: 'Characters in this scene',
-    bookTop: 'YOUR COMPANION BOOK', bookKicker: 'A STORY BENEATH THE MOON', bookTitle: ['Companion', 'book'], bookComing: 'Come along with Cuội! New stories will fill these pages.', bookFirst: 'THE FIRST PAGE', bookNote: 'Your story is waiting to be written.',
+    bookTop: 'YOUR COMPANION BOOK', bookKicker: 'Tales Under the Moon', bookTitle: ['Companion', 'book'], bookComing: 'Come along with Cuội! New stories will fill these pages.', bookFirst: 'THE FIRST PAGE', bookNote: 'Your story is waiting to be written.',
     introLabel: 'THE JOURNEY BEGINS', heroOne: 'Cuội, Hằng', heroTwo: 'and their forgotten friends', teamLabel: 'CREATED BY', footerOne: 'EVERY STORY BEGINS WITH MOONLIGHT', footerTwo: 'Opening scene',
-    menuHelpTitle: "Let's begin!", menuRestartTitle: 'Start again at the porch?', menuHelpLead: 'Choose a button with your mouse, or press Tab then Enter.', menuRestartLead: 'Your saved progress will be replaced by a new journey from Mid-Autumn night with An and Grandma.', menuLead: 'A full moon night. A story is waiting for you.', start: 'Start the journey', continue: 'Continue', continueHint: 'Resume your journey from the saved milestone.', startHint: 'Start the journey to unlock this button.', help: 'How to play', sound: 'Sound', on: 'On', off: 'Off', noMusic: 'There is no music in this version yet.', soundNotice: 'Your sound setting could not be saved. It will still last for this visit.', helpSteps: ['Start the journey to read An and Grandma’s story on the porch.', 'Select Show full line or press Space / Enter to reveal the whole line. Press again to continue.', 'Open Menu to pause, then Continue to return. Skip opening takes you to Cuội asleep.', 'After Cuội wakes and you finish the narration, move with A/D, ←/→, or click the ground.'], helpNote: 'Press E near the bench, or click it to walk over and examine it. After receiving the lantern, follow the tracks to the right. Progress saves automatically at each milestone. After reloading, select Continue; unfinished dialogue restarts from the beginning of that conversation.', backMenu: 'Back to menu', restart: 'Start again', keepScene: 'Keep this scene',
+    menuHelpTitle: "Let's begin!", menuRestartTitle: 'Start again at the porch?', menuHelpLead: 'Check the instructions just below the game. They update with every scene and challenge.', menuRestartLead: 'Your saved progress will be replaced by a new journey from Mid-Autumn night with An and Grandma.', menuLead: 'A full moon night. A story is waiting for you.', start: 'Start the journey', continue: 'Continue', continueHint: 'Resume your journey from the saved milestone.', startHint: 'Start the journey to unlock this button.', help: 'How to play', sound: 'Sound', on: 'On', off: 'Off', music: 'Background music', effects: 'Sound effects', audioHint: 'Background music plays in the menu after you interact. Sound effects play during the game.', audioUnavailable: 'Audio could not play. You can keep playing; try enabling audio again or reloading the page.', soundNotice: 'Your sound setting could not be saved. It will still last for this visit.', helpSteps: ['Controls: Click/tap to choose. Use Tab to focus buttons, Enter/Space to select. Scene-specific keys appear below the game.', 'Dialogue: Choose Show full line, then Next; or use Space/Enter in the dialogue. An and Grandma’s opening and ending play automatically.', 'Cuội’s book: Browse the contents and turn pages for stories, pictures and clues. Hint opens the relevant book page.', 'Menu & settings: Pause, resume and toggle music or effects separately. Switch Vietnamese/English at the top of the page.'], helpNote: 'Milestones save in this browser. Continue loads your save; unfinished dialogue may replay. Start again replaces your progress.', backMenu: 'Back to menu', restart: 'Start again', keepScene: 'Keep this scene',
     earthDialogueTitle: 'An and Grandma', moonDialogueTitle: 'Cuội wakes up', narrator: 'Narrator', dialogueHint: 'Press Space / Enter or use the button', reveal: 'Show full line', next: 'Next', followMoon: 'Follow the moonlight', explore: 'Start exploring', portraitAlt: 'Portrait of',
     saveNotice: 'Progress could not be saved in this browser. You can keep playing, but reloading may lose your progress.',
     loading: 'Preparing the scene…', canvasEarth: 'Pixel scene of An and Grandma on the porch', canvasMoon: 'Pixel scene of Cuội beneath the banyan tree on the Moon', canvasError: 'Could not start the scene. Reload the page or use a browser with canvas support.', imageError: 'Could not load images', reload: 'Please reload the page.', ground: 'Ground', bench: 'Stone bench', tree: 'Banyan tree',

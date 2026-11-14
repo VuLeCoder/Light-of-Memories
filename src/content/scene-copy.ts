@@ -1,0 +1,7 @@
+import type { GameSceneId } from '../game/types';
+import { copy, type Language } from './i18n';
+import { surveyorEncounterCopy } from './friends/surveyor/dialogue';
+
+export const canvasLabel = (scene: GameSceneId, language: Language, guiding = false) => scene.startsWith('t04-') || scene === 'reunion' ? (language === 'vi' ? 'Cuội tìm chị Hằng: triền đất thấp, đá có khe và cây đa. Cảnh minh họa trong truyện.' : 'Cuội looks for Hằng: low slope, split rock and banyan tree. Story illustration.') : guiding ? (language === 'vi' ? 'Cuội dẫn Bánh Lưới theo lộ trình trong chuyến đi tưởng tượng.' : 'Cuội guides Mesh Wheels along the planned imaginary trip.') : scene === 'gac-troi' ? (language === 'vi' ? 'Cuội đứng trên mặt đất, trò chuyện qua tín hiệu với Gác Trời ở quỹ đạo Mặt Trăng. Cảnh minh họa không theo tỉ lệ.' : 'Cuội stands on the surface, speaking by signal with Sky Watcher in lunar orbit. Illustration not to scale.') : scene === 'ban-banh-luoi' ? (language === 'vi' ? 'Cuội cạnh xe Apollo 15 đỗ yên tại Hadley–Apennine.' : 'Cuội beside the parked Apollo 15 rover at Hadley–Apennine.') : scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Twinkle') : scene === 'surveyor'
+  ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
+
