@@ -1,4 +1,35 @@
 import Phaser from 'phaser';
+import { VIEW } from './types';
+
+// Rasterize only static layers once, at the full game resolution. Interactive
+// objects, characters and effects remain separate and continue updating normally.
+export function cacheScenery(scene: Phaser.Scene, draw: (scene: Phaser.Scene) => unknown) {
+  const backdrop = scene.add.renderTexture(0, 0, VIEW.width, VIEW.height).setOrigin(0);
+  const redraw = () => {
+    const start = scene.children.length;
+    draw(scene);
+    const layers = scene.children.getChildren().slice(start);
+    backdrop.clear().draw(layers);
+    layers.forEach((layer) => layer.destroy());
+  };
+  redraw();
+
+  // GPU render targets lose their pixels after context loss. Rebuild the cache
+  // once restoration completes, and remove the listener when leaving the scene.
+  const renderer = scene.game.renderer;
+  renderer.on(Phaser.Renderer.Events.RESTORE_WEBGL, redraw);
+  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+    renderer.off(Phaser.Renderer.Events.RESTORE_WEBGL, redraw);
+  });
+}
+
+// Shared Earth illustration for the lunar awakening and Sparkle encounter.
+export function drawEarth(g: Phaser.GameObjects.Graphics, x: number, y: number) {
+  g.fillStyle(0x8ca8ad, 0.045).fillCircle(x, y, 67);
+  g.fillStyle(0x9bbcc4).fillCircle(x, y, 32);
+  g.fillStyle(0x668b88).fillRect(x - 18, y - 22, 21, 11).fillRect(x - 8, y - 13, 10, 22).fillRect(x + 8, y + 6, 16, 9);
+  g.fillStyle(0xd0dddb, 0.75).fillRect(x - 25, y - 8, 41, 4).fillRect(x - 3, y + 16, 22, 4);
+}
 
 // Temporary scenery drawn in game coordinates; replace each layer independently.
 export function sky(scene: Phaser.Scene, lunar = false) {
@@ -18,10 +49,7 @@ export function sky(scene: Phaser.Scene, lunar = false) {
     g.fillStyle(0xcfcda8, 0.6).fillRect(748, 91, 16, 8).fillRect(778, 135, 21, 9).fillRect(795, 103, 12, 19);
     g.fillStyle(0x8da1a4, 0.12).fillRect(656, 172, 131, 7).fillRect(697, 179, 143, 5);
   } else {
-    g.fillStyle(0x8ca8ad, 0.045).fillCircle(782, 118, 67);
-    g.fillStyle(0x9bbcc4).fillCircle(782, 118, 32);
-    g.fillStyle(0x668b88).fillRect(764, 96, 21, 11).fillRect(774, 105, 10, 22).fillRect(790, 124, 16, 9);
-    g.fillStyle(0xd0dddb, 0.75).fillRect(757, 110, 41, 4).fillRect(779, 134, 22, 4);
+    drawEarth(g, 782, 118);
   }
   return g;
 }
