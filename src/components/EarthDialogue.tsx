@@ -3,7 +3,8 @@ import { dialogueReducer, type StoryLine } from '../content/earth-dialogue';
 import { portraits } from '../content/assets';
 import { copy, type Language } from '../content/i18n';
 
-export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0 }: {
+export function EarthDialogue({ language, paused, onComplete, onTurn, lines, title, finalAction, finalLabel, initialIndex = 0, managedFocus = false }: {
+  managedFocus?: boolean;
   initialIndex?: number; finalLabel?: string;
   language: Language; finalAction: 'earth' | 'moon' | 'lantern';
   paused: boolean; onComplete: () => void; onTurn: (index: number) => void;
@@ -26,8 +27,9 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
     }
   }, [language]);
   useEffect(() => {
-    if (!paused) nextButton.current?.focus({ preventScroll: true });
-  }, [paused]);
+    // App restores focus only while the game owns it; legacy scenes keep their default.
+    if (!paused && !managedFocus) nextButton.current?.focus({ preventScroll: true });
+  }, [paused, managedFocus]);
   useEffect(() => {
     if (paused || full || state.finished) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -60,11 +62,11 @@ export function EarthDialogue({ language, paused, onComplete, onTurn, lines, tit
       }
     }}>
     <div className="dialogue-body">
-      {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : portrait.name}`} /></div>}
+      {portrait && <div className={`dialogue-portrait dialogue-portrait-${line.speaker}`}><img src={portrait.url} alt={`${t.portraitAlt} ${language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : language === 'en' && line.speaker === 'taiThinh' ? 'Keen Ears' : language === 'en' && line.speaker === 'banhLuoi' ? 'Mesh Wheels' : portrait.name}`} /></div>}
       <div className="dialogue-copy">
-        <div className="dialogue-meta"><strong>{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : portrait.name) : t.narrator}</strong><span>{state.index + 1} / {lines.length}</span></div>
+        <div className="dialogue-meta"><strong>{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : language === 'en' && line.speaker === 'taiThinh' ? 'Keen Ears' : language === 'en' && line.speaker === 'banhLuoi' ? 'Mesh Wheels' : portrait.name) : t.narrator}</strong><span>{state.index + 1} / {lines.length}</span></div>
         <p className="dialogue-text" aria-hidden="true">{line.text.slice(0, state.visible)}<span className="typing-mark">{full ? '' : '▎'}</span></p>
-        <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : portrait.name) : t.narrator}: {line.text}</p>
+        <p className="sr-only" aria-live="polite" aria-atomic="true">{portrait ? (language === 'en' && line.speaker === 'ba' ? 'Grandma' : language === 'en' && line.speaker === 'cayDa' ? 'Banyan tree' : language === 'en' && line.speaker === 'matTron' ? 'Round Eyes' : language === 'en' && line.speaker === 'lapLanh' ? 'Sparkle' : language === 'en' && line.speaker === 'taiThinh' ? 'Keen Ears' : language === 'en' && line.speaker === 'banhLuoi' ? 'Mesh Wheels' : portrait.name) : t.narrator}: {line.text}</p>
       </div>
     </div>
     <div className="dialogue-footer">

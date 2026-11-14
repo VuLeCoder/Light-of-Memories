@@ -4,7 +4,7 @@ import { VIEW } from './types';
 import { copy, type Language } from '../content/i18n';
 import { surveyorEncounterCopy } from '../content/levels/surveyor-encounter';
 
-const canvasLabel = (scene: GameSceneId, language: Language) => scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
+const canvasLabel = (scene: GameSceneId, language: Language, guiding = false) => guiding ? (language === 'vi' ? 'Cuội dẫn Bánh Lưới theo lộ trình trong chuyến đi tưởng tượng.' : 'Cuội guides Mesh Wheels along the planned imaginary trip.') : scene === 'ban-banh-luoi' ? (language === 'vi' ? 'Cuội cạnh xe Apollo 17 đỗ yên giữa thung lũng Taurus–Littrow.' : 'Cuội beside the parked Apollo 17 rover in the Taurus–Littrow valley.') : scene === 'tai-thinh' ? (language === 'vi' ? 'Đại Dương Bão — cụm thiết bị Apollo 12' : 'Ocean of Storms — Apollo 12 instruments') : scene === 'lap-lanh' ? (language === 'vi' ? 'Biển Yên Tĩnh — gặp Lấp Lánh' : 'Sea of Tranquility — meet Sparkle') : scene === 'surveyor'
   ? surveyorEncounterCopy[language].canvas : scene === 'earth' ? copy[language].canvasEarth : copy[language].canvasMoon;
 
 function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
@@ -14,17 +14,22 @@ function containGameKey(event: KeyboardEvent<HTMLDivElement>) {
   event.stopPropagation();
 }
 
-export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+export function GameCanvas({ banhLuoiGuide, initiallyAwake, onReady, taiEnding = 'none', taiStars = 0, onTaiGift, sparkleEnding = false, sparkleDust = false, sparkleTrail = false, onTrailHole, freeRoam = false, excavation, onDigNear, encounterStarted = false, scene, moonMode, language, quest, treeSpeaking, onInteract, onExit, onAwake }: {
+  banhLuoiGuide?: PreviewOptions['banhLuoiGuide'];
+  onReady?: () => void;
+  taiEnding?: PreviewOptions['taiEnding']; taiStars?: number; onTaiGift?: () => void;
   sparkleEnding?: boolean; sparkleDust?: boolean; freeRoam?: boolean; sparkleTrail?: boolean; onTrailHole?: PreviewOptions['onTrailHole'];
   excavation?: PreviewOptions['excavation']; onDigNear?: PreviewOptions['onDigNear'];
   initiallyAwake: boolean; encounterStarted?: boolean; scene: GameSceneId; moonMode: 'sleep' | 'wake' | 'story' | 'free' | 'paused';
   language: Language; quest: MoonQuest; treeSpeaking: boolean; onInteract: () => void; onExit: () => void;
   onAwake: () => void;
 }) {
+  const readyRef = useRef(onReady);
+  readyRef.current = onReady;
   const awakeRef = useRef(initiallyAwake);
   awakeRef.current = initiallyAwake;
-  const progressRef = useRef({ quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
-  progressRef.current = { quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
+  const progressRef = useRef({ banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole });
+  progressRef.current = { banhLuoiGuide, quest, treeSpeaking, onInteract, onExit, encounterStarted, excavation, onDigNear, freeRoam, taiEnding, taiStars, onTaiGift, sparkleEnding, sparkleDust, sparkleTrail, onTrailHole };
   const host = useRef<HTMLDivElement>(null);
   const onAwakeRef = useRef(onAwake);
   onAwakeRef.current = onAwake;
@@ -46,10 +51,16 @@ export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust 
     setStatus({ kind: 'loading' });
 
     // Import after mount; cancellation prevents duplicate instances in StrictMode.
-    void Promise.all([import('phaser'), import('./PreviewScene')]).then(([{ default: Phaser }, { PreviewScene }]) => {
+    // Canvas text keeps its rasterized fallback unless the font loads before creation.
+    const textFont = document.fonts.load('400 22px "Be Vietnam Pro"', 'Đến gần để trò chuyện').catch(() => []);
+    void Promise.all([import('phaser'), import('./PreviewScene'), textFont]).then(([{ default: Phaser }, { PreviewScene }]) => {
       if (cancelled) return;
       const previewScene = new PreviewScene({
+        banhLuoiGuide: progressRef.current.banhLuoiGuide ? { ...progressRef.current.banhLuoiGuide, onEvent: e => progressRef.current.banhLuoiGuide?.onEvent(e) } : undefined,
         initiallyAwake: awakeRef.current,
+        taiEnding: progressRef.current.taiEnding,
+        taiStars: progressRef.current.taiStars,
+        onTaiGift: () => { if (!cancelled) progressRef.current.onTaiGift?.(); },
         sparkleEnding: progressRef.current.sparkleEnding,
         sparkleDust: progressRef.current.sparkleDust,
         sparkleTrail: progressRef.current.sparkleTrail,
@@ -66,7 +77,7 @@ export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust 
         onReady: () => {
           // Reveal overlays only after the scenery has reached the canvas.
           previewScene.game.events.once(Phaser.Core.Events.POST_RENDER, () => {
-            if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); }
+            if (!cancelled) { setReady(true); setStatus({ kind: 'loading' }); readyRef.current?.(); }
           });
         },
         onError: (assets) => { if (!cancelled) { setReady(false); setStatus({ kind: 'error', assets }); } },
@@ -81,7 +92,7 @@ export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust 
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: VIEW.width, height: VIEW.height },
         scene: previewScene,
         callbacks: { postBoot: (instance) => {
-          instance.canvas.setAttribute('aria-label', canvasLabel(scene, languageRef.current));
+          instance.canvas.setAttribute('aria-label', canvasLabel(scene, languageRef.current, !!progressRef.current.banhLuoiGuide));
           instance.canvas.setAttribute('role', 'img');
         } },
       });
@@ -119,6 +130,8 @@ export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust 
     };
   }, [scene]);
 
+  useEffect(() => { phaserScene.current?.setBanhLuoiGuide(banhLuoiGuide); }, [banhLuoiGuide]);
+  useEffect(() => { phaserScene.current?.setTaiEnding(taiEnding, taiStars); }, [taiEnding, taiStars]);
   useEffect(() => { phaserScene.current?.setSparkleEnding(sparkleEnding); }, [sparkleEnding]);
   useEffect(() => { phaserScene.current?.setSparkleDust(sparkleDust); }, [sparkleDust]);
   useEffect(() => { phaserScene.current?.setSparkleTrail(sparkleTrail); }, [sparkleTrail]);
@@ -132,12 +145,13 @@ export function GameCanvas({ initiallyAwake, sparkleEnding = false, sparkleDust 
   useEffect(() => {
     phaserScene.current?.setLanguage(language);
     const canvas = host.current?.querySelector('canvas');
-    canvas?.setAttribute('aria-label', canvasLabel(scene, language));
+    canvas?.setAttribute('aria-label', canvasLabel(scene, language, !!banhLuoiGuide));
   }, [language, scene]);
 
+  const label = canvasLabel(scene, language, !!banhLuoiGuide);
   return <div className="canvas-wrap">
     <div ref={host} className="game-host" data-ready={ready} data-scene={scene}
-      tabIndex={0} aria-label={canvasLabel(scene, language)}
+      tabIndex={0} aria-label={label}
       onKeyDown={containGameKey}
       onKeyUp={containGameKey}
       onPointerDown={(event) => event.currentTarget.focus({ preventScroll: true })}

@@ -2,8 +2,12 @@ import type { SurveyorEvent } from '../content/levels/surveyor-progress';
 import type { SceneId } from '../content/scenes';
 import type { Language } from '../content/i18n';
 export type MoonQuest = 'bench' | 'tree' | 'lantern' | 'trail' | 'complete';
-export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh';
+export type GameSceneId = SceneId | 'surveyor' | 'lap-lanh' | 'tai-thinh' | 'ban-banh-luoi';
 export interface PreviewOptions {
+  banhLuoiGuide?: import('./banh-luoi-guide').BanhLuoiGuideOptions;
+  taiEnding?: 'none' | 'thanks' | 'gifting' | 'lit' | 'free';
+  taiStars?: number;
+  onTaiGift?: () => void;
   freeRoam?: boolean;
   sparkleTrail?: boolean;
   sparkleEnding?: boolean;

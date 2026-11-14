@@ -443,6 +443,19 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 .ending-scene-lantern.is-kindled { filter: drop-shadow(0 0 12px #ffd88a88); }
 .ending-light-travel { position: absolute; left: 74%; top: 60%; width: 9px; height: 9px; border-radius: 50%; background: #fff0ba; box-shadow: 0 0 20px 8px #ffd88a99; animation: ending-gift 5s ease-in-out both; }
 .ending-distant-light { position: absolute; right: 0; top: 50.9259%; width: 22%; height: 30%; transform: translateY(-50%); background: radial-gradient(ellipse 100% 50% at right center, #fff2c99e 0%, #ffe5a680 14%, #ffdf9152 32%, #ffdf9129 52%, #ffdf910d 72%, #ffdf9100 100%); pointer-events: none; animation: journey-appear 1.5s ease-out; }
+.ending-trail { position: absolute; right: 0; top: 66%; width: 23%; height: 24%; pointer-events: none; background: radial-gradient(ellipse at 94% 60%, #ffe5a666, #ffdf9126 36%, transparent 72%); }
+.ending-trail > span { position: absolute; left: 65%; top: 60%; width: 8%; aspect-ratio: 1; border-radius: 50%; background: #fff0be; box-shadow: 0 0 12px 5px #ffe5a655; }
+.ending-trail > span:nth-child(2) { left: 80%; top: 45%; width: 5%; }
+.ending-trail > span:nth-child(3) { left: 91%; top: 32%; width: 3%; }
+.ending-trail-tracks { top: 77%; width: 14%; height: 9%; background: none; }
+.ending-trail-tracks > svg { display: block; width: 100%; height: 100%; }
+.story-canvas:not(:has(.game-host[data-ready="true"])) .ending-trail-tracks { visibility: hidden; }
+.ending-trail-ripple { background: radial-gradient(ellipse at 65% 60%, #c8dcd92b, transparent 70%); }
+.ending-trail-ripple > span { left: 65%; top: 60%; width: 30%; height: 17%; aspect-ratio: auto; border: 2px solid #e5dbb2; background: transparent; box-shadow: none; transform: translate(-50%, -50%); animation: ending-ground-ripple 3s ease-out infinite; }
+.ending-trail-ripple > span:nth-child(2) { left: 65%; top: 60%; width: 54%; height: 31%; animation-delay: -1s; }
+.ending-trail-ripple > span:nth-child(3) { left: 65%; top: 60%; width: 80%; height: 46%; animation-delay: -2s; }
+@keyframes ending-ground-ripple { from { opacity: .8; scale: .75; } to { opacity: .2; scale: 1.1; } }
+@media (prefers-reduced-motion: reduce) { .ending-trail-ripple > span { animation: none; } }
 .game-stage:not(:has(.game-host[data-ready="true"])) .ending-distant-light { opacity: 0; animation: none; }
 .ending-farewell { position: absolute; inset: auto 18px 18px; padding: 18px; border: 1px solid #d2ba8155; border-radius: 10px; background: #152831f5; color: #f2ebdb; text-align: center; pointer-events: auto; }
 .ending-farewell h3 { margin: 0; color: #ffe5b1; font: 500 24px/1.4 'Lora',Georgia,serif; }
@@ -507,6 +520,8 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 }
 
 .journey-entry-action{min-height:44px}
+.journey-overview .journey-message { display: grid; }
+.journey-overview .journey-message > span { grid-area: 1 / 1; }
 
 /* The play area alone gets an initial fit; native browser zoom stays available. */
 .workspace-fit.is-fitted { display: flex; justify-content: center; align-items: flex-start; }
@@ -800,7 +815,6 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
 
 .sparkle-science-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .sparkle-science-heading h2 { flex: 1; min-width: 0; }
-.sparkle-science-heading .sparkle-hint-button { flex-shrink: 0; min-height: 36px; padding: 6px 12px; border: 1px solid #ad9870; border-radius: 8px; background: #30464b; color: #e7d7b4; font-size: clamp(12px, 1.5cqw, 15px); }
 
 /* Use a full page below the game when an unfitted workspace is too narrow. */
 @media (max-width: 1000px) {
@@ -864,3 +878,73 @@ select:focus-visible { outline: 2px solid #edc77e; outline-offset: 5px; }
   .book-panel .journey-memories li { font-size: 16px; line-height: 1.3; }
   .book-panel .journey-memories small { font-size: 13px; line-height: 1.3; margin-top: 2px; }
 }
+
+/* Friends use the same quiet controls as Keen Ears. Interactive pictures
+   keep their own hit areas, selection borders and wiping surfaces. */
+.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell)) {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #a9957080;
+  border-radius: 8px;
+  background: #293e46;
+  color: #eee5d1;
+  font-family: inherit;
+  font-size: clamp(13px, 1.7cqw, 17px);
+  line-height: 1.4;
+}
+.game-stage.classic-friend-scene :is(button.journey-primary, .dialogue-next.is-ready, .surveyor-labels button[aria-pressed=true], .ban-wheel-options button[aria-pressed=true], .ban-camera-controls button[aria-pressed=true]) {
+  border-color: #ead4a4;
+  border-radius: 7px;
+  background: #dfc18a;
+  color: #20313a;
+}
+.game-stage.classic-friend-scene button:not(:where(.game-menu *, .tool-hotspot, .journal-card, [data-dust-cell], .ban-route-cell)):hover:not(:disabled) {
+  border-color: #ead4a4;
+  background: #354b52;
+}
+.game-stage.classic-friend-scene :is(button.journey-primary, .dialogue-next.is-ready):hover:not(:disabled) { background: #ead4a4; }
+.game-stage.classic-friend-scene button:not(:where(.game-menu *)):focus-visible { outline: 2px solid #ead4a4; outline-offset: 3px; }
+.game-stage.classic-friend-scene button:not(:where(.game-menu *)):disabled { opacity: .55; cursor: default; }
+.classic-friend-scene .surveyor-scene-hud > span { margin-right: auto; }
+.classic-friend-scene .excavation-top { align-items: flex-start; }
+.classic-friend-scene .excavation-top > span { border: 1px solid #cdb77b66; border-radius: 7px; line-height: 1.4; }
+.classic-friend-scene .sparkle-memory-photo { border-radius: 10px; border-color: #c3a96e80; background: #142831f5; }
+@media (max-width: 800px) {
+  /* Let longer tasks grow below the lunar view, as in Keen Ears. */
+  .game-stage.classic-friend-scene:has(.sparkle-card) { aspect-ratio: auto; }
+  .classic-friend-scene:has(.sparkle-card) > .story-canvas { aspect-ratio: 16 / 9; }
+  .classic-friend-scene .sparkle-level:has(.sparkle-card) { position: relative; inset: auto; }
+  .classic-friend-scene .sparkle-level:has(.sparkle-card) > .surveyor-scene-hud { position: relative; inset: auto; padding: 8px; background: #142831; }
+  .classic-friend-scene .sparkle-card:is(.sparkle-cleaning, .sparkle-science) {
+    position: relative; inset: auto; width: auto; grid-template-columns: 1fr;
+    padding: 16px; gap: 16px; border-radius: 0;
+  }
+  .classic-friend-scene .sparkle-cleaning-copy { gap: 12px; }
+  .classic-friend-scene .sparkle-cleaning-copy p { font-size: 16px; line-height: 1.5; }
+  .classic-friend-scene .sparkle-cleaning-copy h2 { font-size: 20px; }
+  .classic-friend-scene .sparkle-card small { font-size: 13px; }
+  .classic-friend-scene .sparkle-science-visual svg { max-height: 260px; }
+  .game-stage.classic-friend-scene .sparkle-card button:not([data-dust-cell]) { min-height: 44px; font-size: 16px; }
+  .classic-friend-scene .sparkle-card .sparkle-rotation-control { font-size: 16px; }
+  .classic-friend-scene .sparkle-card .sparkle-number-field input { padding: 8px 5px; font-size: 16px; }
+  .classic-friend-scene .sparkle-equation select { min-height: 42px; padding: 6px; font-size: 16px; }
+  .classic-friend-scene .sparkle-repair .sparkle-science-feedback { font-size: 16px; }
+  .classic-friend-scene .surveyor-scene-hud { gap: 6px; }
+  .classic-friend-scene .surveyor-scene-hud > span { min-width: 0; }
+  .game-stage.classic-friend-scene:has(.surveyor-level) { aspect-ratio: auto; }
+  .classic-friend-scene:has(.surveyor-level) > .story-canvas { display: none; }
+  .classic-friend-scene .surveyor-level { position: relative; inset: auto; overflow: visible; }
+  .classic-friend-scene .surveyor-level .surveyor-footer { flex-wrap: wrap; }
+  .game-stage.classic-friend-scene .journal-submit { flex-direction: column; align-items: stretch; }
+  .game-stage.classic-friend-scene .journal-submit button { width: 100%; min-width: 0; }
+  .game-stage.classic-friend-scene:has(.sparkle-recollection) { aspect-ratio: auto; }
+  .classic-friend-scene:has(.sparkle-recollection) > .story-canvas { display: none; }
+  .classic-friend-scene .sparkle-level:has(.sparkle-recollection),
+  .classic-friend-scene .sparkle-recollection { position: relative; inset: auto; overflow: visible; }
+  .game-stage .sparkle-recollection .surveyor-ending { grid-template-columns: 1fr; }
+  .game-stage .sparkle-recollection .ending-photo img { height: 220px; }
+}
+
+/* Keep the edge cue visible while a friend speaks after the ending. */
+.has-ending-chat .ending-farewell { display: none; }
+.ending-chat { z-index: 26; }

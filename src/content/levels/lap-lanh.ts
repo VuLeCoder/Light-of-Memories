@@ -4,8 +4,8 @@ import type { StoryLine } from '../earth-dialogue';
 export const lapLanh = {
   id: 'lap-lanh', label: 'Apollo 11', portrait: `${import.meta.env.BASE_URL}images/portraits/lap-lanh.webp`, memoryCount: 3,
   text: {
-    vi: { friend: 'Bạn Lấp Lánh', enter: 'Đến gặp Lấp Lánh', chapter: '02 · Bạn Lấp Lánh', intro: 'Bạn là ngôi sao rơi xuống đây à?', reply: 'Đố bạn đoán được mình làm gì đấy!', invitation: 'Tìm gặp Lấp Lánh, lau bụi, khôi phục mô hình phản xạ và đo khoảng cách đến Trái Đất.', memory: 'Kỷ niệm cùng Lấp Lánh' },
-    en: { friend: 'Sparkle', enter: 'Meet Sparkle', chapter: '02 · A sparkling friend', intro: 'Are you a fallen star?', reply: 'Can you guess what I do?', invitation: 'Find Sparkle, clean the dust, restore a reflector model and measure the distance to Earth.', memory: 'Memories with Sparkle' },
+    vi: { friend: 'Apollo 11 — Lấp Lánh', enter: 'Đến gặp Lấp Lánh', chapter: '02 · Bạn Lấp Lánh', intro: 'Bạn là ngôi sao rơi xuống đây à?', reply: 'Đố bạn đoán được mình làm gì đấy!', invitation: 'Tìm gặp Lấp Lánh, lau bụi, khôi phục mô hình phản xạ và đo khoảng cách đến Trái Đất.', memory: 'Kỷ niệm cùng Lấp Lánh' },
+    en: { friend: 'Apollo 11 — Sparkle', enter: 'Meet Sparkle', chapter: '02 · A sparkling friend', intro: 'Are you a fallen star?', reply: 'Can you guess what I do?', invitation: 'Find Sparkle, clean the dust, restore a reflector model and measure the distance to Earth.', memory: 'Memories with Sparkle' },
   },
 } as const satisfies LevelDefinition;
 export type SparklePhase = 'meeting' | 'dust-photo' | 'cleaning-intro' | 'clean-photo' | 'cleaning' | 'route' | 'search-intro' | 'search' | 'memories-intro' | 'memories' | 'arrival' | 'dialogue' | 'mirrors' | 'distance' | 'ending' | 'complete' | 'repair-intro' | 'repair' | 'ranging-intro' | 'ranging' | 'farewell' | 'finished';
@@ -50,11 +50,11 @@ export function sparkleChallengeLines(language: Language) {
 
 export const sparkleKeepsakes = [
   { src: `${import.meta.env.BASE_URL}images/memories/lap-lanh/apollo-11-deployed-as11-40-5952.webp`,
-    vi: { title: 'Lấp Lánh sẵn sàng đón ánh sáng · 1969', description: 'Năm 1969, bảng gương Apollo 11 được đặt và căn chỉnh tại Biển Yên Tĩnh. Một trăm lăng kính nhỏ đã sẵn sàng đón tia laser từ Trái Đất và phản xạ ánh sáng trở về. Ảnh: NASA · AS11-40-5952.' },
-    en: { title: 'Sparkle is ready to receive light · 1969', description: 'In 1969, the Apollo 11 reflector was deployed and aligned in the Sea of Tranquility. One hundred small prisms were ready to receive laser light from Earth and send it back. Photo: NASA · AS11-40-5952.' } },
+    vi: { title: 'Lấp Lánh sẵn sàng đón ánh sáng · 1969', description: 'Năm 1969, phi hành gia Neil Armstrong mở và căn chỉnh Lấp Lánh ở Biển Yên Tĩnh. Một trăm lăng kính nhỏ đã sẵn sàng đón tia laser từ Trái Đất rồi gửi ánh sáng trở về. Ảnh: NASA · AS11-40-5952.' },
+    en: { title: 'Sparkle is ready to receive light · 1969', description: 'In 1969, astronaut Neil Armstrong unfolded and aligned Sparkle in the Sea of Tranquility. Its one hundred small prisms were ready to receive laser light from Earth and send it back. Photo: NASA · AS11-40-5952.' } },
   { src: `${import.meta.env.BASE_URL}images/memories/lap-lanh/apollo-11-placement-as11-40-5945.webp`,
-    vi: { title: 'Lấp Lánh vừa được đặt xuống · 1969', description: 'Một khoảnh khắc trước đó trong chuyến đi Apollo 11 năm 1969: Buzz Aldrin vừa đặt bảng gương xuống mặt đất tại Biển Yên Tĩnh. Sau đó, Neil Armstrong sẽ mở và căn chỉnh thiết bị để bắt đầu công việc. Ảnh: NASA · AS11-40-5945.' },
-    en: { title: 'Sparkle has just been set down · 1969', description: 'An earlier moment during the Apollo 11 mission in 1969: Buzz Aldrin has just set the reflector down in the Sea of Tranquility. Neil Armstrong will then unfold and align the instrument for its work. Photo: NASA · AS11-40-5945.' } },
+    vi: { title: 'Lấp Lánh vừa được đặt xuống · 1969', description: 'Năm 1969, phi hành gia Buzz Aldrin đặt Lấp Lánh xuống mặt đất ở Biển Yên Tĩnh. Khi bức ảnh này được chụp, bạn vẫn còn gấp lại. Sau đó, Neil Armstrong mở và căn chỉnh bạn để bắt đầu công việc. Ảnh: NASA · AS11-40-5945.' },
+    en: { title: 'Sparkle has just been set down · 1969', description: 'In 1969, astronaut Buzz Aldrin set Sparkle down in the Sea of Tranquility. The reflector was still folded when this photo was taken. Neil Armstrong then unfolded and aligned it for work. Photo: NASA · AS11-40-5945.' } },
 ] as const;
 
 export function sparkleMeetingLines(language: Language, cleaningIntro = false) {
