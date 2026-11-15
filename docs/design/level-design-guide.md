@@ -162,7 +162,7 @@ Lộ trình → lời dẫn chuyển vùng → khám phá/đến gần bạn
 
 Không ấn định số bài/ảnh của màn mới bằng cách sao chép; cần mục đích rõ cho từng chặng. Tối thiểu ba ảnh là quyết định riêng của Tai Thính, không phải yêu cầu tự áp cho mọi màn. Không thêm cảnh xác nhận chỉ để kéo dài bước chuyển.
 
-**Phân biệt số:** cảnh website Mắt Tròn 03, Lấp Lánh 04, Tai Thính 05; thứ tự người bạn là 01/02/03; bài bắt đầu T01 trong mỗi chương. Đèn có đúng năm cánh, một cánh sáng cho mỗi người bạn đã hoàn thành.
+**Phân biệt số:** cảnh website Mắt Tròn 03, Lấp Lánh 04, Tai Thính 05; thứ tự năm người bạn là Mắt Tròn 01, Lấp Lánh 02, Tai Thính 03, Bánh Lưới 04, Gác Trời 05; bài bắt đầu T01 trong mỗi chương. Đèn có đúng năm cánh, một cánh sáng cho mỗi người bạn đã hoàn thành.
 
 Dùng cùng `journeyStatus` cho khóa lộ trình và sách. Mắt Tròn mở đầu; Lấp Lánh sau Mắt Tròn; Tai Thính sau Lấp Lánh. Dựa vào `completedOnce` để chơi lại vẫn giữ quyền vào màn sau. Ô chưa triển khai vẫn bí ẩn, không lộ tên/chân dung/ảnh.
 

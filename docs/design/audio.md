@@ -16,7 +16,7 @@ Tên bản dưới đây là tên mô tả trong tài liệu; người chơi kh�
 | Gác Trời — LRO | Gió qua miền trăng — `watcher` | Sáo trúc → đàn bầu | 88 BPM | 87,3 giây | Dịu hơn, thảnh thơi để quan sát |
 | Gặp chị Hằng, “Bạn hay rác?”, trở về An và bà, giới thiệu thành viên đến hết đoạn kết | Trăng đưa em về — `reunion` | Sáo trúc → đàn tranh | 100 BPM | 76,8 giây | Ấm áp, vui sáng, nhắc lại mô-típ mở đầu |
 
-Các chương của ba người bạn giữ cùng bản nhạc qua hội thoại, nhiệm vụ và chia tay trong chương. Trở về lộ trình dùng lại `home`. Xem lại đoạn kết dùng `reunion`; trở về lộ trình sau đoạn kết dùng `home`.
+Các chương của năm người bạn giữ cùng bản nhạc qua hội thoại, nhiệm vụ và chia tay trong chương. Tai Thính và Bánh Lưới dùng `home`; Mắt Tròn, Lấp Lánh và Gác Trời dùng các bản riêng trong bảng trên. Trở về lộ trình dùng lại `home`. Xem lại đoạn kết dùng `reunion`; trở về lộ trình sau đoạn kết dùng `home`.
 
 **Menu luôn ưu tiên `home`**, kể cả khi mở từ một màn chơi hoặc đoạn kết. Đóng menu sẽ chọn lại bản theo cảnh phía sau. Thứ tự chọn trong mã là: menu → đoạn kết chị Hằng → Mắt Tròn → Lấp Lánh → Gác Trời → `home` mặc định.
 
