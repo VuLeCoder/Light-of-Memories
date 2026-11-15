@@ -8,6 +8,14 @@ Dự án được phát triển theo challenge **Abandoned but not Forgotten: St
 
 Hành trình đi qua năm người bạn: **Surveyor 3 — Mắt Tròn**, **Apollo 11 — Lấp Lánh**, **Apollo 12 — Tai Thính**, **Apollo 15 — Bánh Lưới** và **LRO — Gác Trời**. Sách đồng hành mở dần theo tiến trình, kết nối câu chuyện với kiến thức và ảnh tư liệu. Website hỗ trợ **tiếng Việt / tiếng Anh**, mở truyện PDF và lưu hành trình trên trình duyệt hiện tại.
 
+## Sản phẩm dự án
+
+Chơi trực tiếp tại [Light of Memories — CUỘI](https://light-of-memories.vercel.app/).
+
+![Không gian trò chơi CUỘI và sách đồng hành](public/images/products/cuoi-gameplay.png)
+
+![Màn chơi Lấp Lánh](public/images/products/cuoi-gameplay.png)
+
 ## Thành viên nhóm
 
 - Lê Phạm Thế Vũ
