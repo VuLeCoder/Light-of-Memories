@@ -23,9 +23,17 @@ Xem [tài liệu âm thanh](../design/audio.md) để tra cứu cách tổ chứ
 
 ## Cách nhóm rà soát kết quả
 
-**Chờ nhóm bổ sung quy trình thực tế.** Danh sách công cụ và vai trò ở trên đã được nhóm xác nhận; các bước kiểm chứng, chỉnh sửa và lựa chọn kết quả AI chưa được mô tả trong tài liệu này.
+Nhóm rà soát nội dung theo các bước sau:
 
-Khi bổ sung, nhóm có thể ghi cách đối chiếu thông tin với nguồn, kiểm tra hình ảnh, đọc duyệt kịch bản và sách, nghe thử âm thanh, chạy thử mã nguồn — chỉ ghi những bước nhóm thực sự đã thực hiện.
+- Mỗi chương có phần nguồn và dữ liệu tham khảo để đối chiếu thông tin.
+- Đối chiếu chéo nội dung giữa sách và trò chơi.
+- Phân biệt rõ kiến thức khoa học với các yếu tố hư cấu.
+
+## Kiểm thử với người dùng
+
+Nhóm hiện chưa có kết quả kiểm thử với trẻ em.
+
+Kế hoạch của nhóm là cung cấp Web Book Game để trẻ em có thể tham gia học tập và đưa ra phản hồi.
 
 ## Tài liệu và ví dụ liên quan
 
