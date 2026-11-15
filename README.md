@@ -67,9 +67,7 @@ Giao diện sử dụng **React 19, TypeScript và CSS**; cảnh game sử dụn
 
 Nơi nhóm lưu giữ những kỷ niệm trong quá trình thực hiện dự án, slide thuyết trình và video giới thiệu hoặc demo.
 
-**Thư mục Google Drive chung:** Đang cập nhật.
-
-<!-- Thay dòng trên bằng liên kết Drive khi có URL. Gợi ý ba thư mục con: Kỷ niệm nhóm, Slide thuyết trình, Video giới thiệu và demo. -->
+**Thư mục Google Drive chung:** [Light-of-Memories](https://drive.google.com/drive/folders/1QKIBXyY5a7Y-gi2FXehmMTYo2qvI2Mmz).
 
 ## Tài liệu dự án
 
