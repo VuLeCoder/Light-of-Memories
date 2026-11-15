@@ -7,7 +7,7 @@ export const languageOptions = [
 export const copy = {
   vi: {
     visitors: 'Tổng người ghé thăm', visitorsUnavailable: 'Chưa có dữ liệu', visitorExplanation: 'Ước tính theo trình duyệt kể từ khi bật bộ đếm. Mỗi trình duyệt được tính một lần khi còn giữ dữ liệu website.',
-    pageTitle: 'Chú Cuội · Khởi đầu một hành trình', pageDescription: 'Bản dựng cảnh mở đầu hành trình Chú Cuội, chị Hằng và những người bạn bị lãng quên.',
+    pageTitle: 'Cuội · Ánh sáng ký ức', pageDescription: 'Bản dựng cảnh mở đầu hành trình Chú Cuội, chị Hằng và những người bạn bị lãng quên.',
     brandCaption: 'CHUYỆN KỂ DƯỚI TRĂNG', sceneControls: 'Thông tin và điều khiển cảnh', sceneArea: 'Khung cảnh game', goToScene: 'Đến khung cảnh',
     earth: { tab: 'Hiên nhà', title: 'Đêm Rằm · Câu chuyện An và bà', subtitle: 'Một hiên nhà nhỏ. Một đêm trăng tròn.', description: 'An và bà dưới mái hiên đêm Trung Thu.' },
     moon: { tab: 'Mặt Trăng', title: 'Dưới bóng Cây Đa', subtitle: 'Phía bên kia của một câu chuyện.', description: 'Cuội bên gốc đa và chiếc ghế đá. Quan sát ghế đá, lắng nghe Cây Đa và mang chiếc đèn ông sao lên đường.' },
@@ -23,7 +23,7 @@ export const copy = {
   },
   en: {
     visitors: 'Total visitors', visitorsUnavailable: 'Unavailable', visitorExplanation: 'Estimated by browser since the counter was enabled. Each browser is counted once while its site data is retained.',
-    pageTitle: 'Cuội · The Journey Begins', pageDescription: 'The opening scene of Cuội, Hằng, and their forgotten friends.',
+    pageTitle: 'Cuội · Light of Memories', pageDescription: 'The opening scene of Cuội, Hằng, and their forgotten friends.',
     brandCaption: 'TALES BENEATH THE MOON', sceneControls: 'Scene information and controls', sceneArea: 'Game scene', goToScene: 'Go to game scene',
     earth: { tab: 'The porch', title: 'Full Moon · An and Grandma', subtitle: 'A little porch. A full moon night.', description: 'An and Grandma under the porch roof on Mid-Autumn night.' },
     moon: { tab: 'The Moon', title: 'Under the Banyan Tree', subtitle: 'The other side of a story.', description: 'Cuội beside the banyan tree and stone bench. Examine the bench, listen to the Banyan Tree, and set off with the star lantern.' },
