@@ -1,54 +1,54 @@
-# Framework, thư viện và công nghệ của CUỘI
+# CUỘI Frameworks, Libraries, and Technology
 
-Tài liệu được đối chiếu với `package.json`, `package-lock.json` và mã nguồn ngày 14/11/2026. Cột phiên bản bên dưới ghi phiên bản được khóa trong `package-lock.json`; các khoảng phiên bản cho phép được khai báo trong `package.json`.
+This document was checked against `package.json`, `package-lock.json`, and the source code on 14 November 2026. The version columns below show versions locked in `package-lock.json`; allowed version ranges are declared in `package.json`.
 
-## Thư viện chạy trong ứng dụng
+## Runtime Libraries
 
-| Thư viện | Phiên bản khóa | Vai trò trong dự án |
+| Library | Locked Version | Role in the Project |
 | --- | --- | --- |
-| React | 19.2.8 | Xây dựng giao diện website, menu, hội thoại, thử thách và sách đồng hành bằng component và hook. |
-| React DOM | 19.2.8 | Gắn cây component React vào trang HTML qua `createRoot` tại `src/main.tsx`. |
-| Phaser | 3.90.0 | Game engine cho cảnh chơi 2D, hiển thị nhân vật, hoạt ảnh, di chuyển và tương tác. Được tải động tại `src/game/GameCanvas.tsx`. |
+| React | 19.2.8 | Builds the website interface, menus, dialogue, challenges, and companion book using components and hooks. |
+| React DOM | 19.2.8 | Mounts the React component tree in the HTML page through `createRoot` in `src/main.tsx`. |
+| Phaser | 3.90.0 | Game engine for 2D scenes, character rendering, animation, movement, and interaction. Loaded dynamically in `src/game/GameCanvas.tsx`. |
 
-## Ngôn ngữ và công cụ phát triển
+## Languages and Development Tools
 
-| Công cụ / gói | Phiên bản khóa | Vai trò trong dự án |
+| Tool / Package | Locked Version | Role in the Project |
 | --- | --- | --- |
-| TypeScript | 5.9.3 | Viết mã có kiểu dữ liệu trong `src/`, kiểm tra kiểu trước khi build; cấu hình bật `strict`. |
-| Vite | 6.4.4 | Chạy máy chủ phát triển, phục vụ tài nguyên và tạo bản build website trong `dist/`. Cấu hình tách Phaser thành chunk riêng. |
-| `@vitejs/plugin-react` | 4.7.0 | Tích hợp React với Vite, hỗ trợ xử lý JSX/TSX và Fast Refresh khi phát triển. |
-| `@types/react` | 19.2.18 | Khai báo kiểu TypeScript cho React. |
-| `@types/react-dom` | 19.2.7 | Khai báo kiểu TypeScript cho React DOM. |
+| TypeScript | 5.9.3 | Provides typed code in `src/` and type checking before builds; `strict` is enabled. |
+| Vite | 6.4.4 | Runs the development server, serves assets, and builds the website into `dist/`. Configured to split Phaser into its own chunk. |
+| `@vitejs/plugin-react` | 4.7.0 | Integrates React with Vite, including JSX/TSX processing and Fast Refresh during development. |
+| `@types/react` | 19.2.18 | TypeScript declarations for React. |
+| `@types/react-dom` | 19.2.7 | TypeScript declarations for React DOM. |
 
-HTML và CSS thuần đảm nhiệm cấu trúc trang, giao diện và bố cục theo kích thước màn hình. JavaScript dùng cho API. Node.js chạy Vite và TypeScript; npm quản lý gói và các lệnh trong `package.json`. Hướng dẫn cài đặt hiện tại yêu cầu Node.js 22.12 trở lên, xem [README](../../README.md#cài-đặt-và-chạy).
+Plain HTML and CSS provide page structure, styling, and responsive layouts. JavaScript is used for the API. Node.js runs Vite and TypeScript; npm manages packages and scripts in `package.json`. The current setup instructions require Node.js 22.12 or later; see the [README](../../README.md#setup-and-running).
 
-## API trình duyệt và tài nguyên giao diện
+## Browser APIs and Interface Assets
 
-Các thành phần sau dùng trực tiếp khả năng của trình duyệt, không phải thư viện npm riêng:
+The following use browser capabilities directly rather than separate npm libraries:
 
-| Thành phần | Cách sử dụng |
+| Component | Use |
 | --- | --- |
-| Web Audio API | Tổng hợp nhạc nền và hiệu ứng trong `src/audio/`; bộ âm thanh riêng quản lý phát nhạc và cài đặt. |
-| `localStorage` | Lưu tiến trình, ngôn ngữ và lựa chọn âm thanh trên trình duyệt. Logic tiến trình nằm tại `src/state/progress.ts`. |
-| Fetch API | Gửi yêu cầu HTTP, bao gồm kết nối API đếm người truy cập. |
-| SVG | Vẽ sơ đồ, minh họa và một số thành phần giao diện trực tiếp trong component. |
-| Font Lora và Be Vietnam Pro | Font được đóng gói trong `public/fonts/`, khai báo tại `src/styles/fonts.css`; giấy phép và nguồn font nằm trong thư mục font. |
-| Tệp PDF tĩnh | Hai bản truyện Việt/Anh trong `public/books/` được mở qua liên kết; đây là tài nguyên truyện, không phải thư viện đọc PDF. |
+| Web Audio API | Synthesizes background music and effects in `src/audio/`; a dedicated audio system manages playback and settings. |
+| `localStorage` | Saves progress, language, and audio preferences in the browser. Progress logic is in `src/state/progress.ts`. |
+| Fetch API | Sends HTTP requests, including requests to the visitor counter API. |
+| SVG | Draws diagrams, illustrations, and some interface elements directly in components. |
+| Lora and Be Vietnam Pro fonts | Bundled in `public/fonts/` and declared in `src/styles/fonts.css`; licenses and sources are kept in the font folders. |
+| Static PDF files | The Vietnamese and English stories in `public/books/` open through links; these are story assets, not a PDF reader library. |
 
-## Dịch vụ cho bộ đếm người truy cập
+## Visitor Counter Services
 
-| Thành phần | Vai trò |
+| Component | Role |
 | --- | --- |
-| Vercel Function | Chạy endpoint `api/visitors.js` khi triển khai trên môi trường tương ứng. |
-| Upstash Redis REST API | Lưu tập mã trình duyệt và trả tổng số người truy cập. API gọi Redis bằng `fetch` và lệnh Lua để thêm mã rồi đếm phần tử. |
+| Vercel Function | Runs the `api/visitors.js` endpoint when deployed in a compatible environment. |
+| Upstash Redis REST API | Stores a set of browser identifiers and returns the total visitor count. The API calls Redis using `fetch` and a Lua command to add an identifier and count set members. |
 
-Bộ đếm cần hai biến môi trường `UPSTASH_REDIS_REST_URL` và `UPSTASH_REDIS_REST_TOKEN` ở phía máy chủ. Mã hiện tại gọi REST trực tiếp, không khai báo Redis SDK trong `package.json`. Phần giao diện và game được build thành tài nguyên tĩnh; bộ đếm là phần cần dịch vụ máy chủ riêng.
+The counter requires two server-side environment variables: `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. The current code calls REST directly and does not declare a Redis SDK in `package.json`. The interface and game build into static assets; the counter requires a separate server service.
 
-## Kiểm tra và build
+## Checks and Builds
 
-Các script kiểm tra riêng và fixture trình duyệt đã được gỡ ngày 14/11/2026; Playwright và Google Chrome không còn là công cụ bắt buộc của dự án. TypeScript kiểm tra kiểu bằng `npm run typecheck` và trong bước build.
+Specialized check scripts and browser fixtures were removed on 14 November 2026; Playwright and Google Chrome are no longer required project tools. TypeScript types are checked by `npm run typecheck` and during the build.
 
-Các lệnh chính đã có trong `package.json`:
+The main commands already available in `package.json` are:
 
 ```bash
 npm ci
@@ -58,15 +58,15 @@ npm run build
 npm run preview
 ```
 
-Trước khi triển khai, nghiệm thu trực tiếp game, sách và âm thanh trên các trình duyệt và thiết bị mục tiêu; xem thêm [hướng dẫn nghe kiểm tra](../design/audio.md#kiểm-tra).
+Before deployment, test the game, book, and audio directly on the target browsers and devices; see the [listening checklist](../design/audio.md#checks).
 
-## Căn cứ đối chiếu trong repository
+## Repository Sources
 
-- [package.json](../../package.json): phụ thuộc trực tiếp và lệnh chạy.
-- [package-lock.json](../../package-lock.json): phiên bản gói được khóa, gồm cả phụ thuộc gián tiếp.
-- [vite.config.ts](../../vite.config.ts) và [tsconfig.json](../../tsconfig.json): cấu hình build và TypeScript.
-- [src/main.tsx](../../src/main.tsx) và [src/game/GameCanvas.tsx](../../src/game/GameCanvas.tsx): khởi tạo React và Phaser.
-- [src/audio/game-audio.ts](../../src/audio/game-audio.ts): bộ âm thanh Web Audio.
-- [api/visitors.js](../../api/visitors.js): API bộ đếm và kết nối Redis.
+- [package.json](../../package.json): direct dependencies and scripts.
+- [package-lock.json](../../package-lock.json): locked package versions, including transitive dependencies.
+- [vite.config.ts](../../vite.config.ts) and [tsconfig.json](../../tsconfig.json): build and TypeScript configuration.
+- [src/main.tsx](../../src/main.tsx) and [src/game/GameCanvas.tsx](../../src/game/GameCanvas.tsx): React and Phaser initialization.
+- [src/audio/game-audio.ts](../../src/audio/game-audio.ts): the Web Audio system.
+- [api/visitors.js](../../api/visitors.js): the visitor counter API and Redis connection.
 
-Tài liệu tập trung vào phụ thuộc trực tiếp và những công nghệ được mã nguồn sử dụng rõ ràng. Các gói gián tiếp do Vite, Phaser hoặc công cụ khác kéo theo được lưu đầy đủ trong lockfile.
+This document focuses on direct dependencies and technologies clearly used by the source code. All transitive packages installed through Vite, Phaser, or other tools are recorded in the lockfile.

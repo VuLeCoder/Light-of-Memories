@@ -1,85 +1,85 @@
-# Âm thanh theo cảnh — phiên bản v3
+# Scene Audio — Version v3
 
-Tài liệu mô tả âm thanh đang được triển khai. Game có **5 bản nhạc nền**, được chọn tự động theo cảnh, và một bộ hiệu ứng phản hồi thao tác. Không có giọng đọc.
+This document describes the audio currently implemented. The game has **5 background tracks**, selected automatically by scene, and a shared set of interaction effects. There is no voice narration.
 
-Tài liệu âm thanh được lập ngày **14/11/2026**, với ghi chú nhạc thu âm cho đoạn kết ở cuối tài liệu. Khi bảo trì, đối chiếu thêm các module trong `src/audio/`.
+The audio documentation was prepared on **14 November 2026**, with a note about recorded music for the ending at the end of this document. During maintenance, also consult the modules in `src/audio/`.
 
-## Nhạc nền của từng cảnh
+## Background Music by Scene
 
-Tên bản dưới đây là tên mô tả trong tài liệu; người chơi không cần chọn bài trong menu. Thời lượng là một vòng nhạc, tính theo 32 ô nhịp 4/4, chưa tính đuôi ngân.
+The titles below are descriptive names used in this document; players do not select tracks from a menu. Durations cover one loop of 32 bars in 4/4 time, excluding reverb tails.
 
-| Cảnh | Bản nhạc / mã | Nhạc cụ chủ đạo → đáp lời | Nhịp độ | Một vòng | Sắc thái |
+| Scene | Track / ID | Lead Instrument → Response | Tempo | Loop Duration | Mood |
 | --- | --- | --- | --- | --- | --- |
-| Mở đầu An và bà; Cuội ngủ, thức giấc; lộ trình; menu | Đồng dao dưới trăng — `home` | Sáo trúc → đàn tranh | 96 BPM | 80 giây | Vui vừa, gần gũi, câu nhạc ngắn dễ nhớ |
-| Mắt Tròn — Surveyor 3 | Dấu chân trên đất nguyệt — `surveyor` | Đàn T’rưng → đàn tranh | 108 BPM | 71,1 giây | Nhún nhảy, gợi bước chân khám phá |
-| Lấp Lánh — Apollo 11 | Những tia sáng nhỏ — `sparkle` | Đàn tranh → sáo trúc | 112 BPM | 68,6 giây | Tươi sáng, lanh lợi, nhanh nhất trong năm bản |
-| Gác Trời — LRO | Gió qua miền trăng — `watcher` | Sáo trúc → đàn bầu | 88 BPM | 87,3 giây | Dịu hơn, thảnh thơi để quan sát |
-| Gặp chị Hằng, “Bạn hay rác?”, trở về An và bà, giới thiệu thành viên đến hết đoạn kết | Trăng đưa em về — `reunion` | Sáo trúc → đàn tranh | 100 BPM | 76,8 giây | Ấm áp, vui sáng, nhắc lại mô-típ mở đầu |
+| Opening with An and Grandma; Cuội asleep and waking; journey map; menu | A Nursery Rhyme under the Moon — `home` | Bamboo flute → Vietnamese zither | 96 BPM | 80 seconds | Gently cheerful and familiar, with short, memorable phrases |
+| Round Eye — Surveyor 3 | Footprints on Lunar Soil — `surveyor` | T’rưng bamboo xylophone → Vietnamese zither | 108 BPM | 71.1 seconds | Bouncy, suggesting steps of discovery |
+| Twinkle — Apollo 11 | Little Rays of Light — `sparkle` | Vietnamese zither → bamboo flute | 112 BPM | 68.6 seconds | Bright and lively; the fastest of the five tracks |
+| Sky Watcher — LRO | A Breeze across the Moon — `watcher` | Bamboo flute → Vietnamese monochord | 88 BPM | 87.3 seconds | Softer, with space to observe |
+| Meeting Hằng, “Friend or Trash?”, returning to An and Grandma, and team introductions through the end | The Moon Brings You Home — `reunion` | Bamboo flute → Vietnamese zither | 100 BPM | 76.8 seconds | Warm and cheerful, recalling the opening motif |
 
-Các chương của năm người bạn giữ cùng bản nhạc qua hội thoại, nhiệm vụ và chia tay trong chương. Tai Thính và Bánh Lưới dùng `home`; Mắt Tròn, Lấp Lánh và Gác Trời dùng các bản riêng trong bảng trên. Trở về lộ trình dùng lại `home`. Xem lại đoạn kết dùng `reunion`; trở về lộ trình sau đoạn kết dùng `home`.
+Each friend’s chapter keeps the same track throughout dialogue, tasks, and farewells. Sharp Ear and Mesh Wheels use `home`; Round Eye, Twinkle, and Sky Watcher use the tracks listed above. Returning to the journey map restores `home`. Replaying the ending uses `reunion`; returning to the map afterward uses `home`.
 
-**Menu luôn ưu tiên `home`**, kể cả khi mở từ một màn chơi hoặc đoạn kết. Đóng menu sẽ chọn lại bản theo cảnh phía sau. Thứ tự chọn trong mã là: menu → đoạn kết chị Hằng → Mắt Tròn → Lấp Lánh → Gác Trời → `home` mặc định.
+**The menu always takes priority with `home`**, even when opened from a chapter or the ending. Closing the menu selects the track for the scene behind it. The selection order in code is: menu → Hằng’s ending → Round Eye → Twinkle → Sky Watcher → default `home`.
 
-Nếu menu làm đổi chủ đề (ví dụ `surveyor` → `home` → `surveyor`), bản của màn chơi bắt đầu lại khi đóng menu. Mở/đóng menu khi cảnh đang dùng `home` giữ tiến độ vòng nhạc.
+If opening the menu changes the theme (for example, `surveyor` → `home` → `surveyor`), the chapter track restarts when the menu closes. Opening and closing the menu while the scene already uses `home` preserves the loop position.
 
-## Phong cách và phối khí
+## Style and Arrangement
 
-Nhạc được sáng tác và tổng hợp bằng Web Audio theo hướng đồng dao ngũ cung dành cho trẻ em. Âm sắc gợi sáo trúc, đàn tranh, đàn bầu và đàn T’rưng; đây là mô phỏng bằng dao động âm, không phải bản thu nhạc cụ thật hay bản phối của một bài dân ca có sẵn.
+The music is composed and synthesized with Web Audio in the style of pentatonic children’s nursery rhymes. The timbres evoke bamboo flute, Vietnamese zither, Vietnamese monochord, and T’rưng bamboo xylophone. These are oscillator-based approximations, rather than recordings of acoustic instruments or arrangements of existing folk songs.
 
-Mỗi bản có 4 đoạn, mỗi đoạn 8 ô nhịp, gồm câu gọi, lặp lại, biến tấu và kết câu. Những câu sáu nốt có khoảng nghỉ và một câu đáp ngắn, giúp vòng nhạc có nhịp nhún mà vẫn chừa chỗ cho lời thoại. Đàn tranh và T’rưng đệm nhẹ; riêng Gác Trời dùng thêm nền đàn bầu mềm và ít nhịp gõ hơn. Tiếng gảy/gõ tắt gọn, sáo vào tiếng nhanh và đàn bầu luyến nhẹ.
+Each track has 4 sections of 8 bars: call, repetition, variation, and cadence. Six-note phrases include rests and a short response, giving the loop a gentle bounce while leaving room for dialogue. Zither and T’rưng provide light accompaniment; Sky Watcher also uses a soft monochord bed and less percussion. Plucked and struck notes decay quickly, the flute has a quick onset, and the monochord uses gentle pitch bends.
 
-## Quy tắc phát và điều khiển
+## Playback and Controls
 
-- Hai công tắc **Nhạc nền** và **Hiệu ứng âm thanh** hoạt động độc lập, mặc định bật khi chưa có cài đặt cũ. Không có nút nghe thử.
-- Trình duyệt cần tương tác thật bằng chuột, chạm hoặc bàn phím trong khung game để mở âm thanh. Sau đó, nhạc nền phát cả trong menu nếu đang bật.
-- Mỗi bản lặp liên tục. Khi đổi chủ đề, bản mới bắt đầu từ đầu và chuyển âm dần trong khoảng 0,5 giây. Chuyển cảnh vẫn cùng chủ đề không đặt lại vòng nhạc.
-- Khi đọc hội thoại và ở các trạng thái kể chuyện/chuyển cảnh được đánh dấu, nhạc giảm âm lượng. Riêng menu phát ở mức bình thường; đoạn kết chị Hằng được giảm âm lượng trong suốt trạng thái đoạn kết.
-- Mở menu tạm dừng gameplay và hiệu ứng, nhưng vẫn phát nhạc menu. Khi tab bị ẩn hoặc cửa sổ mất tiêu điểm, toàn bộ âm thanh tạm dừng; quay lại sẽ tiếp tục nếu cài đặt cho phép.
-- Cài đặt lưu tại `localStorage`: `cuoi.music` và `cuoi.effects`, giá trị `on`/`off`. Nếu chưa có giá trị riêng, game kế thừa `cuoi.sound` cũ. Khi không lưu được, lựa chọn vẫn áp dụng trong phiên chơi.
-- Nếu không mở được âm thanh, menu hiển thị thông báo; người chơi vẫn tiếp tục chơi được.
+- The **Background Music** and **Sound Effects** switches are independent and default to on when no previous setting exists. There is no preview button.
+- A real mouse, touch, or keyboard interaction within the game area is required to unlock browser audio. Afterward, background music also plays in the menu when enabled.
+- Each track loops continuously. A new theme starts from the beginning and fades in over about 0.5 seconds. Scene changes that retain the same theme do not reset the loop.
+- Music volume is reduced during dialogue and designated storytelling or transition states. The menu plays at normal volume; Hằng’s ending stays at reduced volume throughout the ending state.
+- Opening the menu pauses gameplay and effects while menu music continues. All audio pauses when the tab is hidden or the window loses focus, and resumes on return if settings allow.
+- Settings are saved in `localStorage`: `cuoi.music` and `cuoi.effects`, with values `on`/`off`. If separate values are absent, the game inherits the old `cuoi.sound` setting. If saving fails, the choices still apply for the current session.
+- If audio cannot be unlocked, the menu displays a message; players can continue playing.
 
-## Hiệu ứng âm thanh
+## Sound Effects
 
-Hiệu ứng dùng chung giữa các cảnh; không đổi theo bản nhạc nền.
+Effects are shared across scenes and do not change with the background track.
 
-| Mã | Tình huống hiện dùng | Âm sắc |
+| ID | Current Trigger | Timbre |
 | --- | --- | --- |
-| `touch` | Nút trong màn chơi, thao tác hiện hết/chuyển lời thoại bằng chuột hoặc Space/Enter | Đàn tranh, ngắn và nhẹ |
-| `success` | Trả lời đúng, ghép đúng, hoàn thành thao tác hoặc nhiệm vụ | Đàn tranh, cụm nốt đi lên |
-| `retry` | Chọn sai, kiểm tra chưa đúng, đào chưa trúng | Đàn tranh, một nốt nhẹ |
-| `dig` | Thao tác đào ở Mắt Tròn | T’rưng, hai nốt thấp |
-| `gift` | Nhận đèn, ảnh/kỷ vật, tìm được đồ vật và một số mốc đoạn kết | Đàn tranh, cụm nốt sáng |
-| `lamp` | Nhận ánh sáng khi hoàn tất chương của người bạn | Đàn tranh, cụm nốt dài hơn theo chương |
-| `hint` | Mở sách qua nút trong game | Đàn bầu |
+| `touch` | In-game buttons; revealing or advancing dialogue with a mouse or Space/Enter | Short, light zither |
+| `success` | Correct answers and matches; completing an action or task | Rising zither notes |
+| `retry` | Incorrect choices or checks; digging in the wrong spot | One soft zither note |
+| `dig` | Digging in Round Eye’s chapter | Two low T’rưng notes |
+| `gift` | Receiving the lantern, photos, or keepsakes; finding objects; certain ending milestones | Bright zither phrase |
+| `lamp` | Receiving light on completing a friend’s chapter | Longer zither phrase specific to the chapter |
+| `hint` | Opening the book with an in-game button | Vietnamese monochord |
 
-Nút trong menu không phát hiệu ứng. Nút chuyển lời thoại xử lý hiệu ứng riêng để tránh phát hai lần; lời thoại tự chuyển không tạo tiếng nhấn. Bộ phát có giới hạn tần suất để tránh dồn tiếng khi thao tác nhanh.
+Menu buttons do not play effects. Dialogue buttons handle effects separately to avoid double playback; automatically advancing dialogue does not produce a click sound. Playback is rate-limited to prevent sound buildup during rapid input.
 
-## Mã nguồn
+## Source Code
 
-| Tệp | Vai trò |
+| File | Role |
 | --- | --- |
-| [`src/audio/music-score.ts`](../../src/audio/music-score.ts) | Năm bản nhạc, BPM, nốt nhạc, phối khí và hàm `selectMusicMood` |
-| [`src/audio/game-audio.ts`](../../src/audio/game-audio.ts) | Tổng hợp âm sắc, phát vòng, chuyển nhạc, giảm âm lượng, hiệu ứng |
-| [`src/audio/useGameAudio.ts`](../../src/audio/useGameAudio.ts) | Mở âm thanh sau tương tác, xử lý tiêu điểm/tab, hiệu ứng nút |
-| [`src/audio/settings.ts`](../../src/audio/settings.ts) | Đọc/lưu hai công tắc âm thanh |
-| [`src/App.tsx`](../../src/App.tsx) | Chuyển trạng thái cảnh thành chủ đề nhạc, tạm dừng và giảm âm lượng |
+| [`src/audio/music-score.ts`](../../src/audio/music-score.ts) | Five tracks, BPM, notes, arrangements, and `selectMusicMood` |
+| [`src/audio/game-audio.ts`](../../src/audio/game-audio.ts) | Timbre synthesis, loops, transitions, ducking, and effects |
+| [`src/audio/useGameAudio.ts`](../../src/audio/useGameAudio.ts) | Unlocking audio after interaction, focus/tab handling, and button effects |
+| [`src/audio/settings.ts`](../../src/audio/settings.ts) | Reading and saving the two audio switches |
+| [`src/App.tsx`](../../src/App.tsx) | Mapping scene state to music theme, pause state, and volume reduction |
 
-Phaser dùng `noAudio`; bộ Web Audio riêng quản lý nhạc và hiệu ứng. Không cần tải tệp nhạc bên ngoài.
+Phaser uses `noAudio`; the separate Web Audio system manages music and effects. No external music files are needed.
 
-## Bảo trì và tích hợp màn chơi
+## Maintenance and Chapter Integration
 
-- Chọn chủ đề tập trung qua `selectMusicMood` và trạng thái trong `App.tsx`; không tạo bộ phát hoặc `AudioContext` riêng cho từng màn.
-- Giữ hai công tắc độc lập, ưu tiên nhạc menu, tạm dừng khi mất tiêu điểm và giảm âm lượng khi kể chuyện. Không thêm nút nghe thử.
-- Phát hiệu ứng tại thao tác hoặc mốc vừa xảy ra; đọc lại save hay dựng lại component không tự phát phần thưởng. Dùng bộ `SoundCue` chung và kiểm tra tránh tiếng `touch` trùng với hiệu ứng đúng/sai/phần thưởng.
-- Khi đổi bản nhạc, cập nhật bảng cảnh, BPM, thời lượng và kiểm tra liên quan. Thời lượng một vòng = `steps.length × beat / 2`, với `beat = 60 / BPM` (giây).
-- Việc chỉnh nhạc nền giữ nguyên hiệu ứng, giao diện và khung trò chơi, trừ khi có yêu cầu khác.
+- Select themes centrally through `selectMusicMood` and state in `App.tsx`; do not create a separate player or `AudioContext` for each chapter.
+- Preserve independent switches, menu music priority, pausing on focus loss, and reduced volume during storytelling. Do not add a preview button.
+- Trigger effects on the action or milestone that just occurred; loading a save or remounting a component must not replay rewards. Use the shared `SoundCue` set and check that `touch` does not overlap correct/incorrect/reward effects.
+- When changing a track, update the scene table, BPM, duration, and related checks. Loop duration = `steps.length × beat / 2`, where `beat = 60 / BPM` seconds.
+- Changes to background music preserve effects, the interface, and the game frame unless otherwise requested.
 
-## Kiểm tra
+## Checks
 
-Các script kiểm tra âm thanh tự động đã được gỡ ngày 14/11/2026. Dự án không yêu cầu Playwright hoặc đường dẫn Chrome cố định để chạy và build.
+Automated audio check scripts were removed on 14 November 2026. The project does not require Playwright or a fixed Chrome path to run or build.
 
-Khi nghe kiểm tra thủ công, đi lần lượt: menu → mở đầu → lộ trình → năm người bạn → chị Hằng → An và bà → giới thiệu → lộ trình. Mở/đóng menu giữa mỗi chương, thử hai công tắc riêng biệt, chuyển tab rồi quay lại, và kiểm tra chuột/chạm cùng Space/Enter ở hội thoại. Chú ý mức nhạc khi đọc, chuyển bản êm và điểm nối sau một vòng.
+For manual listening checks, follow: menu → opening → journey map → five friends → Hằng → An and Grandma → introductions → journey map. Open and close the menu in each chapter, test both switches independently, switch tabs and return, and test mouse/touch plus Space/Enter during dialogue. Listen for appropriate reading volume, smooth track transitions, and seamless loop boundaries.
 
-## Nhạc thu âm cho đoạn kết
+## Recorded Music for the Ending
 
-`public/audio/music/five-points-of-light.mp3` phát từ cảnh An và bà và tiếp tục qua credits, logo. Xem lại credits bắt đầu bài từ đầu. Nhạc lặp, tuân theo công tắc nhạc nền; menu và mất tiêu điểm tạm dừng bài, quay lại tiếp tục. Lỗi tải dùng nhạc tổng hợp hiện có. Các cảnh chị Hằng và mini game giữ nhạc cũ.
+`public/audio/music/five-points-of-light.mp3` starts in the An and Grandma scene and continues through the credits and logo. Replaying the credits restarts the track. It loops and follows the background music switch; the menu and focus loss pause it, and returning resumes it. If loading fails, existing synthesized music is used. Hằng’s scenes and the mini game retain their existing music.

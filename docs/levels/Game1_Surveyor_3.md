@@ -1,87 +1,87 @@
-# Câu chuyện của Surveyor 3 — Mắt Tròn (màn 1)
+# The Story of Surveyor 3 — Round Eye (Chapter 1)
 
-> Cập nhật 14/11/2026 theo mã nguồn. Tài liệu mô tả **nội dung đang có trong mã nguồn**, đối chiếu tư liệu NASA/JPL. “Mắt Tròn” là tên nhân vật do trò chơi đặt cho tàu Surveyor 3. Cuội, lời thoại, ký ức biết nói, việc đào ra ảnh và ánh sáng của đèn ông sao là hư cấu; các mốc lịch sử được ghi riêng ở phần dưới.
+> Updated from source code on 14 November 2026. This document describes **content currently in the source code**, cross-referenced with NASA/JPL material. “Round Eye” is the game’s name for Surveyor 3. Cuội, dialogue, talking memories, digging up photos, and the star lantern’s light are fictional; historical milestones are recorded separately below.
 
-## 1. Thông tin thật về Surveyor 3
+## 1. Facts about Surveyor 3
 
-Surveyor 3 là **tàu đổ bộ robot không người lái** của NASA. Tàu phóng ngày **17/4/1967**, đáp xuống vùng **Oceanus Procellarum (Đại Dương Bão)** ngày **20/4/1967 theo giờ UT/UTC** và liên lạc lần cuối ngày **4/5/1967**. Theo hồ sơ nhiệm vụ của NASA Science, đây là tàu Surveyor thứ hai hạ cánh mềm thành công; khi xuống, tàu nảy lên hai lần rồi mới nằm yên. [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
+Surveyor 3 is NASA’s **uncrewed robotic lander**. It launched on **17 April 1967**, landed in **Oceanus Procellarum (the Ocean of Storms)** on **20 April 1967 UT/UTC**, and made its final contact on **4 May 1967**. According to NASA Science’s mission record, it was the second Surveyor to achieve a successful soft landing; it bounced twice before coming to rest. [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
 
-Tàu có **máy ảnh truyền hình** và **dụng cụ lấy mẫu bề mặt dạng tay/xẻng**. Máy ảnh gửi về **6.326 ảnh**; dụng cụ lấy mẫu đào rãnh, thử sức chịu lực của đất và thao tác với vật liệu trên mặt trăng. Những phép thử này giúp các nhà khoa học đánh giá khu vực khảo sát có thể đỡ tàu đổ bộ Apollo; không thể suy rộng thành kết luận rằng mọi nơi trên Mặt Trăng đều giống nhau. [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/), [NASA/JPL — Surveyor 3](https://www.jpl.nasa.gov/missions/surveyor-3/)
+The spacecraft carried a **television camera** and an **arm/scoop surface sampler**. The camera returned **6,326 images**; the sampler dug trenches, tested the soil’s load-bearing strength, and manipulated lunar surface material. These tests helped scientists assess whether the surveyed area could support an Apollo lander; they do not establish that every part of the Moon is the same. [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/), [NASA/JPL — Surveyor 3](https://www.jpl.nasa.gov/missions/surveyor-3/)
 
-Surveyor 3 nằm trên **sườn trong của hố Surveyor**. Tháng **11/1969**, hai phi hành gia Apollo 12 là **Pete (Charles) Conrad và Alan Bean** tới thăm con tàu đã ngừng hoạt động. Họ chụp lại tàu và những rãnh, dấu chân đế còn thấy trên đất; sau đó mang **máy ảnh, đầu xẻng và một số bộ phận khác** về Trái Đất để nghiên cứu tác động của thời gian trên Mặt Trăng. Phần tàu còn lại vẫn ở đó. [NASA — 50 Years Ago: Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA — Apollo 12: The Pinpoint Mission](https://www.nasa.gov/missions/apollo/apollo-12-the-pinpoint-mission/)
+Surveyor 3 rests on the **inner slope of Surveyor Crater**. In **November 1969**, Apollo 12 astronauts **Pete (Charles) Conrad and Alan Bean** visited the inactive spacecraft. They photographed it and the trenches and footpad marks still visible in the soil, then returned its **camera, scoop head, and several other components** to Earth to study the effects of time on the Moon. The rest of the spacecraft remains there. [NASA — 50 Years Ago: Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA — Apollo 12: The Pinpoint Mission](https://www.nasa.gov/missions/apollo/apollo-12-the-pinpoint-mission/)
 
-**Lưu ý về ngày:** hồ sơ nhiệm vụ NASA Science ghi ngày đáp **20/4/1967 UT**, còn [một chú thích ảnh NASA](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/) ghi 19/4/1967. Lời kể và chú thích ảnh trong game có chỗ dùng **tháng 4/1967**; trang tổng kết kiến thức hiện ghi **20/4/1967** theo hồ sơ NASA Science. Không coi cách ghi gọn theo tháng là ngày chụp của mọi ảnh. Với chuyến thăm Apollo 12, game dùng **tháng 11/1969**; các nguồn NASA cũng có cách ghi ngày của hoạt động trên Mặt Trăng khác nhau. [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
+**Date note:** NASA Science’s mission record gives the landing date as **20 April 1967 UT**, while [one NASA image caption](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/) gives 19 April 1967. Some game narration and captions use **April 1967**; the factual summary currently uses **20 April 1967**, following NASA Science. A month-only reference is not the capture date of every image. For the Apollo 12 visit, the game uses **November 1969**; NASA sources also differ in how they date lunar surface activities. [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
 
-## 2. Bối cảnh dựng game
+## 2. Game Context
 
-Cuội đang tìm chị Hằng. Sau phần mở đầu dưới Cây Đa, Cuội có đèn ông sao, đi theo dấu chân và nhìn thấy lộ trình năm người bạn. Người bạn đầu tiên là **Surveyor 3 — Mắt Tròn**. Cuội tới gần tàu trên Mặt Trăng và trò chuyện: Mắt Tròn chưa gặp chị Hằng, nhưng muốn Cuội giúp nhớ lại ba bức ảnh về chuyến đi của mình. Nội dung này nằm trong [cấu hình màn 1](../../src/content/friends/surveyor/definition.ts), [lời thoại gặp gỡ](../../src/content/friends/surveyor/dialogue.ts) và [luồng game](../../src/App.tsx).
+Cuội is searching for Hằng. After the opening under the Banyan Tree, he receives a star lantern, follows footprints, and sees the journey map with five friends. The first is **Surveyor 3 — Round Eye**. Cuội approaches the spacecraft on the Moon and talks: Round Eye has not met Hằng but asks Cuội to help recall three photos of its journey. This content is in the [chapter 1 definition](../../src/content/friends/surveyor/definition.ts), [encounter dialogue](../../src/content/friends/surveyor/dialogue.ts), and [game flow](../../src/App.tsx).
 
-Cảnh gặp gỡ và cảnh kết đều dùng nền **hố Surveyor**: bầu trời đen, nền bụi xám, vành hố thấp, tàu trên sườn trong. Đây là minh họa góc nhìn ngang do game sắp xếp để Cuội đi lại, **không phải bản đồ tọa độ hoặc ảnh hiện trạng**. Hình tàu trong cảnh hiện tại không còn máy ảnh và đầu xẻng vì Apollo 12 đã mang chúng về; hình ở T01 thể hiện **ký ức khi tàu còn đủ dụng cụ**. Cơ sở: [NASA — View of Surveyor III in Its Crater](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/), [NASA — Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/). Cách vẽ nằm trong [surveyor-scenery.ts](../../src/game/scenes/surveyor/scenery.ts).
+Both the encounter and ending use **Surveyor Crater** as their setting: black sky, gray dust, a low crater rim, and the spacecraft on the inner slope. This is a side-view illustration arranged for Cuội to walk around, **not a coordinate map or a photograph of current conditions**. The spacecraft in the present-day scene lacks its camera and scoop head because Apollo 12 returned them; T01 depicts **a memory of the spacecraft with its tools intact**. Sources: [NASA — View of Surveyor III in Its Crater](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/), [NASA — Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/). Rendering is in [surveyor-scenery.ts](../../src/game/scenes/surveyor/scenery.ts).
 
-Mạch truyện của màn 1: **gặp Mắt Tròn → nhận ra hai dụng cụ → nhận “xẻng ký ức” → tìm ba ảnh → sắp ảnh thành nhật ký → nghe Mắt Tròn kể lại → thắp sáng một cánh đèn → thấy điểm sáng xa dẫn về lộ trình**. Điểm sáng gợi người bạn tiếp theo nhưng chưa tiết lộ danh tính. Đèn sáng và dụng cụ ký ức là phép màu của truyện, không phải hoạt động thật của Surveyor 3.
+Chapter 1’s story flow: **meet Round Eye → recognize two tools → receive a “memory scoop” → find three photos → arrange them into a journal → hear Round Eye’s story → light one lantern point → see a distant glow leading back to the journey map**. The glow hints at the next friend without revealing its identity. The glowing lantern and memory tool are story magic, not real Surveyor 3 operations.
 
-## 3. Nội dung sách đồng hành đang có
+## 3. Current Companion Book Content
 
-Sách đứng cạnh game; số lá hiển thị có thể thay đổi theo kích thước khung. Các mục được chọn bằng ID, không lưu theo số trang. Nội dung đến từ [catalog.ts](../../src/content/book/catalog.ts), [real-world.ts](../../src/content/book/real-world.ts) và [extended.ts](../../src/content/book/extended.ts).
+The book sits beside the game; the number of displayed pages may vary with frame size. Entries are selected by ID rather than saved page number. Content comes from [catalog.ts](../../src/content/book/catalog.ts), [real-world.ts](../../src/content/book/real-world.ts), and [extended.ts](../../src/content/book/extended.ts).
 
-| ID | Thời điểm xuất hiện | Nội dung |
+| ID | Availability | Content |
 | --- | --- | --- |
-| `surveyor` | Mục chương đầu tuyến | Giới thiệu chương và cách dùng sổ tay |
-| `surveyor-reality` | Đã gặp Mắt Tròn theo tiến trình | “Surveyor 3 ngoài đời”, ảnh tư liệu, thông tin thật và nguồn |
-| `surveyor-b01` | Ghép đủ hai dụng cụ T01 | “Đôi mắt và chiếc xẻng” |
-| `clue-arrive`, `clue-work`, `clue-visit` | Ghép đủ hai dụng cụ; mở nội dung gợi ý tuần tự | Ba dấu vết để tìm ảnh |
-| `surveyor-photos` | Đã tìm đủ ba ảnh | Album “Ba dấu mốc của Surveyor 3” |
-| `surveyor-notebook`, `surveyor-notebook-visit` | `completedOnce` | Hai trang kể sự kiện thật của Surveyor 3 và chuyến ghé thăm Apollo 12 |
+| `surveyor` | First chapter entry in the journey | Chapter introduction and how to use the notebook |
+| `surveyor-reality` | Round Eye has been met according to progress | “Surveyor 3 in Real Life”, archival image, facts, and sources |
+| `surveyor-b01` | Both T01 tools matched | “Eyes and a Scoop” |
+| `clue-arrive`, `clue-work`, `clue-visit` | Both tools matched; hint content unlocks sequentially | Three traces for finding photos |
+| `surveyor-photos` | All three photos found | “Three Milestones of Surveyor 3” album |
+| `surveyor-notebook`, `surveyor-notebook-visit` | `completedOnce` | Two pages recounting Surveyor 3’s history and the Apollo 12 visit |
 
-Người chơi được đào ảnh không theo thứ tự và không bắt buộc mở sách. Nội dung ba gợi ý được tiếp cận tuần tự: ghi nhớ gợi ý trước hoặc tìm được ảnh tương ứng để tiếp tục. Vị trí đánh dấu, hình phác và việc đào ảnh là thiết kế trò chơi.
+Players may dig up photos in any order and are not required to open the book. The three hints become accessible sequentially: remember the previous hint or find its corresponding photo to continue. Marker locations, sketches, and digging for photos are game design choices.
 
-Ba mục `photo-arrive`, `photo-work`, `photo-visit` còn trong catalog biên tập nhưng không được đưa riêng vào thứ tự sách trên trình duyệt. Bản trình duyệt dùng album `surveyor-photos`; không coi ba trang riêng hay “Nhật ký hoàn chỉnh” là những mục đang hiển thị.
+`photo-arrive`, `photo-work`, and `photo-visit` remain in the editorial catalog but are not separate entries in the browser book order. The browser uses the `surveyor-photos` album; do not describe the three separate pages or a “Completed Journal” as currently displayed entries.
 
-## 4. Chi tiết## 4. Chi tiết các thử thách
+## 4. Challenge Details
 
-### T01 — Khám phá Mắt Tròn
+### T01 — Discover Round Eye
 
-Người chơi nhìn hình Surveyor 3 **trong ký ức lúc còn hoạt động**, chọn công dụng “Chụp ảnh” hoặc “Khảo sát đất”, rồi bấm đúng vùng **máy ảnh** hoặc **chiếc xẻng khảo sát**. Có thể bấm riêng dụng cụ để nhận gợi ý; ghép sai thì thử lại, phần đã ghép đúng được giữ. Ghép đủ hai công dụng mở B01 và dẫn vào T02. Đây là bài nhận biết thiết bị dựa trên hai dụng cụ thật của tàu. [Triển khai T01](../../src/components/friends/surveyor/SurveyorLevel.tsx), [NASA Science — thiết bị của Surveyor 3](https://science.nasa.gov/mission/surveyor-3/)
+Players view Surveyor 3 **in a memory of its working days**, choose “Take Photos” or “Study the Soil”, then click the correct **camera** or **survey scoop** region. Clicking a tool alone provides a hint; incorrect matches can be retried while correct matches remain. Matching both purposes unlocks B01 and leads to T02. This equipment identification task uses the spacecraft’s two real tools. [T01 implementation](../../src/components/friends/surveyor/SurveyorLevel.tsx), [NASA Science — Surveyor 3 equipment](https://science.nasa.gov/mission/surveyor-3/)
 
-### T02 — Đào tìm ba bức ảnh ký ức
+### T02 — Dig for Three Memory Photos
 
-Mắt Tròn giải thích **xẻng thật đã được mang về Trái Đất**, rồi tặng Cuội một **xẻng ký ức**. Cuội di chuyển trái/phải và gần/xa bằng WASD, phím mũi tên hoặc chọn điểm trên mặt đất; kích thước nhân vật thay đổi để tạo chiều sâu giả 3D. Bấm **E** để đào ở bất cứ đâu. Nếu chưa gần dấu vết, game báo chưa thấy ảnh. Nếu gần đúng dấu vết, sau hoạt ảnh đào sẽ hiện **ảnh NASA, tên và mô tả**, rồi người chơi tiếp tục tìm ảnh khác. Ảnh được tìm theo **bất kỳ thứ tự nào**. Nút “Gợi ý” mở sách khi cần. [Triển khai đào](../../src/components/friends/surveyor/SurveyorExcavation.tsx), [dữ liệu ba dấu vết](../../src/content/friends/surveyor/challenges/excavation.ts), [cảnh di chuyển](../../src/game/scenes/preview-scene.ts)
+Round Eye explains that the **real scoop was returned to Earth**, then gives Cuội a **memory scoop**. Cuội moves left/right and near/far with WASD, arrow keys, or a selected point on the ground; character size changes to suggest depth. Press **E** to dig anywhere. Away from a trace, the game reports that no photo was found. Near the correct trace, a digging animation is followed by a **NASA photo, title, and description**, then the player continues searching. Photos can be found in **any order**. “Hint” opens the book when needed. [Digging implementation](../../src/components/friends/surveyor/SurveyorExcavation.tsx), [three trace definitions](../../src/content/friends/surveyor/challenges/excavation.ts), [movement scene](../../src/game/scenes/preview-scene.ts)
 
-| Dấu vết trong game | Ảnh ký ức và điều trẻ học | Cơ sở tư liệu |
+| In-Game Trace | Memory Photo and Learning Point | Source Material |
 | --- | --- | --- |
-| **Dấu chân Mắt Tròn** ở vùng gần phía trước | Chân đế Surveyor 3 để lại dấu sau lần đáp xuống **1967**. Ảnh trong game là phần trích từ tư liệu do **Surveyor 3 chụp năm 1967**. | [NASA SP-284 — *Analysis of Surveyor 3 Material and Photographs Returned by Apollo 12*](https://ntrs.nasa.gov/citations/19720019081), [NASA Science — lần đáp](https://science.nasa.gov/mission/surveyor-3/) |
-| **Những rãnh đất nhỏ** ở phía phải, xa hơn | Xẻng của Surveyor 3 đã đào rãnh **1967**; ảnh tư liệu **Apollo 12 chụp năm 1969** cho thấy các rãnh vẫn còn. | [NASA SP-284](https://ntrs.nasa.gov/citations/19720019081), [NASA — dấu rãnh còn thấy khi Apollo 12 ghé thăm](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/) |
-| **Dấu bước chân** ở phía xa bên trái | Hai phi hành gia Apollo 12 đến Surveyor 3 **tháng 11/1969**; ảnh game là **Pete Conrad bên tàu**, do chuyến Apollo 12 chụp. | [NASA — bài và ảnh Apollo 12](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/) |
+| **Round Eye’s footpad mark** in the near foreground | Surveyor 3’s footpad left a mark after landing in **1967**. The in-game photo is cropped from material **taken by Surveyor 3 in 1967**. | [NASA SP-284 — *Analysis of Surveyor 3 Material and Photographs Returned by Apollo 12*](https://ntrs.nasa.gov/citations/19720019081), [NASA Science — landing](https://science.nasa.gov/mission/surveyor-3/) |
+| **Small soil trenches** farther to the right | Surveyor 3’s scoop dug trenches in **1967**; an archival photo **taken by Apollo 12 in 1969** shows that they remained. | [NASA SP-284](https://ntrs.nasa.gov/citations/19720019081), [NASA — trenches still visible during the Apollo 12 visit](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/) |
+| **Footprints** far to the left | Two Apollo 12 astronauts visited Surveyor 3 in **November 1969**; the game image shows **Pete Conrad beside the spacecraft**, photographed during Apollo 12. | [NASA — Apollo 12 article and images](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/) |
 
-Ba ảnh game tương ứng với `public/images/memories/surveyor/surveyor-footpad.jpg`, `surveyor-trenches.jpg` và `surveyor-apollo12.jpg`; nguồn tư liệu được đối chiếu trong bảng trên và mục 6 của tài liệu này. **Ảnh nằm dưới đất để Cuội đào lên là cách kể hư cấu**. Những dấu trong game gợi từ chân đế, rãnh xẻng và đường đi của phi hành gia; hình dáng và vị trí chúng được bố trí để dễ chơi, không phải sơ đồ khảo cổ của NASA.
+The three game photos correspond to `public/images/memories/surveyor/surveyor-footpad.jpg`, `surveyor-trenches.jpg`, and `surveyor-apollo12.jpg`; sources are cross-referenced above and in section 6. **Photos buried for Cuội to dig up are a fictional storytelling device**. Game traces draw inspiration from footpads, scoop trenches, and astronaut tracks; their shapes and positions are arranged for play, not as a NASA archaeological map.
 
-### T03 — Ghép nhật ký Mắt Tròn
+### T03 — Assemble Round Eye’s Journal
 
-Ngay sau ảnh thứ ba, người chơi vào màn **xếp ba ảnh theo thứ tự thời gian**. Các thẻ hiện theo thứ tự trộn, người chơi bấm để đưa vào ba vị trí “Đầu tiên – Tiếp theo – Sau đó”, bấm lại để bỏ chọn, rồi bấm “Ghép trang nhật ký”. Đáp án: **(1) robot đến Mặt Trăng → (2) robot chụp ảnh, khảo sát đất → (3) phi hành gia ghé thăm, mang vài bộ phận về nghiên cứu**. Ghép sai được gợi ý và thử lại. [Triển khai T03](../../src/components/friends/surveyor/SurveyorChallenges.tsx), [thứ tự sự kiện](../../src/content/friends/surveyor/progress.ts), [NASA Science — lịch sử sứ mệnh](https://science.nasa.gov/mission/surveyor-3/)
+Immediately after the third photo, players **arrange all three photos chronologically**. Shuffled cards can be clicked into “First – Next – Then” slots, clicked again to deselect, and submitted with “Match Journal Pages”. The answer is **(1) the robot reaches the Moon → (2) it takes photos and studies soil → (3) astronauts visit and return some parts for research**. Incorrect arrangements receive hints and can be retried. [T03 implementation](../../src/components/friends/surveyor/SurveyorChallenges.tsx), [event order](../../src/content/friends/surveyor/progress.ts), [NASA Science — mission history](https://science.nasa.gov/mission/surveyor-3/)
 
-## 5. Đoạn kết và thông điệp
+## 5. Ending and Message
 
-Sau T03, Cuội và Mắt Tròn nói chuyện ngắn trên nền Mặt Trăng. Màn kể chuyện tóm tắt lần chạm đất, công việc với máy ảnh/xẻng và cuộc ghé thăm, mỗi phần đi cùng một trong ba ảnh. Trở lại cảnh Mặt Trăng, Mắt Tròn **thắp sáng cánh đầu tiên của đèn ông sao**; Cuội thấy điểm sáng ở xa và nghe gợi ý về một người bạn khác. Người chơi có thể **xem lại đoạn kết, chơi lại màn hoặc về lộ trình**; đi tới điểm sáng cũng về lộ trình. [Triển khai đoạn kết](../../src/components/friends/surveyor/SurveyorEnding.tsx), [NASA — cuộc ghé thăm của Apollo 12](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/)
+After T03, Cuội and Round Eye briefly talk against the lunar background. The recollection summarizes landing, camera/scoop work, and the visit, each paired with one of the three photos. Back in the lunar scene, Round Eye **lights the first point of the star lantern**; Cuội sees a distant glow and hears a hint about another friend. Players can **review the ending, replay the chapter, or return to the journey map**; walking to the glow also returns to the map. [Ending implementation](../../src/components/friends/surveyor/SurveyorEnding.tsx), [NASA — Apollo 12 visit](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/)
 
-Thông điệp của màn: một robot đi trước đã giúp con người hiểu thêm về Mặt Trăng; những bộ phận được mang về nghiên cứu còn phần tàu vẫn ở nơi nó hạ cánh. Tình bạn giữa Cuội và Mắt Tròn, việc “khôi phục ký ức” và cánh đèn phát sáng là cách trò chơi giúp trẻ nhớ câu chuyện, **không phải sự kiện NASA ghi nhận**.
+The chapter’s message: a pioneering robot helped people understand the Moon; returned parts were studied, while the rest of the spacecraft remains where it landed. Cuội’s friendship with Round Eye, “restoring memories”, and the glowing lantern point help children remember the story; **they are not events recorded by NASA**.
 
-## 6. Bảng đối chiếu thông tin và nguồn
+## 6. Facts and Sources
 
-| Thông tin được dùng | Xuất hiện ở đâu trong game/sách | Nguồn chính |
+| Fact Used | Where It Appears in the Game/Book | Main Source |
 | --- | --- | --- |
-| Surveyor 3 là tàu robot không người lái; đến Mặt Trăng năm 1967 | Lời gặp gỡ, B01, T01, ảnh đầu | [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/) |
-| Vùng đáp là Đại Dương Bão; tàu nằm ở hố Surveyor | Tên và hình nền cảnh gặp/kết | [NASA — View of Surveyor III in Its Crater](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/), [NASA — Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/) |
-| Máy ảnh quan sát; xẻng kiểm tra đất và đào rãnh để chuẩn bị cho các tàu đến sau | T01, B01, ảnh rãnh, T03 | [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/), [NASA/JPL — Surveyor 3](https://www.jpl.nasa.gov/missions/surveyor-3/) |
-| Chân đế và rãnh đào còn thấy khi Apollo 12 tới | Hai ảnh đầu, gợi ý trong sách, đoạn kể cuối | [NASA — 50 Years Ago: Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA SP-284](https://ntrs.nasa.gov/citations/19720019081) |
-| Pete Conrad và Alan Bean ghé thăm tháng 11/1969, mang camera, xẻng và các bộ phận khác về nghiên cứu | Ảnh thứ ba, T03, đoạn kết | [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/), [NASA — Apollo 12: The Pinpoint Mission](https://www.nasa.gov/missions/apollo/apollo-12-the-pinpoint-mission/) |
-| Cuội đào ảnh, nhận xẻng ký ức, trò chuyện với tàu và thắp sáng đèn | Lối chơi và kịch bản màn 1 | **Sáng tác của trò chơi; không có nguồn NASA** |
+| Surveyor 3 is an uncrewed robotic spacecraft; it reached the Moon in 1967 | Encounter dialogue, B01, T01, first photo | [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/) |
+| Landing region is the Ocean of Storms; spacecraft rests in Surveyor Crater | Encounter/ending setting name and background | [NASA — View of Surveyor III in Its Crater](https://science.nasa.gov/resource/view-of-surveyor-iii-in-its-crater/), [NASA — Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/) |
+| Camera observations; scoop soil tests and trenches in preparation for later spacecraft | T01, B01, trench photo, T03 | [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/), [NASA/JPL — Surveyor 3](https://www.jpl.nasa.gov/missions/surveyor-3/) |
+| Footpad marks and trenches remained visible when Apollo 12 arrived | First two photos, book hints, ending narrative | [NASA — 50 Years Ago: Apollo 12 on the Moon](https://www.nasa.gov/history/50-years-ago-apollo-12-on-the-moon-whoopee/), [NASA SP-284](https://ntrs.nasa.gov/citations/19720019081) |
+| Pete Conrad and Alan Bean visited in November 1969 and returned the camera, scoop, and other parts for research | Third photo, T03, ending | [NASA Science — Surveyor 3](https://science.nasa.gov/mission/surveyor-3/), [NASA — Apollo 12: The Pinpoint Mission](https://www.nasa.gov/missions/apollo/apollo-12-the-pinpoint-mission/) |
+| Cuội digs up photos, receives a memory scoop, talks to the spacecraft, and lights the lantern | Chapter 1 gameplay and story | **Original game fiction; no NASA source** |
 
-## Bảo trì và xác nhận hiện tại · 14/11/2026
+## Current Maintenance and Verification · 14 November 2026
 
-Tuyến chơi gồm Mắt Tròn → Lấp Lánh → Tai Thính → Bánh Lưới → Gác Trời. Mỗi bạn đóng góp một cánh đèn; bộ lưu chung dùng schema v20 và đọc bản v1–v20. Điều kiện mở chương nằm trong [friends/index.ts](../../src/content/friends/index.ts), điều kiện trang sách trong [reading-order.ts](../../src/content/book/reading-order.ts).
+The journey follows Round Eye → Twinkle → Sharp Ear → Mesh Wheels → Sky Watcher. Each friend contributes one lantern point; shared saves use schema v20 and read v1–v20. Chapter unlock conditions are in [friends/index.ts](../../src/content/friends/index.ts), and book page conditions in [reading-order.ts](../../src/content/book/reading-order.ts).
 
-Trang kiến thức dùng tiêu đề, ảnh tư liệu có chú thích khi phù hợp, đoạn văn ngắn và nguồn ở chân trang theo [references.md](../references.md). Trang “Có yếu tố trò chơi” không cần hiện nguồn. Quy định mới nhất nằm trong [AGENTS.md](../../AGENTS.md).
+Factual pages use a title, a captioned archival image where appropriate, short paragraphs, and footer sources from [references.md](../references.md). Pages labeled “Contains game elements” do not need displayed sources. The latest rules are in [AGENTS.md](../../AGENTS.md).
 
-Hai PDF `public/books/Truyen.pdf` và `Truyen_en.pdf` được mở nguyên bản trong tab mới và phải giữ nguyên. Sách đồng hành có điều kiện mở và cách chia trang riêng, không bắt buộc khớp số trang PDF. Xem [cơ chế sách đồng hành và PDF](../README.md#sách-đồng-hành-và-pdf).
+The two PDFs, `public/books/Truyen.pdf` and `Truyen_en.pdf`, open unchanged in a new tab and must remain intact. The companion book has its own unlock conditions and pagination; it does not need to match PDF page counts. See [companion book and PDF behavior](../README.md#companion-book-and-pdfs).
 
-Các script `check:*` và fixture đã được gỡ. Còn `npm run typecheck`, `npm run build` và `npm run preview`. Lần cập nhật này đối chiếu mã nguồn và sửa tài liệu, không phải lượt nghiệm thu giao diện hoặc xác minh lại các website nguồn.
+The `check:*` scripts and fixtures have been removed. `npm run typecheck`, `npm run build`, and `npm run preview` remain. This update checked source code and revised documentation; it was not a new interface acceptance test or a fresh verification of source websites.

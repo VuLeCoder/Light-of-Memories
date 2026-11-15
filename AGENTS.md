@@ -9,8 +9,8 @@ Do not edit, regenerate, optimize, replace, rename, or delete these files. Read-
 
 # Companion factual-page presentation
 
-User instruction (14/11/2026): use “Surveyor 3 ngoài đời” as the presentation reference for subsequent factual companion pages: title, optional authentic sourced photo with caption, concise factual paragraphs, and source links in the footer. Cite sources listed in `docs/references.md`; use text alone when no suitable sourced component photo is available. Keep game dialogue, memory counters and fictional character descriptions out of these factual pages. Update the existing page and preserve its unlock condition unless the user explicitly requests otherwise; do not add or remove other pages or change game functions.
+User instruction (14/11/2026): use “Surveyor 3 in Real Life” (Vietnamese UI label: “Surveyor 3 ngoài đời”) as the presentation reference for subsequent factual companion pages: title, optional authentic sourced photo with caption, concise factual paragraphs, and source links in the footer. Cite sources listed in `docs/references.md`; use text alone when no suitable sourced component photo is available. Keep game dialogue, memory counters and fictional character descriptions out of these factual pages. Update the existing page and preserve its unlock condition unless the user explicitly requests otherwise; do not add or remove other pages or change game functions.
 
 # Companion game-page sources
 
-User instruction (14/11/2026): companion pages labeled “Có yếu tố trò chơi” do not need displayed source citations. Apply this convention when editing those pages; factual pages retain their source footer. Preserve other approved pages unless the user requests changes to them.
+User instruction (14/11/2026): companion pages labeled “Contains game elements” (Vietnamese UI label: “Có yếu tố trò chơi”) do not need displayed source citations. Apply this convention when editing those pages; factual pages retain their source footer. Preserve other approved pages unless the user requests changes to them.

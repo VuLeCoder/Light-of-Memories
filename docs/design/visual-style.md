@@ -1,71 +1,71 @@
-# Phong cách hình ảnh — Cuội
+# Visual Style — Cuội
 
-Dùng tài liệu này khi thiết kế hoặc yêu cầu AI sinh ảnh. Đây là hướng dẫn bám theo giao diện và tài nguyên hiện có, không phải yêu cầu thay toàn bộ hình ảnh.
+Use this document when designing images or requesting AI-generated artwork. It follows the existing interface and assets; it is not a request to replace all visuals.
 
-## Tinh thần chung
+## Overall Mood
 
-Cổ tích Việt Nam dưới ánh trăng, đêm Trung Thu yên tĩnh, ấm áp, hơi hoài niệm và có điều kỳ diệu đang chờ khám phá. Đối tượng chính là trẻ tiểu học: nhân vật dễ mến, biểu cảm rõ, hình khối dễ nhận ra. Sự vắng mặt của chị Hằng tạo tò mò, tránh không khí kinh dị hoặc u tối đe dọa.
+A Vietnamese folktale under moonlight: a quiet Mid-Autumn Festival night that feels warm, slightly nostalgic, and full of discoveries waiting to happen. The primary audience is children in primary school, so characters should be appealing, expressions clear, and shapes recognizable. Hằng’s absence should invite curiosity, avoiding horror or a threatening darkness.
 
-Website đang kết hợp ba cách thể hiện có chủ đích:
+The website deliberately combines three visual approaches:
 
-- **Giao diện:** nền xanh đêm, đường viền vàng nhạt, chữ kem, bố cục thoáng như một cuốn truyện. Sách có nền giấy kem và nét trang trí nhẹ.
-- **Cảnh chơi:** góc nhìn ngang 2D, nền hình khối dạng pixel; sprite viền rõ và pixel sắc nét. Phaser bật `pixelArt`, tắt khử răng cưa.
-- **Chân dung:** minh họa truyện thiếu nhi có chất liệu giấy/màu vẽ, sắc độ mềm và chi tiết hơn sprite. Không dùng chân dung lớn thay thẳng cho sprite trong game.
+- **Interface:** midnight blue backgrounds, pale gold borders, cream text, and an airy storybook layout. Book pages use cream paper and subtle decoration.
+- **Game scenes:** a side-on 2D view with pixel-based background shapes; clearly outlined sprites and crisp pixels. Phaser enables `pixelArt` and disables antialiasing.
+- **Portraits:** children’s book illustrations with paper or painted texture, soft shading, and more detail than sprites. Do not substitute large portraits directly for in-game sprites.
 
-## Bảng màu tham chiếu
+## Reference Palette
 
-| Màu | Mã | Vai trò |
+| Color | Code | Role |
 | --- | --- | --- |
-| Xanh đêm | `#101e28` | Nền website |
-| Xanh bảng thoại | `#182c35` / `#10212a` | Hộp thoại, có độ trong suốt |
-| Vàng dịu | `#d7b875` | Viền và điểm nhấn |
-| Vàng nút | `#dfc18a` | Hành động chính |
-| Kem | `#eae7dc` | Chữ trên nền tối |
-| Xanh xám sáng | `#bdcecb` | Chữ phụ |
-| Giấy sách | `#f2ecdb` | Mảng sáng cân bằng với game |
-| Xám xanh Mặt Trăng | `#677484` | Bề mặt cảnh trăng |
+| Midnight blue | `#101e28` | Website background |
+| Dialogue blue | `#182c35` / `#10212a` | Translucent dialogue boxes |
+| Soft gold | `#d7b875` | Borders and accents |
+| Button gold | `#dfc18a` | Primary actions |
+| Cream | `#eae7dc` | Text on dark backgrounds |
+| Light blue-gray | `#bdcecb` | Secondary text |
+| Book paper | `#f2ecdb` | A light area that balances the game |
+| Lunar blue-gray | `#677484` | Lunar scene surfaces |
 
-Ánh trăng thiên lạnh; đèn ông sao và cửa sổ thiên vàng ấm. Giữ vùng phát sáng cục bộ, không phủ bloom mạnh toàn cảnh. Mái ngói, áo nâu, tre, cây đa, hiên nhà và ghế đá là các dấu hiệu nhận diện quan trọng.
+Moonlight should be cool; star lanterns and windows should glow warm yellow. Keep glows localized rather than applying strong bloom across the scene. Tiled roofs, brown shirts, bamboo, banyan trees, porches, and stone benches are important visual cues.
 
-Hậu kết mỗi người bạn có dấu hiệu ở rìa phải để Cuội đi tới và trở về lộ trình: Mắt Tròn có ánh sáng gợi Lấp Lánh; Lấp Lánh có vòng gợn trên mặt đất gợi Tai Thính; Tai Thính có hai vệt bánh xe song song trên bụi trăng, gợi cuộc gặp Bánh Lưới. Hiệu ứng nhẹ, không che nhân vật; chế độ giảm chuyển động giữ dấu hiệu tĩnh.
+After each friend’s ending, a marker on the right edge lets Cuội walk over and return to the journey map: Round Eye has a glow suggesting Twinkle; Twinkle has ground ripples suggesting Sharp Ear; Sharp Ear has two parallel wheel tracks in lunar dust, hinting at Mesh Wheels. Effects should be subtle and leave characters visible; reduced-motion mode keeps markers static.
 
-## Chữ và UI
+## Typography and UI
 
-CSS khai báo Lora/Georgia cho tiêu đề, Be Vietnam Pro/sans-serif cho phần đọc và điều khiển. Hai font được đóng gói tại `public/fonts/` và khai báo trong `src/styles/fonts.css`, hỗ trợ tiếng Việt; font dự phòng dùng trong lúc tải hoặc khi tải lỗi.
+CSS specifies Lora/Georgia for headings and Be Vietnam Pro/sans-serif for reading text and controls. Both fonts are bundled in `public/fonts/`, declared in `src/styles/fonts.css`, and support Vietnamese. Fallback fonts apply during loading or if loading fails.
 
-Nội dung thoại thường 20px, xuống 18px ở màn hình hẹp; nút chính khoảng 18px, phần hướng dẫn khoảng 16px. Một số nhãn trang trí nhỏ hơn. Ảnh sinh mới không nên chứa chữ giao diện: để React hiển thị chữ, dễ đổi Việt/Anh và giữ độ rõ. Bo góc nhẹ, viền mảnh, không dùng khung sci-fi hoặc nút neon.
+Dialogue is usually 20px, reduced to 18px on narrow screens; primary buttons are about 18px and instructions about 16px. Some decorative labels are smaller. Newly generated images should not include interface text: React should render it so Vietnamese/English switching and legibility are preserved. Use gently rounded corners and thin borders, without sci-fi frames or neon buttons.
 
-Các chương Mắt Tròn và Lấp Lánh dùng kiểu nút tham chiếu từ Tai Thính: nút phụ xanh xám `#293e46`, chữ kem `#eee5d1`, viền `#a9957080`, bo 8px; nút chính vàng `#dfc18a`, chữ `#20313a`, viền `#ead4a4`, bo 7px. Nút thường cao tối thiểu 42px; có trạng thái hover, focus và khóa rõ ràng. Vùng bấm dụng cụ, thẻ ảnh và ô lau kính giữ hình thức riêng theo thao tác.
+Round Eye and Twinkle use button styling based on Sharp Ear: secondary buttons have blue-gray `#293e46` backgrounds, cream `#eee5d1` text, `#a9957080` borders, and 8px corners; primary buttons use gold `#dfc18a`, `#20313a` text, `#ead4a4` borders, and 7px corners. Standard buttons are at least 42px tall, with clear hover, focus, and locked states. Tool targets, photo cards, and glass-cleaning cells retain their interaction-specific appearance.
 
-Đặt nút “Gợi ý” cạnh “Về lộ trình” trên thanh đầu cảnh khi có trang manh mối tương ứng: T02 Mắt Tròn, T03/T04 Lấp Lánh và các thử thách Tai Thính. Giữ vị trí nút theo nội dung từng bảng; không ép các mô hình hoặc ảnh có bố cục giống nhau. Trên cửa sổ rộng tối đa 800px, bảng lau kính và mô hình khoa học Lấp Lánh nằm dưới cảnh Mặt Trăng, cho phép chữ và nút có đủ chỗ.
+Place “Hint” beside “Back to Journey” in the scene header when a corresponding clue page exists: Round Eye T02, Twinkle T03/T04, and Sharp Ear’s challenges. Keep button positions appropriate to each panel’s content; do not force models or photos into identical layouts. At viewport widths up to 800px, Twinkle’s cleaning panel and scientific model appear below the lunar scene, leaving enough space for text and buttons.
 
-## Tài nguyên để tham chiếu
+## Reference Assets
 
-- [Cuội](../../public/images/portraits/cuoi.webp): áo nâu cổ viền sáng, quần xanh sẫm, tóc đen búi, thắt lưng vải, dáng thân thiện. Dùng ảnh thực tế làm chuẩn nhận diện.
-- [An](../../public/images/portraits/an.webp), [Bà](../../public/images/portraits/ba.webp), [Cây Đa](../../public/images/portraits/cay-da.webp), [Chị Hằng](../../public/images/portraits/chi-hang.webp), [Mắt Tròn](../../public/images/portraits/mat-tron.webp): mở ảnh tương ứng trước khi tạo biến thể.
-- [Sprite Cuội](../../public/images/sprites/cuoi-spritesheet.webp): chuẩn cho tỷ lệ nhân vật và hoạt ảnh trong game.
-- [Logo](../../public/images/branding/light-of-memories-primary.webp): trăng lưỡi liềm ôm đèn ngôi sao vàng, nền xanh đêm, chữ Light of Memories. Khi đặt logo tiếp tục dùng file có sẵn.
+- [Cuội](../../public/images/portraits/cuoi.webp): brown shirt with a light collar edge, dark blue trousers, black hair in a bun, fabric belt, and a friendly stance. Use the actual image as the identity reference.
+- [An](../../public/images/portraits/an.webp), [Grandma](../../public/images/portraits/ba.webp), [Banyan Tree](../../public/images/portraits/cay-da.webp), [Hằng](../../public/images/portraits/chi-hang.webp), [Round Eye](../../public/images/portraits/mat-tron.webp): open the corresponding image before creating variants.
+- [Cuội sprite](../../public/images/sprites/cuoi-spritesheet.webp): reference for character proportions and in-game animation.
+- [Logo](../../public/images/branding/light-of-memories-primary.webp): a crescent moon cradling a golden star lantern, with a midnight blue background and Light of Memories lettering. Continue using the existing file when placing the logo.
 
-## Quy cách đề xuất khi tạo ảnh mới
+## Suggested Specifications for New Images
 
-**Nền cảnh:** bố cục 16:9, ưu tiên 960 × 540 hoặc bản lớn cùng tỷ lệ. Góc nhìn ngang nhất quán, tránh phối cảnh isometric hoặc camera từ trên xuống. Nền xa ít tương phản hơn nhân vật. Giữ vùng đáy đủ đơn giản vì hộp thoại sẽ che một phần cảnh. Hiên nhà có An–bà bên trái và trăng phía trên bên phải; Mặt Trăng có cây đa bên trái, ghế ở giữa, đường đi ra bên phải.
+**Backgrounds:** 16:9 composition, preferably 960 × 540 or a larger image at the same ratio. Keep a consistent side view, avoiding isometric or top-down cameras. Distant scenery should have lower contrast than characters. Keep the lower area simple because dialogue boxes cover part of the scene. The porch has An and Grandma on the left and the Moon at the upper right; the lunar scene has the banyan tree on the left, a bench in the middle, and an exit path to the right.
 
-**Đạo cụ:** PNG nền trong suốt cho cây, ghế, đèn tách lớp; không vẽ sẵn chữ, nút hoặc HUD. Đèn ông sao có đúng năm cánh. Cây và ghế phải có mặt tiếp đất rõ để tránh cảm giác lơ lửng.
+**Props:** transparent PNGs for separate tree, bench, and lantern layers; no embedded text, buttons, or HUD. Star lanterns have exactly five points. Trees and benches need clear ground contact so they do not appear to float.
 
-**Sprite:** nền trong suốt, toàn thân không cắt tóc/chân/đạo cụ, giữ tỷ lệ và trang phục qua mọi frame. Cùng hướng nhìn, đường đặt chân và mức sáng. Đề xuất sheet lưới đều cho tài nguyên mới, có khoảng đệm giữa ô và ghi rõ số frame, thứ tự, kích thước ô. Sheet hiện tại được crop từng hình không đều trong `src/content/assets.ts`; không áp lưới mới lên ảnh cũ. Khi thay sheet phải đo và cập nhật tọa độ, điểm neo, scale, rồi xem hoạt ảnh thật.
+**Sprites:** transparent backgrounds and full bodies without cropped hair, feet, or props; consistent proportions and clothing across frames. Keep facing direction, baseline, and lighting consistent. For new assets, use a uniform grid with padding between cells, specifying frame count, order, and cell dimensions. Existing sheets use irregular per-frame crops in `src/content/assets.ts`; do not apply a new grid to old images. When replacing a sheet, measure and update coordinates, anchors, and scale, then inspect the animation in motion.
 
-**Chân dung:** minh họa vẽ tay ấm, chất liệu nhẹ, mặt dễ đọc khi thu nhỏ. Chừa khoảng an toàn quanh đầu; hộp thoại có thể crop ảnh. Chỉ dùng nền trong suốt nếu mục đích là ghép lớp; không mặc định ảnh chân dung cũ có nền trong suốt.
+**Portraits:** warm, hand-drawn illustrations with subtle texture and faces that remain readable at small sizes. Leave safety margins around the head; dialogue boxes may crop the image. Use transparency only when compositing requires it; do not assume existing portraits have transparent backgrounds.
 
-Tên file dùng chữ thường và dấu gạch nối. Đặt ảnh vào nhóm phù hợp trong `public/images/`, khai báo URL qua `src/content/assets.ts` để tôn trọng base path. Xem [quy ước ảnh](image-assets.md).
+Use lowercase, hyphen-separated filenames. Place images in the appropriate group in `public/images/` and declare URLs through `src/content/assets.ts` to respect the base path. See the [image conventions](image-assets.md).
 
-## Prompt mẫu
+## Sample Prompt
 
-Thay phần trong ngoặc vuông và gửi kèm ảnh nhân vật hoặc sprite hiện có làm tham chiếu.
+Replace the bracketed sections and attach existing character or sprite images as references.
 
-> Tạo [nền cảnh / đạo cụ / sprite] cho game cổ tích Việt Nam Cuội, dành cho trẻ tiểu học. Cảnh đêm Trung Thu yên tĩnh, hoài niệm, ấm áp và kỳ diệu. Góc nhìn ngang 2D. Phong cách pixel phù hợp sprite tham chiếu, hình khối rõ, xanh đêm và xám xanh làm nền, ánh trăng kem, điểm sáng đèn vàng dịu. Nội dung: [mô tả cụ thể]. Giữ nguyên nhận diện, trang phục và tỷ lệ nhân vật tham chiếu. [Nền 16:9 có vùng đất đi lại rõ / PNG đạo cụ nền trong suốt / sheet có N frame lưới đều]. Không chữ, không watermark, không UI, không neon, không 3D bóng nhựa, không phối cảnh isometric, không kinh dị. Không cắt chân hay đạo cụ. Vùng đáy ít chi tiết để đặt hội thoại.
+> Create a [scene background / prop / sprite] for Cuội, a Vietnamese folktale game for primary school children. A quiet, nostalgic, warm, and magical Mid-Autumn Festival night. Side-on 2D view. Pixel art matching the reference sprite, recognizable shapes, midnight blue and blue-gray backgrounds, cream moonlight, and soft yellow lantern highlights. Content: [specific description]. Preserve the reference character’s identity, clothing, and proportions. [16:9 background with clearly walkable ground / transparent PNG prop / uniform grid sheet with N frames]. No text, watermarks, UI, neon, glossy plastic 3D, isometric perspective, or horror. Do not crop feet or props. Keep the lower area simple for dialogue.
 
-Với chân dung, thay yêu cầu pixel bằng “minh họa truyện thiếu nhi vẽ tay, chất liệu giấy và màu mềm, đường nét ấm, biểu cảm rõ”; giữ các yêu cầu nhận diện và bảng màu.
+For portraits, replace the pixel art requirement with “hand-drawn children’s book illustration, soft paper and paint texture, warm lines, clear expressions”; keep identity and palette requirements.
 
-Ở hậu kết của cả bốn người bạn, Cuội có thể bấm vào nhân vật để đi tới trò chuyện, hoặc đến gần rồi nhấn E. Mỗi bạn có hai câu ngắn: cảm ơn Cuội ghé trò chuyện và gợi nhìn dấu hiệu bên phải. Hội thoại có thể nghe lại, giữ dấu hiệu hiện trên nền, tạm dừng đi lại khi nói và không đổi tiến trình hay phần thưởng. Có đầy đủ tiếng Việt và tiếng Anh.
+After the endings of all four friends, Cuội can click a character to walk over and talk, or approach and press E. Each friend has two short lines: thanks for visiting and a hint to look at the marker on the right. Dialogue can be replayed, leaves the marker visible, pauses movement while speaking, and does not change progress or rewards. Both Vietnamese and English are available.
 
-Focus trong vùng game được giữ khi chuyển từ hội thoại sang thử thách, nhận ảnh hoặc hậu kết, kể cả khi phần tử đang focus bị gỡ, vô hiệu hóa hoặc nằm trong vùng `inert`. Việc khôi phục dùng chung cho bốn màn, chọn nút thoại, canvas đi lại hoặc điều khiển đang hiển thị. Không giành focus từ ô nhập, sách hay phần khác của trang; bấm ra ngoài, Tab sang sách hoặc chuyển cửa sổ sẽ nhả quyền điều khiển game. Nút quay lại trò chơi trong sách dùng cùng cách chọn đích focus.
+Focus stays within the game area when moving from dialogue to challenges, receiving photos, or reaching the post-ending state, even if the focused element is removed, disabled, or placed inside an `inert` region. Shared restoration across the four chapters selects a dialogue button, movement canvas, or visible control. It must not steal focus from inputs, the book, or other page areas; clicking outside, tabbing to the book, or switching windows releases game control. The book’s return-to-game button uses the same focus target selection.

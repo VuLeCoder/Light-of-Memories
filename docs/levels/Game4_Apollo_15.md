@@ -1,85 +1,84 @@
-# Câu chuyện Apollo 15 — Bánh Lưới (màn 4)
+# The Story of Apollo 15 — Mesh Wheels (Chapter 4)
 
-Cập nhật **14/11/2026** theo mã nguồn. Tên file khớp thiết bị đang dùng: **LRV Apollo 15 tại Hadley–Apennine năm 1971**. Các mô tả Taurus–Littrow, VIP Site Apollo 17, Nansen, Shorty và đất cam thuộc phiên bản trước.
+Updated from source code on **14 November 2026**. The filename matches the equipment currently used: **the Apollo 15 LRV at Hadley–Apennine in 1971**. Descriptions of Taurus–Littrow, the Apollo 17 VIP Site, Nansen, Shorty, and orange soil belong to an earlier version.
 
-## 1. Thiết bị và giới hạn mô hình
+## 1. Equipment and Model Limits
 
-Bánh Lưới là nhân vật của trò chơi dựa trên Lunar Roving Vehicle (LRV), xe do phi hành gia điều khiển trên Mặt Trăng. Nội dung hiện tại nói về xe Apollo 15, bánh lưới kim loại, việc mang mẫu về tàu Falcon và dấu vết nhìn từ quỹ đạo. Nguồn khoa học được tập hợp trong mục Apollo 15 của [references.md](../references.md).
+Mesh Wheels is a game character based on the Lunar Roving Vehicle (LRV), an astronaut-driven vehicle on the Moon. Current content covers the Apollo 15 rover, metal mesh wheels, returning samples to the Falcon lander, and tracks seen from orbit. Scientific sources are collected in the Apollo 15 section of [references.md](../references.md).
 
-Xe biết nói, đi theo Cuội và trao ánh sáng là hư cấu. Lưới 6×5, pin và số bước đi bộ là luật giáo dục, không phải số liệu kỹ thuật Apollo. Hai điểm A/B là vị trí trong bài chơi; không phải tọa độ hai trạm lịch sử. Trang đi bộ về tàu giải thích giới hạn liên quan vật tư hệ hỗ trợ sự sống, tách khỏi luật 4 bước của game.
+The talking rover, following Cuội, and giving light are fictional. The 6×5 grid, battery units, and walking step count are educational rules, not Apollo engineering specifications. A/B are game positions, not coordinates of two historical stations. The walk-back page explains limits involving life support consumables, separately from the game’s 4-step rule.
 
-## 2. Vị trí trong hành trình
+## 2. Place in the Journey
 
-Bánh Lưới đứng sau Tai Thính và trước Gác Trời. Lời dẫn kể chuyến đi kỳ ảo tới Hadley–Apennine, không nối các bãi đáp bằng một đường xe thật. Mở chương theo [friends/index.ts](../../src/content/friends/index.ts).
+Mesh Wheels follows Sharp Ear and precedes Sky Watcher. The introduction describes a magical journey to Hadley–Apennine, not a real vehicle route connecting landing sites. Chapter access follows [friends/index.ts](../../src/content/friends/index.ts).
 
-Luồng chính: **gặp xe → T01 chọn và thử bánh → cất ảnh A → T02 vẽ tuyến → T03 đi theo tuyến, lấy hai mẫu, về LM → cất ảnh B → hồi tưởng hai ảnh → chia tay, trao cánh thứ tư → hậu kết**.
+Main flow: **meet the rover → T01 choose and test wheels → save photo A → T02 draw a route → T03 follow the route, collect two samples, return to LM → save photo B → recollect two photos → farewell and fourth point awarded → post-ending play**.
 
-Cuội, xe và địa hình được dựng trong [scenery.ts](../../src/game/scenes/ban-banh-luoi/scenery.ts). Chân dung minh họa giữ hình dáng thiết bị, không thêm mắt, miệng hay tay chân. Nhạc chương dùng chủ đề `surveyor`; hiệu ứng theo công tắc chung.
+Cuội, the rover, and terrain are rendered in [scenery.ts](../../src/game/scenes/ban-banh-luoi/scenery.ts). The illustrated portrait preserves the equipment’s shape without added eyes, mouth, or limbs. The chapter uses the `surveyor` music theme; effects follow shared settings.
 
-## 3. Nội dung sách đồng hành
+## 3. Companion Book Content
 
-Khi mở đủ có chín mục; số lá có thể thay đổi theo kích thước sách. Điều kiện nằm trong [progress.ts](../../src/content/friends/ban-banh-luoi/progress.ts), lời sách trong [dialogue.ts](../../src/content/friends/ban-banh-luoi/dialogue.ts).
+There are nine entries when fully unlocked; page count may vary with book dimensions. Conditions are in [progress.ts](../../src/content/friends/ban-banh-luoi/progress.ts), and book text in [dialogue.ts](../../src/content/friends/ban-banh-luoi/dialogue.ts).
 
-| ID | Điều kiện | Nội dung |
+| ID | Condition | Content |
 | --- | --- | --- |
-| `ban-banh-luoi` | Mở chương | “Bánh Lưới – Người bạn mê rong ruổi” |
-| `ban-book-wheels` | Từ bài bánh xe, có ảnh A hoặc đã hoàn thành | “Bánh xe không cần bơm hơi”, hướng dẫn bài chơi |
-| `ban-book-wheels-real` | Cùng điều kiện với trang bánh xe | “Bánh xe Apollo 15”, thông tin và ảnh chi tiết thật |
-| `ban-photo-vip` | Cất ảnh A (`vip`) | “Xe thám hiểm Mặt Trăng Apollo 15” |
-| `ban-book-route` | Có ảnh A | “Một chuyến đi, hai trạm”, sơ đồ mô hình |
-| `ban-book-walkback` | Có ảnh A | “Nếu cần đi bộ về thì sao?”, kiến thức thật |
-| `ban-book-samples` | Có ảnh A | “Hai điểm dừng, hai mẫu vật”, gợi ý lấy mẫu |
-| `ban-book-legacy` | Cất ảnh B (`orbit`) | “LRV Apollo 15” |
-| `ban-photo-orbit` | Có ảnh B | “LRV Apollo 15 (tiếp)”, ảnh quỹ đạo |
+| `ban-banh-luoi` | Chapter unlocked | “Mesh Wheels — The Friend Who Loves to Roam” |
+| `ban-book-wheels` | From the wheel task, photo A acquired, or completed | “Wheels That Need No Air”, task guidance |
+| `ban-book-wheels-real` | Same condition as wheel page | “Apollo 15 Wheels”, facts and authentic detail image |
+| `ban-photo-vip` | Photo A (`vip`) saved | “Apollo 15 Lunar Rover” |
+| `ban-book-route` | Photo A acquired | “One Journey, Two Stations”, model diagram |
+| `ban-book-walkback` | Photo A acquired | “What If You Need to Walk Back?”, factual content |
+| `ban-book-samples` | Photo A acquired | “Two Stops, Two Samples”, collection hints |
+| `ban-book-legacy` | Photo B (`orbit`) saved | “Apollo 15 LRV” |
+| `ban-photo-orbit` | Photo B acquired | “Apollo 15 LRV (Continued)”, orbital image |
 
-Tên chương nội bộ `apollo17`, khóa ảnh `vip` và khóa mẫu `orange` được giữ để tương thích. Chúng không mô tả sứ mệnh hoặc màu đất trong nội dung hiện tại. Gợi ý dẫn tới trang bánh, tuyến/đi bộ hoặc mẫu tùy phase; `photoB`/`memoriesIntro` chọn trang tổng kết khi đã có ảnh B.
+Internal chapter name `apollo17`, photo key `vip`, and sample key `orange` remain for compatibility. They do not describe the mission or soil color in current content. Hints lead to the wheel, route/walk-back, or sample page depending on phase; `photoB`/`memoriesIntro` selects the summary once photo B is acquired.
 
-## 4. Ba thử thách
+## 4. Three Challenges
 
-### T01 — Giúp bánh xe sẵn sàng
+### T01 — Get the Wheels Ready
 
-Chọn giữa bánh cao su, bánh lưới và bánh đá; thử lựa chọn trên đường mô phỏng trước khi xác nhận. Đáp án là bánh lưới. Đổi bánh xóa kết quả thử cục bộ; tải lại cần thử lại. Sai có phản hồi và được sửa. Chỉ cất ảnh A mới ghi `vip` rồi chuyển lời dẫn T02. [Giao diện bánh xe](../../src/components/friends/ban-banh-luoi/BanhLuoiWheels.tsx).
+Choose rubber, mesh, or stone wheels; test the choice on a simulated path before confirming. Mesh wheels are correct. Changing wheels clears the local test result; reloading requires another test. Incorrect choices receive feedback and can be corrected. Only saving photo A records `vip` and moves to the T02 introduction. [Wheel interface](../../src/components/friends/ban-banh-luoi/BanhLuoiWheels.tsx).
 
-### T02 — Cùng vạch đường đi
+### T02 — Plan a Route Together
 
-Lưới 6 cột × 5 hàng, tọa độ (cột, hàng) từ 1. LM ở (1,1), A ở (1,3), B ở (3,1); hố ở (2,2), (4,2), (4,4); dốc ở (3,2), (2,4). Đi bốn hướng, ghé A và B theo thứ tự tùy ý rồi về LM. Ô thường tốn 1 pin, dốc 2; xuất phát không tốn. Ngân sách 12 pin. Tại mỗi bước, đường đi bộ ngắn nhất tránh hố về LM không quá 4 bước; dốc tính 1 bước đi bộ.
+The grid has 6 columns × 5 rows, with (column, row) coordinates starting at 1. LM is at (1,1), A at (1,3), and B at (3,1); craters are at (2,2), (4,2), (4,4); slopes at (3,2), (2,4). Move in four directions, visit A and B in either order, then return to LM. Normal cells cost 1 battery unit and slopes 2; the starting cell costs nothing. The budget is 12 battery units. At every step, the shortest crater-free walking path back to LM must be no longer than 4 steps; slopes count as 1 walking step.
 
-Giới hạn pin và đi bộ được xét độc lập. Có hoàn tác, vẽ lại, gợi ý và nộp tuyến; không có đồng hồ hay tự điền đáp án. Nộp đúng mới tạo `confirmedRoute: { modelVersion: 1, cells }`. Bản nháp không thay tuyến đã xác nhận. Nộp cùng tuyến giữ checkpoint, tuyến khác reset riêng T03.
+Battery and walk-back limits are evaluated independently. Undo, redraw, hints, and route submission are available; there is no timer or automatic answer completion. Only a correct submission creates `confirmedRoute: { modelVersion: 1, cells }`. Drafts do not replace the confirmed route. Submitting the same route retains the checkpoint; a different route resets only T03.
 
-Ví dụ tuyến hợp lệ: `(1,1) → (1,2) → (1,3) → (2,3) → (3,3) → (3,2) → (3,1) → (2,1) → (1,1)`: 8 bước, 9 pin, xa nhất 4 bước đi bộ. Không bắt buộc tuyến tối ưu. [Mô hình](../../src/content/friends/ban-banh-luoi/challenges/models.ts), [thuật toán](../../src/content/friends/ban-banh-luoi/challenges/route.ts), [giao diện](../../src/components/friends/ban-banh-luoi/BanhLuoiRoute.tsx).
+Example valid route: `(1,1) → (1,2) → (1,3) → (2,3) → (3,3) → (3,2) → (3,1) → (2,1) → (1,1)`: 8 steps, 9 battery units, and a maximum walk-back distance of 4 steps. An optimal route is not required. [Model](../../src/content/friends/ban-banh-luoi/challenges/models.ts), [algorithm](../../src/content/friends/ban-banh-luoi/challenges/route.ts), [interface](../../src/components/friends/ban-banh-luoi/BanhLuoiRoute.tsx).
 
-### T03 — Hai điểm dừng, hai mẫu vật
+### T03 — Two Stops, Two Samples
 
-Xe đi theo toàn bộ tuyến đã xác nhận, giữ cả thứ tự A/B và đoạn lặp. Tại A, Cuội tới tảng đá, giữ rồi thả trong vùng lực để gõ; hai lần đúng làm rời mẫu. Vùng lực lần hai hẹp hơn và lệch phải. Nhặt mẫu, mang về xe rồi cất.
+The rover follows the entire confirmed route, preserving A/B order and repeated segments. At A, Cuội approaches the rock, holds and releases within the force zone to strike; two correct strikes free the sample. The second force zone is narrower and shifted right. Pick up the sample, carry it back to the rover, and store it.
 
-Tại B, quan sát ba mảng đất, chọn mảng giữa có hạt mịn xen mảnh vỡ nhỏ rồi mang mẫu về xe. Đất có sắc xám; bài không yêu cầu tìm đất cam Shorty. Trở về LM cùng đủ hai mẫu mới chuyển tới ảnh B và hồi tưởng.
+At B, observe three soil patches, choose the middle patch with fine grains mixed with small fragments, then carry the sample back to the rover. The soil is gray; the task does not ask players to find Shorty’s orange soil. Returning to LM with both samples leads to photo B and the recollection.
 
-Checkpoint lưu theo tuyến và trạng thái mẫu; vị trí/đồng hồ hoạt ảnh là trạng thái tạm. Reader và reducer xử lý dữ liệu sai/lặp theo điều kiện chặng. [Checkpoint](../../src/content/friends/ban-banh-luoi/challenges/guide.ts), [hướng dẫn](../../src/content/friends/ban-banh-luoi/challenges/guide-copy.ts), [giao diện](../../src/components/friends/ban-banh-luoi/BanhLuoiGuide.tsx), [cảnh](../../src/game/scenes/ban-banh-luoi/guide.ts).
+Checkpoints store route and sample state; positions/animation clocks are temporary. The reader and reducer handle invalid/duplicate data according to stage conditions. [Checkpoint](../../src/content/friends/ban-banh-luoi/challenges/guide.ts), [guidance](../../src/content/friends/ban-banh-luoi/challenges/guide-copy.ts), [interface](../../src/components/friends/ban-banh-luoi/BanhLuoiGuide.tsx), [scene](../../src/game/scenes/ban-banh-luoi/guide.ts).
 
-## 5. Ảnh, hồi tưởng và phần thưởng
+## 5. Photos, Recollection, and Reward
 
-| Khóa | Tư liệu hiện dùng | Mốc nhận |
+| Key | Current Material | Award Milestone |
 | --- | --- | --- |
-| `vip` | NASA asset 7022567, ảnh LRV Apollo 15, năm 1971, NASA/MSFC | Sau T01 |
-| `orbit` | LROC NAC M175252641L,R, khu Apollo 15 từ quỹ đạo, năm 2011, NASA/GSFC/ASU | Sau T03 |
+| `vip` | NASA asset 7022567, Apollo 15 LRV photo, 1971, NASA/MSFC | After T01 |
+| `orbit` | LROC NAC M175252641L,R, Apollo 15 site from orbit, 2011, NASA/GSFC/ASU | After T03 |
 
-Metadata, chú thích, ảnh chi tiết và nguồn nằm trong [images.ts](../../src/content/friends/ban-banh-luoi/images.ts). Ảnh thật nằm trong `public/images/memories/ban-banh-luoi/`; không dùng AI sửa ảnh tư liệu.
+Metadata, captions, detail images, and sources are in [images.ts](../../src/content/friends/ban-banh-luoi/images.ts). Authentic images are in `public/images/memories/ban-banh-luoi/`; do not use AI to alter archival images.
 
-Sau hai trang hồi tưởng, Cuội trở lại bên xe, nghe chia tay rồi nhận cánh đèn thứ tư. Hoàn tất trao sáng mới lưu hoàn thành. Hậu kết có xem lại kết, chơi lại và về lộ trình; trò chuyện lại không cộng sao. Gác Trời là người bạn tiếp theo. [Kết chương](../../src/components/friends/ban-banh-luoi/BanhLuoiEnding.tsx), [điều phối](../../src/App.tsx).
+After two recollection pages, Cuội returns beside the rover, hears the farewell, then receives the fourth lantern point. Completion is saved only after the light gift finishes. Afterward, players can review the ending, replay, or return to the journey map; repeat conversations do not add stars. Sky Watcher is the next friend. [Chapter ending](../../src/components/friends/ban-banh-luoi/BanhLuoiEnding.tsx), [coordination](../../src/App.tsx).
 
-## 6. Bản lưu và nguồn duy trì
+## 6. Saves and Maintenance Sources
 
-Bộ lưu chung ghi schema v20, đọc v1–v20. `readBanhLuoi` còn nhận các phase camera/launch cũ và quyền tương thích `guideLegacyPassed`; không suy ra rằng các màn camera/cất cánh vẫn đang chơi. Chơi lại giữ ảnh và `completedOnce`, tạo lại lượt hiện tại. Không đổi ID chỉ để khớp tên Apollo 15.
+The shared save system writes schema v20 and reads v1–v20. `readBanhLuoi` still accepts old camera/launch phases and compatibility entitlement `guideLegacyPassed`; this does not mean camera/launch scenes are still playable. Replay retains photos and `completedOnce` while creating a fresh attempt. Do not change IDs simply to match the Apollo 15 name.
 
-Nguồn khoa học trong [references.md](../references.md) gồm NASA/NSSDCA về LRV, NASA/MSFC về ảnh Apollo 15, báo cáo nhiệm vụ Apollo 15, tài liệu Surface Procedures về walk-back và LROC về ảnh quỹ đạo. Các biên bản M0–M7 và số assertion cũ không được dùng làm kết quả nghiệm thu hiện tại.
+Scientific sources in [references.md](../references.md) include NASA/NSSDCA on the LRV, NASA/MSFC for the Apollo 15 photo, the Apollo 15 Mission Report, Surface Procedures for walk-back, and LROC for orbital images. M0–M7 records and old assertion counts are not current acceptance test results.
 
+## Current Maintenance and Verification · 14 November 2026
 
-## Bảo trì và xác nhận hiện tại · 14/11/2026
+The journey follows Round Eye → Twinkle → Sharp Ear → Mesh Wheels → Sky Watcher. Each friend contributes one lantern point; shared saves use schema v20 and read v1–v20. Chapter unlock conditions are in [friends/index.ts](../../src/content/friends/index.ts), and book page conditions in [reading-order.ts](../../src/content/book/reading-order.ts).
 
-Tuyến chơi gồm Mắt Tròn → Lấp Lánh → Tai Thính → Bánh Lưới → Gác Trời. Mỗi bạn đóng góp một cánh đèn; bộ lưu chung dùng schema v20 và đọc bản v1–v20. Điều kiện mở chương nằm trong [friends/index.ts](../../src/content/friends/index.ts), điều kiện trang sách trong [reading-order.ts](../../src/content/book/reading-order.ts).
+Factual pages use a title, a captioned archival image where appropriate, short paragraphs, and footer sources from [references.md](../references.md). Pages labeled “Contains game elements” do not need displayed sources. The latest rules are in [AGENTS.md](../../AGENTS.md).
 
-Trang kiến thức dùng tiêu đề, ảnh tư liệu có chú thích khi phù hợp, đoạn văn ngắn và nguồn ở chân trang theo [references.md](../references.md). Trang “Có yếu tố trò chơi” không cần hiện nguồn. Quy định mới nhất nằm trong [AGENTS.md](../../AGENTS.md).
+The two PDFs, `public/books/Truyen.pdf` and `Truyen_en.pdf`, open unchanged in a new tab and must remain intact. The companion book has its own unlock conditions and pagination; it does not need to match PDF page counts. See [companion book and PDF behavior](../README.md#companion-book-and-pdfs).
 
-Hai PDF `public/books/Truyen.pdf` và `Truyen_en.pdf` được mở nguyên bản trong tab mới và phải giữ nguyên. Sách đồng hành có điều kiện mở và cách chia trang riêng, không bắt buộc khớp số trang PDF. Xem [cơ chế sách đồng hành và PDF](../README.md#sách-đồng-hành-và-pdf).
-
-Các script `check:*` và fixture đã được gỡ. Còn `npm run typecheck`, `npm run build` và `npm run preview`. Lần cập nhật này đối chiếu mã nguồn và sửa tài liệu, không phải lượt nghiệm thu giao diện hoặc xác minh lại các website nguồn.
+The `check:*` scripts and fixtures have been removed. `npm run typecheck`, `npm run build`, and `npm run preview` remain. This update checked source code and revised documentation; it was not a new interface acceptance test or a fresh verification of source websites.

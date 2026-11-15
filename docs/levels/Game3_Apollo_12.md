@@ -1,135 +1,135 @@
-# Câu chuyện của Apollo 12 — Tai Thính (màn 3)
+# The Story of Apollo 12 — Sharp Ear (Chapter 3)
 
-> Cập nhật 14/11/2026 theo mã nguồn. Bản tổng hợp thay cho kế hoạch và các bàn giao M0–M8, theo cấu trúc [màn Mắt Tròn](Game1_Surveyor_3.md). Tai Thính là tên trò chơi đặt cho địa chấn kế PSE của Apollo 12. Cuội, lời nói, thẻ chú giải bị lẫn, nhịp ký ức và cánh sao thuộc truyện; lịch sử và mô hình được phân biệt dưới đây.
+> Updated from source code on 14 November 2026. This consolidated document replaces the M0–M8 plans and handoffs, following [Round Eye’s chapter](Game1_Surveyor_3.md). Sharp Ear is the game’s name for Apollo 12’s PSE seismometer. Cuội, speech, mixed-up annotation cards, memory rhythms, and the star point belong to the story; history and models are distinguished below.
 
-## 1. Thông tin thật về thiết bị
+## 1. Facts about the Equipment
 
-**PSE — Passive Seismic Experiment** là thí nghiệm địa chấn trong cụm **ALSEP của Apollo 12**, được triển khai tại **Đại Dương Bão — Oceanus Procellarum** ngày **19/11/1969**. PSE đo những chuyển động rất nhỏ của mặt đất, không nghe bằng tai. **Trạm trung tâm** nhận lệnh/gửi dữ liệu và **máy đo từ trường ba cần** là các thiết bị riêng. [Apollo 12 Image Library](https://apollojournals.org/alsj/a12/images12.html), [NASA — Moonquakes](https://science.nasa.gov/moon/moonquakes/)
+**PSE — Passive Seismic Experiment** was the seismic experiment in **Apollo 12’s ALSEP**, deployed in the **Ocean of Storms — Oceanus Procellarum** on **19 November 1969**. PSE measured tiny ground movements rather than listening with ears. The **central station**, which received commands/transmitted data, and the **three-boom magnetometer** were separate instruments. [Apollo 12 Image Library](https://apollojournals.org/alsj/a12/images12.html), [NASA — Moonquakes](https://science.nasa.gov/moon/moonquakes/)
 
-Ngày **20/11/1969**, sau khi phi hành gia đã rời tàu, tầng bay lên Apollo 12 được cho va xuống Mặt Trăng. Tư liệu ALSEP mô tả tín hiệu mạnh dần tới khoảng phút **7–8** rồi giảm chậm, còn được ghi nhận **hơn 55 phút**. “Ngân vang” là ví von về rung động mặt đất, không phải tiếng chuông truyền qua chân không. [NASA — Lunar Artifact Impacts](https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html), [tư liệu ALSEP của Hamish Lindsay do NASA lưu trữ](https://www.nasa.gov/wp-content/uploads/static/history/alsj/HamishALSEP.html)
+On **20 November 1969**, after the astronauts had left it, Apollo 12’s ascent stage was deliberately crashed into the Moon. ALSEP historical material describes the signal growing stronger until about **7–8 minutes**, then decaying slowly and remaining detectable for **more than 55 minutes**. “Ringing” is a metaphor for ground vibrations, not a bell sound traveling through a vacuum. [NASA — Lunar Artifact Impacts](https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html), [Hamish Lindsay’s ALSEP material hosted by NASA](https://www.nasa.gov/wp-content/uploads/static/history/alsj/HamishALSEP.html)
 
-**Giới hạn thời lượng:** tài liệu ALSEP kể “hơn 55 phút”, còn Mission Report mục 3.1.2 nêu khoảng 50 phút. Game giữ đáp án theo nguồn lịch sử đã chọn; không xem 55 phút là ngưỡng chính xác cho mọi rung động hoặc kết quả đo từ đồ thị minh họa. Diễn giải sóng kéo dài dựa trên tán xạ trong đá và năng lượng suy giảm chậm, không suy ra Mặt Trăng rỗng. [Apollo 12 Mission Report](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf), [Dainty và cộng sự, 1974 — NASA NTRS](https://ntrs.nasa.gov/citations/19740042883)
+**Duration limits:** the ALSEP account says “more than 55 minutes”, while Mission Report section 3.1.2 gives about 50 minutes. The game retains the answer from its selected historical source; 55 minutes is not an exact threshold for all vibrations or a measurement obtained from the illustrative graph. Long-lasting waves are explained through scattering in rock and slow energy decay, not as evidence that the Moon is hollow. [Apollo 12 Mission Report](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf), [Dainty et al., 1974 — NASA NTRS](https://ntrs.nasa.gov/citations/19740042883)
 
-Ngày **2/12/1969**, có chuỗi xung biên độ đều được nghi liên quan bộ chuyển đổi analog–digital hoặc điện áp tham chiếu. Đây là cơ sở ví dụ nhiễu ở T02, không phải kết luận rằng cứ sóng vuông là máy hỏng. [Mission Report, mục 3.1.2, trang in 3-6 / PDF trang 15](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf)
+On **2 December 1969**, a series of equal-amplitude pulses was suspected to involve the analog-to-digital converter or reference voltage. This underlies T02’s noise example; it does not mean every square wave indicates faulty equipment. [Mission Report, section 3.1.2, printed page 3-6 / PDF page 15](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf)
 
-ALSEP ngừng hoạt động ngày **30/9/1977**; dữ liệu Apollo được lưu trên Trái Đất để nghiên cứu. Mốc này kể sau các ảnh triển khai năm 1969. [Tư liệu ALSEP](https://www.nasa.gov/wp-content/uploads/static/history/alsj/HamishALSEP.html), [NASA PDS — Apollo](https://pds-geosciences.wustl.edu/missions/apollo/index.htm)
+ALSEP operations ended on **30 September 1977**; Apollo data remain archived on Earth for research. This milestone is narrated after the 1969 deployment photos. [ALSEP material](https://www.nasa.gov/wp-content/uploads/static/history/alsj/HamishALSEP.html), [NASA PDS — Apollo](https://pds-geosciences.wustl.edu/missions/apollo/index.htm)
 
-## 2. Bối cảnh dựng game
+## 2. Game Context
 
-Tai Thính trầm tĩnh, tỉ mỉ, hơi rụt rè, thích lắng nghe. Cuội giúp bạn sắp lại các thẻ chú giải tưởng tượng và kể lại ký ức; không sửa hoặc khôi phục dữ liệu NASA thật.
+Sharp Ear is calm, meticulous, slightly shy, and fond of listening. Cuội helps reorganize imaginary annotation cards and retell memories; he does not repair or restore real NASA data.
 
-Màn mở sau dấu hoàn thành lần đầu của Lấp Lánh. Thứ tự người bạn **03**, cảnh website **05**, gồm **T01–T04 bắt buộc**, **ba ảnh** và một cánh sao mới ở kết. Không có phần thưởng thẻ bạn hay kỹ năng.
+The chapter opens after Twinkle’s first completion flag. Friend order is **03**, website scene **05**, with **T01–T04 required**, **three photos**, and one new star point at the end. There are no friend-card or skill rewards.
 
-Mạch truyện: **rời Biển Yên Tĩnh → tới cụm ALSEP theo gợn rung → tìm đúng PSE → nhận ảnh A → phân loại bản ghi → nhận ảnh B → chọn đồ thị và thời lượng → chọn nhịp trùng mẫu → nhận ảnh C → hồi tưởng A/B/C → cảm ơn, thắp cánh thứ ba → dấu bánh xe dẫn về lộ trình**.
+Story flow: **leave the Sea of Tranquility → follow vibration ripples to ALSEP → identify PSE → receive photo A → classify records → receive photo B → select a graph and duration → choose the matching rhythm → receive photo C → recollect A/B/C → thanks and third point lit → wheel tracks lead back to the journey map**.
 
-Đầu chương chỉ có lời dẫn chuyển vùng, không có sơ đồ Apollo 11 → Apollo 12 che cảnh. Chọn đúng T04 đi thẳng tới lời thoại nhận ảnh C, không có cảnh riêng báo cửa ký ức đã mở.
+The chapter starts with only a regional transition introduction; no Apollo 11 → Apollo 12 diagram covers the scene. A correct T04 answer goes straight to photo C dialogue, without a separate scene announcing that a memory door opened.
 
-Nền mare xám, trời đen, đá nhỏ, hố nông, bóng đổ nhất quán. PSE thân thấp với tấm phủ bạc; trạm trung tâm và máy đo từ trường tách riêng. Khoảng cách và hình dáng được cách điệu cho dễ chơi, không phải sơ đồ khảo sát. Nếu cần tọa độ thật, nguồn [NASA — Apollo Landing Site Coordinates](https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html) phân biệt ALSEP khoảng 3,0098° Nam, 23,4249° Tây với tàu đổ bộ.
+The scene has gray mare terrain, black sky, small rocks, shallow craters, and consistent shadows. PSE has a low body and silver cover; the central station and magnetometer are separate. Distances and shapes are stylized for play rather than as a survey map. For actual coordinates, [NASA — Apollo Landing Site Coordinates](https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html) distinguishes ALSEP at approximately 3.0098° south, 23.4249° west from the lander.
 
-Cuội đi ngang ở tiếp cận và hậu kết, bằng A/D, mũi tên hoặc chạm đất; đến gần nhấn E hay bấm thiết bị. Chat, bài tập, nhận ảnh và hồi tưởng khóa đi bộ. Đèn xuất hiện lại ở đoạn cảm ơn, bám tay khi đi. Màn hẹp đặt chữ/panel dưới cảnh, không ép chữ nhỏ vào canvas.
+Cuội walks sideways during approach and after the ending using A/D, arrows, or ground taps; approach and press E or click the equipment. Chat, tasks, photo awards, and recollection lock walking. The lantern reappears during thanks and follows the hand while walking. Narrow screens put text/panels below the scene rather than squeezing tiny text into the canvas.
 
-## 3. Nội dung sách đồng hành đang có
+## 3. Current Companion Book Content
 
-Nhóm Tai Thính nằm sau Lấp Lánh và trước Bánh Lưới, chỉ đọc được khi chương được phép truy cập. Có 12 mục khi mở đủ; số lá phụ thuộc phân trang, không phải số trang PDF.
+Sharp Ear’s group follows Twinkle and precedes Mesh Wheels, and is readable only when chapter access is allowed. There are 12 entries when fully unlocked; page count depends on pagination and is not the PDF page count.
 
-| ID | Điều kiện | Nội dung hiện tại |
+| ID | Condition | Current Content |
 | --- | --- | --- |
-| `tai-thinh` | Mở chương | “Tai Thính — Người bạn thích lắng nghe”, giới thiệu trong trò chơi |
-| `tai-book-devices` | Đã nhận diện, có ảnh hoặc đã hoàn thành | “Apollo 12 · ALSEP” |
-| `tai-photo-pse` | Cất ảnh A | “PSE Apollo 12 · Tấm phủ cách nhiệt” |
-| `tai-book-sensor` | Có ảnh A | “Lắng nghe bằng phép đo” |
-| `tai-book-sources` | Có ảnh A | “Nguồn rung ở đâu?”, gợi ý phân loại |
-| `tai-book-noise` | Có ảnh A | “Khi thiết bị cần được kiểm tra” |
-| `tai-photo-station` | Cất ảnh B | “Apollo 12 · PSE và trạm trung tâm ALSEP” |
-| `tai-book-impact` | Có ảnh B | “Một cú va chạm có chủ đích” |
-| `tai-book-ringing` | Có ảnh B | “Đọc đường sóng và thời gian”, gợi ý bài chơi |
-| `tai-book-rhythm` | Trả lời đúng thời lượng hoặc đã hoàn thành | “Đếm nhịp và khoảng nghỉ” |
-| `tai-photo-magnetometer` | Cất ảnh C | “Apollo 12 · Máy đo từ trường LSM” |
-| `tai-book-legacy` | Tới chia tay hoặc đã hoàn thành | “PSE Apollo 12 · Câu chuyện có thật” |
+| `tai-thinh` | Chapter unlocked | “Sharp Ear — The Friend Who Loves Listening”, game introduction |
+| `tai-book-devices` | Identified, a photo acquired, or completed | “Apollo 12 · ALSEP” |
+| `tai-photo-pse` | Photo A saved | “Apollo 12 PSE · Thermal Cover” |
+| `tai-book-sensor` | Photo A acquired | “Listening through Measurement” |
+| `tai-book-sources` | Photo A acquired | “Where Do Vibrations Come From?”, classification hint |
+| `tai-book-noise` | Photo A acquired | “When Equipment Needs Checking” |
+| `tai-photo-station` | Photo B saved | “Apollo 12 · PSE and the ALSEP Central Station” |
+| `tai-book-impact` | Photo B acquired | “A Deliberate Impact” |
+| `tai-book-ringing` | Photo B acquired | “Reading Waves and Time”, task hint |
+| `tai-book-rhythm` | Duration answered correctly or completed | “Counting Beats and Rests” |
+| `tai-photo-magnetometer` | Photo C saved | “Apollo 12 · LSM Magnetometer” |
+| `tai-book-legacy` | Farewell reached or completed | “Apollo 12 PSE · The True Story” |
 
-Điều kiện từng mục nằm trong [progress.ts](../../src/content/friends/tai-thinh/progress.ts), lời sách và chú thích riêng trong [book-copy.ts](../../src/content/friends/tai-thinh/book-copy.ts). Nguồn và nhãn kiến thức/trò chơi được ghép tại [restored-friends.ts](../../src/content/book/restored-friends.ts).
+Conditions are in [progress.ts](../../src/content/friends/tai-thinh/progress.ts), with separate book text and captions in [book-copy.ts](../../src/content/friends/tai-thinh/book-copy.ts). Sources and fact/game labels are assembled in [restored-friends.ts](../../src/content/book/restored-friends.ts).
 
-Gợi ý từ bộ điều phối sách: nhận diện/đến nơi chọn trang tổng quan (`null`); bài phân loại tới `tai-book-sources`; đồ thị/thời lượng tới `tai-book-ringing`; nhịp tới `tai-book-rhythm`; các phase còn lại tới `tai-thinh`. Mở khóa không tự lật sách.
+Hints from book coordination: identification/arrival selects the overview (`null`); classification opens `tai-book-sources`; graph/duration opens `tai-book-ringing`; rhythm opens `tai-book-rhythm`; other phases open `tai-thinh`. Unlocking does not turn the book automatically.
 
-## 4. Chi tiết## 4. Chi tiết các thử thách
+## 4. Challenge Details
 
-### T01 — Nhận diện thiết bị
+### T01 — Identify the Equipment
 
-Quan sát ba thiết bị, chọn để xem công dụng rồi bấm **Chọn thiết bị này**. Bấm xem chưa phải nộp. Đáp án **PSE / thiết bị A**; trạm ăng-ten cao nhận/gửi dữ liệu, máy ba cần đo từ trường.
+Observe three instruments, select one to view its purpose, then press **Choose This Instrument**. Viewing is not submission. The answer is **PSE / instrument A**; the tall antenna station receives/transmits data, while the three-boom instrument measures the magnetic field.
 
-Sai có phản hồi, không trừ điểm. Đúng mở lời giới thiệu và ảnh A; chỉ thao tác cất ảnh mới ghi ảnh vào sách. Panel co theo nội dung, không chừa khoảng trống lớn dưới nút. [TaiThinhChallenges.tsx](../../src/components/friends/tai-thinh/TaiThinhChallenges.tsx)
+Incorrect choices receive feedback without a score penalty. A correct answer opens the introduction and photo A; only saving the photo records it in the book. The panel fits its content without a large gap below the button. [TaiThinhChallenges.tsx](../../src/components/friends/tai-thinh/TaiThinhChallenges.tsx)
 
-### T02 — Phân loại bản ghi
+### T02 — Classify Records
 
-Chọn bản ghi, đọc ghi chú rồi chọn nhãn; không bắt kéo thả.
+Select a record, read its note, then choose a label; dragging is not required.
 
-| Bản ghi | Nhãn đúng |
+| Record | Correct Label |
 | --- | --- |
-| `inside` — manh mối nguồn bên trong | `moonquake` — Động đất Mặt Trăng |
-| `impact` — manh mối vật từ ngoài va xuống | `meteoroid` — Va chạm thiên thạch |
-| `electronics` — dấu hiệu nghi liên quan điện tử | `noise` — Nhiễu cần kiểm tra |
+| `inside` — clues to an internal source | `moonquake` — Moonquake |
+| `impact` — clues to an object striking from outside | `meteoroid` — Meteoroid impact |
+| `electronics` — signs suspected to involve electronics | `noise` — Noise requiring investigation |
 
-Giữ các cặp đúng khi sai hoặc tải lại. Đủ ba cặp chuyển sang lời Tai Thính rồi ảnh B. Sóng là minh họa tổng hợp, không phải bộ ba dữ liệu NASA; cần ngữ cảnh, không phân loại chỉ qua hình sóng. [TaiThinhChallenges.tsx](../../src/components/friends/tai-thinh/TaiThinhChallenges.tsx)
+Correct pairs remain after mistakes or reloading. Completing all three leads to Sharp Ear’s dialogue and photo B. Waves are synthesized illustrations, not three NASA datasets; classification requires context rather than waveform shape alone. [TaiThinhChallenges.tsx](../../src/components/friends/tai-thinh/TaiThinhChallenges.tsx)
 
-### T03 — Vì sao Mặt Trăng ngân vang?
+### T03 — Why Did the Moon Ring?
 
-So sánh hai đồ thị cùng trục **0–60 phút**. Đồ thị **B** tăng tới khoảng phút 7–8 rồi giảm chậm, còn dấu sau phút 55; A tắt nhanh. Có mốc va chạm 0 và ghi chú minh họa/tua nhanh, không gọi đây là dữ liệu thô.
+Compare two graphs on the same **0–60 minute** axis. Graph **B** rises until about 7–8 minutes, then decays slowly, with a trace beyond minute 55; A fades quickly. There is an impact marker at 0 and an illustration/time-lapse note; these are not described as raw data.
 
-Chọn B rồi chọn **Hơn 55 phút** giữa ba đáp án: vài giây / hơn 55 phút / nhiều ngày. Sai thời lượng giữ đáp án đồ thị. Đủ hai bước dẫn tới giải thích tán xạ và T04. Hội thoại `afterRinging` nêu rõ có tài liệu ghi hơn 55 phút, có tài liệu ghi khoảng 50 phút; không biến đáp án bài chơi thành một thời lượng chính xác duy nhất. [TaiThinhTremors.tsx](../../src/components/friends/tai-thinh/TaiThinhTremors.tsx)
+Choose B, then **More than 55 Minutes** from three answers: a few seconds / more than 55 minutes / many days. An incorrect duration preserves the graph answer. Completing both steps leads to the scattering explanation and T04. `afterRinging` dialogue explicitly states that some sources give more than 55 minutes and others about 50 minutes; the game answer must not become a single exact duration. [TaiThinhTremors.tsx](../../src/components/friends/tai-thinh/TaiThinhTremors.tsx)
 
-### T04 — Chuỗi nhịp mở ký ức
+### T04 — A Rhythm Sequence Unlocks Memories
 
-Bài bắt buộc, dùng quan sát và so sánh, không đo phản xạ nhanh hoặc yêu cầu bật tiếng.
+This required task uses observation and comparison rather than fast reflexes or enabled sound.
 
-| Chuỗi | Các mốc nhịp (ms) | Nhận biết |
+| Sequence | Beat Times (ms) | Pattern |
 | --- | --- | --- |
-| Mẫu | 0 / 500 / 1800 | Hai nhịp gần, nghỉ dài, thêm một nhịp |
-| A | 0 / 900 / 1800 | Ba nhịp đều |
-| **B** | **0 / 500 / 1800** | **Trùng mẫu** |
-| C | 0 / 1800 | Hai nhịp |
+| Reference | 0 / 500 / 1800 | Two close beats, a long rest, then another beat |
+| A | 0 / 900 / 1800 | Three evenly spaced beats |
+| **B** | **0 / 500 / 1800** | **Matches the reference** |
+| C | 0 / 1800 | Two beats |
 
-Dấu tĩnh, mô tả chữ và ánh sáng diễn tả cùng dữ liệu; xung 220 ms, lượt phát 2.500 ms. Xem lại không giới hạn, chỉ phát một chuỗi mỗi lần. Xem mẫu không nộp đáp án; có nút chọn riêng và có thể chọn từ sơ đồ tĩnh.
+Static markers, text descriptions, and lights represent the same data; pulses last 220 ms and playback lasts 2,500 ms. Unlimited replay is allowed, with only one sequence playing at a time. Viewing the reference does not submit an answer; separate selection buttons allow choosing from the static diagram.
 
-Menu dừng đồng hồ, tiếp tục đúng thời điểm; tải lại về trạng thái chờ phát. Sai giữ T01–T03, đúng lưu `rhythmCorrect` và sang `afterRhythm`, không trao sao tại T04. [TaiThinhRhythms.tsx](../../src/components/friends/tai-thinh/TaiThinhRhythms.tsx)
+The menu pauses the clock and resumes at the same point; reloading returns to the idle playback state. Incorrect answers preserve T01–T03, while a correct answer saves `rhythmCorrect` and moves to `afterRhythm`; no star is awarded at T04. [TaiThinhRhythms.tsx](../../src/components/friends/tai-thinh/TaiThinhRhythms.tsx)
 
-## 5. Ảnh kỷ niệm, đoạn kết và thông điệp
+## 5. Memory Photos, Ending, and Message
 
-Ba ảnh do **Alan Bean chụp ngày 19/11/1969**, credit **NASA · Alan Bean**, từ [Apollo 12 Image Library, magazine 47](https://apollojournals.org/alsj/a12/images12.html). Không dùng ảnh ghép/anaglyph thay ảnh đơn.
+All three photos were **taken by Alan Bean on 19 November 1969**, credited **NASA · Alan Bean**, from the [Apollo 12 Image Library, magazine 47](https://apollojournals.org/alsj/a12/images12.html). Do not substitute composites/anaglyphs for single images.
 
-| ID / mã / file trong `public/images/memories/tai-thinh/` | Chủ thể | Nhận / hồi tưởng |
+| ID / Reference / File in `public/images/memories/tai-thinh/` | Subject | Award / Recollection |
 | --- | --- | --- |
-| `pse` · **AS12-47-6916** · `apollo-12-as12-47-6916.webp` | PSE và tấm phủ cách nhiệt | Sau T01 / thứ nhất |
-| `station` · **AS12-47-6918** · `apollo-12-as12-47-6918.webp` | PSE trước, trạm trung tâm sau, đang triển khai | Sau T02 / thứ hai |
-| `magnetometer` · **AS12-47-6921** · `apollo-12-as12-47-6921.webp` | Máy đo từ trường trước; Pete Conrad lắp ăng-ten sau | Sau T04 / thứ ba |
+| `pse` · **AS12-47-6916** · `apollo-12-as12-47-6916.webp` | PSE and thermal cover | After T01 / first |
+| `station` · **AS12-47-6918** · `apollo-12-as12-47-6918.webp` | PSE in front, central station behind, during deployment | After T02 / second |
+| `magnetometer` · **AS12-47-6921** · `apollo-12-as12-47-6921.webp` | Magnetometer in front; Pete Conrad installing the antenna behind | After T04 / third |
 
-Ảnh gốc: [6916](https://apollojournals.org/alsj/a12/AS12-47-6916HR.jpg), [6918](https://apollojournals.org/alsj/a12/AS12-47-6918HR.jpg), [6921](https://apollojournals.org/alsj/a12/AS12-47-6921HR.jpg). Mốc GET 117:30:24 cho 6916/6918 và 117:40:50 cho 6921 là tham chiếu hoạt động trong chú giải, không phải giờ chụp chính xác tới giây. Không gọi ảnh B là lúc ăng-ten đã lắp xong.
+Original images: [6916](https://apollojournals.org/alsj/a12/AS12-47-6916HR.jpg), [6918](https://apollojournals.org/alsj/a12/AS12-47-6918HR.jpg), [6921](https://apollojournals.org/alsj/a12/AS12-47-6921HR.jpg). GET 117:30:24 for 6916/6918 and 117:40:50 for 6921 are activity references in the annotations, not capture times accurate to the second. Do not describe photo B as showing the completed antenna installation.
 
-Bản WebP tối đa 1280 px, chất lượng 90, giữ toàn khung; không sinh thêm chi tiết hoặc tô lại. Có tên, chú thích, mã, nguồn, alt, lỗi và tải lại. Mạng lỗi không khóa việc cất ảnh; có thể tải lại trong sách. Chỉ cất mới thêm ID, không ghi trùng. [TaiThinhPhoto.tsx](../../src/components/friends/tai-thinh/TaiThinhPhoto.tsx)
+WebP versions are at most 1280 px, quality 90, retaining the full frame without generated detail or repainting. They include titles, captions, IDs, sources, alt text, error states, and retry. Network errors do not block saving; images can be retried in the book. Only saving adds an ID, without duplicates. [TaiThinhPhoto.tsx](../../src/components/friends/tai-thinh/TaiThinhPhoto.tsx)
 
-Ảnh C thay ứng viên PIA12903 vì chi tiết thiết bị trong ảnh quỹ đạo khó đọc ở khung chơi; PIA12903 không thuộc bộ nhận ảnh. Không dùng ngày đăng ảnh làm ngày sự kiện.
+Photo C replaced candidate PIA12903 because equipment detail in the orbital image was difficult to read in the game frame; PIA12903 is not part of the awarded set. Do not use image publication dates as event dates.
 
-Hồi tưởng **A → B → C** có Trang trước/Trang tiếp. Sau C mới kể cú va chạm ngày hôm sau; trở lại bên Tai Thính mới kể năm 1977. Bạn cảm ơn Cuội đã lắng nghe; ánh sáng từ PSE đến đèn khoảng 1,4 giây, tới nơi mới lưu hoàn thành và thắp **cánh thứ ba**, giữ hai cánh trước. Giảm chuyển động bỏ đường bay, menu tạm dừng hiệu ứng. [TaiThinhEnding.tsx](../../src/components/friends/tai-thinh/TaiThinhEnding.tsx)
+The **A → B → C** recollection has Previous/Next Page controls. Only after C does it describe the next day’s impact; only after returning beside Sharp Ear does it mention 1977. Sharp Ear thanks Cuội for listening; light travels from PSE to the lantern over about 1.4 seconds, and only on arrival is completion saved and the **third point** lit, preserving the previous two. Reduced motion skips the flight path; the menu pauses the effect. [TaiThinhEnding.tsx](../../src/components/friends/tai-thinh/TaiThinhEnding.tsx)
 
-Hậu kết có **Xem lại đoạn kết / Chơi lại / Về lộ trình** và cho Cuội đi ngang. Bấm bạn hoặc đến gần nhấn E để nghe lời cảm ơn, gợi nhìn **hai vệt bánh xe song song ở rìa phải**. Đi theo dấu bánh xe về lộ trình, không tự vào màn 4. Dấu vết là gợi ý kỳ ảo dẫn tới Bánh Lưới ở Hadley–Apennine; không khẳng định xe Apollo 15 từng chạy ở bãi đáp Apollo 12. Trò chuyện nghe lại không đổi sao/ảnh. [ending-chat.ts](../../src/content/story/ending/friend-dialogue.ts), [EndingTrail.tsx](../../src/components/shared/EndingTrail.tsx)
+Afterward, **Review Ending / Replay / Back to Journey** are available and Cuội can walk sideways. Click the friend or approach and press E to hear thanks and a hint toward **two parallel wheel tracks at the right edge**. Following them returns to the journey map rather than entering chapter 4 automatically. These are magical clues pointing to Mesh Wheels at Hadley–Apennine; they do not imply that Apollo 15’s rover drove at Apollo 12’s landing site. Replaying chat does not change stars/photos. [ending-chat.ts](../../src/content/story/ending/friend-dialogue.ts), [EndingTrail.tsx](../../src/components/shared/EndingTrail.tsx)
 
-Thông điệp: những phép đo nhỏ có thể giúp con người tìm hiểu một thế giới xa; công việc đã khép lại vẫn để lại dữ liệu và câu chuyện đáng nhớ.
+Message: tiny measurements can help people understand a distant world; even work that has ended leaves data and stories worth remembering.
 
-## 6. Bảng đối chiếu thông tin và nguồn
+## 6. Facts and Sources
 
-| Thông tin | Trong game/sách | Nguồn chính |
+| Fact | In the Game/Book | Main Source |
 | --- | --- | --- |
-| PSE, trạm trung tâm, máy đo từ trường; triển khai 19/11/1969 | T01, sách, ba ảnh | [Apollo 12 Image Library](https://apollojournals.org/alsj/a12/images12.html) |
-| Rung bên trong, va chạm | T02, trang nguồn rung | [NASA — Moonquakes](https://science.nasa.gov/moon/moonquakes/) |
-| Nghi nhiễu điện tử ngày 2/12/1969 | T02, trang nhiễu | [Mission Report, mục 3.1.2](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf) |
-| Va chạm tầng bay lên 20/11/1969 | T03, hồi tưởng sau ảnh C | [NASA — Lunar Artifact Impacts](https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html) |
-| Đỉnh khoảng 7–8 phút; mô tả hơn 55 phút; kết thúc ALSEP 1977 | T03, sách, cảm ơn | [Tư liệu ALSEP](https://www.nasa.gov/wp-content/uploads/static/history/alsj/HamishALSEP.html); lưu ý khác biệt thời lượng ở mục 1 |
-| Tán xạ và suy giảm yếu | Giải thích sau T03 | [Dainty và cộng sự — NASA NTRS](https://ntrs.nasa.gov/citations/19740042883) |
-| Dữ liệu Apollo còn lưu | Trang cuối, đoạn kết | [NASA PDS](https://pds-geosciences.wustl.edu/missions/apollo/index.htm) |
-| Thẻ lẫn, sóng tự vẽ, nhịp phiến đá, đèn, dấu hiệu dẫn đường | Bài chơi và truyện | Sáng tác/mô hình của game, không phải năng lực thật của PSE |
+| PSE, central station, magnetometer; deployment on 19 November 1969 | T01, book, three photos | [Apollo 12 Image Library](https://apollojournals.org/alsj/a12/images12.html) |
+| Internal vibrations and impacts | T02, vibration source page | [NASA — Moonquakes](https://science.nasa.gov/moon/moonquakes/) |
+| Suspected electronic noise on 2 December 1969 | T02, noise page | [Mission Report, section 3.1.2](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf) |
+| Ascent stage impact on 20 November 1969 | T03, recollection after photo C | [NASA — Lunar Artifact Impacts](https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html) |
+| Peak around 7–8 minutes; account of more than 55 minutes; ALSEP shutdown in 1977 | T03, book, thanks | [ALSEP material](https://www.nasa.gov/wp-content/uploads/static/history/alsj/HamishALSEP.html); see duration differences in section 1 |
+| Scattering and weak attenuation | Explanation after T03 | [Dainty et al. — NASA NTRS](https://ntrs.nasa.gov/citations/19740042883) |
+| Apollo data remain archived | Final page, ending | [NASA PDS](https://pds-geosciences.wustl.edu/missions/apollo/index.htm) |
+| Mixed cards, drawn waves, stone rhythms, lantern, guiding markers | Tasks and story | Game fiction/models, not real PSE capabilities |
 
-## 7. Tiến trình, tài nguyên và bàn giao
+## 7. Progress, Assets, and Handoff
 
-### Luồng trạng thái
+### State Flow
 
 ```text
 route → approach → arrival → identify → meeting → photoA
@@ -139,35 +139,35 @@ route → approach → arrival → identify → meeting → photoA
 → recallA → recallB → recallC → farewell → gift → finished
 ```
 
-Các bước sai giữ bài hiện tại. Hai câu `afterRhythm` trong nội dung được chia trước ảnh C và sau khi cất (`afterPhotoC`), để Cuội chỉ nói đủ ba ảnh khi đã cất.
+Incorrect steps keep the current task. The two `afterRhythm` lines are split before photo C and after saving it (`afterPhotoC`), so Cuội only says all three photos are collected once they have been saved.
 
-Bản lưu `cuoi.progress` **v5**, đọc v1–v4. Giữ ID phase, thoại và ảnh ổn định. Trường chính: `phase`, `turn`, `identified`, `matches`, `graphCorrect`, `durationCorrect`, `rhythmCorrect`, `keepsakes`, `recallIndex`, `completedOnce`. Bộ đọc kiểm tra các điều kiện bắt buộc, lùi về bài thiếu; phase cũ `door` chuyển sang `afterRhythm` nếu đủ kết quả.
+The `cuoi.progress` save described here is **v5**, reading v1–v4. Keep phase, dialogue, and photo IDs stable. Main fields: `phase`, `turn`, `identified`, `matches`, `graphCorrect`, `durationCorrect`, `rhythmCorrect`, `keepsakes`, `recallIndex`, `completedOnce`. The reader validates prerequisites and returns to missing tasks; old phase `door` becomes `afterRhythm` when results are sufficient.
 
-Cất ảnh và chuyển chặng cùng cập nhật. Không lưu thời gian hiệu ứng, focus, hover hoặc đích đi. `gift:0` tải lại phát lại trao sáng an toàn; `gift:1` chỉ giữ khi có hoàn thành hợp lệ. Xem lại kết về `memoriesIntro`, giữ đáp án/ảnh/sao; chơi lại về `route`, xóa đáp án lượt này, giữ ba ảnh và hoàn thành. Rời về lộ trình giữ chặng, không cộng sao lặp.
+Saving a photo and changing stages happen in the same update. Effect time, focus, hover, and movement targets are not saved. Reloading `gift:0` safely replays the light gift; `gift:1` is retained only with valid completion. Reviewing the ending returns to `memoriesIntro`, preserving answers/photos/stars; replay returns to `route`, clears this attempt’s answers, and retains all three photos and completion. Returning to the journey map preserves the stage without duplicating stars.
 
-### Mã nguồn và nhận diện
+### Source Code and Visual Identity
 
-| File | Vai trò |
+| File | Role |
 | --- | --- |
-| [tai-thinh-content.ts](../../src/content/friends/tai-thinh/dialogue.ts) | Thoại Việt/Anh, thiết bị, bài tập và ảnh; lời sách/nguồn riêng ở `book-copy.ts` |
-| [tai-thinh-progress.ts](../../src/content/friends/tai-thinh/progress.ts) | Bộ đọc, luồng, trang mở, chơi lại |
-| [TaiThinhLevel.tsx](../../src/components/friends/tai-thinh/TaiThinhLevel.tsx) | Ghép thoại, thử thách, ảnh, kết |
-| [tai-thinh-layout.ts](../../src/game/scenes/tai-thinh/layout.ts), [tai-thinh-scenery.ts](../../src/game/scenes/tai-thinh/scenery.ts) | Vị trí dùng chung và nền/thiết bị bằng mã |
-| [App.tsx](../../src/App.tsx), [JourneyMap.tsx](../../src/components/journey/JourneyMap.tsx), [progress.ts](../../src/state/progress.ts) | Tích hợp, mở khóa, sách và lưu |
-| [tai-thinh.css](../../src/components/friends/tai-thinh/tai-thinh.css) | Bố cục riêng, panel hẹp và hồi tưởng |
+| [tai-thinh-content.ts](../../src/content/friends/tai-thinh/dialogue.ts) | Vietnamese/English dialogue, equipment, tasks, and photos; separate book text/sources in `book-copy.ts` |
+| [tai-thinh-progress.ts](../../src/content/friends/tai-thinh/progress.ts) | Reader, flow, unlocked pages, replay |
+| [TaiThinhLevel.tsx](../../src/components/friends/tai-thinh/TaiThinhLevel.tsx) | Combines dialogue, challenges, photos, and ending |
+| [tai-thinh-layout.ts](../../src/game/scenes/tai-thinh/layout.ts), [tai-thinh-scenery.ts](../../src/game/scenes/tai-thinh/scenery.ts) | Shared positions and code-drawn background/equipment |
+| [App.tsx](../../src/App.tsx), [JourneyMap.tsx](../../src/components/journey/JourneyMap.tsx), [progress.ts](../../src/state/progress.ts) | Integration, unlocks, book, and saving |
+| [tai-thinh.css](../../src/components/friends/tai-thinh/tai-thinh.css) | Chapter layout, narrow panels, and recollection |
 
-Canvas 960 × 540, Cuội neo chân y=431, scale 0,62; PSE tại (610,431), trạm (470,332), máy đo từ trường (821,402). Tọa độ phục vụ thiết kế game. Nền tĩnh được cache, có khôi phục WebGL; thiết bị và gợn là lớp riêng.
+Canvas 960 × 540, Cuội foot anchor y=431, scale 0.62; PSE at (610,431), station (470,332), magnetometer (821,402). These coordinates serve game design. The static background is cached with WebGL recovery; equipment and ripples are separate layers.
 
-Chân dung `public/images/portraits/tai-thinh.webp`, 1024 × 683 RGBA, WebP chất lượng 92. Tạo bằng image_gen từ hình dáng PSE trong 6916 và chất liệu minh họa Lấp Lánh: thân trụ bạc thấp, mặt trên sẫm, tấm phủ bạc xòe, dây cáp nhỏ, sáng từ trên phải, nền trong suốt; không thêm mặt/tai/tay chân, bảng gương hoặc trạm vào chân dung. Hình trong cảnh vẽ bằng mã, không phóng chân dung thay sprite.
+Portrait: `public/images/portraits/tai-thinh.webp`, 1024 × 683 RGBA, WebP quality 92. Created with image_gen from the PSE shape in 6916 and Twinkle’s illustration texture: low silver cylinder, dark top, spread silver cover, small cable, upper-right lighting, transparent background; no added face/ears/limbs, mirror array, or station. The in-scene equipment is drawn in code, not an enlarged portrait used as a sprite.
 
-Bản xem thiết kế M0–M1 cũ (`src/design/tai-thinh-preview.tsx` và CSS đi kèm) đã được loại bỏ sau khi tích hợp màn chơi; không còn trang `/design/tai-thinh.html`. Tham chiếu bố cục và tương tác từ màn chơi chính.
+The old M0–M1 design preview (`src/design/tai-thinh-preview.tsx` and accompanying CSS) was removed after chapter integration; `/design/tai-thinh.html` no longer exists. Use the main chapter as the layout and interaction reference.
 
-## Bảo trì và xác nhận hiện tại · 14/11/2026
+## Current Maintenance and Verification · 14 November 2026
 
-Tuyến chơi gồm Mắt Tròn → Lấp Lánh → Tai Thính → Bánh Lưới → Gác Trời. Mỗi bạn đóng góp một cánh đèn; bộ lưu chung dùng schema v20 và đọc bản v1–v20. Điều kiện mở chương nằm trong [friends/index.ts](../../src/content/friends/index.ts), điều kiện trang sách trong [reading-order.ts](../../src/content/book/reading-order.ts).
+The journey follows Round Eye → Twinkle → Sharp Ear → Mesh Wheels → Sky Watcher. Each friend contributes one lantern point; shared saves use schema v20 and read v1–v20. Chapter unlock conditions are in [friends/index.ts](../../src/content/friends/index.ts), and book page conditions in [reading-order.ts](../../src/content/book/reading-order.ts).
 
-Trang kiến thức dùng tiêu đề, ảnh tư liệu có chú thích khi phù hợp, đoạn văn ngắn và nguồn ở chân trang theo [references.md](../references.md). Trang “Có yếu tố trò chơi” không cần hiện nguồn. Quy định mới nhất nằm trong [AGENTS.md](../../AGENTS.md).
+Factual pages use a title, a captioned archival image where appropriate, short paragraphs, and footer sources from [references.md](../references.md). Pages labeled “Contains game elements” do not need displayed sources. The latest rules are in [AGENTS.md](../../AGENTS.md).
 
-Hai PDF `public/books/Truyen.pdf` và `Truyen_en.pdf` được mở nguyên bản trong tab mới và phải giữ nguyên. Sách đồng hành có điều kiện mở và cách chia trang riêng, không bắt buộc khớp số trang PDF. Xem [cơ chế sách đồng hành và PDF](../README.md#sách-đồng-hành-và-pdf).
+The two PDFs, `public/books/Truyen.pdf` and `Truyen_en.pdf`, open unchanged in a new tab and must remain intact. The companion book has its own unlock conditions and pagination; it does not need to match PDF page counts. See [companion book and PDF behavior](../README.md#companion-book-and-pdfs).
 
-Các script `check:*` và fixture đã được gỡ. Còn `npm run typecheck`, `npm run build` và `npm run preview`. Lần cập nhật này đối chiếu mã nguồn và sửa tài liệu, không phải lượt nghiệm thu giao diện hoặc xác minh lại các website nguồn.
+The `check:*` scripts and fixtures have been removed. `npm run typecheck`, `npm run build`, and `npm run preview` remain. This update checked source code and revised documentation; it was not a new interface acceptance test or a fresh verification of source websites.

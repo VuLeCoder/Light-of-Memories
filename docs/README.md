@@ -1,165 +1,165 @@
-# Tài liệu dự án CUỘI
+# CUỘI Project Documentation
 
-Tài liệu được gom theo công việc để nhóm dễ tra cứu và bảo trì. [README dự án](../README.md) giữ phần giới thiệu, thành viên, cài đặt và kỷ niệm của nhóm. Đây là README duy nhất ngoài root; không tạo README riêng trong `public/`, `src/` hoặc thư mục con của `docs/`.
+Documentation is grouped by task to make it easier for the team to find and maintain. The [project README](../README.md) contains the introduction, team members, setup instructions, and team memories. This is the only README outside the root; do not create separate READMEs in `public/`, `src/`, or subfolders of `docs/`.
 
-Quy định mới nhất trong [AGENTS.md](../AGENTS.md) được ưu tiên, gồm bảo vệ hai PDF và cách trình bày trang kiến thức. Ghi chú lịch sử không thay thế quy định hiện hành.
+The latest rules in [AGENTS.md](../AGENTS.md) take precedence, including protection of the two PDFs and presentation of factual pages. Historical notes do not override current rules.
 
-## Mục lục theo nhóm
+## Documentation by Category
 
-### Dự án và thành viên — `project/`
+### Project and Team — `project/`
 
-- [Phân công và đóng góp](project/team-contributions.md) — đang chờ nhóm bổ sung.
-- [Sử dụng AI](project/ai-usage.md) — các công cụ và vai trò trong nội dung, sách PDF gốc, hình ảnh, mã nguồn và âm thanh.
+- Team roles and contributions are documented in the technical report in the [shared Google Drive folder](https://drive.google.com/drive/folders/1QKIBXyY5a7Y-gi2FXehmMTYo2qvI2Mmz).
+- [AI Usage](project/ai-usage.md) — tools and their roles in content, the original PDF books, visuals, code, and audio.
 
-### Phát triển và bảo trì — `development/`
+### Development and Maintenance — `development/`
 
-- [Công nghệ sử dụng](development/technology-stack.md).
-- [Cấu trúc mã nguồn và tài liệu](development/folder-structure.md).
-- [Quy chuẩn tổ chức nội dung](#quy-chuẩn-tổ-chức-nội-dung).
-- [Sách đồng hành và PDF](#sách-đồng-hành-và-pdf).
+- [Technology Stack](development/technology-stack.md).
+- [Code and Documentation Structure](development/folder-structure.md).
+- [Content Organization Conventions](#content-organization-conventions).
+- [Companion Book and PDFs](#companion-book-and-pdfs).
 
-### Thiết kế và tài nguyên — `design/`
+### Design and Assets — `design/`
 
-- [Tài nguyên hình ảnh](design/image-assets.md).
-- [Phong cách hình ảnh](design/visual-style.md).
-- [Âm thanh](design/audio.md).
-- [Hướng dẫn thiết kế màn chơi](design/level-design-guide.md).
-- [Tài nguyên tĩnh, nguồn gốc và giấy phép](#tài-nguyên-tĩnh).
-- [Nguồn tham khảo khoa học](references.md) — giữ ở cấp `docs/` để khớp quy định biên tập.
+- [Image Assets](design/image-assets.md).
+- [Visual Style](design/visual-style.md).
+- [Audio](design/audio.md).
+- [Chapter Design Guide](design/level-design-guide.md).
+- [Static Assets, Provenance, and Licenses](#static-assets).
+- [Scientific References](references.md) — kept directly under `docs/` to match the editorial rules.
 
-### Hồ sơ năm màn chơi — `levels/`
+### Five Chapter Profiles — `levels/`
 
-- [Mắt Tròn — Surveyor 3](levels/Game1_Surveyor_3.md).
-- [Lấp Lánh — Apollo 11](levels/Game2_Apollo_11.md).
-- [Tai Thính — Apollo 12](levels/Game3_Apollo_12.md).
-- [Bánh Lưới — Apollo 15](levels/Game4_Apollo_15.md).
-- [Gác Trời — LRO](levels/Game5_LRO.md).
+- [Round Eye — Surveyor 3](levels/Game1_Surveyor_3.md).
+- [Twinkle — Apollo 11](levels/Game2_Apollo_11.md).
+- [Sharp Ear — Apollo 12](levels/Game3_Apollo_12.md).
+- [Mesh Wheels — Apollo 15](levels/Game4_Apollo_15.md).
+- [Sky Watcher — LRO](levels/Game5_LRO.md).
 
-Các hồ sơ mô tả luồng và dữ liệu đang triển khai; không thay thế nghiệm thu trên thiết bị thật.
+These profiles describe the implemented flow and data; they do not replace acceptance testing on real devices.
 
-[Ghi chú lịch sử sách đồng hành](#ghi-chú-lịch-sử-sách-đồng-hành) nằm cuối tài liệu này.
+[Historical companion book notes](#historical-companion-book-notes) appear at the end of this document.
 
-## Quy chuẩn tổ chức nội dung
+## Content Organization Conventions
 
-Xem [cấu trúc thư mục và quy ước tổ chức dự án](development/folder-structure.md) để tra cứu cây thư mục gốc, mã nguồn, tài nguyên và tài liệu. Các quy tắc đặt tên, phân chia trách nhiệm, tương thích bản lưu và bảng đối chiếu đường dẫn cũ được tập trung tại đó.
+See the [folder structure and project conventions](development/folder-structure.md) for the root, source, asset, and documentation trees. Naming rules, responsibilities, save compatibility, and the old-to-new path reference are collected there.
 
-## Sách đồng hành và PDF
+## Companion Book and PDFs
 
-Các đường dẫn module trong mục này tính từ `src/content/book/`. Tuyến hiện tại có năm bạn; danh sách và điều kiện truy cập nằm trong `src/content/friends/index.ts`.
+Module paths in this section are relative to `src/content/book/`. The current journey has five friends; the list and access conditions are in `src/content/friends/index.ts`.
 
-### Nội dung và xuất bản
+### Content and Publication
 
-- Nội dung sách và gợi ý riêng của từng bạn nằm trong `src/content/friends/<id>/book-copy.ts`, ảnh trong `images.ts`, nội dung thử thách trong `challenges/`. `catalog.ts` tổng hợp dữ liệu; không sao chép nội dung sang component.
-- `catalog.ts` ghép danh mục với bài đọc trong `extended.ts`, các trang kết trong `ending.ts` và dữ liệu các bạn được khôi phục trong `restored-friends.ts`.
-- Nhãn `kind` phân biệt `fact`, `game`, `fiction`; `publication` phân loại `main` hoặc `appendix` độc lập. Khi không chỉ định vị trí, `fact` mặc định vào phần chính, `game` và `fiction` vào phụ lục; các mục có khai báo riêng giữ nguyên lựa chọn trong dữ liệu.
-- `publication.ts` giữ thứ tự biên tập. `getReadingBook(language)` không nhận tiến trình, trả nội dung đầy đủ cùng nguồn đã loại trùng. Quy tắc phần chính/phụ lục của bản đọc không điều khiển mở khóa sách trên trình duyệt và không tạo lại hai PDF gốc.
-- Nội dung và chú thích có tiếng Việt và tiếng Anh. Nguồn NASA/JPL/ILRS được giữ trong dữ liệu; trạng thái `recorded` ghi nhận xuất xứ, không tự xác nhận toàn bộ nội dung đã được thẩm định.
+- Each friend’s book content and hints are in `src/content/friends/<id>/book-copy.ts`, images in `images.ts`, and challenge content in `challenges/`. `catalog.ts` aggregates the data; do not duplicate content in components.
+- `catalog.ts` combines the catalog with readings in `extended.ts`, ending pages in `ending.ts`, and restored friend data in `restored-friends.ts`.
+- `kind` distinguishes `fact`, `game`, and `fiction`; `publication` independently specifies `main` or `appendix`. When placement is unspecified, `fact` defaults to the main section and `game`/`fiction` to the appendix; explicit placements retain the choices declared in the data.
+- `publication.ts` maintains editorial order. `getReadingBook(language)` takes no progress argument and returns the complete content with deduplicated sources. Main/appendix rules for the reading edition do not control browser book unlocks or regenerate the two original PDFs.
+- Content and captions are available in Vietnamese and English. NASA/JPL/ILRS sources remain in the data; `recorded` records provenance rather than certifying that all content has been reviewed.
 
-### Thứ tự đọc và điều kiện mở
+### Reading Order and Unlock Conditions
 
-`reading-order.ts` xác định thứ tự sách trên trình duyệt. Các bài kiến thức được chèn cạnh nội dung liên quan bằng `insertRealWorldPages` và `insertExtendedPages`; giữ nguyên điều kiện mở chương và vị trí gợi ý. ID trang được chọn phải ổn định khi người chơi nhận thêm ảnh hoặc mở thêm nội dung.
+`reading-order.ts` defines the browser book order. Factual articles are inserted beside related content through `insertRealWorldPages` and `insertExtendedPages`; preserve chapter unlock conditions and hint locations. The selected page ID must remain stable when players receive more photos or unlock more content.
 
-Mở khóa đoạn kết dựa trên `ending-progress.ts`, stage của `HangFinale` và số thẻ đã hiểu. Các ID đã nhận được giữ trong `bookUnlocks`, bổ sung khi đọc bản lưu cũ và giữ khi chơi lại. Đối chiếu logic cụ thể trong module thay vì dùng các phase kết thúc đã ngừng sử dụng. Cả hai bìa luôn có sẵn; đọc sách không làm thay đổi tiến trình trò chơi.
+Ending unlocks depend on `ending-progress.ts`, the `HangFinale` stage, and the number of understood cards. Acquired IDs are kept in `bookUnlocks`, supplemented when reading old saves, and retained on replay. Check the actual module logic rather than relying on retired ending phases. Both covers are always available; reading the book does not change game progress.
 
-### Bố cục và phân trang
+### Layout and Pagination
 
-- Ảnh Tai Thính và Bánh Lưới đi cùng phần kể chuyện ở thân bài; mô tả ảnh dùng cho alt, chú thích hiển thị nguồn, mã ảnh và ngày tháng. Tranh và sơ đồ đứng trước đoạn giải thích liên quan.
-- Đoạn ngắn dùng ảnh căn giữa; đoạn dài có thể để ảnh bên trái và chữ chảy cạnh rồi xuống dưới. Mỗi trang con chọn bố cục sau khi ảnh/phông tải xong và khi đổi kích thước.
-- Phân trang đo các mảnh đoạn văn cùng ảnh, ưu tiên tách ở ranh giới câu và giữ định dạng, nhãn phân loại. Không để ảnh đứng lẻ, tràn khung, mất hoặc lặp nội dung.
-- Trang giới thiệu ngắn dùng `book-prose--intro`, ảnh và chữ căn giữa kể cả trên màn hình nhỏ. Danh sách bạn căn giữa toàn khối, với cột ngôi sao cố định và tên căn trái.
-- Trang kiến thức theo mẫu “Surveyor 3 ngoài đời”: tiêu đề, ảnh tư liệu phù hợp có chú thích nếu có, đoạn văn ngắn và nguồn ở chân trang từ [references.md](references.md). Trang “Có yếu tố trò chơi” không cần hiển thị nguồn. Không đổi điều kiện mở hoặc thêm/bớt trang trong một đợt chỉnh tài liệu.
-- Theo dõi thay đổi của phần nội dung thu gọn/mở rộng để tính lại phân trang. Bộ chọn mục lục dùng ID trang và điều kiện hiện có; số trang hiển thị phụ thuộc bố cục đo được.
+- Sharp Ear and Mesh Wheels images accompany narrative text in the body; image descriptions serve as alt text, while captions display sources, image IDs, and dates. Illustrations and diagrams precede the relevant explanation.
+- Short passages use centered images; long passages may put the image on the left, with text wrapping beside and below it. Each subpage chooses its layout after images/fonts load and on resize.
+- Pagination measures paragraph fragments together with images, preferring sentence boundaries and preserving formatting and classification labels. Avoid stranded images, overflow, missing content, or duplicated content.
+- Short introductions use `book-prose--intro`, with centered images and text even on small screens. The friend list is centered as a whole, with a fixed star column and left-aligned names.
+- Factual pages follow the “Surveyor 3 in Real Life” model: a title, a suitable captioned archival image where available, short paragraphs, and footer sources from [references.md](references.md). Pages labeled “Contains game elements” do not need displayed sources. Do not change unlock conditions or add/remove pages during a documentation update.
+- Observe changes to collapsed/expanded content to recalculate pagination. The table of contents uses existing page IDs and conditions; displayed page counts depend on the measured layout.
 
-### Mở PDF gốc
+### Opening the Original PDFs
 
-`story-pdf.ts` chọn `public/books/Truyen.pdf` (VI) hoặc `public/books/Truyen_en.pdf` (EN) theo ngôn ngữ và base URL của ứng dụng. Nút “Mở sách PDF” / “Open book PDF” mở tab mới với `noopener noreferrer`, không có thuộc tính tải xuống. Thao tác này không sinh PDF, không đọc hoặc sửa tiến trình.
+`story-pdf.ts` selects `public/books/Truyen.pdf` (VI) or `public/books/Truyen_en.pdf` (EN) based on language and the application base URL. The “Open book PDF” button opens a new tab with `noopener noreferrer` and no download attribute. This action does not generate a PDF or read or modify progress.
 
-Bộ sinh PDF cũ, bộ xuất sơ đồ, thư viện jsPDF và phông PDF riêng đã được gỡ. `publication.ts`, `pdf-edition.ts` còn giữ dữ liệu biên tập và tiện ích kiểm tra; `getParagraphBlocks` còn được sách web sử dụng. Cách chia trang và mở khóa sách web độc lập với bản thảo PDF cố định. Mã băm và quy định bảo vệ nằm ở [mục PDF được bảo vệ](#pdf-truyện-gốc-được-bảo-vệ).
+The old PDF generator, diagram exporter, jsPDF library, and dedicated PDF fonts have been removed. `publication.ts` and `pdf-edition.ts` still hold editorial data and checking utilities; the web book still uses `getParagraphBlocks`. Web pagination and unlocks are independent of the fixed PDF manuscripts. Hashes and protection rules appear under [protected PDFs](#protected-original-story-pdfs).
 
-### Kiểm tra khi sửa sách
+### Checks When Editing the Book
 
-Chạy `npm run typecheck` và `npm run build` khi sửa mã nguồn. Kiểm tra trực tiếp tiến trình, đích gợi ý, vị trí trang kiến thức, tải lại, chơi lại, giữ mở khóa và các mốc đoạn kết. Xem cả tiếng Việt/Anh ở kích thước máy tính và điện thoại; việc đọc không được thay đổi bản lưu. Kiểm tra PDF mở tab mới với đúng ngôn ngữ và byte gốc, cả khi triển khai dưới đường dẫn con. Các script kiểm tra chuyên biệt và fixture trình duyệt đã được gỡ ngày 14/11/2026.
+Run `npm run typecheck` and `npm run build` when changing source code. Directly check progress, hint targets, factual page placement, reloading, replay, retained unlocks, and ending milestones. Review Vietnamese/English at desktop and mobile sizes; reading must not change the save. Check that PDFs open in a new tab in the correct language with their original bytes, including deployments under a subpath. Specialized check scripts and browser fixtures were removed on 14 November 2026.
 
-## Tài nguyên tĩnh
+## Static Assets
 
-Xem [cây thư mục public/](development/folder-structure.md#tài-nguyên-public) và [quy ước tổ chức tài nguyên](development/folder-structure.md#quy-ước-tài-nguyên-tĩnh). Các đường dẫn `fonts/`, `images/`, `books/` trong mục này tính từ `public/`; thông tin xuất xứ và giấy phép được giữ bên dưới.
+See the [public/ directory tree](development/folder-structure.md#assets-public) and [asset organization conventions](development/folder-structure.md#static-asset-conventions). Paths beginning with `fonts/`, `images/`, and `books/` in this section are relative to `public/`; provenance and license details are retained below.
 
-### Phông chữ
+### Fonts
 
-Các phông được tải từ Google Fonts ngày 14/11/2026:
+The fonts were downloaded from Google Fonts on 14 November 2026:
 
-- [Lora](https://github.com/google/fonts/tree/main/ofl/lora): độ đậm biến thiên từ 400 đến 700, kiểu đứng và nghiêng, nằm trong `fonts/lora/`.
-- [Be Vietnam Pro](https://github.com/google/fonts/tree/main/ofl/bevietnampro): kiểu đứng với độ đậm 400, 500, 600, 700 và kiểu nghiêng 400, nằm trong `fonts/bevietnampro/`.
+- [Lora](https://github.com/google/fonts/tree/main/ofl/lora): variable weights 400–700, upright and italic, in `fonts/lora/`.
+- [Be Vietnam Pro](https://github.com/google/fonts/tree/main/ofl/bevietnampro): upright weights 400, 500, 600, 700 and italic 400, in `fonts/bevietnampro/`.
 
-Các tệp TTF gốc được chuyển sang WOFF2 bằng fontTools, giữ đầy đủ ký tự và hình dạng chữ. Cả hai họ phông hỗ trợ tiếng Việt. Mỗi thư mục phông chứa giấy phép SIL Open Font License gốc trong `OFL.txt`.
+Original TTF files were converted to WOFF2 using fontTools, preserving all characters and glyph shapes. Both families support Vietnamese. Each font folder contains the original SIL Open Font License in `OFL.txt`.
 
-Khai báo phông nằm ở `src/styles/fonts.css`. Khi cập nhật, cần giữ đầy đủ bộ ký tự; bản rút gọn chỉ có chữ Latin cơ bản sẽ thiếu nguyên âm và dấu tiếng Việt.
+Fonts are declared in `src/styles/fonts.css`. Preserve the full character set when updating; a basic Latin subset would omit Vietnamese vowels and diacritics.
 
-### Minh họa sách đồng hành
+### Companion Book Illustrations
 
-Tài nguyên hiện có trong `images/book/` ngày 14/11/2026:
+Assets present in `images/book/` as of 14 November 2026:
 
-- `front-cover.svg` và `back-cover.svg`: tranh trang trí tự thiết kế cho sách trên trình duyệt, gồm trời đêm, Mặt Trăng và đèn ông sao Việt Nam. Chữ trên bìa được hiển thị riêng theo tiếng Việt hoặc tiếng Anh.
-- `reflector-array.svg`: sơ đồ nhìn từ trên xuống minh họa 100 lăng kính của bộ phản xạ Apollo 11, không theo tỉ lệ thực. Được dùng trong `src/content/book/real-world.ts`; nguồn khoa học được ghi trong [danh mục tham khảo](references.md).
+- `front-cover.svg` and `back-cover.svg`: original decorative artwork for the browser book, featuring the night sky, the Moon, and a Vietnamese star lantern. Cover text is rendered separately in Vietnamese or English.
+- `reflector-array.svg`: a top-down diagram illustrating the Apollo 11 reflector’s 100 prisms, not to scale. Used in `src/content/book/real-world.ts`; scientific sources are listed in the [references](references.md).
 
-Ảnh tư liệu trên các trang đồng hành được dùng lại từ `images/memories/`. Nguồn và thông tin ghi công được giữ trong các mô-đun nội dung tương ứng. Những bản ảnh tư liệu trong `images/book/` không còn được dùng đã được gỡ ngày 14/11/2026.
+Archival images on companion pages are reused from `images/memories/`. Sources and credits remain in the corresponding content modules. Unused archival image copies in `images/book/` were removed on 14 November 2026.
 
-### Bản đồ chiếu sáng cực nam Mặt Trăng
+### Lunar South Pole Illumination Map
 
-Tệp `images/memories/gac-troi/south-pole-illumination.png` là bản đồ chiếu sáng tổng hợp từ nhiều thời điểm của NASA LROC, tải ở chiều rộng 1.000 điểm ảnh và giữ định dạng PNG gốc.
+`images/memories/gac-troi/south-pole-illumination.png` is a NASA LROC illumination map compiled from observations at multiple times, downloaded at 1,000 pixels wide and kept in its original PNG format.
 
-Trong phần Gác Trời, ảnh tư liệu này minh họa nội dung về ánh sáng và bóng tối, đồng thời xuất hiện trong hồi tưởng cuối màn. Đây là bản đồ từ nhiều ảnh LROC, không phải một bức ảnh chụp mô hình trò chơi. Mô hình quan sát bóng tối trong trò chơi không tái tạo quy trình xử lý bản đồ khoa học.
+In Sky Watcher’s chapter, this archival image illustrates light and darkness and also appears in the ending recollection. It is a map assembled from multiple LROC images, rather than a photograph of the game model. The game’s shadow observation model does not reproduce the scientific map processing workflow.
 
-- Ghi công: NASA/GSFC/Arizona State University.
-- [Trang nguồn của NASA](https://science.nasa.gov/resource/illumination-map-of-the-moons-south-pole/).
-- [Ảnh PNG đã tải](https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/09/l/lunar_south_pole_lroc.png?fit=clip&w=1000).
+- Credit: NASA/GSFC/Arizona State University.
+- [NASA source page](https://science.nasa.gov/resource/illumination-map-of-the-moons-south-pole/).
+- [Downloaded PNG image](https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/09/l/lunar_south_pole_lroc.png?fit=clip&w=1000).
 
-### PDF truyện gốc được bảo vệ
+### Protected Original Story PDFs
 
-Hai bản thảo trong `books/` là tài liệu cố định. Không sửa, tạo lại, tối ưu, thay thế, đổi tên hoặc xóa các tệp này:
+The two manuscripts in `books/` are fixed documents. Do not edit, regenerate, optimize, replace, rename, or delete these files:
 
-| Tệp | SHA-256 |
+| File | SHA-256 |
 | --- | --- |
 | `books/Truyen.pdf` | `856e77f59d739e0f9a6a436576612f13b46575fa5918515c7e5107e8da42cc4e` |
 | `books/Truyen_en.pdf` | `045212a3497522d4badcac36b3a4cf065180fc51498073cf9a680124f46c6213` |
 
-Xem quy định đầy đủ trong [AGENTS.md](../AGENTS.md). Nội dung đồng hành được điều chỉnh quanh các bản thảo này.
+See the full rules in [AGENTS.md](../AGENTS.md). Companion content is adapted around these manuscripts.
 
-## Ghi chú lịch sử sách đồng hành
+## Historical Companion Book Notes
 
-Các ghi chú sau được hợp nhất từ README sách cũ. Số lượng trang, tài nguyên, quy tắc xuất PDF và mô tả các tuyến ít bạn hơn chỉ phản ánh thời điểm ghi nhận; không dùng làm tiêu chí cho bản hiện tại. Tên Apollo 17 dưới đây thuộc nguồn tư liệu lịch sử, không phải tên thiết bị của màn Bánh Lưới — Apollo 15.
+The following notes were merged from the old book README. Page counts, assets, PDF export rules, and descriptions of journeys with fewer friends reflect only the time recorded; they are not acceptance criteria for the current version. Apollo 17 below refers to historical source material, rather than the equipment in Mesh Wheels’ Apollo 15 chapter.
 
-### Tư liệu và biên tập ngày 14/11/2026
+### Sources and Editing on 14 November 2026
 
-Bản cũ chèn các trang thực tế song ngữ sau trang kể chuyện/thử thách tương ứng, với kiểu ảnh `above` hoặc `wrap`. `useBookImageLayout` đo lại sau khi tải ảnh/phông và thay đổi kích thước; trang dài chuyển ảnh sang trái để chữ chảy cạnh và dưới ảnh. Hai bài mẫu đá đi liên tiếp: đá, rồi đất cam.
+The old edition inserted bilingual factual pages after the corresponding story/challenge page, using `above` or `wrap` image layouts. `useBookImageLayout` remeasured after images/fonts loaded and on resize; long pages moved images left so text could wrap beside and below them. The two sample articles appeared consecutively: rock, then orange soil.
 
-Hồ sơ nguồn ảnh thời điểm đó gồm:
+Image provenance records at the time included:
 
-- `images/book/apollo17-route.jpg`: NASA, bản đồ tuyến đi Apollo 17, bài *50 Years Ago: Apollo 17 Lands at Taurus-Littrow*.
-- `images/book/nansen-rock.jpg`: NASA AS17-137-20901, cùng bài trên.
-- `images/book/orange-soil.jpg`: NASA ARES Lunar Disk 80, ảnh EDDISK 80_Page_4_Image_0001.jpg.
-- `images/book/apollo12-seismogram.png`: [NASA Apollo 12 Mission Report](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf), trang in 3-10, hình 3-8, trang PDF 19; trích xuất giữ nguyên trục, thang thời gian và chú thích. Báo cáo nêu khoảng 50 phút, tư liệu lịch sử ALSEP nêu hơn 55 phút. Đây là dữ liệu thật, khác đồ thị minh họa trong trò chơi.
+- `images/book/apollo17-route.jpg`: NASA, Apollo 17 traverse map, from *50 Years Ago: Apollo 17 Lands at Taurus-Littrow*.
+- `images/book/nansen-rock.jpg`: NASA AS17-137-20901, from the same article.
+- `images/book/orange-soil.jpg`: NASA ARES Lunar Disk 80, image EDDISK 80_Page_4_Image_0001.jpg.
+- `images/book/apollo12-seismogram.png`: [NASA Apollo 12 Mission Report](https://www.nasa.gov/wp-content/uploads/2025/11/a12-missionreport.pdf), printed page 3-10, figure 3-8, PDF page 19; extracted with axes, time scale, and annotations intact. The report states about 50 minutes, while ALSEP historical material states more than 55 minutes. This is real data, distinct from the illustrative graph in the game.
 
-Các đường dẫn trên là hồ sơ xuất xứ cũ, không phải danh sách tài nguyên còn tồn tại. Ảnh khác dùng lại tư liệu NASA của dự án; tranh nhân vật hư cấu không được trình bày như ảnh thiết bị thật. Một đợt cũ dùng sáu ảnh lưu trữ: bốn ảnh tải mới và hai ảnh tái sử dụng. Các bản không còn dùng đã được gỡ ngày 14/11/2026; xem [tài nguyên hiện có](#minh-họa-sách-đồng-hành).
+These paths are historical provenance records, not a list of assets still present. Other images reused the project’s NASA material; fictional character illustrations were not presented as photographs of real equipment. An earlier pass used six archival images: four newly downloaded and two reused. Unused copies were removed on 14 November 2026; see [current assets](#companion-book-illustrations).
 
-Đợt biên tập ngày 14/11/2026 bỏ tám trang trùng: dụng cụ Surveyor, đo khoảng cách laser, thiết bị ALSEP, nguồn rung, rung do va chạm, bánh xe, giới hạn đi bộ về và di sản xe. Giải thích được đưa vào trang gốc, gồm ảnh dụng cụ/ALSEP, độ mềm bánh, giới hạn hỗ trợ sự sống, thủy triều và nhiệt. Nguồn NASA về bánh xe và đi bộ về Apollo 17 được giữ cho bản web và danh mục.
+The editing pass on 14 November 2026 removed eight duplicate pages: Surveyor tools, laser ranging, ALSEP equipment, vibration sources, impact vibrations, wheels, walk-back limits, and rover legacy. Their explanations were incorporated into the original pages, including tool/ALSEP images, wheel flexibility, life support limits, tides, and heat. NASA sources on Apollo 17 wheels and walk-back limits were retained for the web edition and catalog.
 
-Phần mở chương giới thiệu người bạn tưởng tượng rồi dẫn sang thiết bị thật; hướng dẫn sửa kính dẫn đến trang lăng kính, nhiệm vụ lấy mẫu dẫn đến hai trang mẫu. Trang địa chấn ký giải thích ba hướng đo và thang thời gian thay vì lặp định nghĩa cảm biến. Chú thích ảnh giữ ngữ cảnh nhận diện. Bản biên tập khi ấy từng có 44 trang, sau đó tuyến ba bạn có 26 trang; phần hư cấu và hướng dẫn game từng được xếp vào phụ lục của bản đọc.
+Chapter openings introduced the imaginary friend before moving to the real equipment; mirror repair instructions led to the prism page, and sample collection led to the two sample pages. The seismogram page explained three measurement directions and the time scale rather than repeating the sensor definition. Captions retained identification context. That edition once had 44 pages, followed by a three-friend journey with 26 pages; fiction and game instructions were once placed in the reading edition’s appendix.
 
-### Rà soát ngày 14/11/2026
+### Review on 14 November 2026
 
-- Giữ 26 ID và điều kiện mở thời điểm đó; bỏ ba khối ảnh lặp, còn 49 khối song ngữ.
-- Phân biệt chuyến thăm Apollo 12, nghiên cứu vật liệu mang về và quan sát từ quỹ đạo. Thay ảnh kính phản xạ lặp bằng SVG gốc nhìn từ trên xuống, có nhãn rõ.
-- Giải thích cách đo trước, chỉ lộ đáp án số khi được yêu cầu. Các trang pha trộn lúc đó giữ nguồn; quy ước hiển thị nguồn mới nhất tuân theo `AGENTS.md`.
-- Giữ kiến thức T02/T03 khi mở gợi ý. T02 hiển thị cả hai ảnh có ngày và đánh số phần ba; phần đáp án chú giải chờ hoàn thành.
-- Chân dung Gác Trời và đoạn căn giữa dành cho trang giới thiệu. Mục lục không tự mở khóa hoặc thay đổi bản lưu; mở phần trả lời phải tính lại phân trang.
+- Retained the 26 IDs and unlock conditions in use at the time; removed three duplicate image blocks, leaving 49 bilingual blocks.
+- Distinguished the Apollo 12 visit, research on returned materials, and orbital observations. Replaced a repeated reflector photograph with an original, clearly labeled top-down SVG.
+- Explained the measurement method first, revealing numerical answers only on request. Mixed-content pages retained sources at that time; current source display rules follow `AGENTS.md`.
+- Kept T02/T03 knowledge content when opening hints. T02 displayed both dated photos and numbered the third section; annotated answers waited until completion.
+- Sky Watcher’s portrait and centered text were reserved for the introduction. The table of contents did not unlock content or change saves; expanding an answer required repagination.
 
-Bản PDF sinh tự động từng dùng các khung lặp, sau đó chuyển sang bản đọc ưu tiên kiến thức. Những bộ sinh này đã bị gỡ. Mô tả cũ về bìa dùng chung giữa web/PDF, không có chân trang chạy và bìa sau là trang PDF cuối chỉ thuộc bộ sinh cũ.
+The automatically generated PDF once used repeating frames, then moved to a reading edition that prioritized factual content. Those generators have been removed. Old descriptions of shared web/PDF covers, no running footer, and a back cover as the final PDF page apply only to the old generator.
 
-### Các bản cập nhật ngày 14/11/2026
+### Updates on 14 November 2026
 
-Ngày 14/11/2026, README cũ ghi 40 mục chuẩn gồm hai bìa và 95 khối song ngữ, trong tuyến mở đầu, Surveyor 3, Apollo 11, LRO và đoạn kết. Bản đó mô tả mỗi chương có hai bài chuyện thật có ảnh, đã bỏ bảy mục mở rộng hư cấu và bỏ chỉ tiêu số từ từng chương. Các số lượng này không đại diện cho tuyến năm bạn hiện nay.
+On 14 November 2026, the old README recorded 40 canonical entries, including two covers and 95 bilingual blocks, across the opening, Surveyor 3, Apollo 11, LRO, and ending. That version described two illustrated real-world stories per chapter, removal of seven fictional extended entries, and removal of per-chapter word targets. Those counts do not represent the current five-friend journey.
 
-Bìa trước luôn mở đầu khi vào tuyến đọc; lối vào từ chương hoặc gợi ý chọn trang liên quan. Bìa sau có bảng màu đêm riêng và không có khối kể chuyện. Cả hai bìa luôn truy cập được; nội dung mới xuất hiện giữa hai bìa. Các ID mở khóa bìa cũ vẫn tương thích nhưng không giới hạn việc đọc bìa.
+The front cover always opened the reading journey; entry from a chapter or hint selected a relevant page. The back cover had its own night palette and no narrative block. Both covers were always available, with newly unlocked content appearing between them. Old cover unlock IDs remained compatible but did not restrict reading the covers.
 
-Ghi chú ngày 14/11/2026 bổ sung cách đo từng mảnh đoạn văn cùng ảnh và giữ định dạng khi phân trang, áp dụng cho ảnh Tai Thính/Bánh Lưới. Một số ghi chú cũ còn mô tả xuất PDF theo tiến trình; bản hiện tại chỉ mở hai bản thảo cố định trong tab mới, theo [quy định PDF](#mở-pdf-gốc).
+Notes dated 14 November 2026 added measurement of paragraph fragments together with images and preservation of formatting during pagination, applying to Sharp Ear/Mesh Wheels images. Some earlier notes still described progress-based PDF export; the current version only opens the two fixed manuscripts in a new tab, under the [PDF rules](#opening-the-original-pdfs).

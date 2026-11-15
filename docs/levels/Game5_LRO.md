@@ -1,129 +1,129 @@
-# Câu chuyện LRO — Gác Trời (màn 5)
+# The Story of LRO — Sky Watcher (Chapter 5)
 
-Bản tổng hợp theo mã nguồn hiện tại, cập nhật **14/11/2026**. Gác Trời là **người bạn thứ năm**, sau Mắt Tròn, Lấp Lánh, Tai Thính và Bánh Lưới. Tài liệu mô tả nội dung đã triển khai, không phải kế hoạch màn mới. Lời thoại Việt/Anh giữ tại [module nội dung](../../src/content/friends/gac-troi/dialogue.ts).
+Consolidated from the current source code, updated **14 November 2026**. Sky Watcher is the **fifth friend**, after Round Eye, Twinkle, Sharp Ear, and Mesh Wheels. This document describes implemented content, not a new chapter plan. Vietnamese/English dialogue remains in the [content module](../../src/content/friends/gac-troi/dialogue.ts).
 
-## 1. Thông tin thật về LRO
+## 1. Facts about LRO
 
-Gác Trời nhân cách hóa **Lunar Reconnaissance Orbiter (LRO)**, tàu quan sát Mặt Trăng từ quỹ đạo. Hệ máy ảnh **LROC** ghi lại bề mặt, giúp nghiên cứu địa hình và các dấu vết tại những khu vực đã được thám hiểm. Ảnh quỹ đạo không phải ảnh cận cảnh: không thể nhìn rõ mọi vật nhỏ, cũng không dùng ảnh toàn khu Apollo 11 để khẳng định đã nhìn thấy chi tiết bảng phản xạ laser.
+Sky Watcher personifies the **Lunar Reconnaissance Orbiter (LRO)**, which observes the Moon from orbit. The **LROC** camera system records the surface, supporting studies of terrain and traces at explored sites. Orbital images are not close-ups: they cannot resolve every small object, and a broad Apollo 11 site image cannot establish that the laser reflector array is visible in detail.
 
-Phần kiến thức trong game kể ba công việc: nhận ra địa điểm quen thuộc từ trên cao, so sánh ảnh để tìm thay đổi và nghiên cứu ánh sáng/bóng tối gần cực. T02 dùng ảnh trước/sau vụ va chạm ngày **17/03/2013**, với hố mới rộng khoảng **18 m** theo nội dung đang dùng. Kính thiên văn trên Trái Đất ghi nhận chớp sáng; ảnh LRO sau đó giúp tìm chiếc hố.
+The game’s factual content covers three activities: recognizing familiar places from above, comparing images to find changes, and studying light/shadow near the poles. T02 uses before/after images of the **17 March 2013** impact, with a new crater about **18 m** wide according to the current content. Telescopes on Earth recorded the flash; later LRO images helped locate the crater.
 
-Cuội, tàu biết nói qua đèn, bản đồ tới chị Hằng và ánh sáng thắp đèn là hư cấu. Cuội vẫn ở trên mặt đất khi trò chuyện; cảnh quỹ đạo là minh họa không theo tỉ lệ. Ba hướng nắng ở T03 là mô hình giáo dục, không đủ chứng minh một địa điểm thật bị che nắng vĩnh viễn.
+Cuội, the spacecraft speaking through the lantern, the map to Hằng, and the lantern’s light are fictional. Cuội remains on the ground while talking; the orbital scene is an illustration not to scale. T03’s three sunlight directions form an educational model and cannot establish that a real location is permanently shadowed.
 
-Các dữ kiện trên được tổng hợp từ nội dung và hồ sơ nguồn của dự án; lần viết tài liệu này không thực hiện xác minh độc lập trên website nguồn.
+These facts were compiled from project content and source records; this documentation pass did not independently verify the source websites.
 
-## 2. Bối cảnh dựng game
+## 2. Game Context
 
-Sau Bánh Lưới, Cuội gặp người bạn bay trên cao để tìm đường tới chị Hằng. Gác Trời giới thiệu góc nhìn từ quỹ đạo, mời Cuội nhìn lại những nơi đã qua, rồi cùng quan sát một thay đổi mới và bóng tối trong miệng hố.
+After Mesh Wheels, Cuội meets the friend flying overhead to find the way to Hằng. Sky Watcher introduces the orbital view, invites Cuội to revisit places already explored, then observes a new change and shadows inside a crater together.
 
-Cảnh dùng nền Mặt Trăng và tàu quan sát trên cao; chân dung minh họa phục vụ thoại/sách. Không dựng cuộc gặp thành việc Cuội đứng cạnh tàu trên quỹ đạo. Nội dung hình ảnh và nhãn truy cập nhắc rõ vị trí Cuội trên mặt đất và giới hạn tỉ lệ minh họa.
+The scene uses a lunar background with the observing spacecraft overhead; the illustrated portrait supports dialogue/book content. Do not depict Cuội standing beside the spacecraft in orbit. Visual content and accessibility labels explicitly state that Cuội is on the ground and the illustration is not to scale.
 
-Luồng chính: **gặp bạn → T01 ghép ký ức → tổng kết → T02 so sánh ảnh → câu chuyện va chạm → T03 trực gác → hồi tưởng ba trang → cảm ơn, trao ánh sáng → gặp chị Hằng**. [Giao diện màn](../../src/components/friends/gac-troi/GacTroiLevel.tsx), [cảnh nền](../../src/game/scenes/gac-troi/scenery.ts).
+Main flow: **meet the friend → T01 match memories → summary → T02 compare images → impact story → T03 shadow watch → three-page recollection → thanks and light gift → meet Hằng**. [Chapter interface](../../src/components/friends/gac-troi/GacTroiLevel.tsx), [background scene](../../src/game/scenes/gac-troi/scenery.ts).
 
-## 3. Nội dung sách đồng hành đang có
+## 3. Current Companion Book Content
 
-Sách lưu kiến thức và ảnh theo ID ổn định. Mở khóa trang không đồng nghĩa tự hoàn thành thử thách; việc mở khóa không tự đổi trang đang đọc.
+The book keeps facts and images under stable IDs. Unlocking a page does not complete a challenge or automatically change the current reading page.
 
-| ID | Mốc mở | Nội dung |
+| ID | Unlock Milestone | Content |
 | --- | --- | --- |
-| `gac-book-orbit` | Chương đã được mở | Giới thiệu Gác Trời trong trò chơi |
-| `gac-book-sites` | Qua cuộc gặp hoặc đã có quyền đọc tương ứng | “Bốn người bạn, ba vùng đất”, gợi ý T01 |
-| `gac-book-impact` | Bắt đầu so sánh ảnh hoặc đã có quyền đọc | “Một dấu vết mới”, hướng dẫn T02 |
-| `gac-book-impact.story` | Hoàn tất T02 hoặc đã có quyền đọc | “Chớp sáng và chiếc hố”, kiến thức thật |
-| `gac-book-light` | Tới bài quan sát T03 hoặc đã có quyền đọc tương ứng | “Ánh sáng và bóng tối”, gộp nội dung trang bản đồ cũ |
-| `lro-notebook`, `lro-notebook-mapping` | `completedOnce` | Hai trang sự kiện thật về LRO, LROC và LOLA |
+| `gac-book-orbit` | Chapter unlocked | Introduction to Sky Watcher in the game |
+| `gac-book-sites` | Encounter completed or corresponding reading entitlement acquired | “Four Friends, Three Regions”, T01 hint |
+| `gac-book-impact` | Image comparison started or reading entitlement acquired | “A New Trace”, T02 guidance |
+| `gac-book-impact.story` | T02 completed or reading entitlement acquired | “The Flash and the Crater”, factual content |
+| `gac-book-light` | T03 observation task reached or corresponding reading entitlement acquired | “Light and Shadow”, incorporating the old map page |
+| `lro-notebook`, `lro-notebook-mapping` | `completedOnce` | Two factual pages about LRO, LROC, and LOLA |
 
-Bốn ID `gac-memory-*` vẫn có thể được ghi trong bản lưu khi ghép, nhưng không còn tạo bốn trang riêng trong sách trình duyệt. `gac-book-map` là quyền đọc tương thích; nội dung hiển thị tại `gac-book-light`, không tạo mục thứ tám. Không dùng số ID trong `bookUnlocks` làm số trang nhìn thấy.
+The four `gac-memory-*` IDs may still be saved during matching but no longer create four separate browser book pages. `gac-book-map` is a compatibility reading entitlement; its content appears in `gac-book-light` without creating an eighth entry. Do not count IDs in `bookUnlocks` as visible pages.
 
-Gợi ý T01 tới `gac-book-sites`; T02 tới trang so sánh; T03 tới `gac-book-light`. Riêng `t03-intro` sau khi xong T02 vẫn chọn `gac-book-impact.story`. Nguồn khai báo: [lời sách](../../src/content/friends/gac-troi/book-copy.ts), [tiến trình](../../src/content/friends/gac-troi/progress.ts), [thứ tự trình đọc](../../src/content/book/reading-order.ts).
+T01 hints open `gac-book-sites`; T02 opens the comparison page; T03 opens `gac-book-light`. Specifically, `t03-intro` after T02 still selects `gac-book-impact.story`. Definitions: [book text](../../src/content/friends/gac-troi/book-copy.ts), [progress](../../src/content/friends/gac-troi/progress.ts), [reader order](../../src/content/book/reading-order.ts).
 
-## 4. Chi tiết các thử thách
+## 4. Challenge Details
 
-### T01 — Ghép ký ức
+### T01 — Match Memories
 
-Chọn một người bạn rồi chọn vùng đất tương ứng trong ba vùng ảnh quỹ đạo:
+Choose a friend, then the corresponding region among three orbital image areas:
 
-| Người bạn | Đáp án | Câu chuyện sau khi ghép |
+| Friend | Answer | Story after Matching |
 | --- | --- | --- |
-| Mắt Tròn — Surveyor 3 | Apollo 12 · Đại Dương Bão | Phi hành gia ghé thăm năm 1969, mang camera và một số bộ phận về nghiên cứu; ảnh Conrad cạnh Surveyor 3 |
-| Lấp Lánh | Apollo 11 · Biển Yên Tĩnh | Bộ phản xạ trả ánh sáng laser về phía nguồn; ảnh quỹ đạo có chú thích khu Apollo 11 |
-| Tai Thính | Apollo 12 · Đại Dương Bão | PSE thuộc cụm ALSEP, đo rung động |
-| Bánh Lưới | Apollo 15 · Hadley–Apennine | Xe chở phi hành gia năm 1971, dấu vết được nhìn từ quỹ đạo |
+| Round Eye — Surveyor 3 | Apollo 12 · Ocean of Storms | Astronauts visited in 1969 and returned the camera and other parts for study; photo of Conrad beside Surveyor 3 |
+| Twinkle | Apollo 11 · Sea of Tranquility | The reflector returns laser light toward its source; annotated orbital image of the Apollo 11 site |
+| Sharp Ear | Apollo 12 · Ocean of Storms | PSE belongs to ALSEP and measures vibrations |
+| Mesh Wheels | Apollo 15 · Hadley–Apennine | The rover carried astronauts in 1971; tracks are seen from orbit |
 
-Chỉ cặp đúng mới ghi `matched` và ghi quyền ký ức vào bản lưu; lời kể của cặp xuất hiện trong bài ghép. Người chơi phải xem xong câu chuyện của cặp vừa ghép để ghi `seen` trước khi ghép tiếp. Đủ bốn câu chuyện mới chuyển tổng kết và mở lời dẫn T02. Chọn sai không tăng tiến trình; không có điều kiện thời gian hay điểm phạt trong mô hình.
+Only correct pairs record `matched` and memory entitlements in the save; each pair’s story appears within the matching task. Players must finish the matched pair’s story to record `seen` before matching again. All four stories are required to reach the summary and unlock the T02 introduction. Incorrect choices do not advance progress; the model has no time condition or score penalty.
 
-[Định nghĩa cặp và lời kể](../../src/content/friends/gac-troi/challenges/matching.ts), [giao diện](../../src/components/friends/gac-troi/GacTroiMatching.tsx).
+[Pairs and stories](../../src/content/friends/gac-troi/challenges/matching.ts), [interface](../../src/components/friends/gac-troi/GacTroiMatching.tsx).
 
-### T02 — Đốm mới trong bức ảnh
+### T02 — A New Spot in the Image
 
-Hai ảnh cùng vùng đất đặt cạnh nhau: **trước 12/02/2012**, **sau 28/07/2013**. Ngày va chạm 17/03/2013 được ghi riêng, không nhầm với ngày chụp. Người chơi đối chiếu ba vùng đánh số rồi chọn vùng có đốm mới; đáp án là **vùng 2**.
+Two images of the same region appear side by side: **before, 12 February 2012**, and **after, 28 July 2013**. The impact date, 17 March 2013, is recorded separately from capture dates. Players compare three numbered regions and choose the one with the new spot; the answer is **region 2**.
 
-Nút trả lời chỉ mở khi cả hai ảnh sẵn sàng. Hover/focus đánh dấu vùng tương ứng, không ghi đáp án. Chọn sai nhắc nhìn lại vùng giữa; chọn đúng chuyển một lần sang ảnh sau có khoanh vùng và bốn lượt thoại giải thích. Đọc hết mới ghi `t02Done` và mở T03. Không yêu cầu bấm chính xác một điểm nhỏ trên ảnh.
+Answer buttons unlock only when both images are ready. Hover/focus highlights the corresponding region without recording an answer. Incorrect choices prompt another look at the middle region; a correct answer switches once to the marked after-image and four explanatory dialogue turns. Only finishing them records `t02Done` and unlocks T03. Players do not have to click a tiny precise point on the image.
 
-Ảnh dùng `impact2013-before.webp`, `impact2013-after.webp`; nguồn NASA SVS 4242. [Dữ liệu](../../src/content/friends/gac-troi/challenges/impact.ts), [giao diện](../../src/components/friends/gac-troi/GacTroiImpact.tsx).
+Images: `impact2013-before.webp`, `impact2013-after.webp`; source NASA SVS 4242. [Data](../../src/content/friends/gac-troi/challenges/impact.ts), [interface](../../src/components/friends/gac-troi/GacTroiImpact.tsx).
 
-### T03 — Trực gác vùng tối
+### T03 — Keeping Watch over the Dark Region
 
-Bài hiện tại là **mặt cắt miệng hố có thanh kéo hướng nắng**, không phải bài đi thắp ba ngọn đèn hoặc chọn nhánh đường. Người chơi kéo nắng qua ba hướng, quan sát **Thềm trái / Đáy sâu / Thềm phải**, rồi chọn vùng vẫn tối qua cả ba hướng và bấm **Ghi vào sổ trực**.
+The current task is a **crater cross-section with a sunlight direction slider**, not walking to light three lamps or selecting route branches. Players move sunlight through three directions, observe the **Left Ledge / Deep Floor / Right Ledge**, then select the region that stays dark in all three directions and press **Record in the Watch Log**.
 
-Sổ lưu các hướng đã quan sát. Chưa đủ ba hướng thì chưa chọn được vùng; chưa chọn vùng thì chưa ghi sổ. Đáp án là **Đáy sâu**. Nếu chọn thềm, bài đưa về hướng nắng làm thềm ấy sáng để người chơi xem lại. Sai được sửa, không mất các hướng đã quan sát.
+The log stores observed directions. A region cannot be selected until all three have been observed; recording requires a selection. The answer is **Deep Floor**. Selecting a ledge returns sunlight to a direction that illuminates that ledge for review. Incorrect answers can be corrected without losing observed directions.
 
-Ghi đúng đặt `shadowWatch.recorded`, giữ đủ ba `routeLandmarks` để tương thích điều kiện tiến trình, mở `gac-book-map`, rồi cho bấm **Tiếp tục** tới hồi tưởng. Các ID mốc đường được giữ trong bản lưu không có nghĩa người chơi vừa thực hiện bài tìm đường cũ.
+A correct entry sets `shadowWatch.recorded`, retains all three `routeLandmarks` for progress compatibility, unlocks `gac-book-map`, then enables **Continue** to the recollection. Saved landmark IDs do not mean players have just performed the old route-finding task.
 
-Hình minh họa có thành hố che đĩa Mặt Trời và các tia dừng tại địa hình; đây là sơ đồ, không phải mô phỏng chiếu sáng của một hố thật. Hồi tưởng giải thích rằng kết luận khoa học cần nhiều ảnh và dữ liệu địa hình. [Giao diện và mô hình](../../src/components/friends/gac-troi/GacRestLight.tsx), [phản hồi](../../src/content/friends/gac-troi/challenges/shadow-watch.ts).
+The illustration shows crater walls obscuring the solar disk and rays stopping at terrain; this is a diagram, not an illumination simulation of a real crater. The recollection explains that scientific conclusions require multiple images and terrain data. [Interface and model](../../src/components/friends/gac-troi/GacRestLight.tsx), [feedback](../../src/content/friends/gac-troi/challenges/shadow-watch.ts).
 
-## 5. Đoạn kết, phần thưởng và thông điệp
+## 5. Ending, Rewards, and Message
 
-Sau lời cảm ơn ca trực, Gác Trời kể lại ba trang:
+After thanks for the watch, Sky Watcher tells three pages:
 
-1. **Những nơi quen từ trên cao:** ảnh khu Apollo 12/Surveyor 3 có chú thích; nhắc giới hạn nhìn vật nhỏ.
-2. **Mặt Trăng vẫn đổi thay:** ảnh sau va chạm; nối chớp sáng quan sát từ Trái Đất với hố được tìm trên ảnh.
-3. **Một ca trực vùng tối:** bản đồ chiếu sáng cực nam từ nhiều ảnh LROC; phân biệt quan sát mô hình với kết luận khoa học.
+1. **Familiar Places from Above:** annotated Apollo 12/Surveyor 3 site image; notes the limits of resolving small objects.
+2. **The Moon Keeps Changing:** post-impact image; connects the flash observed from Earth with the crater located in images.
+3. **A Watch over the Dark Region:** south pole illumination map from multiple LROC images; distinguishes model observations from scientific conclusions.
 
-Có trang trước/trang tiếp, chú thích và credit; ảnh lỗi có nút tải lại. Sau trang cuối trở lại lời chia tay, Gác Trời gửi ánh sáng vào đèn. Hoàn tất chia tay mới ghi `farewellDone` và `completedOnce`.
+Previous/Next Page controls, captions, and credits are available; image errors offer retry. After the final page, the farewell resumes and Sky Watcher sends light into the lantern. Only completing the farewell records `farewellDone` and `completedOnce`.
 
-Tuyến hiện tại có năm bạn, mỗi bạn đóng góp một cánh: **Mắt Tròn × 1 + Lấp Lánh × 1 + Tai Thính × 1 + Bánh Lưới × 1 + Gác Trời × 1 = 5/5**. Gác Trời thắp cánh thứ năm; `App.tsx` tính số sao từ số bạn có `completedOnce`.
+The current journey has five friends, each contributing one point: **Round Eye × 1 + Twinkle × 1 + Sharp Ear × 1 + Mesh Wheels × 1 + Sky Watcher × 1 = 5/5**. Sky Watcher lights the fifth point; `App.tsx` calculates the star count from friends with `completedOnce`.
 
-Trong `App.tsx`, lần chia tay đầu kích hoạt chuyển cảnh ánh sao rồi mở cuộc gặp chị Hằng, lưu `hangArrival`. Đoạn kết tiếp nối gồm trò chuyện dưới gốc đa, mini game “Bạn hay rác?”, trở về An và bà, giới thiệu thành viên và về lộ trình. Đây là phần kết chung của câu chuyện; hoàn thành chương Gác Trời và hoàn thành toàn truyện có dấu lưu riêng.
+In `App.tsx`, the first farewell triggers the starlight transition, then opens the meeting with Hằng and saves `hangArrival`. The continuing finale includes conversation under the banyan tree, the “Friend or Trash?” mini game, returning to An and Grandma, team introductions, and the journey map. This is the shared story ending; Sky Watcher chapter completion and whole-story completion have separate save flags.
 
-Giao diện hậu kết Gác Trời vẫn có **Xem lại đoạn kết / Chơi lại / Về lộ trình**. Xem lại đặt phase về hồi tưởng; không phải con trỏ xem lại độc lập. Chơi lại tạo lượt mới, giữ `hangArrival`, quyền hoàn thành chương/toàn truyện và các mục sách đã mở; không cộng trùng sao. Mã T04 tìm triền đất, khe đá và cây đa vẫn tồn tại, nhưng không dùng sự hiện diện của mã đó để mô tả luồng tự động hiện tại.
+Sky Watcher’s post-ending interface still offers **Review Ending / Replay / Back to Journey**. Reviewing resets the phase to recollection rather than using an independent review cursor. Replay creates a new attempt while retaining `hangArrival`, chapter/story completion entitlements, and unlocked book entries; stars are not duplicated. T04 code for finding the slope, rock crevice, and banyan tree remains, but its presence does not describe the current automatic flow.
 
-Thông điệp: nhìn kỹ và đối chiếu giúp đọc được câu chuyện trong những dấu vết nhỏ; góc nhìn từ xa có ích nhưng luôn có giới hạn.
+Message: looking carefully and comparing can reveal stories in small traces; distant views are useful but always have limits.
 
-[Hồi tưởng](../../src/components/friends/gac-troi/GacTroiEnding.tsx), [nội dung ba trang](../../src/content/friends/gac-troi/ending-copy.ts), [điều phối](../../src/App.tsx), [kết chung](../../src/components/ending/HangFinale.tsx).
+[Recollection](../../src/components/friends/gac-troi/GacTroiEnding.tsx), [three-page content](../../src/content/friends/gac-troi/ending-copy.ts), [coordination](../../src/App.tsx), [shared finale](../../src/components/ending/HangFinale.tsx).
 
-## 6. Bảng đối chiếu thông tin và nguồn
+## 6. Facts and Sources
 
-Các liên kết dưới đây lấy từ hồ sơ nội dung của dự án.
+The links below come from the project’s content records.
 
-| Thông tin / tư liệu | Trong game | Nguồn |
+| Fact / Material | In the Game | Source |
 | --- | --- | --- |
-| LRO và hệ thiết bị | Giới thiệu, sách quỹ đạo | [NASA — Spacecraft and Instruments](https://science.nasa.gov/mission/lro/spacecraft-and-instruments/) |
-| Khu Apollo 11 nhìn từ quỹ đạo | T01, ký ức Lấp Lánh | [NASA — Apollo 11 Landing Site](https://science.nasa.gov/resource/apollo-11-landing-site/) |
-| Apollo 12 và Surveyor 3 nhìn từ quỹ đạo | T01, hồi tưởng | [NASA — First Look](https://science.nasa.gov/photojournal/first-look-apollo-12-and-surveyor-3/) |
-| Conrad cạnh Surveyor 3, AS12-48-7134 | Câu chuyện Mắt Tròn | [NASA — Apollo 12 and Surveyor 3](https://science.nasa.gov/resource/apollo-12-and-surveyor-3/) |
-| Cặp ảnh va chạm 2013 | T02 | [NASA SVS 4242](https://svs.gsfc.nasa.gov/4242/) |
-| Tham chiếu địa hình/chiếu sáng | Sơ đồ T03 và hồi tưởng | [Nguồn LRO trong references.md](../references.md) |
-| Khu Apollo 15 từ quỹ đạo | Cặp Bánh Lưới trong T01 | [LROC — Apollo 15](https://lroc.im-ldi.com/images/491) |
-| Ba hướng nắng, ba vùng chọn, đáp án cố định | Bài chơi T03 | Mô hình giáo dục trong mã nguồn |
-| Trò chuyện qua đèn, trao sáng, bản đồ tới chị Hằng | Kịch bản | Sáng tác của trò chơi |
+| LRO and its instruments | Introduction, orbit book page | [NASA — Spacecraft and Instruments](https://science.nasa.gov/mission/lro/spacecraft-and-instruments/) |
+| Apollo 11 site from orbit | T01, Twinkle memory | [NASA — Apollo 11 Landing Site](https://science.nasa.gov/resource/apollo-11-landing-site/) |
+| Apollo 12 and Surveyor 3 from orbit | T01, recollection | [NASA — First Look](https://science.nasa.gov/photojournal/first-look-apollo-12-and-surveyor-3/) |
+| Conrad beside Surveyor 3, AS12-48-7134 | Round Eye story | [NASA — Apollo 12 and Surveyor 3](https://science.nasa.gov/resource/apollo-12-and-surveyor-3/) |
+| 2013 impact image pair | T02 | [NASA SVS 4242](https://svs.gsfc.nasa.gov/4242/) |
+| Terrain/illumination references | T03 diagram and recollection | [LRO sources in references.md](../references.md) |
+| Apollo 15 site from orbit | Mesh Wheels pair in T01 | [LROC — Apollo 15](https://lroc.im-ldi.com/images/491) |
+| Three sunlight directions, three selectable regions, fixed answer | T03 task | Educational model in the source code |
+| Talking through the lantern, light gift, map to Hằng | Story | Original game fiction |
 
-Ảnh runtime đặt tại `public/images/memories/gac-troi/`; chân dung tại `public/images/portraits/gac-troi.webp`. Metadata ảnh có alt Việt/Anh, credit và trang nguồn trong [images.ts](../../src/content/friends/gac-troi/images.ts). Ảnh hồi tưởng thứ ba dùng `south-pole-illumination.png`.
+Runtime images are in `public/images/memories/gac-troi/`; the portrait is in `public/images/portraits/gac-troi.webp`. Image metadata includes Vietnamese/English alt text, credits, and source pages in [images.ts](../../src/content/friends/gac-troi/images.ts). The third recollection image uses `south-pole-illumination.png`.
 
-## 7. Ghi chú duy trì màn
+## 7. Chapter Maintenance Notes
 
-- Nội dung chia theo `src/content/friends/gac-troi/`; giữ lời thoại Việt/Anh ở module nguồn, tránh tạo bản thoại thứ hai trong Markdown.
-- Bản lưu chương dùng `revision: 4` trong schema chung v20; reader kiểm tra thứ tự điều kiện T01, T02, T03 và đoạn sau, đồng thời đọc dữ liệu cũ. Quyền `legacyMatchingComplete` hỗ trợ bản lưu tuyến cũ; không tự tạo cặp ghép mới. Khi chưa hoàn thành chương và còn thiếu bạn, reader có thể đưa về bài ghép; chơi lại dùng đủ bốn bạn. `shadowWatch` giữ hướng đã xem, vị trí và kết quả ghi sổ.
-- Các phase `t03-walk`, `t03-dark-intro`, dữ liệu nhánh đường và T04 còn phục vụ mã tương thích/lịch sử; bài mở từ lời dẫn T03 hiện đi thẳng tới `t03-map` với sơ đồ trực gác.
-- Khi sửa đoạn kết, đối chiếu cả [flow.ts](../../src/content/friends/gac-troi/flow.ts), [progress.ts](../../src/content/friends/gac-troi/progress.ts) và `App.tsx`; chỉ đọc reducer sẽ bỏ sót cơ chế tự mở chị Hằng.
-- Lần cập nhật này chỉ đọc mã và viết tài liệu; chưa chạy lại game, kiểm thử giao diện hoặc xác minh tư liệu trực tuyến. Không coi đây là biên bản kiểm thử mới.
+- Content is organized under `src/content/friends/gac-troi/`; keep Vietnamese/English dialogue in source modules rather than creating a second dialogue copy in Markdown.
+- Chapter saves use `revision: 4` within shared schema v20; the reader validates T01, T02, T03, and later prerequisites in order while accepting old data. `legacyMatchingComplete` supports older journey saves without automatically creating new matches. For incomplete chapters with missing friends, the reader may return to matching; replay uses all four friends. `shadowWatch` retains viewed directions, position, and log result.
+- `t03-walk`, `t03-dark-intro`, route branch data, and T04 remain for compatibility/history; the task launched from the T03 introduction now goes directly to `t03-map` and the watch diagram.
+- When editing the ending, check [flow.ts](../../src/content/friends/gac-troi/flow.ts), [progress.ts](../../src/content/friends/gac-troi/progress.ts), and `App.tsx`; reading only the reducer misses the automatic Hằng encounter.
+- This update only read code and wrote documentation; it did not rerun the game, test the interface, or verify online material. Do not treat it as a new test record.
 
-## Bảo trì và xác nhận hiện tại · 14/11/2026
+## Current Maintenance and Verification · 14 November 2026
 
-Tuyến chơi gồm Mắt Tròn → Lấp Lánh → Tai Thính → Bánh Lưới → Gác Trời. Mỗi bạn đóng góp một cánh đèn; bộ lưu chung dùng schema v20 và đọc bản v1–v20. Điều kiện mở chương nằm trong [friends/index.ts](../../src/content/friends/index.ts), điều kiện trang sách trong [reading-order.ts](../../src/content/book/reading-order.ts).
+The journey follows Round Eye → Twinkle → Sharp Ear → Mesh Wheels → Sky Watcher. Each friend contributes one lantern point; shared saves use schema v20 and read v1–v20. Chapter unlock conditions are in [friends/index.ts](../../src/content/friends/index.ts), and book page conditions in [reading-order.ts](../../src/content/book/reading-order.ts).
 
-Trang kiến thức dùng tiêu đề, ảnh tư liệu có chú thích khi phù hợp, đoạn văn ngắn và nguồn ở chân trang theo [references.md](../references.md). Trang “Có yếu tố trò chơi” không cần hiện nguồn. Quy định mới nhất nằm trong [AGENTS.md](../../AGENTS.md).
+Factual pages use a title, a captioned archival image where appropriate, short paragraphs, and footer sources from [references.md](../references.md). Pages labeled “Contains game elements” do not need displayed sources. The latest rules are in [AGENTS.md](../../AGENTS.md).
 
-Hai PDF `public/books/Truyen.pdf` và `Truyen_en.pdf` được mở nguyên bản trong tab mới và phải giữ nguyên. Sách đồng hành có điều kiện mở và cách chia trang riêng, không bắt buộc khớp số trang PDF. Xem [cơ chế sách đồng hành và PDF](../README.md#sách-đồng-hành-và-pdf).
+The two PDFs, `public/books/Truyen.pdf` and `Truyen_en.pdf`, open unchanged in a new tab and must remain intact. The companion book has its own unlock conditions and pagination; it does not need to match PDF page counts. See [companion book and PDF behavior](../README.md#companion-book-and-pdfs).
 
-Các script `check:*` và fixture đã được gỡ. Còn `npm run typecheck`, `npm run build` và `npm run preview`. Lần cập nhật này đối chiếu mã nguồn và sửa tài liệu, không phải lượt nghiệm thu giao diện hoặc xác minh lại các website nguồn.
+The `check:*` scripts and fixtures have been removed. `npm run typecheck`, `npm run build`, and `npm run preview` remain. This update checked source code and revised documentation; it was not a new interface acceptance test or a fresh verification of source websites.

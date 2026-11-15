@@ -1,22 +1,22 @@
-# CUỘI — Chú Cuội, chị Hằng và những người bạn bị lãng quên
+# CUỘI — Cuội, Hằng, and Their Forgotten Friends
 
-## Giới thiệu
+## Introduction
 
-**CUỘI** là web-game kết hợp sách tranh của nhóm **Light of Memories**, hướng tới trẻ em tiểu học. Người chơi đồng hành cùng Cuội đi tìm chị Hằng, gặp gỡ những thiết bị bị bỏ lại trên Mặt Trăng và khám phá câu chuyện của chúng. Dự án kết hợp văn hóa Trung Thu Việt Nam với chủ đề khám phá không gian, lấy chiếc đèn ông sao làm biểu tượng cho ký ức và tình bạn.
+**CUỘI** is a web game and picture book created by **Light of Memories** for primary school children. Players join Cuội in his search for Hằng, meet equipment left behind on the Moon, and discover its stories. The project brings together Vietnam’s Mid-Autumn Festival traditions and space exploration, with a star lantern symbolizing memory and friendship.
 
-Dự án được phát triển theo challenge **Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on the Moon and Mars**. Phong cách hình ảnh ấm áp, hoài niệm: cảnh game pixel art, giao diện xanh đêm, điểm nhấn vàng và trang sách màu giấy kem.
+The project was developed for the challenge **Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on the Moon and Mars**. Its visual style is warm and nostalgic, combining pixel art game scenes, a midnight blue interface, gold accents, and cream paper book pages.
 
-Hành trình đi qua năm người bạn: **Surveyor 3 — Mắt Tròn**, **Apollo 11 — Lấp Lánh**, **Apollo 12 — Tai Thính**, **Apollo 15 — Bánh Lưới** và **LRO — Gác Trời**. Sách đồng hành mở dần theo tiến trình, kết nối câu chuyện với kiến thức và ảnh tư liệu. Website hỗ trợ **tiếng Việt / tiếng Anh**, mở truyện PDF và lưu hành trình trên trình duyệt hiện tại.
+The journey introduces five friends: **Surveyor 3 — Round Eye**, **Apollo 11 — Twinkle**, **Apollo 12 — Sharp Ear**, **Apollo 15 — Mesh Wheels**, and **LRO — Sky Watcher**. A companion book unlocks as players progress, connecting the story with scientific facts and archival images. The website supports **Vietnamese and English**, opens the story PDFs, and saves the journey in the current browser.
 
-## Sản phẩm dự án
+## Play the Game
 
-Chơi trực tiếp tại [Light of Memories — CUỘI](https://light-of-memories.vercel.app/).
+Play online at [Light of Memories — CUỘI](https://light-of-memories.vercel.app/).
 
-![Không gian trò chơi CUỘI và sách đồng hành](public/images/products/cuoi-gameplay.png)
+![The CUỘI game and companion book](public/images/products/cuoi-gameplay.png)
 
-![Màn chơi Lấp Lánh](public/images/products/cuoi-gameplay.png)
+![Twinkle’s chapter](public/images/products/cuoi-gameplay.png)
 
-## Thành viên nhóm
+## Team Members
 
 - Lê Phạm Thế Vũ
 - Nguyễn Đức Mạnh
@@ -25,58 +25,58 @@ Chơi trực tiếp tại [Light of Memories — CUỘI](https://light-of-memori
 - Cao Quốc Khánh
 - Vũ Lê Đức Minh
 
-Xem [phân công và đóng góp của thành viên](docs/project/team-contributions.md). Nội dung chi tiết đang được nhóm cập nhật.
+Team roles and contributions are documented in the technical report available in the [shared Google Drive folder](https://drive.google.com/drive/folders/1QKIBXyY5a7Y-gi2FXehmMTYo2qvI2Mmz).
 
-## Cài đặt và chạy
+## Setup and Running
 
-### Yêu cầu
+### Requirements
 
-- Node.js 22.12 trở lên và npm.
-- Trình duyệt hiện đại có hỗ trợ WebGL hoặc Canvas.
+- Node.js 22.12 or later and npm.
+- A modern browser with WebGL or Canvas support.
 
-Tải mã nguồn về máy và mở terminal tại thư mục gốc của dự án, nơi chứa `package.json`.
+Download the source code and open a terminal in the project root, where `package.json` is located.
 
-### Chạy khi phát triển
+### Development
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Mở địa chỉ Vite hiển thị trong terminal, mặc định là `http://localhost:5173`. Dừng server bằng `Ctrl+C`.
+Open the address Vite prints in the terminal, which defaults to `http://localhost:5173`. Stop the server with `Ctrl+C`.
 
-### Kiểm tra và tạo bản build
+### Checks and Production Build
 
 ```bash
-# Kiểm tra kiểu TypeScript
+# Check TypeScript types
 npm run typecheck
 
-# Kiểm tra TypeScript và tạo bản build
+# Check TypeScript and create a production build
 npm run build
 
-# Xem bản build trên máy, sau khi build thành công
+# Preview the site locally after a successful build
 npm run preview
 ```
 
-Bản build nằm trong `dist/` và có thể triển khai lên dịch vụ lưu trữ website tĩnh. Riêng bộ đếm người truy cập cần Vercel Function trong `api/` và Upstash Redis, với hai biến môi trường phía máy chủ `UPSTASH_REDIS_REST_URL` và `UPSTASH_REDIS_REST_TOKEN`. Xem [chi tiết công nghệ và triển khai](docs/development/technology-stack.md#dịch-vụ-cho-bộ-đếm-người-truy-cập).
+The build is written to `dist/` and can be deployed to a static website host. The visitor counter also requires the Vercel Function in `api/` and Upstash Redis, with two server-side environment variables: `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. See [technology and deployment details](docs/development/technology-stack.md#visitor-counter-services).
 
-## Nguồn, AI và công nghệ
+## Sources, AI, and Technology
 
-Giao diện sử dụng **React 19, TypeScript và CSS**; cảnh game sử dụng **Phaser 3**. **Vite 6** phục vụ phát triển và build, **Web Audio API** tổng hợp nhạc nền và hiệu ứng, còn `localStorage` lưu tiến trình trên trình duyệt.
+The interface uses **React 19, TypeScript, and CSS**, while game scenes use **Phaser 3**. **Vite 6** handles development and builds, the **Web Audio API** synthesizes background music and sound effects, and `localStorage` saves progress in the browser.
 
-| Nội dung | Tài liệu chi tiết |
+| Topic | Documentation |
 | --- | --- |
-| Framework, thư viện, công cụ và dịch vụ | [Công nghệ sử dụng](docs/development/technology-stack.md) |
-| Nguồn khoa học và ảnh tư liệu | [Nguồn tham khảo](docs/references.md) |
-| Nguồn tài nguyên, phông chữ và giấy phép đi kèm | [Tài nguyên trong public](docs/README.md#tài-nguyên-tĩnh) |
-| Công cụ AI và phạm vi hỗ trợ | [Sử dụng AI](docs/project/ai-usage.md) |
+| Frameworks, libraries, tools, and services | [Technology Stack](docs/development/technology-stack.md) |
+| Scientific sources and archival images | [References](docs/references.md) |
+| Asset and font sources and accompanying licenses | [Public Assets](docs/README.md#static-assets) |
+| AI tools and their roles | [AI Usage](docs/project/ai-usage.md) |
 
-## Dấu ấn hành trình
+## Memories from the Journey
 
-Nơi nhóm lưu giữ những kỷ niệm trong quá trình thực hiện dự án, slide thuyết trình và video giới thiệu hoặc demo.
+A place for the team’s memories of making the project, presentation slides, and introduction or demo videos.
 
-**Thư mục Google Drive chung:** [Light-of-Memories](https://drive.google.com/drive/folders/1QKIBXyY5a7Y-gi2FXehmMTYo2qvI2Mmz).
+**Shared Google Drive folder:** [Light-of-Memories](https://drive.google.com/drive/folders/1QKIBXyY5a7Y-gi2FXehmMTYo2qvI2Mmz).
 
-## Tài liệu dự án
+## Project Documentation
 
-Xem [danh mục tài liệu trong docs/](docs/README.md) để tìm hướng dẫn cấu trúc mã nguồn, hình ảnh, âm thanh và hồ sơ năm màn chơi.
+See the [documentation index in docs/](docs/README.md) for guides to the code structure, visuals, audio, and all five chapters.

@@ -1,21 +1,21 @@
-# Tài nguyên hình ảnh
+# Image Assets
 
-Quy ước cho bản hiện tại; xem [phong cách hình ảnh](visual-style.md) và [nguồn tham khảo](../references.md). Vite sao chép tài nguyên trong `public/` sang `dist/`; URL dùng `BASE_URL` theo khai báo nội dung. Ảnh mới ưu tiên WebP, ảnh tư liệu giữ đúng nội dung và nguồn.
+Conventions for the current version; see the [visual style](visual-style.md) and [references](../references.md). Vite copies assets from `public/` to `dist/`; URLs use `BASE_URL` as specified in the content definitions. Prefer WebP for new images, and preserve the content and attribution of archival images.
 
-Cập nhật 14/11/2026: tuyến hiện tại gồm đủ năm bạn. Ảnh tư liệu được gom trong `public/images/memories/<id>/`, bao gồm ba JPG Mắt Tròn vừa chuyển từ `public/assets/` sang `memories/surveyor/`. Giữ nguyên định dạng, nội dung ảnh, nguồn và credit; chỉ cập nhật đường dẫn. Xem [quy ước public](../development/folder-structure.md#quy-ước-tài-nguyên-tĩnh).
+Update, 14 November 2026: the current journey includes all five friends. Archival images are grouped under `public/images/memories/<id>/`, including three Round Eye JPGs recently moved from `public/assets/` to `memories/surveyor/`. Preserve their format, image content, sources, and credits; update paths only. See the [public asset conventions](../development/folder-structure.md#static-asset-conventions).
 
-- `branding/`: logo website.
-- `portraits/`: chân dung hội thoại của nhân vật mở đầu, năm người bạn và Hằng.
-- `sprites/`: ba sheet An/bà/Cuội, sprite nghỉ Lấp Lánh và Hằng ngồi trong cảnh kết.
-- `memories/<id>/`: ảnh tư liệu của năm bạn; ID thư mục khớp nhóm nội dung (`surveyor`, `lap-lanh`, `tai-thinh`, `ban-banh-luoi`, `gac-troi`).
-- `book/`: bìa, sơ đồ và ảnh dùng riêng cho nội dung sách; ảnh tư liệu đã có trong `memories/` được dùng lại qua URL, không sao chép.
-- T04: ba nền, đèn sau khe đá và hai tư thế Hằng được vẽ bằng mã Phaser trong `src/game/scenes/ending/scenery.ts`; dùng chung silhouette bản đồ T03. Chân dung thoại Hằng tái dùng nguyên file, không cắt thành sprite. Các hình này là sáng tác trong truyện.
-- Tên file dùng chữ thường, tiếng Việt không dấu và dấu gạch ngang.
+- `branding/`: website logos.
+- `portraits/`: dialogue portraits for the opening characters, the five friends, and Hằng.
+- `sprites/`: the three An/Grandma/Cuội sheets, Twinkle’s idle sprite, and Hằng seated in the ending scene.
+- `memories/<id>/`: archival images for the five friends; folder IDs match the content groups (`surveyor`, `lap-lanh`, `tai-thinh`, `ban-banh-luoi`, `gac-troi`).
+- `book/`: covers, diagrams, and images used only in book content; archival images already in `memories/` are reused by URL rather than copied.
+- T04: three backgrounds, the lantern beyond the rock crevice, and Hằng’s two poses are drawn in Phaser code in `src/game/scenes/ending/scenery.ts`; they share the T03 map silhouette. Hằng’s dialogue portrait is reused as a complete file, without cropping it into a sprite. These visuals are fictional story elements.
+- Filenames use lowercase Vietnamese without diacritics, with hyphens between words.
 
-## Ghi chú sử dụng sau này
+## Notes for Future Use
 
-- Lượt 1 đã định nghĩa một frame nghỉ riêng cho mỗi nhân vật trong `src/content/assets.ts`. Khung ảnh được chọn thủ công, không sửa ảnh gốc.
-- An và bà có 2 hàng, Cuội có 5 hàng; mỗi hàng nhìn thấy 6 tư thế. Không mặc định chia được bằng lưới đều.
-- Cả ba sheet có alpha, vùng ngoài nhân vật trong các frame đã chọn hiển thị trong suốt. RGB nền/ánh sáng trong bản xem ảnh không có nghĩa là nền bị vẽ đục. Ba frame nghỉ giữ đủ nhân vật.
-- Chân dung Cây Đa là ảnh minh họa, không phải đạo cụ pixel trong cảnh.
-- Nền, cây, ghế, đèn và các thiết bị Tai Thính được vẽ bằng mã theo cảnh. Không coi việc thiếu bitmap riêng là thiếu tài nguyên cần sinh thêm.
+- The first pass defined a separate idle frame for each character in `src/content/assets.ts`. Frames were selected manually without modifying the original images.
+- An and Grandma have 2 rows; Cuội has 5. Each row shows 6 poses. Do not assume the sheets can be divided into a uniform grid.
+- All three sheets have alpha transparency, and the areas outside the characters in the selected frames are transparent. Background or lighting RGB values in an image preview do not mean the background is opaque. All three idle frames retain the full character.
+- The Banyan Tree portrait is an illustration, not a pixel art scene prop.
+- Backgrounds, trees, benches, lanterns, and Sharp Ear’s equipment are drawn in code for each scene. The absence of a separate bitmap does not mean an asset is missing or needs generating.

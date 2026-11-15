@@ -1,115 +1,115 @@
-# Câu chuyện của Apollo 11 — Lấp Lánh (màn 2)
+# The Story of Apollo 11 — Twinkle (Chapter 2)
 
-> Cập nhật 14/11/2026 theo mã nguồn. Tổng hợp nội dung hiện có, theo cấu trúc của [màn Mắt Tròn](Game1_Surveyor_3.md). Lấp Lánh là tên trò chơi đặt cho bảng gương phản xạ laser Apollo 11. Cuội, lau bụi và ánh sáng thắp đèn thuộc truyện; thông tin thiết bị và ảnh lịch sử được ghi nguồn riêng.
+> Updated from source code on 14 November 2026. This document consolidates existing content using the structure of [Round Eye’s chapter](Game1_Surveyor_3.md). Twinkle is the game’s name for the Apollo 11 laser retroreflector array. Cuội, dust cleaning, and light for the lantern belong to the story; equipment facts and historical photos are sourced separately.
 
-## 1. Thông tin thật về thiết bị
+## 1. Facts about the Equipment
 
-Bảng gương phản xạ laser của **Apollo 11** được đặt ở **Biển Yên Tĩnh — Mare Tranquillitatis**, năm **1969**. Thiết bị có **100 lăng kính phản xạ góc**, giúp ánh sáng quay về phía nguồn gửi. Bảng gương không cần pin hay động cơ để phản xạ và không tự phát laser. [NASA/JPL — The Apollo Experiment That Keeps on Giving](https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/), [ILRS — Apollo 11](https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html)
+The **Apollo 11** laser retroreflector array was placed in the **Sea of Tranquility — Mare Tranquillitatis** in **1969**. It has **100 corner-cube prisms** that return light toward its source. The array needs no battery or motor to reflect light and does not emit a laser itself. [NASA/JPL — The Apollo Experiment That Keeps on Giving](https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/), [ILRS — Apollo 11](https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html)
 
-Đài quan sát trên Trái Đất gửi xung laser, đo thời gian đi và về để tính khoảng cách một chiều. Khoảng cách thay đổi theo quỹ đạo; **2,56 giây và 384.000 km là dữ liệu mô phỏng làm tròn trong game**. [NIST — To the Moon and Back in 2.5 Seconds](https://www.nist.gov/history/moon-and-back-25-seconds)
+Observatories on Earth send laser pulses and measure their round-trip time to calculate the one-way distance. Distance varies with the orbit; **2.56 seconds and 384,000 km are rounded simulation values in the game**. [NIST — To the Moon and Back in 2.5 Seconds](https://www.nist.gov/history/moon-and-back-25-seconds)
 
-Hai ảnh kỷ niệm thuộc Apollo 11: **Buzz Aldrin đặt thiết bị xuống khi còn gấp**, rồi **Neil Armstrong mở và căn chỉnh**. Thứ tự lịch sử khác thứ tự nhận ảnh trong trò chơi. [Apollo 11 Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [LRRR Clevis Fasteners](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html)
+The two memory photos are from Apollo 11: **Buzz Aldrin places the still-folded equipment on the ground**, then **Neil Armstrong unfolds and aligns it**. Historical order differs from the order in which photos are awarded in the game. [Apollo 11 Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [LRRR Clevis Fasteners](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html)
 
-## 2. Bối cảnh dựng game
+## 2. Game Context
 
-Sau Mắt Tròn, Cuội theo điểm sáng tới Biển Yên Tĩnh. Lời dẫn thể hiện chuyến đi kỳ ảo qua những miền xa, không mô tả hai địa điểm nằm cạnh nhau. Màn mở khi Mắt Tròn đã hoàn thành lần đầu.
+After Round Eye, Cuội follows a glow to the Sea of Tranquility. The introduction depicts a magical journey between distant regions rather than suggesting the two locations are adjacent. The chapter unlocks after Round Eye’s first completion.
 
-Lấp Lánh tinh nghịch, thích đố và chơi với ánh sáng. Bạn giữ hình dáng bảng lăng kính nghiêng trên giá đỡ thấp; không thêm mắt, miệng hoặc tay chân. Chân dung có chất liệu truyện thiếu nhi vẽ tay, hình trong cảnh dùng sprite pixel. Nền vẽ bằng mã, không phải bản đồ bãi đáp.
+Twinkle is playful, likes riddles, and enjoys light. The character retains the form of a tilted prism array on a low stand, without added eyes, mouth, or limbs. The portrait has a hand-drawn children’s book texture; the scene uses a pixel art sprite. The background is drawn in code and is not a landing site map.
 
-Mạch truyện: **theo điểm sáng → vòng qua hố → gặp bạn, nhận ảnh → lau kính, nhận ảnh → căn mô hình phản xạ → đo khoảng cách → kể hai ký ức theo thời gian → thắp cánh sao thứ hai → theo vòng gợn về lộ trình**.
+Story flow: **follow the glow → navigate around craters → meet the friend and receive a photo → clean the glass and receive a photo → align the reflection model → measure distance → tell two memories chronologically → light the second star point → follow ripples back to the journey map**.
 
-Đèn và bộ đếm sao không chiếm diện tích thường trực trong thử thách. Đèn trở lại ở đoạn cảm ơn, theo tay Cuội trong hậu kết. Thứ tự người bạn là **02**, số cảnh website **04**; các bài bắt đầu từ T01.
+The lantern and star counter do not permanently occupy challenge space. The lantern returns during the thanks and follows Cuội’s hand afterward. Friend order is **02**, website scene number **04**; tasks begin at T01.
 
-## 3. Nội dung sách đồng hành đang có
+## 3. Current Companion Book Content
 
-Nhóm Lấp Lánh nằm sau Mắt Tròn, trước Tai Thính. Khi đã mở đủ, trình đọc có bảy mục; phân trang responsive có thể tạo thêm lá trong một mục.
+Twinkle’s group follows Round Eye and precedes Sharp Ear. Once fully unlocked, the reader has seven entries; responsive pagination may create additional pages within an entry.
 
-| ID | Điều kiện | Nội dung |
+| ID | Condition | Content |
 | --- | --- | --- |
-| `lap-lanh` | Mở chương | Giới thiệu người bạn trong trò chơi |
-| `sparkle-photo-0` | Có kỷ niệm chỉ số 0 | Bảng phản xạ còn gấp, AS11-40-5945 |
-| `sparkle-photo-1` | Có kỷ niệm chỉ số 1 | Bảng phản xạ đã triển khai, AS11-40-5952 |
-| `sparkle-repair-clue` | Đạt điều kiện bài căn gương | “Bí mật của góc gương”, mô hình phản xạ |
-| `sparkle-repair-clue-reality` | Trang căn gương được đọc | “Lăng kính phản xạ Apollo 11”, kiến thức về thiết bị thật |
-| `sparkle-ranging-clue` | Đạt điều kiện bài đo khoảng cách | “Một lời chào, hai lượt đi” |
-| `apollo-notebook` | `completedOnce` | Tổng kết sự kiện thật của bảng phản xạ Apollo 11 |
+| `lap-lanh` | Chapter unlocked | Introduction to the game character |
+| `sparkle-photo-0` | Keepsake index 0 acquired | Folded reflector, AS11-40-5945 |
+| `sparkle-photo-1` | Keepsake index 1 acquired | Deployed reflector, AS11-40-5952 |
+| `sparkle-repair-clue` | Mirror alignment task condition reached | “The Secret of Mirror Angles”, reflection model |
+| `sparkle-repair-clue-reality` | Alignment page available to read | “Apollo 11 Retroreflector Prisms”, facts about the real equipment |
+| `sparkle-ranging-clue` | Distance measurement task condition reached | “One Greeting, Two Trips” |
+| `apollo-notebook` | `completedOnce` | Summary of real events involving the Apollo 11 reflector |
 
-Sách chủ động kể ảnh theo thứ tự lịch sử **5945 → 5952**, khác thứ tự game tặng ảnh **5952 → 5945**. ID trang và chỉ số kỷ niệm được giữ để tương thích; metadata ảnh sách nằm trong [sparkle-pages.ts](../../src/content/book/sparkle-pages.ts), ảnh được tặng trong [images.ts](../../src/content/friends/lap-lanh/images.ts). Trang `lap-lanh-reality` còn trong catalog nhưng được lọc khỏi trình đọc hiện tại.
+The book deliberately tells photos in historical order **5945 → 5952**, unlike game award order **5952 → 5945**. Page IDs and keepsake indices remain for compatibility; book image metadata is in [sparkle-pages.ts](../../src/content/book/sparkle-pages.ts), and awarded photos in [images.ts](../../src/content/friends/lap-lanh/images.ts). `lap-lanh-reality` remains in the catalog but is filtered from the current reader.
 
-Mở khóa nội dung không tự lật sách. Gợi ý T03/T04 chọn `sparkle-repair-clue` hoặc `sparkle-ranging-clue`. Trang kiến thức trình bày sự thật và nguồn; giọng nhân vật, lời đố và cảm xúc thuộc hội thoại game.
+Unlocking content does not turn the book automatically. T03/T04 hints select `sparkle-repair-clue` or `sparkle-ranging-clue`. Factual pages present facts and sources; character voice, riddles, and emotions belong to game dialogue.
 
-## 4. Chi tiết## 4. Chi tiết các thử thách
+## 4. Challenge Details
 
-### T01 — Theo điểm sáng
+### T01 — Follow the Glow
 
-Cuội tìm đường vòng qua **sáu hố** tới vùng sáng bên phải. Đi bằng WASD, mũi tên hoặc bấm/chạm đất; đi xa nhỏ lại, đi gần lớn hơn. Hố hiện từ lời dẫn đầu bài, có lối vòng và khoảng đệm cho vùng đích.
+Cuội finds a path around **six craters** to the bright area on the right. Move with WASD, arrows, or clicks/taps on the ground; Cuội becomes smaller farther away and larger nearby. Craters appear from the task introduction, with routes around them and padding around the destination.
 
-Chạm mép hố thì dừng, có lời Cuội nhắc; không nhảy hoặc rơi rồi xuất hiện lại ở đầu. Tới đích chuyển sang cảnh không có hố thử thách, Cuội ở trái và Lấp Lánh ở giữa. Đến gần nhấn E hoặc bấm thiết bị để trò chuyện, rồi nhận ảnh đầu tiên. [SparkleLevel.tsx](../../src/components/friends/lap-lanh/SparkleLevel.tsx), [PreviewScene.ts](../../src/game/scenes/preview-scene.ts)
+Touching a crater edge stops movement and prompts a reminder from Cuội; there is no jumping or falling followed by respawning at the start. Reaching the destination switches to a scene without challenge craters, with Cuội on the left and Twinkle in the middle. Approach and press E or click the equipment to talk, then receive the first photo. [SparkleLevel.tsx](../../src/components/friends/lap-lanh/SparkleLevel.tsx), [PreviewScene.ts](../../src/game/scenes/preview-scene.ts)
 
-### T02 — Cuội lau kính
+### T02 — Cuội Cleans the Glass
 
-Bấm/kéo chuột, dùng cảm ứng hoặc Tab và Enter để lau **24 ô bụi**. Đủ 100% mở nút nhận ảnh thứ hai. 24 ô là cách chia vùng thao tác, không phải số lăng kính thật.
+Click/drag with a mouse, use touch, or use Tab and Enter to clean **24 dust cells**. At 100%, the button to receive the second photo unlocks. The 24 cells divide the interaction area; they are not the real prism count.
 
-Lau bụi là hoạt động tưởng tượng. Hai ảnh lịch sử không phải cặp trước/sau hành động của Cuội. Panel dành đủ chỗ cho thao tác, không có thanh cuộn nội bộ ngoài ý muốn. [SparkleCleaning.tsx](../../src/components/friends/lap-lanh/SparkleCleaning.tsx)
+Dust cleaning is imaginary. The two historical photos are not before/after images of Cuội’s actions. The panel leaves enough room for interaction without unintended internal scrolling. [SparkleCleaning.tsx](../../src/components/friends/lap-lanh/SparkleCleaning.tsx)
 
-### T03 — Sửa kính phản xạ Apollo 11
+### T03 — Repair the Apollo 11 Reflector
 
-Đây là **mô hình 2D**, không phải xoay lăng kính thật. Gương 1 cố định, người chơi xoay gương 2 trong khoảng **0°–180°** theo gương 1. Kéo gương hoặc dùng thanh góc bằng bàn phím rồi gửi tia để thử.
+This is a **2D model**, not rotation of real prisms. Mirror 1 is fixed; players rotate mirror 2 through **0°–180°** relative to mirror 1. Drag the mirror or use the angle slider with a keyboard, then send a ray to test.
 
-Mô phỏng tính giao điểm và phản xạ từ góc hiện tại. Thành công khi tia chạm lần lượt hai gương rồi lọt khe nhận hẹp. Hai gương vuông góc đưa hướng tia ra ngược hướng tia vào; **89°/91° trượt khe**. Không dùng kiểm tra góc đúng thay cho tính đường tia. Xoay lại xóa kết quả lần thử trước.
+The simulation computes intersections and reflection from the current angle. Success requires the ray to hit both mirrors in order and enter a narrow receiver opening. Perpendicular mirrors reverse the outgoing direction relative to the incoming ray; **89°/91° miss the opening**. Do not replace ray-path calculations with a correct-angle check. Rotating again clears the previous test result.
 
-Sách và bài dùng cùng sơ đồ. Chú thích phân biệt mô hình hai mặt với lăng kính **ba mặt vuông góc** của thiết bị thật. [SparkleScience.tsx](../../src/components/friends/lap-lanh/SparkleScience.tsx), [sparkle-optics.ts](../../src/game/scenes/lap-lanh/optics.ts), [Apache Point — Retroreflector Arrays](https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/)
+The book and task share the diagram. Labels distinguish the two-face model from the real equipment’s **three mutually perpendicular prism faces**. [SparkleScience.tsx](../../src/components/friends/lap-lanh/SparkleScience.tsx), [sparkle-optics.ts](../../src/game/scenes/lap-lanh/optics.ts), [Apache Point — Retroreflector Arrays](https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/)
 
-### T04 — Lời chào mất bao lâu?
+### T04 — How Long Does a Greeting Take?
 
-Gửi xung từ Trái Đất, quan sát đồng hồ đo **2,56 giây cho cả lượt đi lẫn về**. Menu tạm dừng đồng hồ. Sau phép đo, nhập số và chọn dấu:
+Send a pulse from Earth and watch the timer measure **2.56 seconds for the round trip**. The menu pauses the timer. After measuring, enter numbers and select operators:
 
 ```text
-300.000 × 2,56 ÷ 2 = 384.000 km
+300,000 × 2.56 ÷ 2 = 384,000 km
 ```
 
-Chấp nhận dấu phẩy hoặc chấm ở số thập phân. Nộp bằng nút hoặc Enter; thiếu/sai có phản hồi và được sửa. Đã đo và nộp đúng thì vào ngay lời dẫn hồi tưởng, không thêm bước xác nhận khoảng cách. [SparkleScience.tsx](../../src/components/friends/lap-lanh/SparkleScience.tsx), [SparkleBookClue.tsx](../../src/components/friends/lap-lanh/SparkleBookClue.tsx)
+Both commas and periods are accepted as decimal separators. Submit with the button or Enter; missing/incorrect answers receive feedback and can be corrected. Once measured and correctly submitted, the recollection introduction starts immediately, without an extra distance confirmation step. [SparkleScience.tsx](../../src/components/friends/lap-lanh/SparkleScience.tsx), [SparkleBookClue.tsx](../../src/components/friends/lap-lanh/SparkleBookClue.tsx)
 
-## 5. Ảnh kỷ niệm, đoạn kết và thông điệp
+## 5. Memory Photos, Ending, and Message
 
-| Ảnh và file trong `public/images/memories/lap-lanh/` | Nhận | Hồi tưởng |
+| Photo and File in `public/images/memories/lap-lanh/` | Awarded | Recollection |
 | --- | --- | --- |
-| **AS11-40-5952** · `apollo-11-deployed-as11-40-5952.webp` · Đã mở và căn chỉnh | Sau cuộc gặp, trước T02 | Thứ hai |
-| **AS11-40-5945** · `apollo-11-placement-as11-40-5945.webp` · Vừa đặt xuống, còn gấp | Sau T02 | Thứ nhất |
+| **AS11-40-5952** · `apollo-11-deployed-as11-40-5952.webp` · Unfolded and aligned | After the encounter, before T02 | Second |
+| **AS11-40-5945** · `apollo-11-placement-as11-40-5945.webp` · Just placed, still folded | After T02 | First |
 
-Ảnh ghi NASA và mã tư liệu; không suy ra lượng bụi từ độ tối/sáng. Nguồn đối chiếu: [Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [ghi chú triển khai](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html). Chân dung/sprite minh họa không dùng làm ảnh lịch sử.
+Photos include NASA attribution and archival IDs; do not infer dust quantities from brightness/darkness. Reference sources: [Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [deployment notes](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html). Illustrated portraits/sprites are not used as historical photographs.
 
-Sau T04, Lấp Lánh kể **5945 → 5952**. Mỗi trang kể ngắn, vừa khung, không dồn toàn bộ kiến thức và thành tích của Cuội vào một đoạn. Trở lại cảnh trăng, bạn cảm ơn và thắp **cánh sao thứ hai**. Thông điệp: một thiết bị nhỏ vẫn có thể giúp con người hiểu thêm những khoảng cách rất xa. [SparkleEnding.tsx](../../src/components/friends/lap-lanh/SparkleEnding.tsx)
+After T04, Twinkle tells **5945 → 5952**. Each page is short and fits the frame, rather than combining all the facts and Cuội’s achievements into one passage. Back in the lunar scene, Twinkle gives thanks and lights the **second star point**. The message: even a small instrument can help people understand vast distances. [SparkleEnding.tsx](../../src/components/friends/lap-lanh/SparkleEnding.tsx)
 
-Hậu kết cho đi ngang, giữ y/scale, đèn theo tay. Có **Xem lại đoạn kết / Chơi lại / Về lộ trình**. Bấm bạn để đi tới hoặc đến gần nhấn E: bạn cảm ơn Cuội ghé trò chuyện, rồi gợi nhìn **vòng gợn ở rìa phải**. Đi tới đó trở về lộ trình; vòng gợn gợi Tai Thính, thuộc cách kể kỳ ảo. Hội thoại nghe lại không trao thêm phần thưởng. [ending-chat.ts](../../src/content/story/ending/friend-dialogue.ts), [EndingTrail.tsx](../../src/components/shared/EndingTrail.tsx)
+Afterward, sideways walking keeps y/scale fixed and the lantern follows the hand. **Review Ending / Replay / Back to Journey** are available. Click the friend to approach, or walk close and press E: Twinkle thanks Cuội for visiting, then suggests looking at the **ripples on the right edge**. Reaching them returns to the journey map; the ripples hint at Sharp Ear as part of the magical storytelling. Replaying dialogue gives no additional rewards. [ending-chat.ts](../../src/content/story/ending/friend-dialogue.ts), [EndingTrail.tsx](../../src/components/shared/EndingTrail.tsx)
 
-Chơi lại từ lời dẫn chuyển vùng, giữ hai ảnh và `completedOnce`; xem lại kết giữ đáp án và ảnh. Hoàn thành mở Tai Thính; xem lại/chơi lại không tăng sao trùng. Bộ đọc vẫn tiếp nhận góc cũ `repairRotation` và phase cũ theo [progress.ts](../../src/content/friends/lap-lanh/progress.ts).
+Replay begins at the regional transition introduction, retaining both photos and `completedOnce`; reviewing the ending retains answers and photos. Completion unlocks Sharp Ear; reviewing/replaying does not duplicate stars. The reader still accepts the old angle `repairRotation` and old phases through [progress.ts](../../src/content/friends/lap-lanh/progress.ts).
 
-## 6. Bảng đối chiếu thông tin và nguồn
+## 6. Facts and Sources
 
-| Thông tin | Trong game/sách | Nguồn chính |
+| Fact | In the Game/Book | Main Source |
 | --- | --- | --- |
-| Apollo 11, Biển Yên Tĩnh, 1969 | Giới thiệu, ảnh, hồi tưởng | [ILRS — Apollo 11](https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html) |
-| 100 lăng kính; phản xạ thụ động | Sách, thoại, T03 | [NASA/JPL](https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/), [Apache Point](https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/) |
-| Aldrin đặt xuống; Armstrong mở/căn chỉnh | Chú thích, thứ tự hồi tưởng | [Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [LRRR Clevis Fasteners](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html) |
-| Thời gian khứ hồi tính khoảng cách | T04, sách | [NIST](https://www.nist.gov/history/moon-and-back-25-seconds) |
-| Hai gương, khe nhận, 24 ô bụi, 2,56 giây | Bài chơi | Mô hình và số liệu minh họa của game |
-| Cuội lau kính, thiết bị nói chuyện, cánh sao, vòng gợn | Kịch bản | Sáng tác của trò chơi |
+| Apollo 11, Sea of Tranquility, 1969 | Introduction, photos, recollection | [ILRS — Apollo 11](https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html) |
+| 100 prisms; passive reflection | Book, dialogue, T03 | [NASA/JPL](https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/), [Apache Point](https://www.apo.nmsu.edu/mainpage/apollo/apollolrrr/) |
+| Aldrin places it; Armstrong unfolds/aligns it | Captions, recollection order | [Image Library](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/images11.html), [LRRR Clevis Fasteners](https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11-LRRR_ClevisFasteners.html) |
+| Round-trip time determines distance | T04, book | [NIST](https://www.nist.gov/history/moon-and-back-25-seconds) |
+| Two mirrors, receiver opening, 24 dust cells, 2.56 seconds | Tasks | Game models and illustrative values |
+| Cuội cleans glass, equipment talks, star point, ripples | Story | Original game fiction |
 
-## 7. Ghi chú duy trì màn
+## 7. Chapter Maintenance Notes
 
-- Hội thoại: [dialogue.ts](../../src/content/friends/lap-lanh/dialogue.ts); bản lưu: [progress.ts](../../src/content/friends/lap-lanh/progress.ts); điều phối: [App.tsx](../../src/App.tsx); sách: [JourneyMap.tsx](../../src/components/journey/JourneyMap.tsx).
-- Nền: [sparkle-scenery.ts](../../src/game/scenes/lap-lanh/scenery.ts). Chân dung `public/images/portraits/lap-lanh.webp`; sprite một frame nghỉ `public/images/sprites/lap-lanh-idle.webp`.
-- Dùng kiểu nút, Gợi ý và giữ focus chung theo [hướng dẫn màn mới](../design/level-design-guide.md). Chat đặt theo vùng trống, không che thiết bị/đèn; màn hẹp đưa panel xuống dưới cảnh.
-- Kiểm tra trước đây đã rà bố cục Việt/Anh màn rộng/hẹp, hồi tưởng ngắn, nhập số, focus và hậu kết. Đây là ghi nhận bàn giao, chưa phải đánh giá với học sinh hoặc xác nhận mọi trình duyệt.
-- Ý tưởng tìm ảnh dưới hố bằng đèn, thêm ảnh đài laser hoặc LRO chưa thuộc luồng hiện tại. Không coi chúng là T03/T04 còn thiếu.
+- Dialogue: [dialogue.ts](../../src/content/friends/lap-lanh/dialogue.ts); saves: [progress.ts](../../src/content/friends/lap-lanh/progress.ts); coordination: [App.tsx](../../src/App.tsx); book: [JourneyMap.tsx](../../src/components/journey/JourneyMap.tsx).
+- Background: [sparkle-scenery.ts](../../src/game/scenes/lap-lanh/scenery.ts). Portrait: `public/images/portraits/lap-lanh.webp`; single idle-frame sprite: `public/images/sprites/lap-lanh-idle.webp`.
+- Use shared button styling, Hint, and focus retention under the [new chapter guide](../design/level-design-guide.md). Place chat in free space without covering equipment/lantern; narrow screens move panels below the scene.
+- Earlier checks covered Vietnamese/English layouts on wide/narrow screens, short recollections, number entry, focus, and post-ending play. This is a handoff record, not testing with pupils or confirmation across all browsers.
+- Ideas about finding photos in craters using the lantern, adding laser observatory photos, or LRO are not part of the current flow. Do not treat them as missing T03/T04 work.
 
-## Bảo trì và xác nhận hiện tại · 14/11/2026
+## Current Maintenance and Verification · 14 November 2026
 
-Tuyến chơi gồm Mắt Tròn → Lấp Lánh → Tai Thính → Bánh Lưới → Gác Trời. Mỗi bạn đóng góp một cánh đèn; bộ lưu chung dùng schema v20 và đọc bản v1–v20. Điều kiện mở chương nằm trong [friends/index.ts](../../src/content/friends/index.ts), điều kiện trang sách trong [reading-order.ts](../../src/content/book/reading-order.ts).
+The journey follows Round Eye → Twinkle → Sharp Ear → Mesh Wheels → Sky Watcher. Each friend contributes one lantern point; shared saves use schema v20 and read v1–v20. Chapter unlock conditions are in [friends/index.ts](../../src/content/friends/index.ts), and book page conditions in [reading-order.ts](../../src/content/book/reading-order.ts).
 
-Trang kiến thức dùng tiêu đề, ảnh tư liệu có chú thích khi phù hợp, đoạn văn ngắn và nguồn ở chân trang theo [references.md](../references.md). Trang “Có yếu tố trò chơi” không cần hiện nguồn. Quy định mới nhất nằm trong [AGENTS.md](../../AGENTS.md).
+Factual pages use a title, a captioned archival image where appropriate, short paragraphs, and footer sources from [references.md](../references.md). Pages labeled “Contains game elements” do not need displayed sources. The latest rules are in [AGENTS.md](../../AGENTS.md).
 
-Hai PDF `public/books/Truyen.pdf` và `Truyen_en.pdf` được mở nguyên bản trong tab mới và phải giữ nguyên. Sách đồng hành có điều kiện mở và cách chia trang riêng, không bắt buộc khớp số trang PDF. Xem [cơ chế sách đồng hành và PDF](../README.md#sách-đồng-hành-và-pdf).
+The two PDFs, `public/books/Truyen.pdf` and `Truyen_en.pdf`, open unchanged in a new tab and must remain intact. The companion book has its own unlock conditions and pagination; it does not need to match PDF page counts. See [companion book and PDF behavior](../README.md#companion-book-and-pdfs).
 
-Các script `check:*` và fixture đã được gỡ. Còn `npm run typecheck`, `npm run build` và `npm run preview`. Lần cập nhật này đối chiếu mã nguồn và sửa tài liệu, không phải lượt nghiệm thu giao diện hoặc xác minh lại các website nguồn.
+The `check:*` scripts and fixtures have been removed. `npm run typecheck`, `npm run build`, and `npm run preview` remain. This update checked source code and revised documentation; it was not a new interface acceptance test or a fresh verification of source websites.

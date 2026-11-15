@@ -1,44 +1,44 @@
-# Sử dụng AI trong dự án CUỘI
+# AI Usage in CUỘI
 
-Nhóm Light of Memories sử dụng các công cụ AI để hỗ trợ tìm kiếm và lọc thông tin, xây dựng kịch bản, làm sách PDF gốc, tạo hình ảnh, phát triển mã nguồn và tạo âm thanh cho dự án CUỘI. Danh sách dưới đây ghi nhận công cụ và phạm vi sử dụng do nhóm xác nhận.
+The Light of Memories team uses AI tools to help find and filter information, develop the story, create the original PDF books, generate images, develop code, and create audio for CUỘI. The list below records the tools and uses confirmed by the team.
 
-## Công cụ và phạm vi hỗ trợ
+## Tools and Their Roles
 
-| Công cụ AI | Mục đích sử dụng | Phần sản phẩm được hỗ trợ |
+| AI Tool | Purpose | Parts of the Project Supported |
 | --- | --- | --- |
-| **ChatGPT** | Tìm kiếm, lọc thông tin; tạo kịch bản; sinh hình ảnh; hỗ trợ xây dựng mã nguồn. | Nội dung và kịch bản, tài nguyên hình ảnh, mã nguồn dự án. |
-| **Gemini** | Tìm kiếm, lọc thông tin và tạo kịch bản. | Nội dung và kịch bản. |
-| **Claude** | Tìm kiếm, lọc thông tin; tạo kịch bản; xây dựng sách PDF gốc. | Nội dung và kịch bản, sách PDF gốc. |
-| **Codex** | Sinh hình ảnh; xây dựng mã nguồn; tạo nhạc và hiệu ứng âm thanh bằng mã lập trình. | Tài nguyên hình ảnh, mã nguồn dự án, nhạc và hiệu ứng được tạo bằng mã. |
-| **Suno AI** | Sinh tệp âm thanh cho nhạc và hiệu ứng âm thanh. | Các tệp âm thanh do AI sinh. |
+| **ChatGPT** | Finding and filtering information; developing the story; generating images; assisting with code development. | Content and story, visual assets, and project code. |
+| **Gemini** | Finding and filtering information and developing the story. | Content and story. |
+| **Claude** | Finding and filtering information; developing the story; creating the original PDF books. | Content and story, and the original PDF books. |
+| **Codex** | Generating images; developing code; creating music and sound effects programmatically. | Visual assets, project code, and music and effects generated through code. |
+| **Suno AI** | Generating audio files for music and sound effects. | AI-generated audio files. |
 
-Nhóm chưa cung cấp phiên bản mô hình cụ thể, nên tài liệu chỉ ghi tên công cụ.
+The team has not provided specific model versions, so this document lists tool names only.
 
-## Hai cách tạo âm thanh
+## Two Approaches to Audio Creation
 
-- **Codex:** hỗ trợ viết mã để tạo nhạc và hiệu ứng âm thanh.
-- **Suno AI:** sinh sẵn các tệp âm thanh để sử dụng làm nhạc và hiệu ứng.
+- **Codex:** assists with writing code to generate music and sound effects.
+- **Suno AI:** generates audio files for use as music and sound effects.
 
-Xem [tài liệu âm thanh](../design/audio.md) để tra cứu cách tổ chức và phát âm thanh trong dự án.
+See the [audio documentation](../design/audio.md) for details of how audio is organized and played in the project.
 
-## Cách nhóm rà soát kết quả
+## How the Team Reviews Results
 
-Nhóm rà soát nội dung theo các bước sau:
+The team reviews content through the following steps:
 
-- Mỗi chương có phần nguồn và dữ liệu tham khảo để đối chiếu thông tin.
-- Đối chiếu chéo nội dung giữa sách và trò chơi.
-- Phân biệt rõ kiến thức khoa học với các yếu tố hư cấu.
+- Each chapter includes sources and reference data for checking information.
+- Content is cross-checked between the book and the game.
+- Scientific facts are clearly distinguished from fictional elements.
 
-## Kiểm thử với người dùng
+## User Testing
 
-Nhóm hiện chưa có kết quả kiểm thử với trẻ em.
+The team does not yet have results from testing with children.
 
-Kế hoạch của nhóm là cung cấp Web Book Game để trẻ em có thể tham gia học tập và đưa ra phản hồi.
+The team plans to make the Web Book Game available for children to learn through play and provide feedback.
 
-## Tài liệu và ví dụ liên quan
+## Related Documentation and Examples
 
-- [Nguồn tham khảo](../references.md): căn cứ khoa học và nguồn ảnh tư liệu.
-- [Tài nguyên hình ảnh](../design/image-assets.md): ghi chú nguồn gốc tài nguyên và một số yêu cầu sinh ảnh đã lưu.
-- [Phong cách hình ảnh](../design/visual-style.md): hướng dẫn thiết kế và sinh ảnh theo phong cách dự án.
+- [References](../references.md): scientific sources and archival image sources.
+- [Image Assets](../design/image-assets.md): asset provenance notes and some saved image generation requests.
+- [Visual Style](../design/visual-style.md): guidance for designing and generating images in the project’s style.
 
-[Về README dự án](../../README.md) · [Danh mục tài liệu](../README.md)
+[Back to the Project README](../../README.md) · [Documentation Index](../README.md)
