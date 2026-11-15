@@ -157,7 +157,7 @@ export const banBanhLuoiCopy = {
   "photo.kept": text("Ảnh đã được cất trong sách.", "The photo is now in the book."),
   "photo.alreadyKept": text("Ảnh này đã có trong sách. Mình đọc tiếp nhé.", "This photo is already in the book. Let us continue."),
   "recallA.title": text("1971 · Cùng khám phá và trở về", "1971 · Exploring and returning"),
-  "recallA.body": text("Cuối tháng Bảy, đầu tháng Tám năm 1971, mình chở David Scott và James Irwin khám phá Hadley–Apennine. Họ mang về Trái Đất hơn 77 kg đá và đất. Khi họ rời đi, mình ở lại theo kế hoạch, cùng tầng dưới tàu Falcon. Đi xa thì phải nhớ đường về, Cuội nhỉ!", "In late July and early August 1971, I carried David Scott and James Irwin around Hadley–Apennine. They brought over 77 kg of rock and soil back to Earth. When they left, I stayed behind as planned, along with Falcon’s descent stage. Explore far, but remember the way home, Cuội!"),
+  "recallA.body": text("Cuối tháng Bảy, đầu tháng Tám năm 1971, mình chở David Scott và Jim Irwin khám phá Hadley–Apennine. Họ mang về Trái Đất hơn 77 kg đá và đất. Khi họ rời đi, mình ở lại theo kế hoạch, cùng tầng dưới tàu Falcon. Đi xa thì phải nhớ đường về, Cuội nhỉ!", "In late July and early August 1971, I carried David Scott and Jim Irwin around Hadley–Apennine. They brought over 77 kg of rock and soil back to Earth. When they left, I stayed behind as planned, along with Falcon’s descent stage. Explore far, but remember the way home, Cuội!"),
   "recallB.title": text("2011 · Những con đường còn đó", "2011 · The trails remain"),
   "recallB.body": text("Năm 2011, hệ máy ảnh LROC trên tàu LRO chụp lại bãi đáp Apollo 15 từ quỹ đạo. Tầng dưới Falcon ở giữa ảnh, mình ở phía bên phải; những dấu bánh vẫn còn thấy. Cuội giữ giúp mình cả câu chuyện năm 1971 và tấm ảnh nhìn lại này nhé!", "In 2011, LRO’s LROC cameras photographed the Apollo 15 site from orbit. Falcon’s descent stage is in the centre and I am on the right; rover tracks remain visible. Will you keep both my 1971 story and this later view, Cuội?"),
   "status.completed": text("Cánh sao thứ tư đã sáng · 4/5", "The fourth star point is shining · 4/5"),
@@ -206,8 +206,8 @@ export const banBanhLuoiScript = {
     {
       id: "banh-luoi-meeting-03",
       speaker: "banhLuoi",
-      vi: "Đúng đấy! David Scott và James Irwin lái mình đi khám phá nơi này vào cuối tháng Bảy, đầu tháng Tám năm 1971, trong chuyến Apollo 15. Tàu đổ bộ của họ tên là Falcon. Mình không tự lái, cũng không phải robot đâu nhé! Mình là chiếc xe đầu tiên như thế đi cùng phi hành gia.",
-      en: "Yes! David Scott and James Irwin drove me here in late July and early August 1971, on Apollo 15. Their lunar module was called Falcon. I did not drive myself — I am not a robot! I was the first rover of this kind to travel with astronauts."
+      vi: "Đúng đấy! David Scott và Jim Irwin lái mình đi khám phá nơi này vào cuối tháng Bảy, đầu tháng Tám năm 1971, trong chuyến Apollo 15. Tàu đổ bộ của họ tên là Falcon. Mình không tự lái, cũng không phải robot đâu nhé! Mình là chiếc xe đầu tiên như thế đi cùng phi hành gia.",
+      en: "Yes! David Scott and Jim Irwin drove me here in late July and early August 1971, on Apollo 15. Their lunar module was called Falcon. I did not drive myself — I am not a robot! I was the first rover of this kind to travel with astronauts."
     },
     {
       id: "banh-luoi-meeting-04",
@@ -399,7 +399,7 @@ export const banBanhLuoiBook = {
   "ban-book-legacy": {
     title: text("LRV Apollo 15", "LRV Apollo 15"),
     paragraphs: [
-      text("LRV là xe có người lái đầu tiên trên Mặt Trăng. David Scott và James Irwin lái xe tại Hadley–Apennine từ 31/07 đến 02/08/1971.", "Apollo 15 brought the first crewed electric rover to the Moon. From 31 July to 2 August 1971, David Scott and James Irwin used it to explore Hadley–Apennine."),
+      text("LRV là xe có người lái đầu tiên trên Mặt Trăng. David Scott và Jim Irwin lái xe tại Hadley–Apennine từ 31/07 đến 02/08/1971.", "Apollo 15 brought the first crewed electric rover to the Moon. From 31 July to 2 August 1971, David Scott and Jim Irwin used it to explore Hadley–Apennine."),
       text("LRV có thể lái bằng cả bánh trước và sau. Tuy nhiên, ngày 31/07, lái trước không hoạt động; hai phi hành gia vẫn hoàn thành chuyến đầu bằng lái bánh sau.", "The LRV could steer with both its front and rear wheels. On 31 July, front steering failed, but the astronauts completed their first traverse using rear steering."),
       text("Đến chuyến hai ngày 01/08, lái trước đã hoạt động lại. Tuy vậy, báo cáo chưa xác định chính xác thời điểm khôi phục hay nguyên nhân sự cố.", "Front steering worked again before the second traverse on 1 August. The mission report did not establish the exact recovery time or the cause of the failure."),
       text("Qua ba chuyến, xe đi gần 28 km. Kết thúc sứ mệnh, Apollo 15 mang hơn 77 kg đá và đất về Trái Đất.", "Three traverses covered nearly 28 km; Apollo 15 brought over 77 kg of rock and soil to Earth.")
